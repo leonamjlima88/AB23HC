@@ -3,7 +3,7 @@ unit uAclUser.ChangePassword.DTO;
 interface
 
 type
-  TAclUserChangePasswordDTO = class(TInterfacedObject)
+  TAclUserChangePasswordDTO = class
     current_password: string;
     new_password: string;
     login: string;
