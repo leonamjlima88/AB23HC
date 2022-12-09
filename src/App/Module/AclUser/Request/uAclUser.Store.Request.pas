@@ -3,81 +3,100 @@ unit uAclUser.Store.Request;
 interface
 
 uses
-  uBase.Request,
-  uAclUser,
+  Horse.Request,
   Horse.Response,
-  Horse.Request;
+  uAclUser;
 
 type
-  IAclUserStoreRequest = interface
-    ['{772C8728-C2A2-4E5D-81D6-25ED802810C7}']
+  IAclUserStoreRequest = Interface
+    ['{87CEAD93-4034-4B52-AC61-7ADECA1A6E1B}']
+    function Validate: String;
     function ValidateAndMapToEntity: TAclUser;
   end;
 
-  TAclUserStoreRequest = class(TBaseRequest, IAclUserStoreRequest)
+  TAclUserStoreRequest = class(TInterfacedObject, IAclUserStoreRequest)
   private
-    procedure HandleAttributes; override;
-    procedure HandleAclUser;
-    Constructor Create(const AReq: THorseRequest; const ARes: THorseResponse);
+    FReq: THorseRequest;
+    FRes: THorseResponse;
+    FErrors: String;
+    FExitOnError: Boolean;
+    function HandleAttributes: IAclUserStoreRequest;
+    function Handlebrand: IAclUserStoreRequest;
+    constructor Create(AReq: THorseRequest; ARes: THorseResponse; AExitOnError: Boolean);
   public
-    class function Make(const AReq: THorseRequest; const ARes: THorseResponse): IAclUserStoreRequest;
+    class function Make(AReq: THorseRequest; ARes: THorseResponse; AExitOnError: Boolean = True): IAclUserStoreRequest;
+    function Validate: String;
     function ValidateAndMapToEntity: TAclUser;
   end;
 
 implementation
 
 uses
+  uFormRequest,
   System.SysUtils,
-  XSuperObject,
   uRes,
   uApplication.Types,
+  XSuperObject,
   uHlp,
   uMyClaims;
 
 { TAclUserStoreRequest }
 
-procedure TAclUserStoreRequest.HandleAclUser;
+class function TAclUserStoreRequest.Make(AReq: THorseRequest; ARes: THorseResponse; AExitOnError: Boolean): IAclUserStoreRequest;
 begin
-  Self
+  Result := Self.Create(AReq, ARes, AExitOnError);
+end;
+
+constructor TAclUserStoreRequest.Create(AReq: THorseRequest; ARes: THorseResponse; AExitOnError: Boolean);
+begin
+  inherited Create;
+  FReq         := AReq;
+  FRes         := ARes;
+  FExitOnError := AExitOnError;
+end;
+
+function TAclUserStoreRequest.HandleAttributes: IAclUserStoreRequest;
+begin
+  Result := Self;
+  Handlebrand;
+end;
+
+function TAclUserStoreRequest.Handlebrand: IAclUserStoreRequest;
+begin
+  Result := Self;
+
+  // Validar Requisição
+  FErrors := FErrors + TFormRequest.Make(FReq.Body)
     .AddRule('name',           'required|string|max:100')
     .AddRule('login',          'required|string|max:100')
     .AddRule('login_password', 'required|string|max:100')
     .AddRule('acl_role_id',    'required|integer|min:1')
     .AddRule('is_superuser',   'nullable|integer')
-    .ExecuteRules;
+    .Validate;
+end;
+
+function TAclUserStoreRequest.Validate: String;
+begin
+  FErrors := EmptyStr;
+  HandleAttributes;
+
+  // Exibir erros de validação se existir
+  if FExitOnError and (FErrors.Trim > EmptyStr) then
+  begin
+    TRes.Error(FRes, VALIDATION_ERROR, FErrors);
+    Exit;
+  end;
 end;
 
 function TAclUserStoreRequest.ValidateAndMapToEntity: TAclUser;
-var
-  lAclUser: TAclUser;
 begin
   Result := Nil;
-
-  // Validar requisição
-  if not Validate.IsEmpty then
-  begin
-    TRes.Error(Res, VALIDATION_ERROR, Errors);
+  Validate;
+  if FExitOnError and (FErrors.Trim > EmptyStr) then
     Exit;
-  end;
 
   // Mapear Body para Entity
-  lAclUser := TAclUser.FromJSON(Body);
-  Result := lAclUser;
-end;
-
-constructor TAclUserStoreRequest.Create(const AReq: THorseRequest; const ARes: THorseResponse);
-begin
-  inherited Create(AReq, ARes);
-end;
-
-procedure TAclUserStoreRequest.HandleAttributes;
-begin
-  HandleAclUser;
-end;
-
-class function TAclUserStoreRequest.Make(const AReq: THorseRequest; const ARes: THorseResponse): IAclUserStoreRequest;
-begin
-  Result := Self.Create(AReq, ARes);
+  Result := TAclUser.FromJSON(FReq.Body);
 end;
 
 end.

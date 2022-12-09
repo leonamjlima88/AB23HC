@@ -3,77 +3,96 @@ unit uAclRole.Request;
 interface
 
 uses
-  uBase.Request,
-  uAclRole,
+  Horse.Request,
   Horse.Response,
-  Horse.Request;
+  uAclRole;
 
 type
-  IAclRoleRequest = interface
-    ['{3DEA66F3-080A-4386-A202-AE6FDF63AD9B}']
+  IAclRoleRequest = Interface
+    ['{C05C2347-3044-49F4-94EE-8008C36C2156}']
+    function Validate: String;
     function ValidateAndMapToEntity: TAclRole;
   end;
 
-  TAclRoleRequest = class(TBaseRequest, IAclRoleRequest)
+  TAclRoleRequest = class(TInterfacedObject, IAclRoleRequest)
   private
-    procedure HandleAttributes; override;
-    procedure HandleAclRole;
-    Constructor Create(const AReq: THorseRequest; const ARes: THorseResponse);
+    FReq: THorseRequest;
+    FRes: THorseResponse;
+    FErrors: String;
+    FExitOnError: Boolean;
+    function HandleAttributes: IAclRoleRequest;
+    function Handlebrand: IAclRoleRequest;
+    constructor Create(AReq: THorseRequest; ARes: THorseResponse; AExitOnError: Boolean);
   public
-    class function Make(const AReq: THorseRequest; const ARes: THorseResponse): IAclRoleRequest;
+    class function Make(AReq: THorseRequest; ARes: THorseResponse; AExitOnError: Boolean = True): IAclRoleRequest;
+    function Validate: String;
     function ValidateAndMapToEntity: TAclRole;
   end;
 
 implementation
 
 uses
+  uFormRequest,
   System.SysUtils,
-  XSuperObject,
   uRes,
   uApplication.Types,
+  XSuperObject,
   uHlp,
   uMyClaims;
 
 { TAclRoleRequest }
 
-procedure TAclRoleRequest.HandleAclRole;
+class function TAclRoleRequest.Make(AReq: THorseRequest; ARes: THorseResponse; AExitOnError: Boolean): IAclRoleRequest;
 begin
-  Self
+  Result := Self.Create(AReq, ARes, AExitOnError);
+end;
+
+constructor TAclRoleRequest.Create(AReq: THorseRequest; ARes: THorseResponse; AExitOnError: Boolean);
+begin
+  inherited Create;
+  FReq         := AReq;
+  FRes         := ARes;
+  FExitOnError := AExitOnError;
+end;
+
+function TAclRoleRequest.HandleAttributes: IAclRoleRequest;
+begin
+  Result := Self;
+  Handlebrand;
+end;
+
+function TAclRoleRequest.Handlebrand: IAclRoleRequest;
+begin
+  Result := Self;
+
+  // Validar Requisição
+  FErrors := FErrors + TFormRequest.Make(FReq.Body)
     .AddRule('name', 'required|string|max:100')
-    .ExecuteRules;
+    .Validate;
+end;
+
+function TAclRoleRequest.Validate: String;
+begin
+  FErrors := EmptyStr;
+  HandleAttributes;
+
+  // Exibir erros de validação se existir
+  if FExitOnError and (FErrors.Trim > EmptyStr) then
+  begin
+    TRes.Error(FRes, VALIDATION_ERROR, FErrors);
+    Exit;
+  end;
 end;
 
 function TAclRoleRequest.ValidateAndMapToEntity: TAclRole;
-var
-  lAclRole: TAclRole;
 begin
   Result := Nil;
-
-  // Validar requisição
-  if not Validate.IsEmpty then
-  begin
-    TRes.Error(Res, VALIDATION_ERROR, Errors);
+  Validate;
+  if FExitOnError and (FErrors.Trim > EmptyStr) then
     Exit;
-  end;
 
   // Mapear Body para Entity
-  lAclRole := TAclRole.FromJSON(Body);
-  Result := lAclRole;
-end;
-
-constructor TAclRoleRequest.Create(const AReq: THorseRequest; const ARes: THorseResponse);
-begin
-  inherited Create(AReq, ARes);
-end;
-
-procedure TAclRoleRequest.HandleAttributes;
-begin
-  HandleAclRole;
-end;
-
-class function TAclRoleRequest.Make(const AReq: THorseRequest; const ARes: THorseResponse): IAclRoleRequest;
-begin
-  Result := Self.Create(AReq, ARes);
+  Result := TAclRole.FromJSON(FReq.Body);
 end;
 
 end.

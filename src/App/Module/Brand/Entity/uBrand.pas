@@ -5,7 +5,8 @@ interface
 uses
   uApplication.Types,
   uAclUser,
-  uBase.Entity;
+  uBase.Entity,
+  Data.DB;
 
 type
   TBrand = class(TBaseEntity)

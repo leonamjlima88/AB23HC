@@ -3,80 +3,99 @@ unit uAclUser.Update.Request;
 interface
 
 uses
-  uBase.Request,
-  uAclUser,
+  Horse.Request,
   Horse.Response,
-  Horse.Request;
+  uAclUser;
 
 type
-  IAclUserUpdateRequest = interface
-    ['{78D43670-BD67-48F3-BAB3-6BD91563C672}']
+  IAclUserUpdateRequest = Interface
+    ['{2A7B4859-6A78-44DA-8761-986152C9A140}']
+    function Validate: String;
     function ValidateAndMapToEntity: TAclUser;
   end;
 
-  TAclUserUpdateRequest = class(TBaseRequest, IAclUserUpdateRequest)
+  TAclUserUpdateRequest = class(TInterfacedObject, IAclUserUpdateRequest)
   private
-    procedure HandleAttributes; override;
-    procedure HandleAclUser;
-    Constructor Create(const AReq: THorseRequest; const ARes: THorseResponse);
+    FReq: THorseRequest;
+    FRes: THorseResponse;
+    FErrors: String;
+    FExitOnError: Boolean;
+    function HandleAttributes: IAclUserUpdateRequest;
+    function Handlebrand: IAclUserUpdateRequest;
+    constructor Create(AReq: THorseRequest; ARes: THorseResponse; AExitOnError: Boolean);
   public
-    class function Make(const AReq: THorseRequest; const ARes: THorseResponse): IAclUserUpdateRequest;
+    class function Make(AReq: THorseRequest; ARes: THorseResponse; AExitOnError: Boolean = True): IAclUserUpdateRequest;
+    function Validate: String;
     function ValidateAndMapToEntity: TAclUser;
   end;
 
 implementation
 
 uses
+  uFormRequest,
   System.SysUtils,
-  XSuperObject,
   uRes,
   uApplication.Types,
+  XSuperObject,
   uHlp,
   uMyClaims;
 
 { TAclUserUpdateRequest }
 
-procedure TAclUserUpdateRequest.HandleAclUser;
+class function TAclUserUpdateRequest.Make(AReq: THorseRequest; ARes: THorseResponse; AExitOnError: Boolean): IAclUserUpdateRequest;
 begin
-  Self
+  Result := Self.Create(AReq, ARes, AExitOnError);
+end;
+
+constructor TAclUserUpdateRequest.Create(AReq: THorseRequest; ARes: THorseResponse; AExitOnError: Boolean);
+begin
+  inherited Create;
+  FReq         := AReq;
+  FRes         := ARes;
+  FExitOnError := AExitOnError;
+end;
+
+function TAclUserUpdateRequest.HandleAttributes: IAclUserUpdateRequest;
+begin
+  Result := Self;
+  Handlebrand;
+end;
+
+function TAclUserUpdateRequest.Handlebrand: IAclUserUpdateRequest;
+begin
+  Result := Self;
+
+  // Validar Requisição
+  FErrors := FErrors + TFormRequest.Make(FReq.Body)
     .AddRule('name',           'required|string|max:100')
     .AddRule('login',          'required|string|max:100')
     .AddRule('acl_role_id',    'required|integer|min:1')
     .AddRule('is_superuser',   'nullable|integer')
-    .ExecuteRules;
+    .Validate;
+end;
+
+function TAclUserUpdateRequest.Validate: String;
+begin
+  FErrors := EmptyStr;
+  HandleAttributes;
+
+  // Exibir erros de validação se existir
+  if FExitOnError and (FErrors.Trim > EmptyStr) then
+  begin
+    TRes.Error(FRes, VALIDATION_ERROR, FErrors);
+    Exit;
+  end;
 end;
 
 function TAclUserUpdateRequest.ValidateAndMapToEntity: TAclUser;
-var
-  lAclUser: TAclUser;
 begin
   Result := Nil;
-
-  // Validar requisição
-  if not Validate.IsEmpty then
-  begin
-    TRes.Error(Res, VALIDATION_ERROR, Errors);
+  Validate;
+  if FExitOnError and (FErrors.Trim > EmptyStr) then
     Exit;
-  end;
 
   // Mapear Body para Entity
-  lAclUser := TAclUser.FromJSON(Body);
-  Result := lAclUser;
-end;
-
-constructor TAclUserUpdateRequest.Create(const AReq: THorseRequest; const ARes: THorseResponse);
-begin
-  inherited Create(AReq, ARes);
-end;
-
-procedure TAclUserUpdateRequest.HandleAttributes;
-begin
-  HandleAclUser;
-end;
-
-class function TAclUserUpdateRequest.Make(const AReq: THorseRequest; const ARes: THorseResponse): IAclUserUpdateRequest;
-begin
-  Result := Self.Create(AReq, ARes);
+  Result := TAclUser.FromJSON(FReq.Body);
 end;
 
 end.

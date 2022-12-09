@@ -39,7 +39,6 @@ uses
   uScript.Factory in 'Database\Connection\uScript.Factory.pas',
   uQry.Factory in 'Database\Connection\uQry.Factory.pas',
   uMemTable.Factory in 'Database\Connection\uMemTable.Factory.pas',
-  uValidateSuperObject in 'App\Shared\Util\uValidateSuperObject.pas',
   uMemTable.Interfaces in 'Database\Connection\uMemTable.Interfaces.pas',
   uMemTable.FireDAC in 'Database\Connection\Drivers\FireDAC\uMemTable.FireDAC.pas',
   uConnection.Interfaces in 'Database\Connection\uConnection.Interfaces.pas',
@@ -60,8 +59,6 @@ uses
   uMain in 'uMain.pas',
   uTaskScheduler in 'App\TaskScheduler\uTaskScheduler.pas',
   uAutomaticPingInConsole.Task in 'App\TaskScheduler\Task\uAutomaticPingInConsole.Task.pas',
-  uBase.Request in 'App\Shared\Request\uBase.Request.pas',
-  uBrand.Request in 'App\Module\Brand\Request\uBrand.Request.pas',
   uBrand.SQLBuilder in 'App\Module\Brand\SQLBuilder\uBrand.SQLBuilder.pas',
   uBrand.SQLBuilder.MySQL in 'App\Module\Brand\SQLBuilder\MySQL\uBrand.SQLBuilder.MySQL.pas',
   uAclUser.SQLBuilder.Interfaces in 'App\Module\AclUser\SQLBuilder\uAclUser.SQLBuilder.Interfaces.pas',
@@ -82,7 +79,9 @@ uses
   uAclRole.Repository.SQL in 'App\Module\AclRole\Repository\SQL\uAclRole.Repository.SQL.pas',
   uAclRole in 'App\Module\AclRole\Entity\uAclRole.pas',
   uSQLBuilder.Factory in 'App\Shared\SQLBuilder\uSQLBuilder.Factory.pas',
-  uRepository.Factory in 'App\Shared\Repository\uRepository.Factory.pas';
+  uRepository.Factory in 'App\Shared\Repository\uRepository.Factory.pas',
+  uFormRequest in 'App\Shared\Util\uFormRequest.pas',
+  uBrand.Request in 'App\Module\Brand\Request\uBrand.Request.pas';
 
 begin
   TMain.Start;

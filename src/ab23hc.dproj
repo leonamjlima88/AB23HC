@@ -128,7 +128,6 @@
         <DCCReference Include="Database\Connection\uScript.Factory.pas"/>
         <DCCReference Include="Database\Connection\uQry.Factory.pas"/>
         <DCCReference Include="Database\Connection\uMemTable.Factory.pas"/>
-        <DCCReference Include="App\Shared\Util\uValidateSuperObject.pas"/>
         <DCCReference Include="Database\Connection\uMemTable.Interfaces.pas"/>
         <DCCReference Include="Database\Connection\Drivers\FireDAC\uMemTable.FireDAC.pas"/>
         <DCCReference Include="Database\Connection\uConnection.Interfaces.pas"/>
@@ -148,8 +147,6 @@
         <DCCReference Include="uMain.pas"/>
         <DCCReference Include="App\TaskScheduler\uTaskScheduler.pas"/>
         <DCCReference Include="App\TaskScheduler\Task\uAutomaticPingInConsole.Task.pas"/>
-        <DCCReference Include="App\Shared\Request\uBase.Request.pas"/>
-        <DCCReference Include="App\Module\Brand\Request\uBrand.Request.pas"/>
         <DCCReference Include="App\Module\Brand\SQLBuilder\uBrand.SQLBuilder.pas"/>
         <DCCReference Include="App\Module\Brand\SQLBuilder\MySQL\uBrand.SQLBuilder.MySQL.pas"/>
         <DCCReference Include="App\Module\AclUser\SQLBuilder\uAclUser.SQLBuilder.Interfaces.pas"/>
@@ -171,6 +168,8 @@
         <DCCReference Include="App\Module\AclRole\Entity\uAclRole.pas"/>
         <DCCReference Include="App\Shared\SQLBuilder\uSQLBuilder.Factory.pas"/>
         <DCCReference Include="App\Shared\Repository\uRepository.Factory.pas"/>
+        <DCCReference Include="App\Shared\Util\uFormRequest.pas"/>
+        <DCCReference Include="App\Module\Brand\Request\uBrand.Request.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

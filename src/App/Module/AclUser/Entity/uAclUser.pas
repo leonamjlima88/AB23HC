@@ -13,9 +13,9 @@ type
   private
     Fname: string;
     Flogin_password: string;
-    Fid: integer;
+    Fid: Int64;
     Flogin: string;
-    Facl_role_id: integer;
+    Facl_role_id: Int64;
     Fis_superuser: SmallInt;
     Facl_role: TAclRole;
     Flast_token: string;
@@ -24,12 +24,11 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    property id: integer read Fid write Fid;
+    property id: Int64 read Fid write Fid;
     property name: string read Fname write Fname;
     property login: string read Flogin write Flogin;
     property login_password: string read Flogin_password write Flogin_password;
-    property acl_role_id: integer read Facl_role_id write Facl_role_id;
-    [DISABLEREAD]
+    property acl_role_id: Int64 read Facl_role_id write Facl_role_id;
     property is_superuser: SmallInt read Fis_superuser write Fis_superuser;
     property last_token: string read Flast_token write Flast_token;
     property last_expiration: TDateTime read Flast_expiration write Flast_expiration;

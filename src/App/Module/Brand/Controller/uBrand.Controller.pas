@@ -110,7 +110,7 @@ begin
   lPk           := lBrandService.Store(lBrandToStore);
 
   // Retornar registro incluso
-  lBrandFound   := lBrandService.Show(lPk);
+  lBrandFound := lBrandService.Show(lPk);
   TRes.Success(Res, TBrandResource.Make(lBrandFound).Execute, HTTP_CREATED);
 end;
 
