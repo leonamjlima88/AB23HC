@@ -77,9 +77,9 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
-        <DCC_DcpOutput>..\dcu\$(Platform)\$(Config)</DCC_DcpOutput>
-        <DCC_ExeOutput>..\exec\$(Platform)\$(Config)</DCC_ExeOutput>
-        <DCC_DcuOutput>..\dcu\$(Platform)\$(Config)</DCC_DcuOutput>
+        <DCC_DcpOutput>..\output\api\dcu\$(Platform)\$(Config)</DCC_DcpOutput>
+        <DCC_ExeOutput>..\output\api\exec\$(Platform)\$(Config)</DCC_ExeOutput>
+        <DCC_DcuOutput>..\output\api\dcu\$(Platform)\$(Config)</DCC_DcuOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>(None)</Manifest_File>
         <DCC_Namespace>Vcl;Vcl.Imaging;$(DCC_Namespace)</DCC_Namespace>
