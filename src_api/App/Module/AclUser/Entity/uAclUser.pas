@@ -21,7 +21,17 @@ type
     Flast_token: string;
     Flast_expiration: TDateTime;
   public
-    constructor Create;
+    constructor Create; overload;
+    constructor Create(
+      Aid: Int64;
+      Aname: string;
+      Alogin: string;
+      Alogin_password: string;
+      Aacl_role_id: Int64;
+      Ais_superuser: SmallInt = 0;
+      Alast_token: string = '';
+      Alast_expiration: TDateTime = 0
+    ); overload;
     destructor Destroy; override;
 
     property id: Int64 read Fid write Fid;
@@ -36,7 +46,7 @@ type
     // OneToOne
     property acl_role: TAclRole read Facl_role write Facl_role;
 
-    procedure Validate;
+    procedure Validate; override;
   end;
 
 implementation
@@ -49,6 +59,27 @@ uses
 constructor TAclUser.Create;
 begin
   Facl_role := TAclRole.Create;
+end;
+
+constructor TAclUser.Create(
+  Aid: Int64;
+  Aname,
+  Alogin,
+  Alogin_password: string;
+  Aacl_role_id: Int64;
+  Ais_superuser: SmallInt;
+  Alast_token: string;
+  Alast_expiration: TDateTime);
+begin
+  inherited Create;
+  Fid              := Aid;
+  Fname            := Aname;
+  Flogin           := Alogin;
+  Flogin_password  := Alogin_password;
+  Facl_role_id     := Aacl_role_id;
+  Fis_superuser    :=  Ais_superuser;
+  Flast_token      := Alast_token;
+  Flast_expiration := Alast_expiration;
 end;
 
 destructor TAclUser.Destroy;

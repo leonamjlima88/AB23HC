@@ -13,7 +13,7 @@ uses
   uSelectWithFilter;
 
 type
-  TBaseRepository = class(TInterfacedObject, IBaseRepository)
+  TBaseRepository = class abstract (TInterfacedObject, IBaseRepository)
   protected
     FConn: IConnection;
     FSQLBuilder: IBaseSQLBuilder;

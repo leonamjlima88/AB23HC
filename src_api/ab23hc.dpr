@@ -96,7 +96,8 @@ uses
   uAclUser.Auth.Login.DTO in 'App\Module\AclUser\DTO\uAclUser.Auth.Login.DTO.pas',
   uAclUser.Auth.UseCase in 'App\Module\AclUser\UseCase\uAclUser.Auth.UseCase.pas',
   uAclUser.Auth.Controller in 'App\Module\AclUser\Controller\uAclUser.Auth.Controller.pas',
-  uAclUser.Auth.Me.DTO in 'App\Module\AclUser\DTO\uAclUser.Auth.Me.DTO.pas';
+  uAclUser.Auth.Me.DTO in 'App\Module\AclUser\DTO\uAclUser.Auth.Me.DTO.pas',
+  uValidation.Interfaces in 'App\Shared\Validation\uValidation.Interfaces.pas';
 
 begin
   TMain.Start;

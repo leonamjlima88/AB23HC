@@ -185,6 +185,7 @@
         <DCCReference Include="App\Module\AclUser\UseCase\uAclUser.Auth.UseCase.pas"/>
         <DCCReference Include="App\Module\AclUser\Controller\uAclUser.Auth.Controller.pas"/>
         <DCCReference Include="App\Module\AclUser\DTO\uAclUser.Auth.Me.DTO.pas"/>
+        <DCCReference Include="App\Shared\Validation\uValidation.Interfaces.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

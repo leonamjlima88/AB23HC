@@ -19,8 +19,10 @@ type
     Fcreated_by_acl_user_id: Int64;
     Fupdated_by_acl_user: TAclUser;
     Fcreated_by_acl_user: TAclUser;
+    procedure Initialize;
   public
-    constructor Create;
+    constructor Create; overload;
+    constructor Create(Aid: Int64; Aname: string); overload;
     destructor Destroy; override;
 
     property id: Int64 read Fid write Fid;
@@ -34,7 +36,7 @@ type
     property created_by_acl_user: TAclUser read Fcreated_by_acl_user write Fcreated_by_acl_user;
     property updated_by_acl_user: TAclUser read Fupdated_by_acl_user write Fupdated_by_acl_user;
 
-    procedure Validate;
+    procedure Validate; override;
   end;
 
 implementation
@@ -44,12 +46,18 @@ uses
 
 { TBrand }
 
+constructor TBrand.Create(Aid: Int64; Aname: string);
+begin
+  inherited Create;
+  Fid   := Aid;
+  Fname := AName;
+  Initialize;
+end;
+
 constructor TBrand.Create;
 begin
   inherited Create;
-  Fcreated_at          := now;
-  Fcreated_by_acl_user := TAclUser.Create;
-  Fupdated_by_acl_user := TAclUser.Create;
+  Initialize;
 end;
 
 destructor TBrand.Destroy;
@@ -57,6 +65,13 @@ begin
   if Assigned(Fcreated_by_acl_user) then Fcreated_by_acl_user.Free;
   if Assigned(Fupdated_by_acl_user) then Fupdated_by_acl_user.Free;
   inherited;
+end;
+
+procedure TBrand.Initialize;
+begin
+  Fcreated_at          := now;
+  Fcreated_by_acl_user := TAclUser.Create;
+  Fupdated_by_acl_user := TAclUser.Create;
 end;
 
 procedure TBrand.Validate;
