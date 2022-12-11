@@ -12,6 +12,7 @@ type
   private
     class procedure Send(const ARes: THorseResponse; ASObj: ISuperObject; AStatusCode: SmallInt; AContentType: String = 'application/json');
   public
+    class procedure Success(const ARes: THorseResponse; const AData: TObject; AHttpCode: SmallInt = HTTP_OK; AMessage: String = SUCCESS_MESSAGE); overload;
     class procedure Success(const ARes: THorseResponse; const AData: ISuperObject = nil; AHttpCode: SmallInt = HTTP_OK; AMessage: String = SUCCESS_MESSAGE); overload;
     class procedure Success(const ARes: THorseResponse; const AData: String; AHttpCode: SmallInt = HTTP_OK; AMessage: String = SUCCESS_MESSAGE); overload;
     class procedure Error(const ARes: THorseResponse; AMessage: String = OOPS_MESSAGE; AData: String = ''; AHttpCode: SmallInt = HTTP_BAD_REQUEST);
@@ -60,6 +61,25 @@ begin
     .ContentType(AContentType)
     .Send<TJSONObject>(TJSONObject.ParseJSONValue(TEncoding.UTF8.GetBytes(ASObj.AsJSON), 0) as TJSONObject)
     .Status(AStatusCode);
+end;
+
+class procedure TRes.Success(const ARes: THorseResponse; const AData: TObject; AHttpCode: SmallInt; AMessage: String);
+var
+  lReturn: ISuperObject;
+begin
+  lReturn := SO;
+  lReturn.I['code']    := AHttpCode;
+  lReturn.B['error']   := false;
+  lReturn.S['message'] := AMessage;
+
+  // Tratamento do campo de retorno Data
+  case Assigned(AData) of
+    True:  lReturn.O['data']    := AData.AsJSONObject;
+    False: lReturn.Null['data'] := jNull;
+  end;
+
+  // Envio de sucesso
+  Send(ARes, lReturn, AHttpCode);
 end;
 
 class procedure TRes.Success(const ARes: THorseResponse; const AData: String; AHttpCode: SmallInt; AMessage: String);

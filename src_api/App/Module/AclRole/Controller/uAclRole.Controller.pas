@@ -3,139 +3,162 @@ unit uAclRole.Controller;
 interface
 
 uses
-  Horse;
+  Horse,
+  Horse.GBSwagger,
+  GBSwagger.Path.Registry,
+  GBSwagger.Path.Attributes,
+  GBSwagger.Validator.Interfaces,
+  uAclRole.Repository.Interfaces,
+  uApplication.Types,
+  uAclRole.Show.DTO,
+  uAclRole.DTO,
+  uResponse.DTO;
 
 Type
+  [SwagPath('acl_roles', 'Perfil de usuário')]
   TAclRoleController = class
+  private
+    FReq: THorseRequest;
+    FRes: THorseResponse;
+    FAclRoleRepository: IAclRoleRepository;
   public
-    class procedure Registry;
-    class procedure Index(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Show(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Store(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Update(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Delete(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Query(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+    constructor Create(Req: THorseRequest; Res: THorseResponse);
+
+    [SwagDELETE('/{id}', 'Deletar')]
+    [SwagParamPath('id', 'ID')]
+    [SwagResponse(HTTP_NO_CONTENT)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure Delete;
+
+    [SwagPOST('/index','Listagem de registros')]
+    [SwagParamBody('body', TRequestPageFilterDTO, false, '', false)]
+    [SwagResponse(HTTP_OK, TAclRoleIndexResponseDTO)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure Index;
+
+    [SwagGET('/{id}', 'Localizar por ID')]
+    [SwagParamPath('id', 'ID')]
+    [SwagResponse(HTTP_OK, TAclRoleShowResponseDTO)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure Show;
+
+    [SwagPOST('/', 'Incluir')]
+    [SwagParamBody('body', TAclRoleDTO)]
+    [SwagResponse(HTTP_CREATED, TAclRoleShowResponseDTO)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure Store;
+
+    [SwagPUT('/{id}', 'Atualizar')]
+    [SwagParamPath('id', 'ID')]
+    [SwagParamBody('body', TAclRoleDTO)]
+    [SwagResponse(HTTP_OK, TAclRoleShowResponseDTO)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure Update;
   end;
 
 implementation
 
 uses
-  uAclRole.Service,
+  uRepository.Factory,
   uHlp,
+  uAclRole.Delete.UseCase,
   uRes,
-  uApplication.Types,
   uPageFilter,
-  System.SysUtils,
-  XSuperObject,
-  uAclRole,
+  uIndexResult,
+  uAclRole.Index.UseCase,
   uSmartPointer,
-  uAclRole.Resource,
-  uAclRole.Request,
-  uRepository.Factory;
+  uAclRole.Show.UseCase,
+  XSuperObject,
+  uMyClaims,
+  uAclRole.StoreAndShow.UseCase,
+  uAclRole.UpdateAndShow.UseCase;
 
 { TAclRoleController }
 
-class procedure TAclRoleController.Registry;
+constructor TAclRoleController.Create(Req: THorseRequest; Res: THorseResponse);
 begin
-  THorse.Get    ('/acl_role',       Index  );
-  THorse.Get    ('/acl_role/:id',   Show   );
-  THorse.Post   ('/acl_role',       Store  );
-  THorse.Put    ('/acl_role/:id',   Update );
-  THorse.Delete ('/acl_role/:id',   Delete );
-  THorse.Post   ('/acl_role/query', Query  );
+  FReq               := Req;
+  FRes               := Res;
+  FAclRoleRepository := TRepositoryFactory.Make.AclRole;
 end;
 
-class procedure TAclRoleController.Delete(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure TAclRoleController.Delete;
 var
-  lPk: Int64;
-  lAclRoleService: IAclRoleService;
+  lPK: Int64;
 begin
-  lPk             := THlp.StrInt(Req.Params['id']);
-  lAclRoleService := TAclRoleService.Make(TRepositoryFactory.Make.AclRole);
-
-  // Deletar Registro
-  lAclRoleService.Delete(lPk);
-  TRes.Success(Res, Nil, HTTP_NO_CONTENT);
+  lPK := THlp.StrInt(FReq.Params['id']);
+  TAclRoleDeleteUseCase.Make(FAclRoleRepository).Execute(lPK);
+  TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
 
-class procedure TAclRoleController.Index(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-begin
-  TRes.Success(Res, TAclRoleService.Make(TRepositoryFactory.Make.AclRole).Index(nil).ToSuperObject);
-end;
-
-class procedure TAclRoleController.Query(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure TAclRoleController.Index;
 var
   lPageFilter: IPageFilter;
-  lBodyIsEmpty: Boolean;
+  lIndexResult: IIndexResult;
 begin
-  // Filtro de Pesquisa
-  lBodyIsEmpty := (Req.Body = '{}') or (Req.Body.Trim.IsEmpty);
-  if not lBodyIsEmpty then
-    lPageFilter := TPageFilter.Make.FromSuperObject(SO(Req.Body));
+  lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lIndexResult := TAclRoleIndexUseCase.Make(FAclRoleRepository).Execute(lPageFilter);
 
   // Pesquisar
-  TRes.Success(Res, TAclRoleService.Make(TRepositoryFactory.Make.AclRole).Index(lPageFilter).ToSuperObject);
+  TRes.Success(FRes, lIndexResult.ToSuperObject);
 end;
 
-class procedure TAclRoleController.Show(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure TAclRoleController.Show;
 var
-  lPk: Int64;
-  lAclRoleService: IAclRoleService;
-  lAclRoleFound: Shared<TAclRole>;
+  lAclRoleShowDTO: Shared<TAclRoleShowDTO>;
+  lPK: Int64;
 begin
-  lPk             := THlp.StrInt(Req.Params['id']);
-  lAclRoleService := TAclRoleService.Make(TRepositoryFactory.Make.AclRole);
-
   // Localizar registro
-  lAclRoleFound := lAclRoleService.Show(lPk);
-  case Assigned(lAclRoleFound.Value) of
-    True:  TRes.Success (Res, TAclRoleResource.Make(lAclRoleFound).Execute);
-    False: TRes.Error   (Res, Format(RECORD_NOT_FOUND_WITH_ID, [lPk]));
-  end;
+  lPK := THlp.StrInt(FReq.Params['id']);
+  lAclRoleShowDTO := TAclRoleShowUseCase
+    .Make    (FAclRoleRepository)
+    .Execute (lPk);
+
+  // Retorno
+  TRes.Success(FRes, lAclRoleShowDTO.Value);
 end;
 
-class procedure TAclRoleController.Store(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure TAclRoleController.Store;
 var
-  lAclRoleToStore: TAclRole;
-  lAclRoleService: IAclRoleService;
-  lPk: Int64;
-  lAclRoleFound: Shared<TAclRole>;
+  lAclRoleToStoreDTO: Shared<TAclRoleDTO>;
+  lAclRoleShowDTO: Shared<TAclRoleShowDTO>;
 begin
-  // Validar Requisição
-  lAclRoleToStore := TAclRoleRequest.Make(Req, Res).ValidateAndMapToEntity;
-  if not Assigned(lAclRoleToStore) then Exit;
+  // Validar DTO
+  lAclRoleToStoreDTO := TAclRoleDTO.FromJSON(FReq.Body);
+  SwaggerValidator.Validate(lAclRoleToStoreDTO);
 
-  // Incluir registro
-  lAclRoleService := TAclRoleService.Make(TRepositoryFactory.Make.AclRole);
-  lPk             := lAclRoleService.Store(lAclRoleToStore);
+  // Inserir e retornar registro inserido
+  lAclRoleShowDTO := TAclRoleStoreAndShowUseCase
+    .Make    (FAclRoleRepository)
+    .Execute (lAclRoleToStoreDTO.Value);
 
-  // Retornar registro incluso
-  lAclRoleFound   := lAclRoleService.Show(lPk);
-  TRes.Success(Res, TAclRoleResource.Make(lAclRoleFound).Execute, HTTP_CREATED);
+  // Retorno
+  TRes.Success(FRes, lAclRoleShowDTO.Value, HTTP_CREATED);
 end;
 
-class procedure TAclRoleController.Update(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure TAclRoleController.Update;
 var
-  lAclRoleToUpdate: TAclRole;
-  lPk: Int64;
-  lAclRoleService: IAclRoleService;
-  lAclRoleFound: Shared<TAclRole>;
+  lAclRoleToUpdateDTO: Shared<TAclRoleDTO>;
+  lAclRoleShowDTO: Shared<TAclRoleShowDTO>;
+  lPK: Int64;
 begin
-  // Validar Requisição
-  lAclRoleToUpdate := TAclRoleRequest.Make(Req, Res).ValidateAndMapToEntity;
-  if not Assigned(lAclRoleToUpdate) then Exit;
+  // Validar DTO
+  lAclRoleToUpdateDTO := TAclRoleDTO.FromJSON(FReq.Body);
+  SwaggerValidator.Validate(lAclRoleToUpdateDTO);
 
-  // Atualizar registro
-  lPk           := THlp.StrInt(Req.Params['id']);
-  lAclRoleService := TAclRoleService.Make(TRepositoryFactory.Make.AclRole);
-  lAclRoleService.Update(lAclRoleToUpdate, lPk);
+  // Atualizar e retornar registro atualizado
+  lPK := THlp.StrInt(FReq.Params['id']);
+  lAclRoleShowDTO := TAclRoleUpdateAndShowUseCase
+    .Make    (FAclRoleRepository)
+    .Execute (lAclRoleToUpdateDTO.Value, lPk);
 
-  // Retornar registro atualizado
-  lAclRoleFound := lAclRoleService.Show(lPk);
-  case Assigned(lAclRoleFound.Value) of
-    True:  TRes.Success (Res, TAclRoleResource.Make(lAclRoleFound).Execute);
-    False: TRes.Error   (Res, Format(RECORD_NOT_FOUND_WITH_ID, [lPk]));
-  end;
+  // Retorno
+  TRes.Success(FRes, lAclRoleShowDTO.Value);
 end;
 
 end.

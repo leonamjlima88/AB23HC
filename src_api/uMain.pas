@@ -5,6 +5,7 @@ interface
 Type
   TMain = class
     class procedure Start;
+    class procedure InitializeSwagger;
     class procedure RunMigrations;
     class procedure RunServer;
     class procedure SetMiddlewares;
@@ -34,24 +35,55 @@ uses
   Horse.Logger,
   Horse.Logger.Provider.Console,
   Horse.Logger.Manager,
-  Horse.Exception.Logger,
-  Horse.Etag;
+//  Horse.Exception.Logger,
+  Horse.Etag,
+  Horse.GBSwagger,
+  GBSwagger.Model.Types,
+  uResponse.DTO;
 
 var
   LLogFileConfig: Shared<THorseLoggerConsoleConfig>;
-  lSkipRoutes: TArray<String>;
 const
-  SKIP_ROUTES_ON_AUTHENTICATION: TArray<String> = ['/ping', '/auth/login'];
+  SERVER_PORT = 9123;
+  SKIP_ROUTES_ON_AUTHENTICATION: TArray<String> = [
+    '/ping',
+    '/auth/login',
+    '/swagger/doc/html',
+    '/swagger/doc/json'
+  ];
 
 { TMain }
 
 class procedure TMain.Start;
 begin
   SetReportMemoryLeak;
+  InitializeSwagger;
   SetMiddlewares;
   RunMigrations;
   SetRoutes;
   RunServer;
+end;
+
+class procedure TMain.InitializeSwagger;
+begin
+  Swagger
+    .Info
+      .Title('ab23hc')
+      .Description('API AB23HC')
+    .&End
+    .Register
+      .SchemaOnError(TResponseDTO)
+    .&End
+    .AddProtocol(TGBSwaggerProtocol.gbHttp)
+    .AddProtocol(TGBSwaggerProtocol.gbHttps);
+//    .AddBearerSecurity
+//      .&Type(TGBSwaggerSecurityType.gbOAuth2)
+//      .AddCallback(HorseJWT(
+//      JWT_KEY,
+//      THorseJWTConfig.New
+//        .SessionClass(TMyClaims)
+//        .SkipRoutes(SKIP_ROUTES_ON_AUTHENTICATION)
+//    ));
 end;
 
 class procedure TMain.RunMigrations;
@@ -83,7 +115,7 @@ end;
 class procedure TMain.RunServer;
 begin
   // Executar Servidor
-  THorse.Listen(9123, procedure(Horse: THorse)
+  THorse.Listen(SERVER_PORT, procedure(Horse: THorse)
   begin
     Writeln(Format('Server is running on port: %d', [Horse.Port]));
     Readln;
@@ -105,16 +137,22 @@ begin
     .ExposedHeaders('*');
 
   THorse
+    .Use(Jhonson)
+    .Use(ExceptionHandler)
     .Use(THorseLoggerManager.HorseCallback)
     .Use(THorseRateLimit.New())
-    .AddCallback(HorseJWT(JWT_KEY, THorseJWTConfig.New.SessionClass(TMyClaims).SkipRoutes(SKIP_ROUTES_ON_AUTHENTICATION)))
-    .Use(HorseJWT(JWT_KEY, THorseJWTConfig.New.SkipRoutes(SKIP_ROUTES_ON_AUTHENTICATION)))
+    .Use(HorseJWT(
+      JWT_KEY,
+      THorseJWTConfig.New
+        .SessionClass(TMyClaims)
+        .SkipRoutes(SKIP_ROUTES_ON_AUTHENTICATION)
+    ))
+//    .Use(THorseExceptionLogger.New())
     .Use(Compression(0))
-    .Use(Jhonson)
+    .Use(HorseSwagger)
     .Use(eTag)
     .Use(Cors)
-    .Use(ExceptionHandler)
-    .Use(THorseExceptionLogger.New());
+    .Use(HorseSwagger);
 end;
 
 class procedure TMain.SetReportMemoryLeak;

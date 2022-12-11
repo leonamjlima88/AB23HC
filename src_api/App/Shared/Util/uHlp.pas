@@ -11,6 +11,10 @@ type
 
   THlp = class
   public
+    class function  if0retNull(AValue: Int64): variant; overload; // Retornar null se for <= 0
+    class function  if0retNull(AValue: Integer): variant; overload; // Retornar null se for <= 0
+    class function  if0retNull(AValue: TDateTime): variant; overload; // Retornar null se for <= 0
+    class function  BodyIsEmpty(ABody: String): Boolean;
     class function  Space(N: integer): string; // Prencher espaços
     class function  SpaceStr(AContent: String; ALength: integer; ASide: TSide): string; // Prencher espaços
     class function  Repl(AValue: String; ALength: Integer): String; // Reproduz um string varias vezes
@@ -50,7 +54,7 @@ implementation
 uses
   System.SysUtils,
   System.Dateutils,
-  System.MaskUtils;
+  System.MaskUtils, System.Variants;
 
 { THlp }
 
@@ -67,6 +71,11 @@ begin
                    AValue := AValue + ' ' else AValue := ' ' + AValue;
   end;
   Result := AValue;
+end;
+
+class function THlp.BodyIsEmpty(ABody: String): Boolean;
+begin
+  Result := (ABody = '{}') or (ABody.Trim.IsEmpty);
 end;
 
 class function THlp.BoolInt(AValue: Boolean): Integer;
@@ -218,6 +227,30 @@ class function THlp.FormatZipCode(AValue: String): string;
 begin
   Result := onlyNumbers(AValue).Trim;
   Result := FormatMaskText('00\.000\-000;0;', Result);
+end;
+
+class function THlp.if0retNull(AValue: Int64): variant;
+begin
+  case (AValue <= 0) of
+    True:  Result := null;
+    False: Result := AValue;
+  end;
+end;
+
+class function THlp.if0retNull(AValue: TDateTime): variant;
+begin
+  case (AValue <= 0) of
+    True:  Result := null;
+    False: Result := AValue;
+  end;
+end;
+
+class function THlp.if0retNull(AValue: Integer): variant;
+begin
+  case (AValue <= 0) of
+    True:  Result := null;
+    False: Result := AValue;
+  end;
 end;
 
 class function THlp.Iif(aCondition: Boolean; aResultTrue, aResultFalse: variant): variant;

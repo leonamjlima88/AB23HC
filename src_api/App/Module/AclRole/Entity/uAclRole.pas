@@ -17,9 +17,14 @@ type
 
     property id: Int64 read Fid write Fid;
     property name: string read Fname write Fname;
+
+    procedure Validate;
   end;
 
 implementation
+
+uses
+  System.SysUtils;
 
 { TAclRole }
 
@@ -30,6 +35,12 @@ end;
 destructor TAclRole.Destroy;
 begin
   inherited;
+end;
+
+procedure TAclRole.Validate;
+begin
+  if Fname.Trim.IsEmpty then
+    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['name']));
 end;
 
 end.

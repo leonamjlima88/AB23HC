@@ -26,6 +26,7 @@ type
     function LastInsertId: String;
     function Update(AEntity: TBaseEntity; AId: Int64): String;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter;
+    function ShowByLoginAndPassword(ALogin, APassword: String): String;
   end;
 
 implementation
@@ -102,6 +103,11 @@ end;
 function TAclUserSQLBuilder.SelectById(AId: Int64): String;
 begin
   Result := SelectAll + ' WHERE acl_user.id = ' + AId.ToString;
+end;
+
+function TAclUserSQLBuilder.ShowByLoginAndPassword(ALogin, APassword: String): String;
+begin
+  Result := SelectAll + ' WHERE acl_user.login = ' + QuotedStr(ALogin) + ' and acl_user.login_password = ' + QuotedStr(APassword);
 end;
 
 function TAclUserSQLBuilder.Update(AEntity: TBaseEntity; AId: Int64): String;

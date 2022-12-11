@@ -63,8 +63,8 @@ begin
   Result := TCQL.New(FDBName)
     .Insert
     .Into('brand')
-    .&Set('name', lBrand.name)
-    .&Set('created_at', lBrand.created_at)
+    .&Set('name',                   lBrand.name)
+    .&Set('created_at',             lBrand.created_at)
     .&Set('created_by_acl_user_id', lBrand.created_by_acl_user_id)
   .AsString;
 end;
@@ -110,8 +110,8 @@ begin
   lBrand := AEntity as TBrand;
   Result := TCQL.New(FDBName)
     .Update('brand')
-    .&Set('name', lBrand.name)
-    .&Set('updated_at', lBrand.updated_at)
+    .&Set('name',                   lBrand.name)
+    .&Set('updated_at',             lBrand.updated_at)
     .&Set('updated_by_acl_user_id', lBrand.updated_by_acl_user_id)
     .Where('brand.id = ' + AId.ToString)
   .AsString;

@@ -23,6 +23,7 @@ type
   public
     class function Make(AConn: IConnection; ASQLBuilder: IAclUserSQLBuilder): IAclUserRepository;
     function Show(AId: Int64): TAclUser;
+    function ShowByLoginAndPassword(ALogin, APassword: String): TAclUser;
  end;
 
 implementation
@@ -67,6 +68,16 @@ end;
 function TAclUserRepositorySQL.Show(AId: Int64): TAclUser;
 begin
   Result := ShowById(AId) as TAclUser;
+end;
+
+function TAclUserRepositorySQL.ShowByLoginAndPassword(ALogin, APassword: String): TAclUser;
+begin
+  Result := nil;
+  With FConn.MakeQry.Open(FAclUserSQLBuilder.ShowByLoginAndPassword(ALogin, APassword)) do
+  begin
+    if DataSet.IsEmpty then Exit;
+    Result := DataSetToEntity(DataSet) as TAclUser;
+  end;
 end;
 
 end.

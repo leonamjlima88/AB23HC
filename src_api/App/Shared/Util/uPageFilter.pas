@@ -41,6 +41,7 @@ type
 
     function ClearConditions: IPageFilter;
     function FromSuperObject(ASObj: ISuperObject): IPageFilter;
+    function FromJsonString(AJsonString: String): IPageFilter;
   end;
 
   TFilterWhere = class
@@ -100,6 +101,7 @@ type
 
     function ClearConditions: IPageFilter;
     function FromSuperObject(ASObj: ISuperObject): IPageFilter;
+    function FromJsonString(AJsonString: String): IPageFilter;
   end;
 
 implementation
@@ -190,6 +192,13 @@ begin
   FOrWhere.Free;
 
   inherited;
+end;
+
+function TPageFilter.FromJsonString(AJsonString: String): IPageFilter;
+begin
+  Result := nil;
+  if not THlp.BodyIsEmpty(AJsonString) then
+    Result := TPageFilter.Make.FromSuperObject(SO(AJsonString));
 end;
 
 function TPageFilter.FromSuperObject(ASObj: ISuperObject): IPageFilter;

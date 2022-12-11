@@ -24,6 +24,14 @@ const
   DELIMITED_CHAR = ';';
   UNCATEGORIZED_EXCEPTION = 'Uncategorized Exception';
   SELECT_LAST_INSERT_ID_MYSQL = 'SELECT last_insert_id() as id';
+  FIELD_WAS_NOT_INFORMED = 'O campo %s não foi informado.';
+  DATETIME_DISPLAY_FORMAT = 'YYYY-MM-DDTHH:MM:SS.sTZ';
+  CREATED_AT_DISPLAY = 'Data e hora de criação';
+  CREATED_BY_ACL_USER_ID = 'Criado por usuário (id)';
+  CREATED_BY_ACL_USER_NAME = 'Criado por usuário (nome)';
+  UPDATED_AT_DISPLAY = 'Data e hora de alteração';
+  UPDATED_BY_ACL_USER_ID = 'Alterado por usuário (id)';
+  UPDATED_BY_ACL_USER_NAME = 'Alterado por usuário (nome)';
 
 implementation
 

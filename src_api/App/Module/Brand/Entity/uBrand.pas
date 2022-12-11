@@ -33,14 +33,21 @@ type
     // OneToOne
     property created_by_acl_user: TAclUser read Fcreated_by_acl_user write Fcreated_by_acl_user;
     property updated_by_acl_user: TAclUser read Fupdated_by_acl_user write Fupdated_by_acl_user;
+
+    procedure Validate;
   end;
 
 implementation
+
+uses
+  System.SysUtils;
 
 { TBrand }
 
 constructor TBrand.Create;
 begin
+  inherited Create;
+  Fcreated_at          := now;
   Fcreated_by_acl_user := TAclUser.Create;
   Fupdated_by_acl_user := TAclUser.Create;
 end;
@@ -50,6 +57,26 @@ begin
   if Assigned(Fcreated_by_acl_user) then Fcreated_by_acl_user.Free;
   if Assigned(Fupdated_by_acl_user) then Fupdated_by_acl_user.Free;
   inherited;
+end;
+
+procedure TBrand.Validate;
+var
+  lIsInserting: Boolean;
+begin
+  if Fname.Trim.IsEmpty then
+    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['name']));
+
+  lIsInserting := Fid = 0;
+  case lIsInserting of
+    True: Begin
+      if (Fcreated_at <= 0)             then raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['created_at']));
+      if (Fcreated_by_acl_user_id <= 0) then raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['created_by_acl_user_id']));
+    end;
+    False: Begin
+      if (Fupdated_at <= 0)             then raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['updated_at']));
+      if (Fupdated_by_acl_user_id <= 0) then raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['updated_by_acl_user_id']));
+    end;
+  end;
 end;
 
 end.

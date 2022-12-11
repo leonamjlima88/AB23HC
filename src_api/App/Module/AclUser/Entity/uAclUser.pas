@@ -35,9 +35,14 @@ type
 
     // OneToOne
     property acl_role: TAclRole read Facl_role write Facl_role;
+
+    procedure Validate;
   end;
 
 implementation
+
+uses
+  System.SysUtils;
 
 { TAclUser }
 
@@ -50,6 +55,21 @@ destructor TAclUser.Destroy;
 begin
   if Assigned(Facl_role) then Facl_role.Free;
   inherited;
+end;
+
+procedure TAclUser.Validate;
+begin
+  if Fname.Trim.IsEmpty then
+    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['name']));
+
+  if Flogin.Trim.IsEmpty then
+    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['login']));
+
+  if Flogin_password.Trim.IsEmpty then
+    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['login_password']));
+
+  if (Facl_role_id <= 0) then
+    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['acl_role_id']));
 end;
 
 end.

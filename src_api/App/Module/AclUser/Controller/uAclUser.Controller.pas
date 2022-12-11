@@ -3,226 +3,169 @@ unit uAclUser.Controller;
 interface
 
 uses
-  Horse;
+  Horse,
+  Horse.GBSwagger,
+  GBSwagger.Path.Registry,
+  GBSwagger.Path.Attributes,
+  GBSwagger.Validator.Interfaces,
+  uAclUser.Repository.Interfaces,
+  uApplication.Types,
+  uAclUser.Show.DTO,
+  uAclUser.DTO,
+  uResponse.DTO;
 
-type
+Type
+  [SwagPath('acl_users', 'Usuários')]
   TAclUserController = class
+  private
+    FReq: THorseRequest;
+    FRes: THorseResponse;
+    FAclUserRepository: IAclUserRepository;
   public
-    class procedure Registry;
-    class procedure Index(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Show(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Store(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Update(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Delete(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Query(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure ChangePassword(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Login(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Logout(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Me(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+    constructor Create(Req: THorseRequest; Res: THorseResponse);
+
+    [SwagDELETE('/{id}', 'Deletar')]
+    [SwagParamPath('id', 'ID')]
+    [SwagResponse(HTTP_NO_CONTENT)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure Delete;
+
+    [SwagPOST('/index','Listagem de registros')]
+    [SwagParamBody('body', TRequestPageFilterDTO, false, '', false)]
+    [SwagResponse(HTTP_OK, TAclUserIndexResponseDTO)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure Index;
+
+    [SwagGET('/{id}', 'Localizar por ID')]
+    [SwagParamPath('id', 'ID')]
+    [SwagResponse(HTTP_OK, TAclUserShowResponseDTO)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure Show;
+
+    [SwagPOST('/', 'Incluir')]
+    [SwagParamBody('body', TAclUserDTO)]
+    [SwagResponse(HTTP_CREATED, TAclUserShowResponseDTO)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure Store;
+
+    [SwagPUT('/{id}', 'Atualizar')]
+    [SwagParamPath('id', 'ID')]
+    [SwagParamBody('body', TAclUserDTO)]
+    [SwagResponse(HTTP_OK, TAclUserShowResponseDTO)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure Update;
   end;
 
 implementation
 
 uses
-  uAclUser.Service,
+  uRepository.Factory,
   uHlp,
+  uAclUser.Delete.UseCase,
   uRes,
-  uApplication.Types,
   uPageFilter,
-  System.SysUtils,
-  XSuperObject,
+  uIndexResult,
+  uAclUser.Index.UseCase,
   uSmartPointer,
-  uAclUser,
-  uAclUser.Resource,
-  uAclUser.Store.Request,
-  uAclUser.Update.Request,
-  DataSet.Serialize,
-  uAclUser.ChangePassword.Request,
-  uAclUser.ChangePassword.DTO,
+  uAclUser.Show.UseCase,
+  XSuperObject,
   uMyClaims,
-  uRepository.Factory;
+  uAclUser.StoreAndShow.UseCase,
+  uAclUser.UpdateAndShow.UseCase,
+  uAclUser.Auth.UseCase;
 
 { TAclUserController }
 
-class procedure TAclUserController.Registry;
+constructor TAclUserController.Create(Req: THorseRequest; Res: THorseResponse);
 begin
-  THorse.Get    ('/acl_user',              Index          );
-  THorse.Get    ('/acl_user/:id',          Show           );
-  THorse.Post   ('/acl_user',              Store          );
-  THorse.Put    ('/acl_user/:id',          Update         );
-  THorse.Delete ('/acl_user/:id',          Delete         );
-  THorse.Post   ('/acl_user/query',        Query          );
-  THorse.Put    ('/auth/change_password',  ChangePassword );
-  THorse.Post   ('/auth/login',            Login          );
-  THorse.Post   ('/auth/logout',           Logout         );
-  THorse.Post   ('/auth/me',               Me             );
+  FReq               := Req;
+  FRes               := Res;
+  FAclUserRepository := TRepositoryFactory.Make.AclUser;
 end;
 
-class procedure TAclUserController.ChangePassword(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure TAclUserController.Delete;
 var
-  lDTO: Shared<TAclUserChangePasswordDTO>;
+  lPK: Int64;
 begin
-  // Validar Requisição
-  lDTO := TAclUserChangePasswordRequest.Make(Req, Res).ValidateAndMapToEntity;
-  if not Assigned(lDTO.Value) then Exit;
-
-  // Alterar Senha
-  TAclUserService.Make(TRepositoryFactory.Make.AclUser).ChangePassword(lDTO);
-  TRes.Success(Res, Nil, HTTP_NO_CONTENT);
+  lPK := THlp.StrInt(FReq.Params['id']);
+  TAclUserDeleteUseCase.Make(FAclUserRepository).Execute(lPK);
+  TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
 
-class procedure TAclUserController.Delete(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-var
-  lPk: Int64;
-  lAclUserService: IAclUserService;
-begin
-  lPk             := THlp.StrInt(Req.Params['id']);
-  lAclUserService := TAclUserService.Make(TRepositoryFactory.Make.AclUser);
-
-  // Deletar Registro
-  lAclUserService.Delete(lPk);
-  TRes.Success(Res, Nil, HTTP_NO_CONTENT);
-end;
-
-class procedure TAclUserController.Index(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-begin
-  With TAclUserService.Make(TRepositoryFactory.Make.AclUser).Index(nil) do
-  begin
-    Data.DataSet.FieldByName('login_password').Visible  := False;
-    Data.DataSet.FieldByName('last_token').Visible      := False;
-    Data.DataSet.FieldByName('last_expiration').Visible := False;
-    TRes.Success(Res, ToSuperObject);
-  end;
-end;
-
-class procedure TAclUserController.Login(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-var
-  lSObj: ISuperObject;
-  lTokenJWTStr: String;
-begin
-  lSObj := SO(Req.Body);
-
-  // Gerar Token JWT
-  lTokenJWTStr := TAclUserService.Make(TRepositoryFactory.Make.AclUser)
-    .Login(
-      lSObj['login'].AsString,
-      lSObj['login_password'].AsString
-    );
-
-  // Retornar Token JWT
-  lSObj := SO;
-  lSObj.S['token'] := lTokenJWTStr;
-  TRes.Success(Res, lSObj);
-end;
-
-class procedure TAclUserController.Logout(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-var
-  lSObj: ISuperObject;
-  lClaims: TMyClaims;
-begin
-  lSObj := SO(Req.Body);
-
-  // Efetuar Logout
-  TAclUserService.Make(TRepositoryFactory.Make.AclUser)
-    .Logout(
-      lSObj['login'].AsString,
-      lSObj['login_password'].AsString
-    );
-
-  lClaims := Req.Session<TMyClaims>;
-  lClaims.Expiration := now;
-
-  // Retornar mensagem com sucesso.
-  TRes.Success(Res, Nil, HTTP_NO_CONTENT);
-end;
-
-class procedure TAclUserController.Me(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-var
-  lClaims: TMyClaims;
-begin
-  lClaims := Req.Session<TMyClaims>;
-  TRes.Success(Res, Format('I’m %s and this is my login %s',[LClaims.Name, LClaims.Login]));
-end;
-
-class procedure TAclUserController.Query(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure TAclUserController.Index;
 var
   lPageFilter: IPageFilter;
-  lBodyIsEmpty: Boolean;
+  lIndexResult: IIndexResult;
 begin
-  // Filtro de Pesquisa
-  lBodyIsEmpty := (Req.Body = '{}') or (Req.Body.Trim.IsEmpty);
-  if not lBodyIsEmpty then
-    lPageFilter := TPageFilter.Make.FromSuperObject(SO(Req.Body));
+  lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lIndexResult := TAclUserIndexUseCase.Make(FAclUserRepository).Execute(lPageFilter);
+
+  // Não exibir estes campos
+  lIndexResult.Data.DataSet.FieldByName('login_password').Visible  := False;
+  lIndexResult.Data.DataSet.FieldByName('last_token').Visible      := False;
+  lIndexResult.Data.DataSet.FieldByName('last_expiration').Visible := False;
 
   // Pesquisar
-  With TAclUserService.Make(TRepositoryFactory.Make.AclUser).Index(lPageFilter) do
-  begin
-    Data.DataSet.FieldByName('login_password').Visible  := False;
-    Data.DataSet.FieldByName('last_token').Visible      := False;
-    Data.DataSet.FieldByName('last_expiration').Visible := False;
-    TRes.Success(Res, ToSuperObject);
-  end;
+  TRes.Success(FRes, lIndexResult.ToSuperObject);
 end;
 
-class procedure TAclUserController.Show(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure TAclUserController.Show;
 var
-  lPk: Int64;
-  lAclUserService: IAclUserService;
-  lAclUserFound: Shared<TAclUser>;
+  lAclUserShowDTO: Shared<TAclUserShowDTO>;
+  lPK: Int64;
 begin
-  lPk             := THlp.StrInt(Req.Params['id']);
-  lAclUserService := TAclUserService.Make(TRepositoryFactory.Make.AclUser);
-
   // Localizar registro
-  lAclUserFound := lAclUserService.Show(lPk);
-  case Assigned(lAclUserFound.Value) of
-    True:  TRes.Success(Res, TAclUserResource.Make(lAclUserFound).Execute);
-    False: TRes.Error(Res, Format(RECORD_NOT_FOUND_WITH_ID, [lPk]));
-  end;
+  lPK := THlp.StrInt(FReq.Params['id']);
+  lAclUserShowDTO := TAclUserShowUseCase
+    .Make    (FAclUserRepository)
+    .Execute (lPk);
+
+  // Retorno
+  TRes.Success(FRes, lAclUserShowDTO.Value);
 end;
 
-class procedure TAclUserController.Store(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure TAclUserController.Store;
 var
-  lAclUserToStore: TAclUser;
-  lAclUserService: IAclUserService;
-  lPk: Int64;
-  lAclUserFound: Shared<TAclUser>;
+  lAclUserToStoreDTO: Shared<TAclUserDTO>;
+  lAclUserShowDTO: Shared<TAclUserShowDTO>;
 begin
-  // Validar Requisição
-  lAclUserToStore := TAclUserStoreRequest.Make(Req, Res).ValidateAndMapToEntity;
-  if not Assigned(lAclUserToStore) then Exit;
+  // Validar DTO
+  lAclUserToStoreDTO := TAclUserDTO.FromJSON(FReq.Body);
+  SwaggerValidator.Validate(lAclUserToStoreDTO);
 
-  // Incluir registro
-  lAclUserService := TAclUserService.Make(TRepositoryFactory.Make.AclUser);
-  lPk             := lAclUserService.Store(lAclUserToStore);
+  // Inserir e retornar registro inserido
+  lAclUserShowDTO := TAclUserStoreAndShowUseCase
+    .Make    (FAclUserRepository)
+    .Execute (lAclUserToStoreDTO.Value);
 
-  // Retornar registro incluso
-  lAclUserFound := lAclUserService.Show(lPk);
-  TRes.Success(Res, TAclUserResource.Make(lAclUserFound).Execute, HTTP_CREATED);
+  // Retorno
+  TRes.Success(FRes, lAclUserShowDTO.Value, HTTP_CREATED);
 end;
 
-class procedure TAclUserController.Update(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure TAclUserController.Update;
 var
-  lAclUserToUpdate: TAclUser;
-  lPk: Int64;
-  lAclUserService: IAclUserService;
-  lAclUserFound: Shared<TAclUser>;
+  lAclUserToUpdateDTO: Shared<TAclUserDTO>;
+  lAclUserShowDTO: Shared<TAclUserShowDTO>;
+  lPK: Int64;
 begin
-  // Validar Requisição
-  lAclUserToUpdate := TAclUserUpdateRequest.Make(Req, Res).ValidateAndMapToEntity;
-  if not Assigned(lAclUserToUpdate) then Exit;
+  // Validar DTO
+  lAclUserToUpdateDTO := TAclUserDTO.FromJSON(FReq.Body);
+  SwaggerValidator.Validate(lAclUserToUpdateDTO);
 
-  // Atualizar registro
-  lPk             := THlp.StrInt(Req.Params['id']);
-  lAclUserService := TAclUserService.Make(TRepositoryFactory.Make.AclUser);
-  lAclUserService.Update(lAclUserToUpdate, lPk);
+  // Atualizar e retornar registro atualizado
+  lPK := THlp.StrInt(FReq.Params['id']);
+  lAclUserShowDTO := TAclUserUpdateAndShowUseCase
+    .Make    (FAclUserRepository)
+    .Execute (lAclUserToUpdateDTO.Value, lPk);
 
-  // Retornar registro atualizado
-  lAclUserFound := lAclUserService.Show(lPk);
-  case Assigned(lAclUserFound.Value) of
-    True:  TRes.Success(Res, TAclUserResource.Make(lAclUserFound).Execute);
-    False: TRes.Error(Res, Format(RECORD_NOT_FOUND_WITH_ID, [lPk]));
-  end;
+  // Retorno
+  TRes.Success(FRes, lAclUserShowDTO.Value);
 end;
 
 end.
+

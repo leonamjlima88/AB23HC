@@ -1,14 +1,14 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{67F3F5BE-7C78-4244-8F8D-282DF514B6EB}</ProjectGuid>
+        <ProjectGuid>{68ADFFC5-B53B-4731-BCA5-973BEEEFA9B1}</ProjectGuid>
         <ProjectVersion>18.4</ProjectVersion>
-        <FrameworkType>None</FrameworkType>
-        <MainSource>ab23hc.dpr</MainSource>
+        <FrameworkType>VCL</FrameworkType>
+        <MainSource>ab23hcvcl.dpr</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
-        <AppType>Console</AppType>
+        <AppType>Application</AppType>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -39,6 +39,12 @@
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
     </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+        <Cfg_2_Win32>true</Cfg_2_Win32>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
         <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
@@ -48,24 +54,23 @@
         <DCC_F>false</DCC_F>
         <DCC_K>false</DCC_K>
         <DCC_UsePackage>RESTBackendComponents;CloudService;soaprtl;soapmidas;RESTComponents;emsclientfiredac;DataSnapFireDAC;FireDACIBDriver;emsclient;FireDACCommon;soapserver;FireDACCommonDriver;inet;FireDAC;FireDACSqliteDriver;$(DCC_UsePackage)</DCC_UsePackage>
-        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
-        <SanitizedProjectName>ab23hc</SanitizedProjectName>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
+        <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
+        <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
+        <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
+        <SanitizedProjectName>ab23hcvcl</SanitizedProjectName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_UsePackage>DBXSqliteDriver;DBXDb2Driver;vclactnband;vclFireDAC;tethering;FireDACADSDriver;ACBr_BPeDabpeESCPOS;ACBr_BPe;pckUserControl_DT;JvPluginSystem;FireDACMSSQLDriver;vcltouch;ACBr_NFe;ACBr_NFeDanfeFR;vcldb;JvBands;svn;JvJans;ACBr_NFeDanfeESCPOS;pckUserControl_RT;ACBr_OFX;JvDotNetCtrls;ACBr_SATExtratoFR;FireDACDBXDriver;ACBr_NFSeDanfseFR;vclx;ACBr_SATExtratoRL;ACBr_GTIN;ACBr_Reinf;VCLRESTComponents;vclie;fs25;bindengine;ACBr_PAF;FireDACMySQLDriver;JvHMI;ACBr_SATECFVirtual;pckUCDataConnector;DataSnapClient;bindcompdbx;ACBr_CTeDacteRL;ACBr_TCP;DBXSybaseASEDriver;IndyIPServer;ACBr_CTe;IndySystem;ACBr_PagFor;dsnapcon;ACBre_Social;FireDACMSAccDriver;fmxFireDAC;FireDACInfxDriver;vclimg;fsADO25;ACBr_SPEDImportar;Jcl;ACBr_SPED;ACBr_MDFe;emshosting;ACBr_BoletoRL;ACBr_LFD;frxADO25;DBXOdbcDriver;FireDACTDataDriver;FMXTee;DbxCommonDriver;ACBr_CIOT;ACBr_NFSeDanfseRL;JvManagedThreads;xmlrtl;DataSnapNativeClient;fmxobj;frx25;JvTimeFramework;rtl;DbxClientDriver;DBXSybaseASADriver;JvSystem;JvStdCtrls;fsDB25;ACBr_Convenio115;appanalytics;IndyIPClient;bindcompvcl;TeeUI;ACBr_NFSeXDANFSeFR;JvDocking;JvPascalInterpreter;VclSmp;FireDACODBCDriver;JclVcl;DataSnapIndy10ServerTransport;ACBr_Boleto;DataSnapProviderClient;ACBr_SEF2;FireDACMongoDBDriver;JvControls;JvPrintPreview;ACBr_MDFeDamdfeFR;ACBr_NFSe;DataSnapServerMidas;pckFireDacConn;DBXInterBaseDriver;ACBr_NF3e;ACBr_TEFD;ACBr_SATWS;svnui;JvGlobus;frxe25;DBXMSSQLDriver;JvMM;ACBr_MDFeDamdfeRL;DatasnapConnectorsFreePascal;ACBr_EDI;ACBr_ONE;bindcompfmx;JvNet;DBXOracleDriver;inetdb;JvAppFrm;ACBr_Diversos;ACBr_GNREGuiaFR;FmxTeeUI;emsedge;ACBr_LCDPR;fmx;fmxdae;frxDB25;ACBr_CTeDacteFR;frxTee25;JvWizards;ACBr_Ponto;dbexpress;IndyCore;JvPageComps;dsnap;DataSnapCommon;fsTee25;JvDB;ACBr_NFSeX;DataSnapConnectors;ACBR_DeSTDA;ACBr_SAT;JclDeveloperTools;QRWRunDXE10_2_w64;FireDACOracleDriver;DBXMySQLDriver;JvCmp;DBXFirebirdDriver;ACBr_Sintegra;FireDACCommonODBC;ACBr_GNRE;ACBr_ADRCST;IndyIPCommon;JvCustom;vcl;ACBr_NFeDanfeRL;ACBr_SATExtratoESCPOS;JvXPCtrls;FireDACDb2Driver;ACBr_Integrador;pckHistorico;TeeDB;JvCore;ACBr_Comum;JvCrypt;FireDACPgDriver;ACBr_GNREGuiaRL;FireDACASADriver;JvDlgs;JvRuntimeDesign;Tee;DataSnapServer;vclwinx;FireDACDSDriver;ACBr_OpenSSL;pckMD5;CustomIPTransport;vcldsnap;ACBr_PIXCD;bindcomp;ACBr_Serial;DBXInformixDriver;frxDBX25;frce;ACBr_NFSeXDanfseRL;ACBr_BlocoX;dbxcds;ACBr_NFCeECFVirtual;adortl;ACBr_BoletoFR;ACBr_ANe;dsnapxml;dbrtl;inetdbxpress;IndyProtocols;JclContainers;ACBr_NF3eDANF3eESCPOS;ACBr_MTER;TCFLib100;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <DCC_ConsoleTarget>true</DCC_ConsoleTarget>
-        <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
-        <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
         <DCC_UsePackage>DBXSqliteDriver;DBXDb2Driver;vclactnband;vclFireDAC;tethering;FireDACADSDriver;pckUserControl_DT;FireDACMSSQLDriver;vcltouch;vcldb;FireDACDBXDriver;vclx;VCLRESTComponents;vclie;bindengine;FireDACMySQLDriver;pckUCDataConnector;DataSnapClient;bindcompdbx;DBXSybaseASEDriver;IndyIPServer;IndySystem;dsnapcon;FireDACMSAccDriver;fmxFireDAC;FireDACInfxDriver;vclimg;emshosting;DBXOdbcDriver;FireDACTDataDriver;FMXTee;DbxCommonDriver;xmlrtl;DataSnapNativeClient;fmxobj;rtl;DbxClientDriver;DBXSybaseASADriver;appanalytics;IndyIPClient;bindcompvcl;TeeUI;VclSmp;FireDACODBCDriver;DataSnapIndy10ServerTransport;DataSnapProviderClient;FireDACMongoDBDriver;DataSnapServerMidas;pckFireDacConn;DBXInterBaseDriver;DBXMSSQLDriver;DatasnapConnectorsFreePascal;bindcompfmx;DBXOracleDriver;inetdb;FmxTeeUI;emsedge;fmx;fmxdae;dbexpress;IndyCore;dsnap;DataSnapCommon;DataSnapConnectors;QRWRunDXE10_2_w64;FireDACOracleDriver;DBXMySQLDriver;DBXFirebirdDriver;FireDACCommonODBC;IndyIPCommon;vcl;FireDACDb2Driver;pckHistorico;TeeDB;FireDACPgDriver;FireDACASADriver;Tee;DataSnapServer;vclwinx;FireDACDSDriver;pckMD5;CustomIPTransport;vcldsnap;bindcomp;DBXInformixDriver;dbxcds;adortl;dsnapxml;dbrtl;inetdbxpress;IndyProtocols;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
-        <DCC_ConsoleTarget>true</DCC_ConsoleTarget>
-        <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
-        <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
@@ -77,12 +82,8 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
-        <DCC_DcpOutput>..\output\api\dcu\$(Platform)\$(Config)</DCC_DcpOutput>
-        <DCC_ExeOutput>..\output\api\exec\$(Platform)\$(Config)</DCC_ExeOutput>
-        <DCC_DcuOutput>..\output\api\dcu\$(Platform)\$(Config)</DCC_DcuOutput>
-        <VerInfo_Locale>1033</VerInfo_Locale>
-        <Manifest_File>(None)</Manifest_File>
-        <DCC_Namespace>Vcl;Vcl.Imaging;$(DCC_Namespace)</DCC_Namespace>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <AppEnableHighDPI>true</AppEnableHighDPI>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -90,101 +91,18 @@
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
         <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <AppEnableHighDPI>true</AppEnableHighDPI>
+    </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="App\Module\AclUser\Controller\uAclUser.Controller.pas"/>
-        <DCCReference Include="App\Shared\Types\uApplication.Types.pas"/>
-        <DCCReference Include="App\Exceptions\uExceptionHandler.pas"/>
-        <DCCReference Include="App\Shared\Util\uRes.pas"/>
-        <DCCReference Include="App\Module\AclUser\DTO\uAclUser.Auth.ChangePassword.DTO.pas"/>
-        <DCCReference Include="App\Shared\Util\uPageFilter.pas"/>
-        <DCCReference Include="App\Module\Brand\Controller\uBrand.Controller.pas"/>
-        <DCCReference Include="Route\Api\uRouteApi.pas"/>
-        <DCCReference Include="App\Module\AclUser\Entity\uAclUser.pas"/>
-        <DCCReference Include="App\Module\Brand\Entity\uBrand.pas"/>
-        <DCCReference Include="App\Shared\Util\uQtdStr.pas"/>
-        <DCCReference Include="App\Module\AclUser\Repository\uAclUser.Repository.Interfaces.pas"/>
-        <DCCReference Include="App\Module\AclUser\Repository\SQL\uAclUser.Repository.SQL.pas"/>
-        <DCCReference Include="Database\Connection\Drivers\FireDAC\uQry.FireDAC.pas"/>
-        <DCCReference Include="Database\Connection\Drivers\FireDAC\uConnection.FireDAC.pas"/>
-        <DCCReference Include="App\Shared\Util\uHlp.pas"/>
-        <DCCReference Include="App\Shared\Util\uIndexResult.pas"/>
-        <DCCReference Include="App\Shared\Util\uSelectWithFilter.pas"/>
-        <DCCReference Include="App\Module\Brand\Repository\SQL\uBrand.Repository.SQL.pas"/>
-        <DCCReference Include="App\Module\Brand\Repository\uBrand.Repository.Interfaces.pas"/>
-        <DCCReference Include="Config\uEnv.pas"/>
-        <DCCReference Include="App\Module\Brand\SQLBuilder\uBrand.SQLBuilder.Interfaces.pas"/>
-        <DCCReference Include="Database\Connection\uConnection.Types.pas"/>
-        <DCCReference Include="Database\Connection\uConnection.Factory.pas"/>
-        <DCCReference Include="Database\Connection\uScript.Factory.pas"/>
-        <DCCReference Include="Database\Connection\uQry.Factory.pas"/>
-        <DCCReference Include="Database\Connection\uMemTable.Factory.pas"/>
-        <DCCReference Include="Database\Connection\uMemTable.Interfaces.pas"/>
-        <DCCReference Include="Database\Connection\Drivers\FireDAC\uMemTable.FireDAC.pas"/>
-        <DCCReference Include="Database\Connection\uConnection.Interfaces.pas"/>
-        <DCCReference Include="Database\Connection\uQry.Interfaces.pas"/>
-        <DCCReference Include="Database\Connection\uScript.Interfaces.pas"/>
-        <DCCReference Include="Database\Connection\Drivers\FireDAC\uScript.FireDAC.pas"/>
-        <DCCReference Include="App\Shared\Util\uEither.pas"/>
-        <DCCReference Include="Config\uMyClaims.pas"/>
-        <DCCReference Include="Database\Migration\uMigration.Base.pas"/>
-        <DCCReference Include="Database\Migration\uMigration.Helper.pas"/>
-        <DCCReference Include="Database\Migration\uMigration.Info.pas"/>
-        <DCCReference Include="Database\Migration\uMigration.Interfaces.pas"/>
-        <DCCReference Include="Database\Migration\uMigration.Manager.pas"/>
-        <DCCReference Include="Database\Migration\u02CreateAclRoleTable.Migration.pas"/>
-        <DCCReference Include="Database\Migration\u03CreateAclUserTable.Migration.pas"/>
-        <DCCReference Include="Database\Migration\u04CreateBrandTable.Migration.pas"/>
-        <DCCReference Include="uMain.pas"/>
-        <DCCReference Include="App\TaskScheduler\uTaskScheduler.pas"/>
-        <DCCReference Include="App\TaskScheduler\Task\uAutomaticPingInConsole.Task.pas"/>
-        <DCCReference Include="App\Module\Brand\SQLBuilder\uBrand.SQLBuilder.pas"/>
-        <DCCReference Include="App\Module\Brand\SQLBuilder\MySQL\uBrand.SQLBuilder.MySQL.pas"/>
-        <DCCReference Include="App\Module\AclUser\SQLBuilder\uAclUser.SQLBuilder.Interfaces.pas"/>
-        <DCCReference Include="App\Module\AclUser\SQLBuilder\uAclUser.SQLBuilder.pas"/>
-        <DCCReference Include="App\Module\AclUser\SQLBuilder\MySQL\uAclUser.SQLBuilder.MySQL.pas"/>
-        <DCCReference Include="App\Shared\SQLBuilder\uBase.SQLBuilder.Interfaces.pas"/>
-        <DCCReference Include="App\Shared\Entity\uBase.Entity.pas"/>
-        <DCCReference Include="App\Shared\Repository\uBase.Repository.Interfaces.pas"/>
-        <DCCReference Include="App\Shared\Repository\uBase.Repository.pas"/>
-        <DCCReference Include="App\Module\AclRole\SQLBuilder\uAclRole.SQLBuilder.pas"/>
-        <DCCReference Include="App\Module\AclRole\SQLBuilder\MySQL\uAclRole.SQLBuilder.MySQL.pas"/>
-        <DCCReference Include="App\Module\AclRole\Controller\uAclRole.Controller.pas"/>
-        <DCCReference Include="App\Module\AclRole\SQLBuilder\uAclRole.SQLBuilder.Interfaces.pas"/>
-        <DCCReference Include="App\Module\AclRole\Repository\uAclRole.Repository.Interfaces.pas"/>
-        <DCCReference Include="App\Module\AclRole\Repository\SQL\uAclRole.Repository.SQL.pas"/>
-        <DCCReference Include="App\Module\AclRole\Entity\uAclRole.pas"/>
-        <DCCReference Include="App\Shared\SQLBuilder\uSQLBuilder.Factory.pas"/>
-        <DCCReference Include="App\Shared\Repository\uRepository.Factory.pas"/>
-        <DCCReference Include="App\Shared\Util\uFormRequest.pas"/>
-        <DCCReference Include="App\Module\Brand\DTO\uBrand.DTO.pas"/>
-        <DCCReference Include="App\Module\Brand\UseCase\uBrand.StoreAndShow.UseCase.pas"/>
-        <DCCReference Include="App\Module\Brand\DTO\uBrand.Show.DTO.pas"/>
-        <DCCReference Include="App\Module\Brand\UseCase\uBrand.Show.UseCase.pas"/>
-        <DCCReference Include="App\Module\Brand\UseCase\uBrand.UpdateAndShow.UseCase.pas"/>
-        <DCCReference Include="App\Shared\DTO\uResponse.DTO.pas"/>
-        <DCCReference Include="App\Module\Brand\UseCase\uBrand.Delete.UseCase.pas"/>
-        <DCCReference Include="App\Module\Brand\UseCase\uBrand.Index.UseCase.pas"/>
-        <DCCReference Include="App\Module\AclRole\DTO\uAclRole.Show.DTO.pas"/>
-        <DCCReference Include="App\Module\AclRole\DTO\uAclRole.DTO.pas"/>
-        <DCCReference Include="App\Module\AclRole\UseCase\uAclRole.Delete.UseCase.pas"/>
-        <DCCReference Include="App\Module\AclRole\UseCase\uAclRole.Index.UseCase.pas"/>
-        <DCCReference Include="App\Module\AclRole\UseCase\uAclRole.Show.UseCase.pas"/>
-        <DCCReference Include="App\Module\AclRole\UseCase\uAclRole.StoreAndShow.UseCase.pas"/>
-        <DCCReference Include="App\Module\AclRole\UseCase\uAclRole.UpdateAndShow.UseCase.pas"/>
-        <DCCReference Include="App\Module\AclUser\DTO\uAclUser.Show.DTO.pas"/>
-        <DCCReference Include="App\Module\AclUser\DTO\uAclUser.DTO.pas"/>
-        <DCCReference Include="App\Module\AclUser\UseCase\uAclUser.Delete.UseCase.pas"/>
-        <DCCReference Include="App\Module\AclUser\UseCase\uAclUser.Index.UseCase.pas"/>
-        <DCCReference Include="App\Module\AclUser\UseCase\uAclUser.Show.UseCase.pas"/>
-        <DCCReference Include="App\Module\AclUser\UseCase\uAclUser.StoreAndShow.UseCase.pas"/>
-        <DCCReference Include="App\Module\AclUser\UseCase\uAclUser.UpdateAndShow.UseCase.pas"/>
-        <DCCReference Include="App\Module\AclUser\DTO\uAclUser.Auth.Login.DTO.pas"/>
-        <DCCReference Include="App\Module\AclUser\UseCase\uAclUser.Auth.UseCase.pas"/>
-        <DCCReference Include="App\Module\AclUser\Controller\uAclUser.Auth.Controller.pas"/>
-        <DCCReference Include="App\Module\AclUser\DTO\uAclUser.Auth.Me.DTO.pas"/>
+        <DCCReference Include="uMainView.pas">
+            <Form>MainView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -203,37 +121,13 @@
         <BorlandProject>
             <Delphi.Personality>
                 <Source>
-                    <Source Name="MainSource">ab23hc.dpr</Source>
+                    <Source Name="MainSource">ab23hcvcl.dpr</Source>
                 </Source>
-                <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k250.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp250.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="$(BDS)\Redist\osx32\libcgunwind.1.0.dylib" Class="DependencyModule">
-                    <Platform Name="OSX32">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libcgunwind.1.0.dylib" Class="DependencyModule">
-                    <Platform Name="iOSSimulator">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libPCRE.dylib" Class="DependencyModule">
-                    <Platform Name="iOSSimulator">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="$(BDS)\Redist\osx32\libcgsqlite3.dylib" Class="DependencyModule">
-                    <Platform Name="OSX32">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="..\output\api\exec\Win32\Debug\ab23hc.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="Win32\Debug\ab23hcvcl.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
-                        <RemoteName>ab23hc.exe</RemoteName>
+                        <RemoteName>ab23hcvcl.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

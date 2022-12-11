@@ -16,6 +16,7 @@ type
     function ScriptSeedTable: String;
     function SelectAll: String;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter;
+    function ShowByLoginAndPassword(ALogin, APassword: String): String;
   end;
 
 implementation

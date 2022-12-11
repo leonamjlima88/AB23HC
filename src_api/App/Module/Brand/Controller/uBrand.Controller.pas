@@ -3,139 +3,164 @@ unit uBrand.Controller;
 interface
 
 uses
-  Horse;
+  Horse,
+  Horse.GBSwagger,
+  GBSwagger.Path.Registry,
+  GBSwagger.Path.Attributes,
+  GBSwagger.Validator.Interfaces,
+  uBrand.Repository.Interfaces,
+  uApplication.Types,
+  uBrand.Show.DTO,
+  uBrand.DTO,
+  uResponse.DTO;
 
 Type
+  [SwagPath('brands', 'Marca')]
   TBrandController = class
+  private
+    FReq: THorseRequest;
+    FRes: THorseResponse;
+    FBrandRepository: IBrandRepository;
   public
-    class procedure Registry;
-    class procedure Index(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Show(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Store(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Update(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Delete(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-    class procedure Query(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+    constructor Create(Req: THorseRequest; Res: THorseResponse);
+
+    [SwagDELETE('/{id}', 'Deletar')]
+    [SwagParamPath('id', 'ID')]
+    [SwagResponse(HTTP_NO_CONTENT)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure Delete;
+
+    [SwagPOST('/index','Listagem de registros')]
+    [SwagParamBody('body', TRequestPageFilterDTO, false, '', false)]
+    [SwagResponse(HTTP_OK, TBrandIndexResponseDTO)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure Index;
+
+    [SwagGET('/{id}', 'Localizar por ID')]
+    [SwagParamPath('id', 'ID')]
+    [SwagResponse(HTTP_OK, TBrandShowResponseDTO)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure Show;
+
+    [SwagPOST('/', 'Incluir')]
+    [SwagParamBody('body', TBrandDTO)]
+    [SwagResponse(HTTP_CREATED, TBrandShowResponseDTO)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure Store;
+
+    [SwagPUT('/{id}', 'Atualizar')]
+    [SwagParamPath('id', 'ID')]
+    [SwagParamBody('body', TBrandDTO)]
+    [SwagResponse(HTTP_OK, TBrandShowResponseDTO)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure Update;
   end;
 
 implementation
 
 uses
-  uBrand.Service,
+  uRepository.Factory,
   uHlp,
+  uBrand.Delete.UseCase,
   uRes,
-  uApplication.Types,
   uPageFilter,
-  System.SysUtils,
-  XSuperObject,
-  uBrand,
+  uIndexResult,
+  uBrand.Index.UseCase,
   uSmartPointer,
-  uBrand.Resource,
-  uBrand.Request,
-  uRepository.Factory;
+  uBrand.Show.UseCase,
+  XSuperObject,
+  uMyClaims,
+  uBrand.StoreAndShow.UseCase,
+  uBrand.UpdateAndShow.UseCase;
 
 { TBrandController }
 
-class procedure TBrandController.Registry;
+constructor TBrandController.Create(Req: THorseRequest; Res: THorseResponse);
 begin
-  THorse.Get    ('/brand',       Index  );
-  THorse.Get    ('/brand/:id',   Show   );
-  THorse.Post   ('/brand',       Store  );
-  THorse.Put    ('/brand/:id',   Update );
-  THorse.Delete ('/brand/:id',   Delete );
-  THorse.Post   ('/brand/query', Query  );
+  FReq             := Req;
+  FRes             := Res;
+  FBrandRepository := TRepositoryFactory.Make.Brand;
 end;
 
-class procedure TBrandController.Delete(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure TBrandController.Delete;
 var
-  lPk: Int64;
-  lBrandService: IBrandService;
+  lPK: Int64;
 begin
-  lPk           := THlp.StrInt(Req.Params['id']);
-  lBrandService := TBrandService.Make(TRepositoryFactory.Make.Brand);
-
-  // Deletar Registro
-  lBrandService.Delete(lPk);
-  TRes.Success(Res, Nil, HTTP_NO_CONTENT);
+  lPK := THlp.StrInt(FReq.Params['id']);
+  TBrandDeleteUseCase.Make(FBrandRepository).Execute(lPK);
+  TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
 
-class procedure TBrandController.Index(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-begin
-  TRes.Success(Res, TBrandService.Make(TRepositoryFactory.Make.Brand).Index(nil).ToSuperObject);
-end;
-
-class procedure TBrandController.Query(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure TBrandController.Index;
 var
   lPageFilter: IPageFilter;
-  lBodyIsEmpty: Boolean;
+  lIndexResult: IIndexResult;
 begin
-  // Filtro de Pesquisa
-  lBodyIsEmpty := (Req.Body = '{}') or (Req.Body.Trim.IsEmpty);
-  if not lBodyIsEmpty then
-    lPageFilter := TPageFilter.Make.FromSuperObject(SO(Req.Body));
+  lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lIndexResult := TBrandIndexUseCase.Make(FBrandRepository).Execute(lPageFilter);
 
   // Pesquisar
-  TRes.Success(Res, TBrandService.Make(TRepositoryFactory.Make.Brand).Index(lPageFilter).ToSuperObject);
+  TRes.Success(FRes, lIndexResult.ToSuperObject);
 end;
 
-class procedure TBrandController.Show(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure TBrandController.Show;
 var
-  lPk: Int64;
-  lBrandService: IBrandService;
-  lBrandFound: Shared<TBrand>;
+  lBrandShowDTO: Shared<TBrandShowDTO>;
+  lPK: Int64;
 begin
-  lPk           := THlp.StrInt(Req.Params['id']);
-  lBrandService := TBrandService.Make(TRepositoryFactory.Make.Brand);
-
   // Localizar registro
-  lBrandFound := lBrandService.Show(lPk);
-  case Assigned(lBrandFound.Value) of
-    True:  TRes.Success (Res, TBrandResource.Make(lBrandFound).Execute);
-    False: TRes.Error   (Res, Format(RECORD_NOT_FOUND_WITH_ID, [lPk]));
-  end;
+  lPK := THlp.StrInt(FReq.Params['id']);
+  lBrandShowDTO := TBrandShowUseCase
+    .Make    (FBrandRepository)
+    .Execute (lPk);
+
+  // Retorno
+  TRes.Success(FRes, lBrandShowDTO.Value);
 end;
 
-class procedure TBrandController.Store(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure TBrandController.Store;
 var
-  lBrandToStore: TBrand;
-  lBrandService: IBrandService;
-  lPk: Int64;
-  lBrandFound: Shared<TBrand>;
+  lBrandToStoreDTO: Shared<TBrandDTO>;
+  lBrandShowDTO: Shared<TBrandShowDTO>;
 begin
-  // Validar Requisição
-  lBrandToStore := TBrandRequest.Make(Req, Res).ValidateAndMapToEntity;
-  if not Assigned(lBrandToStore) then Exit;
+  // Validar DTO
+  lBrandToStoreDTO := TBrandDTO.FromJSON(FReq.Body);
+  lBrandToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  SwaggerValidator.Validate(lBrandToStoreDTO);
 
-  // Incluir registro
-  lBrandService := TBrandService.Make(TRepositoryFactory.Make.Brand);
-  lPk           := lBrandService.Store(lBrandToStore);
+  // Inserir e retornar registro inserido
+  lBrandShowDTO := TBrandStoreAndShowUseCase
+    .Make    (FBrandRepository)
+    .Execute (lBrandToStoreDTO.Value);
 
-  // Retornar registro incluso
-  lBrandFound := lBrandService.Show(lPk);
-  TRes.Success(Res, TBrandResource.Make(lBrandFound).Execute, HTTP_CREATED);
+  // Retorno
+  TRes.Success(FRes, lBrandShowDTO.Value, HTTP_CREATED);
 end;
 
-class procedure TBrandController.Update(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure TBrandController.Update;
 var
-  lBrandToUpdate: TBrand;
-  lPk: Int64;
-  lBrandService: IBrandService;
-  lBrandFound: Shared<TBrand>;
+  lBrandToUpdateDTO: Shared<TBrandDTO>;
+  lBrandShowDTO: Shared<TBrandShowDTO>;
+  lPK: Int64;
 begin
-  // Validar Requisição
-  lBrandToUpdate := TBrandRequest.Make(Req, Res).ValidateAndMapToEntity;
-  if not Assigned(lBrandToUpdate) then Exit;
+  // Validar DTO
+  lBrandToUpdateDTO := TBrandDTO.FromJSON(FReq.Body);
+  lBrandToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  SwaggerValidator.Validate(lBrandToUpdateDTO);
 
-  // Atualizar registro
-  lPk           := THlp.StrInt(Req.Params['id']);
-  lBrandService := TBrandService.Make(TRepositoryFactory.Make.Brand);
-  lBrandService.Update(lBrandToUpdate, lPk);
+  // Atualizar e retornar registro atualizado
+  lPK := THlp.StrInt(FReq.Params['id']);
+  lBrandShowDTO := TBrandUpdateAndShowUseCase
+    .Make    (FBrandRepository)
+    .Execute (lBrandToUpdateDTO.Value, lPk);
 
-  // Retornar registro atualizado
-  lBrandFound := lBrandService.Show(lPk);
-  case Assigned(lBrandFound.Value) of
-    True:  TRes.Success (Res, TBrandResource.Make(lBrandFound).Execute);
-    False: TRes.Error   (Res, Format(RECORD_NOT_FOUND_WITH_ID, [lPk]));
-  end;
+  // Retorno
+  TRes.Success(FRes, lBrandShowDTO.Value);
 end;
 
 end.

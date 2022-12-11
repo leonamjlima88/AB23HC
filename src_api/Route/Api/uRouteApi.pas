@@ -18,7 +18,9 @@ uses
   uAclRole.Controller,
   uAclUser.Controller,
   System.SysUtils,
-  Horse.RateLimit;
+  Horse.RateLimit,
+  Horse.GBSwagger,
+  uAclUser.Auth.Controller;
 
 { TRouteApi }
 
@@ -34,9 +36,10 @@ begin
       end
     );
 
-  TBrandController.Registry;
-  TAclRoleController.Registry;
-  TAclUserController.Registry;
+  THorseGBSwaggerRegister.RegisterPath(TBrandController);
+  THorseGBSwaggerRegister.RegisterPath(TAclRoleController);
+  THorseGBSwaggerRegister.RegisterPath(TAclUserController);
+  THorseGBSwaggerRegister.RegisterPath(TAclUserAuthController);
 end;
 
 end.
