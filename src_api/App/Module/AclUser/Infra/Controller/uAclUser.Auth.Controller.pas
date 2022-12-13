@@ -83,8 +83,8 @@ end;
 
 constructor TAclUserAuthController.Create(Req: THorseRequest; Res: THorseResponse);
 begin
-  FReq               := Req;
-  FRes               := Res;
+  FReq        := Req;
+  FRes        := Res;
   FRepository := TRepositoryFactory.Make.AclUser;
 end;
 
