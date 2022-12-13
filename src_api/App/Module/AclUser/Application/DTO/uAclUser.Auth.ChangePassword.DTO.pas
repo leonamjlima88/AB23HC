@@ -6,9 +6,6 @@ uses
   GBSwagger.Model.Attributes;
 
 type
-  /// <summary>
-  ///   DTO Mudar a senha
-  /// </summary>
   TAclUserAuthChangePasswordDTO = class
   private
     Fcurrent_password: string;

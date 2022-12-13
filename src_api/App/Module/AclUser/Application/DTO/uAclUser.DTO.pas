@@ -6,9 +6,6 @@ uses
   GBSwagger.Model.Attributes;
 
 type
-  /// <summary>
-  ///   DTO para Criar/Atualizar registro
-  /// </summary>
   TAclUserDTO = class
   private
     Fname: string;

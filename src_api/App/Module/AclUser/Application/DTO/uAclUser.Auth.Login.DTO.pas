@@ -6,9 +6,6 @@ uses
   GBSwagger.Model.Attributes;
 
 type
-  /// <summary>
-  ///   DTO fazer login
-  /// </summary>
   TAclUserAuthLoginDTO = class
   private
     Flogin_password: string;

@@ -7,9 +7,6 @@ uses
   uResponse.DTO;
 
 type
-  /// <summary>
-  ///   DTO de identificação do usuário logado
-  /// </summary>
   TAclUserAuthMeDTO = class
   private
     Fname: string;

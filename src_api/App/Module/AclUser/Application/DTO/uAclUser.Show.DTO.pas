@@ -9,9 +9,6 @@ uses
   uAclUser;
 
 type
-  /// <summary>
-  ///   DTO para Criar/Atualizar registro
-  /// </summary>
   TAclUserShowDTO = class
   private
     Fname: string;
