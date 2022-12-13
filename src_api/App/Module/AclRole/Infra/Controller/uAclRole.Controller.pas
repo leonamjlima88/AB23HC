@@ -20,7 +20,7 @@ Type
   private
     FReq: THorseRequest;
     FRes: THorseResponse;
-    FAclRoleRepository: IAclRoleRepository;
+    FRepository: IAclRoleRepository;
   public
     constructor Create(Req: THorseRequest; Res: THorseResponse);
 
@@ -84,7 +84,7 @@ constructor TAclRoleController.Create(Req: THorseRequest; Res: THorseResponse);
 begin
   FReq               := Req;
   FRes               := Res;
-  FAclRoleRepository := TRepositoryFactory.Make.AclRole;
+  FRepository := TRepositoryFactory.Make.AclRole;
 end;
 
 procedure TAclRoleController.Delete;
@@ -92,7 +92,7 @@ var
   lPK: Int64;
 begin
   lPK := THlp.StrInt(FReq.Params['id']);
-  TAclRoleDeleteUseCase.Make(FAclRoleRepository).Execute(lPK);
+  TAclRoleDeleteUseCase.Make(FRepository).Execute(lPK);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
 
@@ -102,7 +102,7 @@ var
   lIndexResult: IIndexResult;
 begin
   lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
-  lIndexResult := TAclRoleIndexUseCase.Make(FAclRoleRepository).Execute(lPageFilter);
+  lIndexResult := TAclRoleIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
   // Pesquisar
   TRes.Success(FRes, lIndexResult.ToSuperObject);
@@ -116,7 +116,7 @@ begin
   // Localizar registro
   lPK := THlp.StrInt(FReq.Params['id']);
   lAclRoleShowDTO := TAclRoleShowUseCase
-    .Make    (FAclRoleRepository)
+    .Make    (FRepository)
     .Execute (lPk);
 
   // Retorno
@@ -134,7 +134,7 @@ begin
 
   // Inserir e retornar registro inserido
   lAclRoleShowDTO := TAclRoleStoreAndShowUseCase
-    .Make    (FAclRoleRepository)
+    .Make    (FRepository)
     .Execute (lAclRoleToStoreDTO.Value);
 
   // Retorno
@@ -154,7 +154,7 @@ begin
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
   lAclRoleShowDTO := TAclRoleUpdateAndShowUseCase
-    .Make    (FAclRoleRepository)
+    .Make    (FRepository)
     .Execute (lAclRoleToUpdateDTO.Value, lPk);
 
   // Retorno

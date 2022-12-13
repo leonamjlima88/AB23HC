@@ -20,7 +20,7 @@ Type
   private
     FReq: THorseRequest;
     FRes: THorseResponse;
-    FBrandRepository: IBrandRepository;
+    FRepository: IBrandRepository;
   public
     constructor Create(Req: THorseRequest; Res: THorseResponse);
 
@@ -82,9 +82,9 @@ uses
 
 constructor TBrandController.Create(Req: THorseRequest; Res: THorseResponse);
 begin
-  FReq             := Req;
-  FRes             := Res;
-  FBrandRepository := TRepositoryFactory.Make.Brand;
+  FReq        := Req;
+  FRes        := Res;
+  FRepository := TRepositoryFactory.Make.Brand;
 end;
 
 procedure TBrandController.Delete;
@@ -92,7 +92,7 @@ var
   lPK: Int64;
 begin
   lPK := THlp.StrInt(FReq.Params['id']);
-  TBrandDeleteUseCase.Make(FBrandRepository).Execute(lPK);
+  TBrandDeleteUseCase.Make(FRepository).Execute(lPK);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
 
@@ -102,7 +102,7 @@ var
   lIndexResult: IIndexResult;
 begin
   lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
-  lIndexResult := TBrandIndexUseCase.Make(FBrandRepository).Execute(lPageFilter);
+  lIndexResult := TBrandIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
   // Pesquisar
   TRes.Success(FRes, lIndexResult.ToSuperObject);
@@ -116,7 +116,7 @@ begin
   // Localizar registro
   lPK := THlp.StrInt(FReq.Params['id']);
   lBrandShowDTO := TBrandShowUseCase
-    .Make    (FBrandRepository)
+    .Make    (FRepository)
     .Execute (lPk);
 
   // Retorno
@@ -135,7 +135,7 @@ begin
 
   // Inserir e retornar registro inserido
   lBrandShowDTO := TBrandStoreAndShowUseCase
-    .Make    (FBrandRepository)
+    .Make    (FRepository)
     .Execute (lBrandToStoreDTO.Value);
 
   // Retorno
@@ -156,7 +156,7 @@ begin
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
   lBrandShowDTO := TBrandUpdateAndShowUseCase
-    .Make    (FBrandRepository)
+    .Make    (FRepository)
     .Execute (lBrandToUpdateDTO.Value, lPk);
 
   // Retorno

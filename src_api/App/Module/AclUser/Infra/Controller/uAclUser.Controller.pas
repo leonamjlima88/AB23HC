@@ -20,7 +20,7 @@ Type
   private
     FReq: THorseRequest;
     FRes: THorseResponse;
-    FAclUserRepository: IAclUserRepository;
+    FRepository: IAclUserRepository;
   public
     constructor Create(Req: THorseRequest; Res: THorseResponse);
 
@@ -85,7 +85,7 @@ constructor TAclUserController.Create(Req: THorseRequest; Res: THorseResponse);
 begin
   FReq               := Req;
   FRes               := Res;
-  FAclUserRepository := TRepositoryFactory.Make.AclUser;
+  FRepository := TRepositoryFactory.Make.AclUser;
 end;
 
 procedure TAclUserController.Delete;
@@ -93,7 +93,7 @@ var
   lPK: Int64;
 begin
   lPK := THlp.StrInt(FReq.Params['id']);
-  TAclUserDeleteUseCase.Make(FAclUserRepository).Execute(lPK);
+  TAclUserDeleteUseCase.Make(FRepository).Execute(lPK);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
 
@@ -103,7 +103,7 @@ var
   lIndexResult: IIndexResult;
 begin
   lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
-  lIndexResult := TAclUserIndexUseCase.Make(FAclUserRepository).Execute(lPageFilter);
+  lIndexResult := TAclUserIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
   // Não exibir estes campos
   lIndexResult.Data.DataSet.FieldByName('login_password').Visible  := False;
@@ -122,7 +122,7 @@ begin
   // Localizar registro
   lPK := THlp.StrInt(FReq.Params['id']);
   lAclUserShowDTO := TAclUserShowUseCase
-    .Make    (FAclUserRepository)
+    .Make    (FRepository)
     .Execute (lPk);
 
   // Retorno
@@ -140,7 +140,7 @@ begin
 
   // Inserir e retornar registro inserido
   lAclUserShowDTO := TAclUserStoreAndShowUseCase
-    .Make    (FAclUserRepository)
+    .Make    (FRepository)
     .Execute (lAclUserToStoreDTO.Value);
 
   // Retorno
@@ -160,7 +160,7 @@ begin
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
   lAclUserShowDTO := TAclUserUpdateAndShowUseCase
-    .Make    (FAclUserRepository)
+    .Make    (FRepository)
     .Execute (lAclUserToUpdateDTO.Value, lPk);
 
   // Retorno

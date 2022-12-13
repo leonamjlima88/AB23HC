@@ -20,7 +20,7 @@ Type
   private
     FReq: THorseRequest;
     FRes: THorseResponse;
-    FAclUserRepository: IAclUserRepository;
+    FRepository: IAclUserRepository;
   public
     constructor Create(Req: THorseRequest; Res: THorseResponse);
 
@@ -74,7 +74,7 @@ begin
 
   // Mudar a Senha
   TAclUserAuthUseCase
-    .Make           (FAclUserRepository)
+    .Make           (FRepository)
     .ChangePassword (lAclUserAuthChangePasswordDTO);
 
   // Retorno
@@ -85,7 +85,7 @@ constructor TAclUserAuthController.Create(Req: THorseRequest; Res: THorseRespons
 begin
   FReq               := Req;
   FRes               := Res;
-  FAclUserRepository := TRepositoryFactory.Make.AclUser;
+  FRepository := TRepositoryFactory.Make.AclUser;
 end;
 
 procedure TAclUserAuthController.Login;
@@ -99,7 +99,7 @@ begin
 
   // Efetuar login
   lAclUserAuthMeDTO := TAclUserAuthUseCase
-    .Make  (FAclUserRepository)
+    .Make  (FRepository)
     .Login (lAclUserAuthLoginDTO);
 
   // Retorno
@@ -116,7 +116,7 @@ begin
 
   // Efetuar logout
   TAclUserAuthUseCase
-    .Make   (FAclUserRepository)
+    .Make   (FRepository)
     .Logout (lAclUserAuthLoginDTO);
 
   // Retorno
