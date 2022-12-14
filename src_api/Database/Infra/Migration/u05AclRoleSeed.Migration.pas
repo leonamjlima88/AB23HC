@@ -1,4 +1,4 @@
-unit u02CreateAclRoleTable.Migration;
+unit u05AclRoleSeed.Migration;
 
 interface
 
@@ -8,7 +8,7 @@ uses
   uConnection.Interfaces;
 
 type
-  T02CreateAclRoleTable = class(TMigrationBase, IMigration)
+  T05AclRoleSeed = class(TMigrationBase, IMigration)
   private
     function RunMigrate: IMigration;
     constructor Create(AConn: IConnection);
@@ -27,9 +27,9 @@ uses
   uAclRole.SQLBuilder.Interfaces,
   uSQLBuilder.Factory;
 
-{ T02CreateAclRoleTable }
+{ T05AclRoleSeed }
 
-function T02CreateAclRoleTable.RunMigrate: IMigration;
+function T05AclRoleSeed.RunMigrate: IMigration;
 var
   lStartTime: Cardinal;
   lDuration: Double;
@@ -45,10 +45,10 @@ begin
 
     FScript
       .SQLScriptsClear
-      .SQLScriptsAdd(lSQLBuilder.ScriptCreateTable)
+      .SQLScriptsAdd(lSQLBuilder.ScriptSeedTable)
       .ValidateAll;
     if not FScript.ExecuteAll then
-      raise Exception.Create('Error validation in migration. ' + Self.ClassName);
+      raise Exception.Create('Error validation in seed. ' + Self.ClassName);
 
     // Commit
     FConn.CommitTransaction;
@@ -57,33 +57,12 @@ begin
     raise;
   end;
 
-  // Seeder
-  if not lSQLBuilder.ScriptSeedTable.Trim.IsEmpty then
-  begin
-    try
-      FConn.StartTransaction;
-
-      FScript
-        .SQLScriptsClear
-        .SQLScriptsAdd(lSQLBuilder.ScriptSeedTable)
-        .ValidateAll;
-      if not FScript.ExecuteAll then
-        raise Exception.Create('Error seeder in migration. ' + Self.ClassName);
-
-      // Commit
-      FConn.CommitTransaction;
-    Except
-      FConn.RollBackTransaction;
-      raise;
-    end;
-  End;
-
   // Migration Executada
   lDuration := (GetTickCount - lStartTime)/1000;
   FInformation.Executed(True).Duration(lDuration);
 end;
 
-constructor T02CreateAclRoleTable.Create(AConn: IConnection);
+constructor T05AclRoleSeed.Create(AConn: IConnection);
 begin
   inherited Create(AConn);
 
@@ -91,26 +70,13 @@ begin
   FInformation.CreatedAtByDev(StrToDateTime('12/11/2022 10:58:00'));
 end;
 
-function T02CreateAclRoleTable.Execute: IMigration;
+function T05AclRoleSeed.Execute: IMigration;
 begin
   Result := Self;
-
-  // Não executar migration se tabela já existir
-  FQry.Open(TMigrationHelper.SQLLocateMigrationTable(
-    FConn.DriverDB,
-    FConn.DataBaseName,
-    'acl_role'
-  ));
-  if not FQry.DataSet.IsEmpty then
-  begin
-    FInformation.Executed(True).Duration(-1);
-    Exit;
-  end;
-
   RunMigrate;
 end;
 
-class function T02CreateAclRoleTable.Make(AConn: IConnection): IMigration;
+class function T05AclRoleSeed.Make(AConn: IConnection): IMigration;
 begin
   Result := Self.Create(AConn);
 end;

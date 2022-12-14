@@ -41,37 +41,11 @@ uses
   System.DateUtils,
   uEnv,
   uMigration.Helper,
-  //u01CreateAppParamConfigTable.Migration,
   u02CreateAclRoleTable.Migration,
   u03CreateAclUserTable.Migration,
-  u04CreateBrandTable.Migration;
-//  u05CreateCityTable.Migration,
-//  u06CreatePersonTable.Migration,
-//  u07CreatePersonContactTable.Migration,
-//  u08CreateBankTable.Migration,
-//  u09CreateCategoryTable.Migration,
-//  u10CreateCostCenterTable.Migration,
-//  u11CreateSizeTable.Migration,
-//  u12CreateStorageLocationTable.Migration,
-//  u13CreateBankAccountTable.Migration,
-//  u14CreateChartOfAccountTable.Migration,
-//  u15CreateNCMTable.Migration,
-//  u16CreateDocumentTable.Migration,
-//  u17CreatePaymentTermTable.Migration,
-//  u18CreateUnitTable.Migration,
-//  u19CreateProductTable.Migration,
-//  u20CreateCompanyTable.Migration,
-//  u21CreateBusinessProposalTable.Migration,
-//  u22CreateBusinessProposalItemTable.Migration,
-//  u23CreateSaleTable.Migration,
-//  u24CreateSaleItemTable.Migration,
-//  u25CreateSalePaymentTable.Migration,
-//  u26CreateBillPayReceiveTable.Migration,
-//  u27CreatePosPrinterTable.Migration,
-//  u28CreateOperationTypeTable.Migration,
-//  u29CreateCFOPTable.Migration,
-//  u30CreateTaxRuleTable.Migration,
-//  u31CreateTaxRuleStateTable.Migration;
+  u04CreateBrandTable.Migration,
+  u05AclRoleSeed.Migration,
+  u06AclUserSeed.Migration;
 
 const
   MIGRATION_ORDER_BY_DESCRIPTION = 'select * from migration order by description';
@@ -87,39 +61,13 @@ begin
   // Migrações que já foram executadas
   FQryMigrationsPerformed.Open(MIGRATION_ORDER_BY_DESCRIPTION);
 
-  // Lista de Migrações
+  // Migrações
   FMigrations.Clear;
-//  FMigrations.Add(T01CreateAppParamConfigTable.Make(FConn));
   FMigrations.Add(T02CreateAclRoleTable.Make(FConn));
   FMigrations.Add(T03CreateAclUserTable.Make(FConn));
   FMigrations.Add(T04CreateBrandTable.Make(FConn));
-//  FMigrations.Add(T05CreateCityTable.Make(FConn));
-//  FMigrations.Add(T06CreatePersonTable.Make(FConn));
-//  FMigrations.Add(T07CreatePersonContactTable.Make(FConn));
-//  FMigrations.Add(T08CreateBankTable.Make(FConn));
-//  FMigrations.Add(T09CreateCategoryTable.Make(FConn));
-//  FMigrations.Add(T10CreateCostCenterTable.Make(FConn));
-//  FMigrations.Add(T11CreateSizeTable.Make(FConn));
-//  FMigrations.Add(T12CreateStorageLocationTable.Make(FConn));
-//  FMigrations.Add(T13CreateBankAccountTable.Make(FConn));
-//  FMigrations.Add(T14CreateChartOfAccountTable.Make(FConn));
-//  FMigrations.Add(T15CreateNCMTable.Make(FConn));
-//  FMigrations.Add(T16CreateDocumentTable.Make(FConn));
-//  FMigrations.Add(T17CreatePaymentTermTable.Make(FConn));
-//  FMigrations.Add(T18CreateUnitTable.Make(FConn));
-//  FMigrations.Add(T19CreateProductTable.Make(FConn));
-//  FMigrations.Add(T20CreateCompanyTable.Make(FConn));
-//  FMigrations.Add(T21CreateBusinessProposalTable.Make(FConn));
-//  FMigrations.Add(T22CreateBusinessProposalItemTable.Make(FConn));
-//  FMigrations.Add(T23CreateSaleTable.Make(FConn));
-//  FMigrations.Add(T24CreateSaleItemTable.Make(FConn));
-//  FMigrations.Add(T25CreateSalePaymentTable.Make(FConn));
-//  FMigrations.Add(T26CreateBillPayReceiveTable.Make(FConn));
-//  FMigrations.Add(T27CreatePosPrinterTable.Make(FConn));
-//  FMigrations.Add(T28CreateOperationTypeTable.Make(FConn));
-//  FMigrations.Add(T29CreateCFOPTable.Make(FConn));
-//  FMigrations.Add(T30CreateTaxRuleTable.Make(FConn));
-//  FMigrations.Add(T31CreateTaxRuleStateTable.Make(FConn));
+  FMigrations.Add(T05AclRoleSeed.Make(FConn));
+  FMigrations.Add(T06AclUserSeed.Make(FConn));
 end;
 
 constructor TMigrationManager.Create(AConn: IConnection);

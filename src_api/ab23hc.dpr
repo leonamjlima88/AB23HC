@@ -93,9 +93,11 @@ uses
   uMigration.Helper in 'Database\Infra\Migration\Manager\uMigration.Helper.pas',
   uMigration.Info in 'Database\Infra\Migration\Manager\uMigration.Info.pas',
   uMigration.Manager in 'Database\Infra\Migration\Manager\uMigration.Manager.pas',
-  u02CreateAclRoleTable.Migration in 'Database\Infra\Migration\Scripts\u02CreateAclRoleTable.Migration.pas',
-  u03CreateAclUserTable.Migration in 'Database\Infra\Migration\Scripts\u03CreateAclUserTable.Migration.pas',
-  u04CreateBrandTable.Migration in 'Database\Infra\Migration\Scripts\u04CreateBrandTable.Migration.pas';
+  u02CreateAclRoleTable.Migration in 'Database\Infra\Migration\u02CreateAclRoleTable.Migration.pas',
+  u03CreateAclUserTable.Migration in 'Database\Infra\Migration\u03CreateAclUserTable.Migration.pas',
+  u04CreateBrandTable.Migration in 'Database\Infra\Migration\u04CreateBrandTable.Migration.pas',
+  u05AclRoleSeed.Migration in 'Database\Infra\Migration\u05AclRoleSeed.Migration.pas',
+  u06AclUserSeed.Migration in 'Database\Infra\Migration\u06AclUserSeed.Migration.pas';
 
 begin
   TMain.Start;

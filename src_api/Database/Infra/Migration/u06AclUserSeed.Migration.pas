@@ -1,4 +1,4 @@
-unit u03CreateAclUserTable.Migration;
+unit u06AclUserSeed.Migration;
 
 interface
 
@@ -8,7 +8,7 @@ uses
   uConnection.Interfaces;
 
 type
-  T03CreateAclUserTable = class(TMigrationBase, IMigration)
+  T06AclUserSeed = class(TMigrationBase, IMigration)
   private
     function RunMigrate: IMigration;
     constructor Create(AConn: IConnection);
@@ -28,9 +28,9 @@ uses
   uAclUser.SQLBuilder.Interfaces,
   uSQLBuilder.Factory;
 
-{ T03CreateAclUserTable }
+{ T06AclUserSeed }
 
-function T03CreateAclUserTable.RunMigrate: IMigration;
+function T06AclUserSeed.RunMigrate: IMigration;
 var
   lStartTime: Cardinal;
   lDuration: Double;
@@ -46,7 +46,7 @@ begin
 
     FScript
       .SQLScriptsClear
-      .SQLScriptsAdd(lSQLBuilder.ScriptCreateTable)
+      .SQLScriptsAdd(lSQLBuilder.ScriptSeedTable)
       .ValidateAll;
     if not FScript.ExecuteAll then
       raise Exception.Create('Error validation in migration. ' + Self.ClassName);
@@ -58,60 +58,26 @@ begin
     raise;
   end;
 
-  // Seeder
-  if not lSQLBuilder.ScriptSeedTable.Trim.IsEmpty then
-  begin
-    try
-      FConn.StartTransaction;
-
-      FScript
-        .SQLScriptsClear
-        .SQLScriptsAdd(lSQLBuilder.ScriptSeedTable)
-        .ValidateAll;
-      if not FScript.ExecuteAll then
-        raise Exception.Create('Error seeder in migration. ' + Self.ClassName);
-
-      // Commit
-      FConn.CommitTransaction;
-    Except
-      FConn.RollBackTransaction;
-      raise;
-    end;
-  End;
-
   // Migration Executada
   lDuration := (GetTickCount - lStartTime)/1000;
   FInformation.Executed(True).Duration(lDuration);
 end;
 
-constructor T03CreateAclUserTable.Create(AConn: IConnection);
+constructor T06AclUserSeed.Create(AConn: IConnection);
 begin
   inherited Create(AConn);
 
   // Informações da Migration
-  FInformation.CreatedAtByDev(StrToDateTime('12/11/2032 11:12:00'));
+  FInformation.CreatedAtByDev(StrToDateTime('12/11/2022 11:12:00'));
 end;
 
-function T03CreateAclUserTable.Execute: IMigration;
+function T06AclUserSeed.Execute: IMigration;
 begin
   Result := Self;
-
-  // Não executar migration se tabela já existir
-  FQry.Open(TMigrationHelper.SQLLocateMigrationTable(
-    FConn.DriverDB,
-    FConn.DataBaseName,
-    'acl_user'
-  ));
-  if not FQry.DataSet.IsEmpty then
-  begin
-    FInformation.Executed(True).Duration(-1);
-    Exit;
-  end;
-
   RunMigrate;
 end;
 
-class function T03CreateAclUserTable.Make(AConn: IConnection): IMigration;
+class function T06AclUserSeed.Make(AConn: IConnection): IMigration;
 begin
   Result := Self.Create(AConn);
 end;

@@ -182,9 +182,11 @@
         <DCCReference Include="Database\Infra\Migration\Manager\uMigration.Helper.pas"/>
         <DCCReference Include="Database\Infra\Migration\Manager\uMigration.Info.pas"/>
         <DCCReference Include="Database\Infra\Migration\Manager\uMigration.Manager.pas"/>
-        <DCCReference Include="Database\Infra\Migration\Scripts\u02CreateAclRoleTable.Migration.pas"/>
-        <DCCReference Include="Database\Infra\Migration\Scripts\u03CreateAclUserTable.Migration.pas"/>
-        <DCCReference Include="Database\Infra\Migration\Scripts\u04CreateBrandTable.Migration.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u02CreateAclRoleTable.Migration.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u03CreateAclUserTable.Migration.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u04CreateBrandTable.Migration.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u05AclRoleSeed.Migration.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u06AclUserSeed.Migration.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
