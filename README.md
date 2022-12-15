@@ -1,2 +1,3 @@
 # AB23HC
-API Rest c/ Horse (Arquitetura Hexagonal)
+API Rest c/ Horse (DDD)
+Estrutura de pastas por módulo
