@@ -27,13 +27,6 @@ type
     function LastInsertId: String;
     function Update(AEntity: TBaseEntity; AId: Int64): String;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter;
-
-    // PersonContact
-    function PersonContactScriptCreateTable: String; virtual; abstract;
-    function PersonContactSelectAll: String;
-    function PersonContactDeleteByPersonId(APersonId: Int64): String;
-    function PersonContactSelectByPersonId(APersonId: Int64): String;
-    function PersonContactInsertInto(AEntity: TBaseEntity): String;
   end;
 
 implementation
@@ -46,8 +39,7 @@ uses
   System.SysUtils,
   uConnection.Types,
   uApplication.Types,
-  uHlp,
-  uPersonContact;
+  uHlp;
 
 { TPersonSQLBuilder }
 constructor TPersonSQLBuilder.Create;
@@ -122,47 +114,6 @@ begin
   case FDBName of
     dbnMySQL: Result := SELECT_LAST_INSERT_ID_MYSQL;
   end;
-end;
-
-function TPersonSQLBuilder.PersonContactDeleteByPersonId(APersonId: Int64): String;
-begin
-  Result := TCQL.New(FDBName)
-    .Delete
-    .From('person_contact')
-    .Where('person_contact.person_id = ' + APersonId.ToString)
-  .AsString;
-end;
-
-function TPersonSQLBuilder.PersonContactInsertInto(AEntity: TBaseEntity): String;
-var
-  lPersonContact: TPersonContact;
-begin
-  lPersonContact := AEntity as TPersonContact;
-  Result := TCQL.New(FDBName)
-    .Insert
-    .Into('person_contact')
-    .&Set('person_id', lPersonContact.person_id)
-    .&Set('name',      lPersonContact.name)
-    .&Set('ein',       lPersonContact.ein)
-    .&Set('type',      lPersonContact.&type)
-    .&Set('note',      lPersonContact.note)
-    .&Set('phone',     lPersonContact.phone)
-    .&Set('email',     lPersonContact.email)
-  .AsString;
-end;
-
-function TPersonSQLBuilder.PersonContactSelectAll: String;
-begin
-  Result := TCQL.New(FDBName)
-    .Select
-    .Column('person_contact.*')
-    .From('person_contact')
-  .AsString;
-end;
-
-function TPersonSQLBuilder.PersonContactSelectByPersonId(APersonId: Int64): String;
-begin
-  Result := PersonContactSelectAll + ' WHERE person_contact.person_id = ' + APersonId.ToString;
 end;
 
 function TPersonSQLBuilder.SelectAll: String;

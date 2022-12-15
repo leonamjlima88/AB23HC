@@ -205,7 +205,10 @@ uses
   u13CreatePersonTable.Migration in 'Database\Infra\Migration\u13CreatePersonTable.Migration.pas',
   u14CreatePersonContactTable.Migration in 'Database\Infra\Migration\u14CreatePersonContactTable.Migration.pas',
   uPersonContact in 'App\Module\Person\Domain\Entity\uPersonContact.pas',
-  uPersonContact.DTO in 'App\Module\Person\Application\DTO\uPersonContact.DTO.pas';
+  uPersonContact.DTO in 'App\Module\Person\Application\DTO\uPersonContact.DTO.pas',
+  uPersonContact.SQLBuilder.Interfaces in 'App\Module\Person\Domain\Repository\uPersonContact.SQLBuilder.Interfaces.pas',
+  uPersonContact.SQLBuilder in 'App\Module\Person\Infra\Repository\SQLBuilder\uPersonContact.SQLBuilder.pas',
+  uPersonContact.SQLBuilder.MySQL in 'App\Module\Person\Infra\Repository\SQLBuilder\MySQL\uPersonContact.SQLBuilder.MySQL.pas';
 
 begin
   TMain.Start;

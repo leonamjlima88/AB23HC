@@ -11,12 +11,14 @@ uses
   uBase.Entity,
   uPageFilter,
   uSelectWithFilter,
-  uPerson;
+  uPerson,
+  uPersonContact.SQLBuilder.Interfaces;
 
 type
   TPersonRepositorySQL = class(TBaseRepository, IPersonRepository)
   private
     FPersonSQLBuilder: IPersonSQLBuilder;
+    FPersonContactSQLBuilder: IPersonContactSQLBuilder;
     constructor Create(AConn: IConnection; ASQLBuilder: IPersonSQLBuilder);
     function DataSetToEntity(ADtsPerson: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
@@ -39,7 +41,8 @@ uses
   System.SysUtils,
   uQtdStr,
   uHlp,
-  uApplication.Types;
+  uApplication.Types,
+  uSQLBuilder.Factory;
 
 { TPersonRepositorySQL }
 
@@ -51,9 +54,10 @@ end;
 constructor TPersonRepositorySQL.Create(AConn: IConnection; ASQLBuilder: IPersonSQLBuilder);
 begin
   inherited Create;
-  FConn             := AConn;
-  FSQLBuilder       := ASQLBuilder;
-  FPersonSQLBuilder := ASQLBuilder;
+  FConn                    := AConn;
+  FSQLBuilder              := ASQLBuilder;
+  FPersonSQLBuilder        := ASQLBuilder;
+  FPersonContactSQLBuilder := TSQLBuilderFactory.Make(FConn.DriverDB).PersonContact;
 end;
 
 function TPersonRepositorySQL.DataSetToEntity(ADtsPerson: TDataSet): TBaseEntity;
@@ -92,7 +96,7 @@ var
   lPersonContact: TPersonContact;
 begin
   Result := Self;
-  With FConn.MakeQry.Open(FPersonSQLBuilder.PersonContactSelectByPersonId(APerson.id)) do
+  With FConn.MakeQry.Open(FPersonContactSQLBuilder.SelectByPersonId(APerson.id)) do
   begin
     DataSet.First;
     while not DataSet.Eof do
@@ -147,7 +151,7 @@ begin
     for lPersonContact in APerson.person_contact_list do
     begin
       lPersonContact.person_id := lPk;
-      lQry.ExecSQL(FPersonSQLBuilder.PersonContactInsertInto(lPersonContact))
+      lQry.ExecSQL(FPersonContactSQLBuilder.InsertInto(lPersonContact))
     end;
 
     if AManageTransaction then

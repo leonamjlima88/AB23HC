@@ -25,7 +25,7 @@ uses
   System.SysUtils,
   System.Classes,
   uMigration.Helper,
-  uPerson.SQLBuilder.Interfaces,
+  uPersonContact.SQLBuilder.Interfaces,
   uSQLBuilder.Factory;
 
 { T14CreatePersonContactTable }
@@ -34,11 +34,11 @@ function T14CreatePersonContactTable.RunMigrate: IMigration;
 var
   lStartTime: Cardinal;
   lDuration: Double;
-  lSQLBuilder: IPersonSQLBuilder;
+  lSQLBuilder: IPersonContactSQLBuilder;
 begin
   Result      := Self;
   lStartTime  := GetTickCount;
-  lSQLBuilder := TSQLBuilderFactory.Make(FConn.DriverDB).Person;
+  lSQLBuilder := TSQLBuilderFactory.Make(FConn.DriverDB).PersonContact;
 
   // Criar Tabela
   try
@@ -46,7 +46,7 @@ begin
 
     FScript
       .SQLScriptsClear
-      .SQLScriptsAdd(lSQLBuilder.PersonContactScriptCreateTable)
+      .SQLScriptsAdd(lSQLBuilder.ScriptCreateTable)
       .ValidateAll;
     if not FScript.ExecuteAll then
       raise Exception.Create('Error validation in migration. ' + Self.ClassName);

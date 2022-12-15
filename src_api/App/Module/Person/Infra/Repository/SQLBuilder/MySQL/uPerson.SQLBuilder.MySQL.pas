@@ -15,9 +15,6 @@ type
     // Person
     function ScriptCreateTable: String; override;
     function ScriptSeedTable: String; override;
-
-    // PersonContact
-    function PersonContactScriptCreateTable: String; override;
   end;
 
 implementation
@@ -36,23 +33,6 @@ end;
 class function TPersonSQLBuilderMySQL.Make: IPersonSQLBuilder;
 begin
   Result := Self.Create;
-end;
-
-function TPersonSQLBuilderMySQL.PersonContactScriptCreateTable: String;
-begin
-  Result := ' CREATE TABLE `person_contact` ( '+
-            '   `id` bigint(20) NOT NULL AUTO_INCREMENT, '+
-            '   `person_id` bigint(20) NOT NULL, '+
-            '   `name` varchar(100) DEFAULT NULL, '+
-            '   `ein` varchar(20) DEFAULT NULL, '+
-            '   `type` varchar(100) DEFAULT NULL, '+
-            '   `note` text, '+
-            '   `phone` varchar(40) DEFAULT NULL, '+
-            '   `email` varchar(255) DEFAULT NULL, '+
-            '   PRIMARY KEY (`id`), '+
-            '   KEY `person_contact_fk_person_id` (`person_id`), '+
-            '   CONSTRAINT `person_contact_fk_person_id` FOREIGN KEY (`person_id`) REFERENCES `person` (`id`) ON DELETE CASCADE ON UPDATE CASCADE '+
-            ' )  ';
 end;
 
 function TPersonSQLBuilderMySQL.ScriptCreateTable: String;

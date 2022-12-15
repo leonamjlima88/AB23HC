@@ -295,6 +295,9 @@
         <DCCReference Include="Database\Infra\Migration\u14CreatePersonContactTable.Migration.pas"/>
         <DCCReference Include="App\Module\Person\Domain\Entity\uPersonContact.pas"/>
         <DCCReference Include="App\Module\Person\Application\DTO\uPersonContact.DTO.pas"/>
+        <DCCReference Include="App\Module\Person\Domain\Repository\uPersonContact.SQLBuilder.Interfaces.pas"/>
+        <DCCReference Include="App\Module\Person\Infra\Repository\SQLBuilder\uPersonContact.SQLBuilder.pas"/>
+        <DCCReference Include="App\Module\Person\Infra\Repository\SQLBuilder\MySQL\uPersonContact.SQLBuilder.MySQL.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
