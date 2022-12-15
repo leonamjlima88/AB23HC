@@ -25,6 +25,10 @@ const
   UNCATEGORIZED_EXCEPTION = 'Uncategorized Exception';
   SELECT_LAST_INSERT_ID_MYSQL = 'SELECT last_insert_id() as id';
   FIELD_WAS_NOT_INFORMED = 'O campo %s não foi informado.';
+  FIELD_IS_INVALID = 'O campo %s com o conteúdo %s é inválido.';
+  FIELD_WITH_VALUE_IS_IN_USE = 'O campo %s com o valor %s já está em uso.';
+  FIELD_VALUE_MUST_CONTAIN_A_MAXIMUM_OF_CHARACTERS = 'O campo %s deve conter no máximo %d caractere(s).';
+  FIELD_VALUE_MUST_CONTAIN_EXACTLY_CHARACTERS = 'O campo %s deve conter %d caractere(s).';
   DATETIME_DISPLAY_FORMAT = 'YYYY-MM-DDTHH:MM:SS.sTZ';
   CREATED_AT_DISPLAY = 'Data e hora de criação';
   CREATED_BY_ACL_USER_ID = 'Criado por usuário (id)';

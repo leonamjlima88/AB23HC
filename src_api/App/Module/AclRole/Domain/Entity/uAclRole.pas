@@ -13,7 +13,6 @@ type
     Fname: string;
   public
     constructor Create; overload;
-    constructor Create(Aid: Int64; Aname: string); overload;
     destructor Destroy; override;
 
     property id: Int64 read Fid write Fid;
@@ -32,13 +31,6 @@ uses
 constructor TAclRole.Create;
 begin
   inherited Create;
-end;
-
-constructor TAclRole.Create(Aid: Int64; Aname: string);
-begin
-  inherited Create;
-  Fid   := AId;
-  Fname := Aname;
 end;
 
 destructor TAclRole.Destroy;

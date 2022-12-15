@@ -58,27 +58,6 @@ begin
     raise;
   end;
 
-  // Seeder
-  if not lSQLBuilder.ScriptSeedTable.Trim.IsEmpty then
-  begin
-    try
-      FConn.StartTransaction;
-
-      FScript
-        .SQLScriptsClear
-        .SQLScriptsAdd(lSQLBuilder.ScriptSeedTable)
-        .ValidateAll;
-      if not FScript.ExecuteAll then
-        raise Exception.Create('Error seeder in migration. ' + Self.ClassName);
-
-      // Commit
-      FConn.CommitTransaction;
-    Except
-      FConn.RollBackTransaction;
-      raise;
-    end;
-  End;
-
   // Migration Executada
   lDuration := (GetTickCount - lStartTime)/1100;
   FInformation.Executed(True).Duration(lDuration);

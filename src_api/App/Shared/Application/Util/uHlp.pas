@@ -11,6 +11,9 @@ type
 
   THlp = class
   public
+    class function  CpfOrCnpjIsValid(AValue: string): boolean;
+    class function  CpfIsValid(AValue: string): boolean;
+    class function  CnpjIsValid(AValue: string): boolean;
     class function  if0retNull(AValue: Int64): variant; overload; // Retornar null se for <= 0
     class function  if0retNull(AValue: Integer): variant; overload; // Retornar null se for <= 0
     class function  if0retNull(AValue: TDateTime): variant; overload; // Retornar null se for <= 0
@@ -27,7 +30,7 @@ type
     class function  createGuid: String; // Gerador de GUID
     class function  FormatPhone(pFone: String): String; // Formatar número de telefone
     class function  RemoveDots(Str: String): String; // Remover Pontos da String
-    class function  OnlyNumbers(fField : String): String; // Retornar apenas números de uma string
+    class function  OnlyNumbers(fField: String): String; // Retornar apenas números de uma string
     class function  ValidateCpfCnpj(Dado: string): String; // Validar CNPJ/CNPJ
     class function  ValidateCnpj(Dado: string): Boolean; // Validar CNPJ
     class function  ValidateCpf(Dado: string): Boolean; // Validar CPF
@@ -83,6 +86,93 @@ begin
   case AValue of
     True:  Result := 1;
     False: Result := 0;
+  end;
+end;
+
+class function THlp.CnpjIsValid(AValue: string): boolean;
+var
+  n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12:integer;
+  d1,d2:integer;
+  digitado, calculado:string;
+begin
+  AValue := OnlyNumbers(AValue);
+
+  n1:= strtoint(AValue[1]);
+  n2:= strtoint(AValue[2]);
+  n3:= strtoint(AValue[3]);
+  n4:= strtoint(AValue[4]);
+  n5:= strtoint(AValue[5]);
+  n6:= strtoint(AValue[6]);
+  n7:= strtoint(AValue[7]);
+  n8:= strtoint(AValue[8]);
+  n9:= strtoint(AValue[9]);
+  n10:= strtoint(AValue[10]);
+  n11:= strtoint(AValue[11]);
+  n12:= strtoint(AValue[12]);
+  d1:= n12*2+n11*3+n10*4+n9*5+n8*6+n7*7+n6*8+n5*9+
+  n4*2+n3*3+n2*4+n1*5;
+  d1:= 11-(d1 mod 11);
+
+  if d1>=10 then
+    d1:=0;
+
+  d2:=d2*2+ n12*3+n11*4+n10*5+n9*6+n8*7+n7*8+n6*9+
+  n5*2+n4*3+n3*4+n2*5+n1*6;
+  d2:= 11-(d2 mod 11);
+
+  if d2>=10 then
+    d2:=0;
+
+  calculado := inttostr(d1) + inttostr(d2);
+  digitado  := AValue[13]+AValue[14];
+
+  Result := calculado = digitado;
+end;
+
+class function THlp.CpfIsValid(AValue: string): boolean;
+var
+  n1,n2,n3,n4,n5,n6,n7,n8,n9:integer;
+  d1,d2:integer;
+  digitado, calculado:string;
+begin
+  AValue := OnlyNumbers(AValue);
+
+  n1:= StrToInt(AValue[1]);
+  n2:= StrToInt(AValue[2]);
+  n3:= StrToInt(AValue[3]);
+  n4:= StrToInt(AValue[4]);
+  n5:= StrToInt(AValue[5]);
+  n6:= StrToInt(AValue[6]);
+  n7:= StrToInt(AValue[7]);
+  n8:= StrToInt(AValue[8]);
+  n9:= StrToInt(AValue[9]);
+  d1:= n9*2+n8*3+n7*4+n6*5+n5*6+n4*7+n3*8+n2*9+n1*10;
+  d1:= 11-(d1 mod 11);
+
+  if d1>=10 then
+    d1:=0;
+
+  d2:= d1*2+n9*3+n8*4+n7*5+n6*6+n5*7+n4*8+n3*9+n2*10+n1*11;
+  d2:= 11-(d2 mod 11);
+
+  if d2>=10 then
+    d2:=0;
+
+  calculado:= inttostr(d1)+inttostr(d2);
+  digitado:= AValue[10]+AValue[11];
+
+  Result := calculado = digitado;
+end;
+
+class function THlp.CPFOrCnpjIsValid(AValue: string): boolean;
+var
+  lIsCPF: Boolean;
+begin
+  AValue := OnlyNumbers(AValue);
+  lIsCPF := AValue.Length <= 11;
+  case lIsCPF of
+    True:  Result := CpfIsValid(AValue);
+    False: Result := CnpjIsValid(AValue);
   end;
 end;
 

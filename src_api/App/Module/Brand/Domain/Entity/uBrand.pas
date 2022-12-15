@@ -17,12 +17,14 @@ type
     Fupdated_at: TDateTime;
     Fupdated_by_acl_user_id: Int64;
     Fcreated_by_acl_user_id: Int64;
+
+    // OneToOne
     Fupdated_by_acl_user: TAclUser;
     Fcreated_by_acl_user: TAclUser;
+
     procedure Initialize;
   public
     constructor Create; overload;
-    constructor Create(Aid: Int64; Aname: string); overload;
     destructor Destroy; override;
 
     property id: Int64 read Fid write Fid;
@@ -45,14 +47,6 @@ uses
   System.SysUtils;
 
 { TBrand }
-
-constructor TBrand.Create(Aid: Int64; Aname: string);
-begin
-  inherited Create;
-  Fid   := Aid;
-  Fname := AName;
-  Initialize;
-end;
 
 constructor TBrand.Create;
 begin

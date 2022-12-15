@@ -14,6 +14,8 @@ type
 implementation
 
 uses
+  uPerson.Controller,
+  uCity.Controller,
   uStorageLocation.Controller,
   uUnit.Controller,
   uBrand.Controller,
@@ -41,6 +43,8 @@ begin
       end
     );
 
+  THorseGBSwaggerRegister.RegisterPath(TPersonController);
+  THorseGBSwaggerRegister.RegisterPath(TCityController);
   THorseGBSwaggerRegister.RegisterPath(TStorageLocationController);
   THorseGBSwaggerRegister.RegisterPath(TUnitController);
   THorseGBSwaggerRegister.RegisterPath(TAclRoleController);

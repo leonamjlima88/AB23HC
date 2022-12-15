@@ -3,6 +3,8 @@ unit uRepository.Factory;
 interface
 
 uses
+  uPerson.Repository.Interfaces,
+  uCity.Repository.Interfaces,
   uStorageLocation.Repository.Interfaces,
   uUnit.Repository.Interfaces,
   uSize.Repository.Interfaces,
@@ -17,6 +19,8 @@ uses
 type
   IRepositoryFactory = Interface
     ['{4360ECF9-C170-41B5-8E9B-74C58AE06AA2}']
+    function Person: IPersonRepository;
+    function City: ICityRepository;
     function StorageLocation: IStorageLocationRepository;
     function &Unit: IUnitRepository;
     function Size: ISizeRepository;
@@ -36,6 +40,8 @@ type
   public
     class function Make(AConn: IConnection = nil; ARepoType: TRepositoryType = rtDefault; ADriverDB: TDriverDB = ddDefault): IRepositoryFactory;
 
+    function Person: IPersonRepository;
+    function City: ICityRepository;
     function StorageLocation: IStorageLocationRepository;
     function &Unit: IUnitRepository;
     function Size: ISizeRepository;
@@ -49,6 +55,8 @@ type
 implementation
 
 uses
+  uPerson.Repository.SQL,
+  uCity.Repository.SQL,
   uStorageLocation.Repository.SQL,
   uUnit.Repository.SQL,
   uSize.Repository.SQL,
@@ -98,6 +106,13 @@ begin
   end;
 end;
 
+function TRepositoryFactory.City: ICityRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TCityRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).City);
+  end;
+end;
+
 function TRepositoryFactory.CostCenter: ICostCenterRepository;
 begin
   case FRepoType of
@@ -129,6 +144,13 @@ end;
 class function TRepositoryFactory.Make(AConn: IConnection; ARepoType: TRepositoryType; ADriverDB: TDriverDB): IRepositoryFactory;
 begin
   Result := Self.Create(AConn, ARepoType, ADriverDB);
+end;
+
+function TRepositoryFactory.Person: IPersonRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TPersonRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).Person);
+  end;
 end;
 
 function TRepositoryFactory.Size: ISizeRepository;

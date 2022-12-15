@@ -22,7 +22,6 @@ type
     procedure Initialize;
   public
     constructor Create; overload;
-    constructor Create(Aid: Int64; Aname: string); overload;
     destructor Destroy; override;
 
     property id: Int64 read Fid write Fid;
@@ -45,14 +44,6 @@ uses
   System.SysUtils;
 
 { TStorageLocation }
-
-constructor TStorageLocation.Create(Aid: Int64; Aname: string);
-begin
-  inherited Create;
-  Fid   := Aid;
-  Fname := AName;
-  Initialize;
-end;
 
 constructor TStorageLocation.Create;
 begin

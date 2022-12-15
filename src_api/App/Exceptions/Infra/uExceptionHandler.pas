@@ -74,16 +74,16 @@ begin
     begin
       lEMessage := E.Message;
       if (Pos(SERVER_HAS_GONE_AWAY, lEMessage.ToLower) > 0) or (Pos(UNKNOWN_MYSQL_SERVER_HOST, lEMessage.ToLower) > 0) then
-        lEMessage := 'A conexão de rede falhou. Verifique as configurações de rede e internet.';
+        lEMessage := 'A conexão de rede falhou. Verifique as configurações de rede e internet. Mensagem Técnica: ' + lEMessage + '.';
 
       if (Pos(ERROR_IN_SQL_SYNTAX, lEMessage.ToLower) > 0) Then
-        lEMessage := 'Erro de sintaxe SQL.';
+        lEMessage := 'Erro de sintaxe SQL. Mensagem Técnica: ' + lEMessage + '.';
 
       if (Pos(ERROR_IN_SQL_FK_FAILS, lEMessage.ToLower) > 0) Then
-        lEMessage := 'Você não pode deletar um registro que está sendo utilizado em outras tabelas do sistema.';
+        lEMessage := 'Você não pode deletar um registro que está sendo utilizado em outras tabelas do sistema. Mensagem Técnica: ' + lEMessage + '.';
 
       if (Pos(ERROR_IN_SQL_FK_NOT_EXISTS, lEMessage.ToLower) > 0) Then
-        lEMessage := 'Você não pode vincular uma chave que não existe na tabela do banco de dados.';
+        lEMessage := 'Você não pode vincular uma chave que não existe na tabela do banco de dados. Mensagem Técnica: ' + lEMessage + '.';
 
       if (Pos(ERROR_IN_SQL_UNIQUE_FAILS, lEMessage.ToLower) > 0) Then
         lEMessage := 'Entrada duplicada. Valor não pode repetir na tabela do banco de dados. Mensagem Técnica: ' + lEMessage + '.';

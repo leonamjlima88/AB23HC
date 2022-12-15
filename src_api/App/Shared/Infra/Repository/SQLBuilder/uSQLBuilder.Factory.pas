@@ -3,6 +3,8 @@ unit uSQLBuilder.Factory;
 interface
 
 uses
+  uPerson.SQLBuilder.Interfaces,
+  uCity.SQLBuilder.Interfaces,
   uStorageLocation.SQLBuilder.Interfaces,
   uUnit.SQLBuilder.Interfaces,
   uSize.SQLBuilder.Interfaces,
@@ -16,6 +18,8 @@ uses
 type
   ISQLBuilderFactory = interface
     ['{865EBE81-EE3C-4E9B-A2CE-0DC3EAB7749F}']
+    function Person: IPersonSQLBuilder;
+    function City: ICitySQLBuilder;
     function StorageLocation: IStorageLocationSQLBuilder;
     function &Unit: IUnitSQLBuilder;
     function Size: ISizeSQLBuilder;
@@ -33,6 +37,8 @@ type
   public
     class function Make(ADriverDB: TDriverDB = ddDefault): ISQLBuilderFactory;
 
+    function Person: IPersonSQLBuilder;
+    function City: ICitySQLBuilder;
     function StorageLocation: IStorageLocationSQLBuilder;
     function &Unit: IUnitSQLBuilder;
     function Size: ISizeSQLBuilder;
@@ -46,6 +52,8 @@ type
 implementation
 
 uses
+  uPerson.SQLBuilder.MySQL,
+  uCity.SQLBuilder.MySQL,
   uStorageLocation.SQLBuilder.MySQL,
   uUnit.SQLBuilder.MySQL,
   uSize.SQLBuilder.MySQL,
@@ -93,6 +101,13 @@ begin
   end;
 end;
 
+function TSQLBuilderFactory.City: ICitySQLBuilder;
+begin
+  case FDriverDB of
+    ddMySql: Result := TCitySQLBuilderMySQL.Make;
+  end;
+end;
+
 function TSQLBuilderFactory.CostCenter: ICostCenterSQLBuilder;
 begin
   case FDriverDB of
@@ -112,6 +127,13 @@ end;
 class function TSQLBuilderFactory.Make(ADriverDB: TDriverDB): ISQLBuilderFactory;
 begin
   Result := Self.Create(ADriverDB);
+end;
+
+function TSQLBuilderFactory.Person: IPersonSQLBuilder;
+begin
+  case FDriverDB of
+    ddMySql: Result := TPersonSQLBuilderMySQL.Make;
+  end;
 end;
 
 function TSQLBuilderFactory.Size: ISizeSQLBuilder;
