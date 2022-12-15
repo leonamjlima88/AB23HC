@@ -3,15 +3,28 @@ unit uRepository.Factory;
 interface
 
 uses
-  uConnection.Interfaces, uConnection.Types, uBrand.Repository.Interfaces,
-  uAclRole.Repository.Interfaces, uAclUser.Repository.Interfaces;
+  uStorageLocation.Repository.Interfaces,
+  uUnit.Repository.Interfaces,
+  uSize.Repository.Interfaces,
+  uAclRole.Repository.Interfaces,
+  uAclUser.Repository.Interfaces,
+  uBrand.Repository.Interfaces,
+  uCostCenter.Repository.Interfaces,
+  uCategory.Repository.Interfaces,
+  uConnection.Interfaces,
+  uConnection.Types;
 
 type
   IRepositoryFactory = Interface
     ['{4360ECF9-C170-41B5-8E9B-74C58AE06AA2}']
+    function StorageLocation: IStorageLocationRepository;
+    function &Unit: IUnitRepository;
+    function Size: ISizeRepository;
     function AclRole: IAclRoleRepository;
     function AclUser: IAclUserRepository;
     function Brand: IBrandRepository;
+    function CostCenter: ICostCenterRepository;
+    function Category: ICategoryRepository;
   end;
 
   TRepositoryFactory = class(TInterfacedObject, IRepositoryFactory)
@@ -23,22 +36,39 @@ type
   public
     class function Make(AConn: IConnection = nil; ARepoType: TRepositoryType = rtDefault; ADriverDB: TDriverDB = ddDefault): IRepositoryFactory;
 
+    function StorageLocation: IStorageLocationRepository;
+    function &Unit: IUnitRepository;
+    function Size: ISizeRepository;
     function AclRole: IAclRoleRepository;
     function AclUser: IAclUserRepository;
     function Brand: IBrandRepository;
+    function CostCenter: ICostCenterRepository;
+    function Category: ICategoryRepository;
   end;
 
 implementation
 
 uses
+  uStorageLocation.Repository.SQL,
+  uUnit.Repository.SQL,
+  uSize.Repository.SQL,
+  uAclRole.Repository.SQL,
+  uAclUser.Repository.SQL,
   uBrand.Repository.SQL,
+  uCostCenter.Repository.SQL,
+  uCategory.Repository.SQL,
   uSQLBuilder.Factory,
   uEnv,
-  uConnection.Factory,
-  uAclRole.Repository.SQL,
-  uAclUser.Repository.SQL;
+  uConnection.Factory;
 
 { TRepositoryFactory }
+
+function TRepositoryFactory.&Unit: IUnitRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TUnitRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).&Unit);
+  end;
+end;
 
 function TRepositoryFactory.AclRole: IAclRoleRepository;
 begin
@@ -58,6 +88,20 @@ function TRepositoryFactory.Brand: IBrandRepository;
 begin
   case FRepoType of
     rtSQL: Result := TBrandRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).Brand);
+  end;
+end;
+
+function TRepositoryFactory.Category: ICategoryRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TCategoryRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).Category);
+  end;
+end;
+
+function TRepositoryFactory.CostCenter: ICostCenterRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TCostCenterRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).CostCenter);
   end;
 end;
 
@@ -85,6 +129,20 @@ end;
 class function TRepositoryFactory.Make(AConn: IConnection; ARepoType: TRepositoryType; ADriverDB: TDriverDB): IRepositoryFactory;
 begin
   Result := Self.Create(AConn, ARepoType, ADriverDB);
+end;
+
+function TRepositoryFactory.Size: ISizeRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TSizeRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).Size);
+  end;
+end;
+
+function TRepositoryFactory.StorageLocation: IStorageLocationRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TStorageLocationRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).StorageLocation);
+  end;
 end;
 
 end.

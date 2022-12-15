@@ -45,7 +45,12 @@ uses
   u03CreateAclUserTable.Migration,
   u04CreateBrandTable.Migration,
   u05AclRoleSeed.Migration,
-  u06AclUserSeed.Migration;
+  u06AclUserSeed.Migration,
+  u07CreateCategoryTable.Migration,
+  u08CreateCostCenterTable.Migration,
+  u09CreateSizeTable.Migration,
+  u10CreateUnitTable.Migration,
+  u11CreateStorageLocationTable.Migration;
 
 const
   MIGRATION_ORDER_BY_DESCRIPTION = 'select * from migration order by description';
@@ -68,6 +73,11 @@ begin
   FMigrations.Add(T04CreateBrandTable.Make(FConn));
   FMigrations.Add(T05AclRoleSeed.Make(FConn));
   FMigrations.Add(T06AclUserSeed.Make(FConn));
+  FMigrations.Add(T07CreateCategoryTable.Make(FConn));
+  FMigrations.Add(T08CreateCostCenterTable.Make(FConn));
+  FMigrations.Add(T09CreateSizeTable.Make(FConn));
+  FMigrations.Add(T10CreateUnitTable.Make(FConn));
+  FMigrations.Add(T11CreateStorageLocationTable.Make(FConn));
 end;
 
 constructor TMigrationManager.Create(AConn: IConnection);
