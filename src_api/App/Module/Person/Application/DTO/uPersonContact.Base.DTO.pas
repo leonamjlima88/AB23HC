@@ -1,4 +1,4 @@
-unit uPersonContact.DTO;
+unit uPersonContact.Base.DTO;
 
 interface
 
@@ -6,7 +6,7 @@ uses
   GBSwagger.Model.Attributes;
 
 type
-  TPersonContactDTO = class
+  TPersonContactBaseDTO = class
   private
     Fname: string;
     Femail: string;

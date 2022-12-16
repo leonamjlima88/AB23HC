@@ -205,10 +205,19 @@ uses
   u13CreatePersonTable.Migration in 'Database\Infra\Migration\u13CreatePersonTable.Migration.pas',
   u14CreatePersonContactTable.Migration in 'Database\Infra\Migration\u14CreatePersonContactTable.Migration.pas',
   uPersonContact in 'App\Module\Person\Domain\Entity\uPersonContact.pas',
-  uPersonContact.DTO in 'App\Module\Person\Application\DTO\uPersonContact.DTO.pas',
   uPersonContact.SQLBuilder.Interfaces in 'App\Module\Person\Domain\Repository\uPersonContact.SQLBuilder.Interfaces.pas',
   uPersonContact.SQLBuilder in 'App\Module\Person\Infra\Repository\SQLBuilder\uPersonContact.SQLBuilder.pas',
-  uPersonContact.SQLBuilder.MySQL in 'App\Module\Person\Infra\Repository\SQLBuilder\MySQL\uPersonContact.SQLBuilder.MySQL.pas';
+  uPersonContact.SQLBuilder.MySQL in 'App\Module\Person\Infra\Repository\SQLBuilder\MySQL\uPersonContact.SQLBuilder.MySQL.pas',
+  uBrand.Base.DTO in 'App\Module\Brand\Application\DTO\uBrand.Base.DTO.pas',
+  uPerson.Base.DTO in 'App\Module\Person\Application\DTO\uPerson.Base.DTO.pas',
+  uPersonContact.Base.DTO in 'App\Module\Person\Application\DTO\uPersonContact.Base.DTO.pas',
+  uCategory.Base.DTO in 'App\Module\Category\Application\DTO\uCategory.Base.DTO.pas',
+  uCostCenter.Base.DTO in 'App\Module\CostCenter\Application\DTO\uCostCenter.Base.DTO.pas',
+  uSize.Base.DTO in 'App\Module\Size\Application\DTO\uSize.Base.DTO.pas',
+  uUnit.Base.DTO in 'App\Module\Unit\Application\DTO\uUnit.Base.DTO.pas',
+  uStorageLocation.Base.DTO in 'App\Module\StorageLocation\Application\DTO\uStorageLocation.Base.DTO.pas',
+  uCity.Base.DTO in 'App\Module\City\Application\DTO\uCity.Base.DTO.pas',
+  uAclUser.Base.DTO in 'App\Module\AclUser\Application\DTO\uAclUser.Base.DTO.pas';
 
 begin
   TMain.Start;

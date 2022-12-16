@@ -294,10 +294,19 @@
         <DCCReference Include="Database\Infra\Migration\u13CreatePersonTable.Migration.pas"/>
         <DCCReference Include="Database\Infra\Migration\u14CreatePersonContactTable.Migration.pas"/>
         <DCCReference Include="App\Module\Person\Domain\Entity\uPersonContact.pas"/>
-        <DCCReference Include="App\Module\Person\Application\DTO\uPersonContact.DTO.pas"/>
         <DCCReference Include="App\Module\Person\Domain\Repository\uPersonContact.SQLBuilder.Interfaces.pas"/>
         <DCCReference Include="App\Module\Person\Infra\Repository\SQLBuilder\uPersonContact.SQLBuilder.pas"/>
         <DCCReference Include="App\Module\Person\Infra\Repository\SQLBuilder\MySQL\uPersonContact.SQLBuilder.MySQL.pas"/>
+        <DCCReference Include="App\Module\Brand\Application\DTO\uBrand.Base.DTO.pas"/>
+        <DCCReference Include="App\Module\Person\Application\DTO\uPerson.Base.DTO.pas"/>
+        <DCCReference Include="App\Module\Person\Application\DTO\uPersonContact.Base.DTO.pas"/>
+        <DCCReference Include="App\Module\Category\Application\DTO\uCategory.Base.DTO.pas"/>
+        <DCCReference Include="App\Module\CostCenter\Application\DTO\uCostCenter.Base.DTO.pas"/>
+        <DCCReference Include="App\Module\Size\Application\DTO\uSize.Base.DTO.pas"/>
+        <DCCReference Include="App\Module\Unit\Application\DTO\uUnit.Base.DTO.pas"/>
+        <DCCReference Include="App\Module\StorageLocation\Application\DTO\uStorageLocation.Base.DTO.pas"/>
+        <DCCReference Include="App\Module\City\Application\DTO\uCity.Base.DTO.pas"/>
+        <DCCReference Include="App\Module\AclUser\Application\DTO\uAclUser.Base.DTO.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -7,13 +7,13 @@ uses
   uResponse.DTO,
   uApplication.Types,
   System.Generics.Collections,
-  uStorageLocation;
+  uStorageLocation,
+  uStorageLocation.Base.DTO;
 
 type
-  TStorageLocationShowDTO = class
+  TStorageLocationShowDTO = class(TStorageLocationBaseDTO)
   private
     Fid: Int64;
-    Fname: String;
     Fcreated_at: TDateTime;
     Fcreated_by_acl_user_id: Int64;
     Fcreated_by_acl_user_name: String;
@@ -24,10 +24,6 @@ type
     [SwagNumber]
     [SwagProp('id', 'ID', true)]
     property id: Int64 read Fid write Fid;
-
-    [SwagString]
-    [SwagProp('name', 'Nome', true)]
-    property name: String read Fname write Fname;
 
     [SwagDate(DATETIME_DISPLAY_FORMAT)]
     [SwagProp('created_at', CREATED_AT_DISPLAY, true)]

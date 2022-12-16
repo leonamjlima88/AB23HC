@@ -6,32 +6,12 @@ uses
   GBSwagger.Model.Attributes,
   uResponse.DTO,
   System.Generics.Collections,
-  uAclUser;
+  uAclUser,
+  uAclUser.Base.DTO;
 
 type
-  TAclUserShowDTO = class
-  private
-    Fname: string;
-    Flogin: string;
-    Facl_role_id: Int64;
-    Fis_superuser: SmallInt;
+  TAclUserShowDTO = class(TAclUserBaseDTO)
   public
-    [SwagString(100)]
-    [SwagProp('name', 'Nome', true)]
-    property name: string read Fname write Fname;
-
-    [SwagString(100)]
-    [SwagProp('login', 'Login', true)]
-    property login: string read Flogin write Flogin;
-
-    [SwagNumber]
-    [SwagProp('acl_role_id', 'Perfil ID', true)]
-    property acl_role_id: Int64 read Facl_role_id write Facl_role_id;
-
-    [SwagNumber]
-    [SwagProp('is_superuser', 'Super usuário. [0=Falso,1=Verdadeiro]')]
-    property is_superuser: SmallInt read Fis_superuser write Fis_superuser;
-
     class function FromEntity(AAclUser: TAclUser): TAclUserShowDTO;
   end;
 
