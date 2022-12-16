@@ -23,7 +23,7 @@ type
     function DataSetToEntity(ADtsPerson: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     function LoadPersonContactsToShow(APerson: TPerson): IPersonRepository;
-    function EinExists(AId: Int64; AEin: String): Boolean;
+    function EinExists(AEin: String; AId: Int64): Boolean;
     procedure Validate(APerson: TPerson);
   public
     class function Make(AConn: IConnection; ASQLBuilder: IPersonSQLBuilder): IPersonRepository;
@@ -80,15 +80,10 @@ begin
   Result := lPerson;
 end;
 
-function TPersonRepositorySQL.EinExists(AId: Int64; AEin: String): Boolean;
-var
-  lSQL: String;
+function TPersonRepositorySQL.EinExists(AEin: String; AId: Int64): Boolean;
 begin
-  lSQL := Format('select count(person.id) from person where person.ein = %s and person.id <> %s', [
-    TQtdStr.Value(THlp.OnlyNumbers(AEin)),
-    TQtdStr.Value(AId)
-  ]);
-  Result := FConn.MakeQry.Open(lSQL).DataSet.Fields[0].AsInteger > 0;
+  With FConn.MakeQry.Open(FPersonSQLBuilder.RegisteredEins(THlp.OnlyNumbers(AEin), AId)) do
+    Result := not DataSet.IsEmpty;
 end;
 
 function TPersonRepositorySQL.LoadPersonContactsToShow(APerson: TPerson): IPersonRepository;
@@ -170,7 +165,7 @@ end;
 procedure TPersonRepositorySQL.Validate(APerson: TPerson);
 begin
   // Verificar se CPF/CNPJ já existe
-  if (APerson.ein.Trim.IsEmpty = False) and EinExists(APerson.id, APerson.ein) then
+  if (APerson.ein.Trim.IsEmpty = False) and EinExists(APerson.ein, APerson.id) then
     raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['person.ein', APerson.ein]));
 end;
 

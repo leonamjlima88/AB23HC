@@ -27,6 +27,7 @@ type
     function LastInsertId: String;
     function Update(AEntity: TBaseEntity; AId: Int64): String;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter;
+    function RegisteredEins(AEin: String; AId: Int64): String;
   end;
 
 implementation
@@ -42,6 +43,17 @@ uses
   uHlp;
 
 { TPersonSQLBuilder }
+function TPersonSQLBuilder.RegisteredEins(AEin: String; AId: Int64): String;
+begin
+  Result := TCQL.New(FDBName)
+    .Select
+    .Column('person.ein')
+    .From('person')
+    .Where('person.ein').Equal(AEin)
+    .&And('person.id').NotEqual(AId)
+  .AsString;
+end;
+
 constructor TPersonSQLBuilder.Create;
 begin
   inherited Create;
