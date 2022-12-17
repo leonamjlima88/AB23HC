@@ -11,6 +11,7 @@ type
     ['{061F3162-E14C-4C78-801D-E78EBEC8D8F9}']
     function Show(AId: Int64): TPerson;
     function Store(APerson: TPerson; AManageTransaction: Boolean): Int64; overload;
+    function Update(APerson: TPerson; AId: Int64; AManageTransaction: Boolean): Boolean; overload;
   end;
 
 implementation

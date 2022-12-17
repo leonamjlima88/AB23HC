@@ -20,6 +20,7 @@ type
     constructor Create(AConn: IConnection; ASQLBuilder: IUnitSQLBuilder);
     function DataSetToEntity(ADtsUnit: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
+    procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IUnitSQLBuilder): IUnitRepository;
     function Show(AId: Int64): TUnit;
@@ -69,6 +70,11 @@ end;
 function TUnitRepositorySQL.Show(AId: Int64): TUnit;
 begin
   Result := ShowById(AId) as TUnit;
+end;
+
+procedure TUnitRepositorySQL.Validate(AEntity: TBaseEntity);
+begin
+//
 end;
 
 end.

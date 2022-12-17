@@ -11,6 +11,7 @@ type
 
   THlp = class
   public
+    class function  StateList: TArray<String>; // Lista de Estados
     class function  CpfOrCnpjIsValid(AValue: string): boolean;
     class function  CpfIsValid(AValue: string): boolean;
     class function  CnpjIsValid(AValue: string): boolean;
@@ -470,6 +471,40 @@ begin
     sdLeft:  Result := Space(ALength - Length(AContent)) + AContent;
     sdRight: Result := AContent + Space(ALength - Length(AContent));
   end;
+end;
+
+class function THlp.StateList: TArray<String>;
+begin
+  Result := TArray<String>.Create(
+    'AC',
+    'AL',
+    'AP',
+    'AM',
+    'BA',
+    'CE',
+    'DF',
+    'ES',
+    'GO',
+    'MA',
+    'MT',
+    'MS',
+    'MG',
+    'PA',
+    'PB',
+    'PR',
+    'PE',
+    'PI',
+    'RJ',
+    'RN',
+    'RS',
+    'RO',
+    'RR',
+    'SC',
+    'SP',
+    'SE',
+    'TO',
+    'EX'
+  )
 end;
 
 class function THlp.StrFloat(AValue: String; ADefaultValue: Double): Double;

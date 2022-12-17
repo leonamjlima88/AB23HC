@@ -24,11 +24,12 @@ type
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     function LoadPersonContactsToShow(APerson: TPerson): IPersonRepository;
     function EinExists(AEin: String; AId: Int64): Boolean;
-    procedure Validate(APerson: TPerson);
+    procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IPersonSQLBuilder): IPersonRepository;
     function Show(AId: Int64): TPerson;
     function Store(APerson: TPerson; AManageTransaction: Boolean): Int64; overload;
+    function Update(APerson: TPerson; AId: Int64; AManageTransaction: Boolean): Boolean; overload;
  end;
 
 implementation
@@ -82,8 +83,9 @@ end;
 
 function TPersonRepositorySQL.EinExists(AEin: String; AId: Int64): Boolean;
 begin
-  With FConn.MakeQry.Open(FPersonSQLBuilder.RegisteredEins(THlp.OnlyNumbers(AEin), AId)) do
-    Result := not DataSet.IsEmpty;
+  Result := not FConn.MakeQry.Open(
+    FPersonSQLBuilder.RegisteredEins(THlp.OnlyNumbers(AEin), AId)
+  ).DataSet.IsEmpty;
 end;
 
 function TPersonRepositorySQL.LoadPersonContactsToShow(APerson: TPerson): IPersonRepository;
@@ -130,7 +132,7 @@ var
   lQry: IQry;
 begin
   // Validar antes de persistir
-  Validate(APerson);
+//  Validate(APerson);
 
   // Instanciar Qry
   lQry := FConn.MakeQry;
@@ -142,7 +144,7 @@ begin
     // Incluir Person
     lPk := inherited Store(APerson);
 
-    // Incluir PersonContact
+    // Incluir PersonContacts
     for lPersonContact in APerson.person_contact_list do
     begin
       lPersonContact.person_id := lPk;
@@ -162,11 +164,57 @@ begin
   Result := lPk;
 end;
 
-procedure TPersonRepositorySQL.Validate(APerson: TPerson);
+function TPersonRepositorySQL.Update(APerson: TPerson; AId: Int64; AManageTransaction: Boolean): Boolean;
+var
+  lPersonContact: TPersonContact;
+  lQry: IQry;
 begin
+  // Validar antes de persistir
+//  Validate(APerson);
+
+  // Instanciar Qry
+  lQry := FConn.MakeQry;
+
+  Try
+    if AManageTransaction then
+      FConn.StartTransaction;
+
+    // Atualizar Person
+    inherited Update(APerson, AId);
+
+    // Atualizar PersonContacts
+    lQry.ExecSQL(FPersonContactSQLBuilder.DeleteByPersonId(AId));
+    for lPersonContact in APerson.person_contact_list do
+    begin
+      lPersonContact.person_id := AId;
+      lQry.ExecSQL(FPersonContactSQLBuilder.InsertInto(lPersonContact))
+    end;
+
+    if AManageTransaction then
+      FConn.CommitTransaction;
+  except on E: Exception do
+    Begin
+      if AManageTransaction then
+        FConn.RollBackTransaction;
+      raise;
+    end;
+  end;
+
+  Result := True;
+end;
+
+procedure TPersonRepositorySQL.Validate(AEntity: TBaseEntity);
+var
+  lPerson: TPerson;
+begin
+  lPerson := AEntity as TPerson;
+
   // Verificar se CPF/CNPJ já existe
-  if (APerson.ein.Trim.IsEmpty = False) and EinExists(APerson.ein, APerson.id) then
-    raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['person.ein', APerson.ein]));
+  if not lPerson.ein.Trim.IsEmpty then
+  begin
+    if EinExists(lPerson.ein, lPerson.id) then
+      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['person.ein', lPerson.ein]));
+  end;
 end;
 
 end.

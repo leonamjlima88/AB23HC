@@ -53,7 +53,8 @@ uses
   u11CreateStorageLocationTable.Migration,
   u12CreateCityTable.Migration,
   u13CreatePersonTable.Migration,
-  u14CreatePersonContactTable.Migration;
+  u14CreatePersonContactTable.Migration,
+  u15CreateProductTable.Migration;
 
 const
   MIGRATION_ORDER_BY_DESCRIPTION = 'select * from migration order by description';
@@ -84,6 +85,7 @@ begin
   FMigrations.Add(T12CreateCityTable.Make(FConn));
   FMigrations.Add(T13CreatePersonTable.Make(FConn));
   FMigrations.Add(T14CreatePersonContactTable.Make(FConn));
+  FMigrations.Add(T15CreateProductTable.Make(FConn));
 end;
 
 constructor TMigrationManager.Create(AConn: IConnection);

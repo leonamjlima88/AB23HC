@@ -20,6 +20,7 @@ type
     constructor Create(AConn: IConnection; ASQLBuilder: IBrandSQLBuilder);
     function DataSetToEntity(ADtsBrand: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
+    procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IBrandSQLBuilder): IBrandRepository;
     function Show(AId: Int64): TBrand;
@@ -69,6 +70,11 @@ end;
 function TBrandRepositorySQL.Show(AId: Int64): TBrand;
 begin
   Result := ShowById(AId) as TBrand;
+end;
+
+procedure TBrandRepositorySQL.Validate(AEntity: TBaseEntity);
+begin
+//
 end;
 
 end.

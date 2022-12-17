@@ -17,6 +17,7 @@ type
     Fein: string;
     Ftype: string;
     procedure Initialize;
+    function Getein: string;
   public
     constructor Create; overload;
     destructor Destroy; override;
@@ -24,7 +25,7 @@ type
     property id: Int64 read Fid write Fid;
     property person_id: Int64 read Fperson_id write Fperson_id;
     property name: string read Fname write Fname;
-    property ein: string read Fein write Fein;
+    property ein: string read Getein write Fein;
     property &type: string read Ftype write Ftype;
     property note: string read Fnote write Fnote;
     property phone: string read Fphone write Fphone;
@@ -36,7 +37,9 @@ type
 implementation
 
 uses
-  System.SysUtils;
+  System.SysUtils,
+  uHlp,
+  uApplication.Types;
 
 { TPersonContact }
 
@@ -51,32 +54,24 @@ begin
   inherited;
 end;
 
+function TPersonContact.Getein: string;
+begin
+  Result := THlp.OnlyNumbers(Fein);
+end;
+
 procedure TPersonContact.Initialize;
 begin
   //
 end;
 
 procedure TPersonContact.Validate;
-//var
-//  lIsInserting: Boolean;
 begin
-//  if Fperson_id.Trim.IsEmpty then
-//    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['person_id']));
-//
-//  if Falias_person_id.Trim.IsEmpty then
-//    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['alias_person_id']));
-//
-//  lIsInserting := Fid = 0;
-//  case lIsInserting of
-//    True: Begin
-//      if (Fcreated_at <= 0)             then raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['created_at']));
-//      if (Fcreated_by_acl_user_id <= 0) then raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['created_by_acl_user_id']));
-//    end;
-//    False: Begin
-//      if (Fupdated_at <= 0)             then raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['updated_at']));
-//      if (Fupdated_by_acl_user_id <= 0) then raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['updated_by_acl_user_id']));
-//    end;
-//  end;
+  // Validar CPF/CNPJ se preenchido
+  if not Fein.Trim.IsEmpty then
+  begin
+    if not THlp.CpfOrCnpjIsValid(Fein) then
+      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_INVALID, ['person_contact.ein', Fein]));
+  end;
 end;
 
 end.

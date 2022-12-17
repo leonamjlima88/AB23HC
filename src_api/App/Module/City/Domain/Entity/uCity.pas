@@ -51,7 +51,9 @@ type
 implementation
 
 uses
-  System.SysUtils;
+  System.SysUtils,
+  uHlp,
+  System.StrUtils;
 
 { TCity }
 
@@ -82,8 +84,8 @@ begin
   if Fname.Trim.IsEmpty then
     raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['name']));
 
-  if Fstate.Trim.IsEmpty then
-    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['state']));
+  if not MatchStr(Fstate.Trim.ToUpper, THlp.StateList) then
+    raise Exception.Create(Format(FIELD_WITH_VALUE_IS_INVALID, ['state', Fstate.Trim.ToUpper]));
 
   if Fcountry.Trim.IsEmpty then
     raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['country']));

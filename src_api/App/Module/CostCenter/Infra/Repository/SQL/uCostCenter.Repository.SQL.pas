@@ -20,6 +20,7 @@ type
     constructor Create(AConn: IConnection; ASQLBuilder: ICostCenterSQLBuilder);
     function DataSetToEntity(ADtsCostCenter: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
+    procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: ICostCenterSQLBuilder): ICostCenterRepository;
     function Show(AId: Int64): TCostCenter;
@@ -69,6 +70,11 @@ end;
 function TCostCenterRepositorySQL.Show(AId: Int64): TCostCenter;
 begin
   Result := ShowById(AId) as TCostCenter;
+end;
+
+procedure TCostCenterRepositorySQL.Validate(AEntity: TBaseEntity);
+begin
+//
 end;
 
 end.

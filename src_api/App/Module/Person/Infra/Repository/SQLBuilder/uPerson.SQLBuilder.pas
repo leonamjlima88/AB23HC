@@ -198,13 +198,12 @@ begin
     .&Set('is_other',               lPerson.is_other)
     .&Set('is_final_customer',      lPerson.is_final_customer)
     .&Set('updated_at',             lPerson.updated_at)
-    .&Set('updated_by_acl_user_id', lPerson.updated_by_acl_user_id)
-    .Where('person.id = ' + AId.ToString);
+    .&Set('updated_by_acl_user_id', lPerson.updated_by_acl_user_id);
 
   // Tratar chaves estrangeiras
   if lPerson.city_id > 0 then lCQL.&Set('city_id', lPerson.city_id);
 
-  Result := lCQL.AsString;
+  Result := lCQL.Where('person.id = ' + AId.ToString).AsString;
 end;
 
 end.

@@ -20,6 +20,7 @@ type
     constructor Create(AConn: IConnection; ASQLBuilder: IStorageLocationSQLBuilder);
     function DataSetToEntity(ADtsStorageLocation: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
+    procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IStorageLocationSQLBuilder): IStorageLocationRepository;
     function Show(AId: Int64): TStorageLocation;
@@ -69,6 +70,11 @@ end;
 function TStorageLocationRepositorySQL.Show(AId: Int64): TStorageLocation;
 begin
   Result := ShowById(AId) as TStorageLocation;
+end;
+
+procedure TStorageLocationRepositorySQL.Validate(AEntity: TBaseEntity);
+begin
+//
 end;
 
 end.

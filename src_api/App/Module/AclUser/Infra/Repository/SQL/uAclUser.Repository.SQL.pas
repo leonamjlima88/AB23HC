@@ -20,6 +20,7 @@ type
     constructor Create(AConn: IConnection; ASQLBuilder: IAclUserSQLBuilder);
     function DataSetToEntity(ADtsAclUser: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
+    procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IAclUserSQLBuilder): IAclUserRepository;
     function Show(AId: Int64): TAclUser;
@@ -78,6 +79,11 @@ begin
     if DataSet.IsEmpty then Exit;
     Result := DataSetToEntity(DataSet) as TAclUser;
   end;
+end;
+
+procedure TAclUserRepositorySQL.Validate(AEntity: TBaseEntity);
+begin
+//
 end;
 
 end.

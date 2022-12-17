@@ -20,6 +20,7 @@ type
     constructor Create(AConn: IConnection; ASQLBuilder: IAclRoleSQLBuilder);
     function DataSetToEntity(ADtsAclRole: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
+    procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IAclRoleSQLBuilder): IAclRoleRepository;
     function Show(AId: Int64): TAclRole;
@@ -62,6 +63,11 @@ end;
 function TAclRoleRepositorySQL.Show(AId: Int64): TAclRole;
 begin
   Result := ShowById(AId) as TAclRole;
+end;
+
+procedure TAclRoleRepositorySQL.Validate(AEntity: TBaseEntity);
+begin
+//
 end;
 
 end.

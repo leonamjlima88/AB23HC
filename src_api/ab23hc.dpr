@@ -217,7 +217,24 @@ uses
   uUnit.Base.DTO in 'App\Module\Unit\Application\DTO\uUnit.Base.DTO.pas',
   uStorageLocation.Base.DTO in 'App\Module\StorageLocation\Application\DTO\uStorageLocation.Base.DTO.pas',
   uCity.Base.DTO in 'App\Module\City\Application\DTO\uCity.Base.DTO.pas',
-  uAclUser.Base.DTO in 'App\Module\AclUser\Application\DTO\uAclUser.Base.DTO.pas';
+  uAclUser.Base.DTO in 'App\Module\AclUser\Application\DTO\uAclUser.Base.DTO.pas',
+  uProduct.SQLBuilder in 'App\Module\Product\Infra\Repository\SQLBuilder\uProduct.SQLBuilder.pas',
+  uProduct.SQLBuilder.MySQL in 'App\Module\Product\Infra\Repository\SQLBuilder\MySQL\uProduct.SQLBuilder.MySQL.pas',
+  uProduct.Repository.SQL in 'App\Module\Product\Infra\Repository\SQL\uProduct.Repository.SQL.pas',
+  uProduct.Controller in 'App\Module\Product\Infra\Controller\uProduct.Controller.pas',
+  uProduct.SQLBuilder.Interfaces in 'App\Module\Product\Domain\Repository\uProduct.SQLBuilder.Interfaces.pas',
+  uProduct.Repository.Interfaces in 'App\Module\Product\Domain\Repository\uProduct.Repository.Interfaces.pas',
+  uProduct in 'App\Module\Product\Domain\Entity\uProduct.pas',
+  uProduct.UpdateAndShow.UseCase in 'App\Module\Product\Application\UseCase\uProduct.UpdateAndShow.UseCase.pas',
+  uProduct.StoreAndShow.UseCase in 'App\Module\Product\Application\UseCase\uProduct.StoreAndShow.UseCase.pas',
+  uProduct.Show.UseCase in 'App\Module\Product\Application\UseCase\uProduct.Show.UseCase.pas',
+  uProduct.Index.UseCase in 'App\Module\Product\Application\UseCase\uProduct.Index.UseCase.pas',
+  uProduct.Delete.UseCase in 'App\Module\Product\Application\UseCase\uProduct.Delete.UseCase.pas',
+  uProduct.Show.DTO in 'App\Module\Product\Application\DTO\uProduct.Show.DTO.pas',
+  uProduct.DTO in 'App\Module\Product\Application\DTO\uProduct.DTO.pas',
+  uProduct.Base.DTO in 'App\Module\Product\Application\DTO\uProduct.Base.DTO.pas',
+  u15CreateProductTable.Migration in 'Database\Infra\Migration\u15CreateProductTable.Migration.pas',
+  uProduct.Types in 'App\Module\Product\Domain\Entity\uProduct.Types.pas';
 
 begin
   TMain.Start;

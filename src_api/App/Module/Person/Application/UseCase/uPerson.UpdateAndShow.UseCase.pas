@@ -53,7 +53,7 @@ begin
   end;
 
   // Atualizar e Localizar registro atualizado
-  FRepository.Update(lPersonToUpdate, APK);
+  FRepository.Update(lPersonToUpdate, APK, true);
   lPersonUpdated := FRepository.Show(APK);
 
   // Retornar DTO

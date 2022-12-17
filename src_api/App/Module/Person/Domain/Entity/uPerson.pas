@@ -154,12 +154,13 @@ procedure TPerson.Validate;
 var
   lIsInserting: Boolean;
   lHasAtLeastOneFilled: Boolean;
+  lPersonContact: TPersonContact;
 begin
   // Validar CPF/CNPJ se preenchido
   if not Fein.Trim.IsEmpty then
   begin
     if not THlp.CpfOrCnpjIsValid(Fein) then
-      raise Exception.Create(Format(FIELD_IS_INVALID, ['ein', Fein]));
+      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_INVALID, ['ein', Fein]));
   end;
 
   // Tipo de Pessoa
@@ -181,6 +182,10 @@ begin
       if (Fupdated_by_acl_user_id <= 0) then raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['updated_by_acl_user_id']));
     end;
   end;
+
+  // Validar Contatos
+  for lPersonContact in Fperson_contact_list do
+    lPersonContact.Validate;
 end;
 
 end.

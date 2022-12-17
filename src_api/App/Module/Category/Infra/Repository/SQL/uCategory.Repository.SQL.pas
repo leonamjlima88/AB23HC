@@ -20,6 +20,7 @@ type
     constructor Create(AConn: IConnection; ASQLBuilder: ICategorySQLBuilder);
     function DataSetToEntity(ADtsCategory: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
+    procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: ICategorySQLBuilder): ICategoryRepository;
     function Show(AId: Int64): TCategory;
@@ -69,6 +70,11 @@ end;
 function TCategoryRepositorySQL.Show(AId: Int64): TCategory;
 begin
   Result := ShowById(AId) as TCategory;
+end;
+
+procedure TCategoryRepositorySQL.Validate(AEntity: TBaseEntity);
+begin
+//
 end;
 
 end.

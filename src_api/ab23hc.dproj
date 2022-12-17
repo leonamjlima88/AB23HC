@@ -307,6 +307,23 @@
         <DCCReference Include="App\Module\StorageLocation\Application\DTO\uStorageLocation.Base.DTO.pas"/>
         <DCCReference Include="App\Module\City\Application\DTO\uCity.Base.DTO.pas"/>
         <DCCReference Include="App\Module\AclUser\Application\DTO\uAclUser.Base.DTO.pas"/>
+        <DCCReference Include="App\Module\Product\Infra\Repository\SQLBuilder\uProduct.SQLBuilder.pas"/>
+        <DCCReference Include="App\Module\Product\Infra\Repository\SQLBuilder\MySQL\uProduct.SQLBuilder.MySQL.pas"/>
+        <DCCReference Include="App\Module\Product\Infra\Repository\SQL\uProduct.Repository.SQL.pas"/>
+        <DCCReference Include="App\Module\Product\Infra\Controller\uProduct.Controller.pas"/>
+        <DCCReference Include="App\Module\Product\Domain\Repository\uProduct.SQLBuilder.Interfaces.pas"/>
+        <DCCReference Include="App\Module\Product\Domain\Repository\uProduct.Repository.Interfaces.pas"/>
+        <DCCReference Include="App\Module\Product\Domain\Entity\uProduct.pas"/>
+        <DCCReference Include="App\Module\Product\Application\UseCase\uProduct.UpdateAndShow.UseCase.pas"/>
+        <DCCReference Include="App\Module\Product\Application\UseCase\uProduct.StoreAndShow.UseCase.pas"/>
+        <DCCReference Include="App\Module\Product\Application\UseCase\uProduct.Show.UseCase.pas"/>
+        <DCCReference Include="App\Module\Product\Application\UseCase\uProduct.Index.UseCase.pas"/>
+        <DCCReference Include="App\Module\Product\Application\UseCase\uProduct.Delete.UseCase.pas"/>
+        <DCCReference Include="App\Module\Product\Application\DTO\uProduct.Show.DTO.pas"/>
+        <DCCReference Include="App\Module\Product\Application\DTO\uProduct.DTO.pas"/>
+        <DCCReference Include="App\Module\Product\Application\DTO\uProduct.Base.DTO.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u15CreateProductTable.Migration.pas"/>
+        <DCCReference Include="App\Module\Product\Domain\Entity\uProduct.Types.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -20,6 +20,7 @@ type
     constructor Create(AConn: IConnection; ASQLBuilder: ISizeSQLBuilder);
     function DataSetToEntity(ADtsSize: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
+    procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: ISizeSQLBuilder): ISizeRepository;
     function Show(AId: Int64): TSize;
@@ -69,6 +70,11 @@ end;
 function TSizeRepositorySQL.Show(AId: Int64): TSize;
 begin
   Result := ShowById(AId) as TSize;
+end;
+
+procedure TSizeRepositorySQL.Validate(AEntity: TBaseEntity);
+begin
+//
 end;
 
 end.

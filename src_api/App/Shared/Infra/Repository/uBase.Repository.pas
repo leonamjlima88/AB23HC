@@ -18,6 +18,7 @@ type
     FConn: IConnection;
     FSQLBuilder: IBaseSQLBuilder;
     function DataSetToEntity(ADtsBrand: TDataSet): TBaseEntity; virtual; abstract;
+    procedure Validate(AEntity: TBaseEntity); virtual; abstract;
   public
     function Conn: IConnection;
     function Delete(AId: Int64): Boolean; virtual;
@@ -103,6 +104,7 @@ end;
 
 function TBaseRepository.Store(AEntity: TBaseEntity): Int64;
 begin
+  Validate(AEntity);
   Result := FConn.MakeQry
     .ExecSQL (FSQLBuilder.InsertInto(AEntity))
     .Open    (FSQLBuilder.LastInsertId)
@@ -111,6 +113,7 @@ end;
 
 function TBaseRepository.Update(AEntity: TBaseEntity; AId: Int64): Boolean;
 begin
+  Validate(AEntity);
   FConn.MakeQry.ExecSQL(FSQLBuilder.Update(AEntity, AId));
   Result := True;
 end;

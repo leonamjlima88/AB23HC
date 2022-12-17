@@ -27,7 +27,8 @@ uses
   uAclUser.Auth.Controller,
   uCategory.Controller,
   uCostCenter.Controller,
-  uSize.Controller;
+  uSize.Controller,
+  uProduct.Controller;
 
 { TRouteApi }
 
@@ -43,6 +44,7 @@ begin
       end
     );
 
+  THorseGBSwaggerRegister.RegisterPath(TProductController);
   THorseGBSwaggerRegister.RegisterPath(TPersonController);
   THorseGBSwaggerRegister.RegisterPath(TCityController);
   THorseGBSwaggerRegister.RegisterPath(TStorageLocationController);
