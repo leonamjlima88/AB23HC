@@ -49,8 +49,6 @@ begin
 
   // Incluir e Localizar registro incluso
   lPK := FRepository.Store(lPersonToStore, true);
-
-  // Localizar Registro
   lPersonStored := FRepository.Show(lPK);
 
   // Retornar DTO

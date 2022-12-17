@@ -49,8 +49,6 @@ begin
 
   // Incluir e Localizar registro incluso
   lPK := FRepository.Store(lBrandToStore);
-
-  // Localizar Registro
   lBrandStored := FRepository.Show(lPK);
 
   // Retornar DTO

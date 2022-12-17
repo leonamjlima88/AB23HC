@@ -49,8 +49,6 @@ begin
 
   // Incluir e Localizar registro incluso
   lPK := FRepository.Store(lCostCenterToStore);
-
-  // Localizar Registro
   lCostCenterStored := FRepository.Show(lPK);
 
   // Retornar DTO
