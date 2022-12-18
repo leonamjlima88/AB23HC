@@ -8,10 +8,13 @@ uses
   uBrand,
   criteria.query.language,
   uBrand.SQLBuilder.Interfaces,
+  cqlbr.interfaces,
   uBase.Entity;
 
 type
   TBrandSQLBuilder = class(TInterfacedObject, IBrandSQLBuilder)
+  private
+    procedure LoadDefaultFieldsToInsertOrUpdate(const ACQL: ICQL; const ABrand: TBrand);
   public
     FDBName: TDBName;
     constructor Create;
@@ -31,7 +34,6 @@ type
 implementation
 
 uses
-  cqlbr.interfaces,
   cqlbr.select.mysql,
   cqlbr.serialize.mysql,
   System.Classes,
@@ -58,15 +60,20 @@ end;
 function TBrandSQLBuilder.InsertInto(AEntity: TBaseEntity): String;
 var
   lBrand: TBrand;
+  lCQL: ICQL;
 begin
   lBrand := AEntity as TBrand;
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Insert
     .Into('brand')
-    .&Set('name',                   lBrand.name)
     .&Set('created_at',             lBrand.created_at)
-    .&Set('created_by_acl_user_id', lBrand.created_by_acl_user_id)
-  .AsString;
+    .&Set('created_by_acl_user_id', lBrand.created_by_acl_user_id);
+
+  // Carregar Campos Default
+  LoadDefaultFieldsToInsertOrUpdate(lCQL, lBrand);
+
+  // Retornar String SQL
+  Result := lCQL.AsString;
 end;
 
 function TBrandSQLBuilder.LastInsertId: String;
@@ -74,6 +81,12 @@ begin
   case FDBName of
     dbnMySQL: Result := SELECT_LAST_INSERT_ID_MYSQL;
   end;
+end;
+
+procedure TBrandSQLBuilder.LoadDefaultFieldsToInsertOrUpdate(const ACQL: ICQL; const ABrand: TBrand);
+begin
+  ACQL
+    .&Set('name', ABrand.name);
 end;
 
 function TBrandSQLBuilder.SelectAll: String;
@@ -106,15 +119,19 @@ end;
 function TBrandSQLBuilder.Update(AEntity: TBaseEntity; AId: Int64): String;
 var
   lBrand: TBrand;
+  lCQL: ICQL;
 begin
   lBrand := AEntity as TBrand;
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Update('brand')
-    .&Set('name',                   lBrand.name)
     .&Set('updated_at',             lBrand.updated_at)
-    .&Set('updated_by_acl_user_id', lBrand.updated_by_acl_user_id)
-    .Where('brand.id = ' + AId.ToString)
-  .AsString;
+    .&Set('updated_by_acl_user_id', lBrand.updated_by_acl_user_id);
+
+  // Carregar Campos Default
+  LoadDefaultFieldsToInsertOrUpdate(lCQL, lBrand);
+
+  // Retornar String SQL
+  Result := lCQL.Where('brand.id = ' + AId.ToString).AsString;
 end;
 
 end.

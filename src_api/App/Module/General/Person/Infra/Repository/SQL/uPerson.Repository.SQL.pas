@@ -118,6 +118,8 @@ begin
 
   // Person
   lPerson := ShowById(AId) as TPerson;
+  if not Assigned(lPerson) then
+    Exit;
 
   // PersonContacts
   LoadPersonContactsToShow(lPerson);

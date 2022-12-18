@@ -96,11 +96,11 @@ type
     [SwagProp('packing_weight', 'Peso da embalagem')]
     property packing_weight: Double read Fpacking_weight write Fpacking_weight;
 
-    [SwagNumber]
+    [SwagNumber(0,1)]
     [SwagProp('is_to_move_the_stock', 'Movimentar estoque. [0=False, 1=True]')]
     property is_to_move_the_stock: SmallInt read Fis_to_move_the_stock write Fis_to_move_the_stock;
 
-    [SwagNumber]
+    [SwagNumber(0,1)]
     [SwagProp('is_product_for_scales', 'Produto para pesar em balanças. [0=False, 1=True]')]
     property is_product_for_scales: SmallInt read Fis_product_for_scales write Fis_product_for_scales;
 
@@ -112,7 +112,7 @@ type
     [SwagProp('complement_note', 'Observação complementar')]
     property complement_note: String read Fcomplement_note write Fcomplement_note;
 
-    [SwagNumber]
+    [SwagNumber(0,1)]
     [SwagProp('is_discontinued', 'Produto descontinuado. [0=False, 1=True]')]
     property is_discontinued: SmallInt read Fis_discontinued write Fis_discontinued;
 

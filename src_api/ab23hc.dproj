@@ -455,6 +455,29 @@
         <DCCReference Include="App\Module\Stock\NCM\Application\DTO\uNCM.DTO.pas"/>
         <DCCReference Include="App\Module\Stock\NCM\Application\DTO\uNCM.Base.DTO.pas"/>
         <DCCReference Include="Database\Infra\Migration\u23CreateNCMTable.Migration.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Infra\Repository\SQLBuilder\uTaxRuleState.SQLBuilder.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Infra\Repository\SQLBuilder\uTaxRule.SQLBuilder.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Infra\Repository\SQLBuilder\MySQL\uTaxRuleState.SQLBuilder.MySQL.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Infra\Repository\SQLBuilder\MySQL\uTaxRule.SQLBuilder.MySQL.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Infra\Repository\SQL\uTaxRule.Repository.SQL.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Infra\Controller\uTaxRule.Controller.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Domain\Entity\uTaxRuleState.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Domain\Entity\uTaxRule.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Domain\Repository\uTaxRuleState.SQLBuilder.Interfaces.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Domain\Repository\uTaxRule.SQLBuilder.Interfaces.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Domain\Repository\uTaxRule.Repository.Interfaces.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Application\UseCase\uTaxRule.UpdateAndShow.UseCase.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Application\UseCase\uTaxRule.StoreAndShow.UseCase.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Application\UseCase\uTaxRule.Show.UseCase.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Application\UseCase\uTaxRule.Index.UseCase.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Application\UseCase\uTaxRule.Delete.UseCase.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Application\DTO\uTaxRule.Show.DTO.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Application\DTO\uTaxRule.DTO.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Application\DTO\uTaxRule.Base.DTO.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Application\DTO\uTaxRuleState.Base.DTO.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u24CreateTaxRuleTable.Migration.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u25CreateTaxRuleStateTable.Migration.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Domain\Entity\uTaxRuleState.Types.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

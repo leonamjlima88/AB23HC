@@ -62,7 +62,9 @@ uses
   u20CreateOperationTypeTable.Migration,
   u21CreateCFOPTable.Migration,
   u22CreateChartOfAccountTable.Migration,
-  u23CreateNCMTable.Migration;
+  u23CreateNCMTable.Migration,
+  u24CreateTaxRuleTable.Migration,
+  u25CreateTaxRuleStateTable.Migration;
 
 const
   MIGRATION_ORDER_BY_DESCRIPTION = 'select * from migration order by description';
@@ -102,6 +104,8 @@ begin
   FMigrations.Add(T21CreateCFOPTable.Make(FConn));
   FMigrations.Add(T22CreateChartOfAccountTable.Make(FConn));
   FMigrations.Add(T23CreateNCMTable.Make(FConn));
+  FMigrations.Add(T24CreateTaxRuleTable.Make(FConn));
+  FMigrations.Add(T25CreateTaxRuleStateTable.Make(FConn));
 end;
 
 constructor TMigrationManager.Create(AConn: IConnection);

@@ -365,7 +365,30 @@ uses
   uNCM.Show.DTO in 'App\Module\Stock\NCM\Application\DTO\uNCM.Show.DTO.pas',
   uNCM.DTO in 'App\Module\Stock\NCM\Application\DTO\uNCM.DTO.pas',
   uNCM.Base.DTO in 'App\Module\Stock\NCM\Application\DTO\uNCM.Base.DTO.pas',
-  u23CreateNCMTable.Migration in 'Database\Infra\Migration\u23CreateNCMTable.Migration.pas';
+  u23CreateNCMTable.Migration in 'Database\Infra\Migration\u23CreateNCMTable.Migration.pas',
+  uTaxRuleState.SQLBuilder in 'App\Module\Fiscal\TaxRule\Infra\Repository\SQLBuilder\uTaxRuleState.SQLBuilder.pas',
+  uTaxRule.SQLBuilder in 'App\Module\Fiscal\TaxRule\Infra\Repository\SQLBuilder\uTaxRule.SQLBuilder.pas',
+  uTaxRuleState.SQLBuilder.MySQL in 'App\Module\Fiscal\TaxRule\Infra\Repository\SQLBuilder\MySQL\uTaxRuleState.SQLBuilder.MySQL.pas',
+  uTaxRule.SQLBuilder.MySQL in 'App\Module\Fiscal\TaxRule\Infra\Repository\SQLBuilder\MySQL\uTaxRule.SQLBuilder.MySQL.pas',
+  uTaxRule.Repository.SQL in 'App\Module\Fiscal\TaxRule\Infra\Repository\SQL\uTaxRule.Repository.SQL.pas',
+  uTaxRule.Controller in 'App\Module\Fiscal\TaxRule\Infra\Controller\uTaxRule.Controller.pas',
+  uTaxRuleState in 'App\Module\Fiscal\TaxRule\Domain\Entity\uTaxRuleState.pas',
+  uTaxRule in 'App\Module\Fiscal\TaxRule\Domain\Entity\uTaxRule.pas',
+  uTaxRuleState.SQLBuilder.Interfaces in 'App\Module\Fiscal\TaxRule\Domain\Repository\uTaxRuleState.SQLBuilder.Interfaces.pas',
+  uTaxRule.SQLBuilder.Interfaces in 'App\Module\Fiscal\TaxRule\Domain\Repository\uTaxRule.SQLBuilder.Interfaces.pas',
+  uTaxRule.Repository.Interfaces in 'App\Module\Fiscal\TaxRule\Domain\Repository\uTaxRule.Repository.Interfaces.pas',
+  uTaxRule.UpdateAndShow.UseCase in 'App\Module\Fiscal\TaxRule\Application\UseCase\uTaxRule.UpdateAndShow.UseCase.pas',
+  uTaxRule.StoreAndShow.UseCase in 'App\Module\Fiscal\TaxRule\Application\UseCase\uTaxRule.StoreAndShow.UseCase.pas',
+  uTaxRule.Show.UseCase in 'App\Module\Fiscal\TaxRule\Application\UseCase\uTaxRule.Show.UseCase.pas',
+  uTaxRule.Index.UseCase in 'App\Module\Fiscal\TaxRule\Application\UseCase\uTaxRule.Index.UseCase.pas',
+  uTaxRule.Delete.UseCase in 'App\Module\Fiscal\TaxRule\Application\UseCase\uTaxRule.Delete.UseCase.pas',
+  uTaxRule.Show.DTO in 'App\Module\Fiscal\TaxRule\Application\DTO\uTaxRule.Show.DTO.pas',
+  uTaxRule.DTO in 'App\Module\Fiscal\TaxRule\Application\DTO\uTaxRule.DTO.pas',
+  uTaxRule.Base.DTO in 'App\Module\Fiscal\TaxRule\Application\DTO\uTaxRule.Base.DTO.pas',
+  uTaxRuleState.Base.DTO in 'App\Module\Fiscal\TaxRule\Application\DTO\uTaxRuleState.Base.DTO.pas',
+  u24CreateTaxRuleTable.Migration in 'Database\Infra\Migration\u24CreateTaxRuleTable.Migration.pas',
+  u25CreateTaxRuleStateTable.Migration in 'Database\Infra\Migration\u25CreateTaxRuleStateTable.Migration.pas',
+  uTaxRuleState.Types in 'App\Module\Fiscal\TaxRule\Domain\Entity\uTaxRuleState.Types.pas';
 
 begin
   TMain.Start;

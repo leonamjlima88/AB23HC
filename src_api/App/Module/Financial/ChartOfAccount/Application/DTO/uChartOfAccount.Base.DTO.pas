@@ -21,7 +21,7 @@ type
     [SwagProp('hierarchy_code', 'Hierarquia', true)]
     property hierarchy_code: string read Fhierarchy_code write Fhierarchy_code;
 
-    [SwagNumber]
+    [SwagNumber(0,1)]
     [SwagProp('is_analytical', 'Analítico? [0=False, 1=True]', false)]
     property is_analytical: SmallInt read Fis_analytical write Fis_analytical;
 

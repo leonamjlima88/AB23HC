@@ -8,10 +8,13 @@ uses
   uBankAccount,
   criteria.query.language,
   uBankAccount.SQLBuilder.Interfaces,
+  cqlbr.interfaces,
   uBase.Entity;
 
 type
   TBankAccountSQLBuilder = class(TInterfacedObject, IBankAccountSQLBuilder)
+  private
+    procedure LoadDefaultFieldsToInsertOrUpdate(const ACQL: ICQL; const ABankAccount: TBankAccount);
   public
     FDBName: TDBName;
     constructor Create;
@@ -31,7 +34,6 @@ type
 implementation
 
 uses
-  cqlbr.interfaces,
   cqlbr.select.mysql,
   cqlbr.serialize.mysql,
   System.Classes,
@@ -64,14 +66,13 @@ begin
   lCQL := TCQL.New(FDBName)
     .Insert
     .Into('bank_account')
-    .&Set('name',                   lBankAccount.name)
-    .&Set('note',                   lBankAccount.note)
     .&Set('created_at',             lBankAccount.created_at)
     .&Set('created_by_acl_user_id', lBankAccount.created_by_acl_user_id);
 
-  // Tratar chaves estrangeiras
-  if (lBankAccount.bank_id > 0) then lCQL.&Set('bank_id', lBankAccount.bank_id);
+  // Carregar campos default
+  LoadDefaultFieldsToInsertOrUpdate(lCQL, lBankAccount);
 
+  // Retornar String SQL
   Result := lCQL.AsString;
 end;
 
@@ -80,6 +81,16 @@ begin
   case FDBName of
     dbnMySQL: Result := SELECT_LAST_INSERT_ID_MYSQL;
   end;
+end;
+
+procedure TBankAccountSQLBuilder.LoadDefaultFieldsToInsertOrUpdate(const ACQL: ICQL; const ABankAccount: TBankAccount);
+begin
+  ACQL
+    .&Set('name', ABankAccount.name)
+    .&Set('note', ABankAccount.note);
+
+  // Tratar chaves estrangeiras
+  if (ABankAccount.bank_id > 0) then ACQL.&Set('bank_id', ABankAccount.bank_id);
 end;
 
 function TBankAccountSQLBuilder.SelectAll: String;
@@ -120,14 +131,13 @@ begin
   lBankAccount := AEntity as TBankAccount;
   lCQL := TCQL.New(FDBName)
     .Update('bank_account')
-    .&Set('name',                   lBankAccount.name)
-    .&Set('note',                   lBankAccount.note)
     .&Set('updated_at',             lBankAccount.updated_at)
     .&Set('updated_by_acl_user_id', lBankAccount.updated_by_acl_user_id);
 
-  // Tratar chaves estrangeiras
-  if (lBankAccount.bank_id > 0) then lCQL.&Set('bank_id', lBankAccount.bank_id);
+  // Carregar campos default
+  LoadDefaultFieldsToInsertOrUpdate(lCQL, lBankAccount);
 
+  // Retornar String SQL
   Result := lCQL.Where('bank_account.id = ' + AId.ToString).AsString;
 end;
 

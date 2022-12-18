@@ -137,35 +137,35 @@ type
     [SwagProp('commercial_note', 'Referência Comercial', false)]
     property commercial_note: String read Fcommercial_note write Fcommercial_note;
 
-    [SwagNumber]
+    [SwagNumber(0,1)]
     [SwagProp('is_customer', 'Cliente? [0=false, 1=true]', false)]
     property is_customer: SmallInt read Fis_customer write Fis_customer;
 
-    [SwagNumber]
+    [SwagNumber(0,1)]
     [SwagProp('is_seller', 'Vendedor? [0=false, 1=true]', false)]
     property is_seller: SmallInt read Fis_seller write Fis_seller;
 
-    [SwagNumber]
+    [SwagNumber(0,1)]
     [SwagProp('is_supplier', 'Fornecedor? [0=false, 1=true]', false)]
     property is_supplier: SmallInt read Fis_supplier write Fis_supplier;
 
-    [SwagNumber]
+    [SwagNumber(0,1)]
     [SwagProp('is_carrier', 'Transportador? [0=false, 1=true]', false)]
     property is_carrier: SmallInt read Fis_carrier write Fis_carrier;
 
-    [SwagNumber]
+    [SwagNumber(0,1)]
     [SwagProp('is_technician', 'Técnico? [0=false, 1=true]', false)]
     property is_technician: SmallInt read Fis_technician write Fis_technician;
 
-    [SwagNumber]
+    [SwagNumber(0,1)]
     [SwagProp('is_employee', 'Funcionário? [0=false, 1=true]', false)]
     property is_employee: SmallInt read Fis_employee write Fis_employee;
 
-    [SwagNumber]
+    [SwagNumber(0,1)]
     [SwagProp('is_other', 'Outros? [0=false, 1=true]', false)]
     property is_other: SmallInt read Fis_other write Fis_other;
 
-    [SwagNumber]
+    [SwagNumber(0,1)]
     [SwagProp('is_final_customer', 'Consumidor Final? [0=false, 1=true]', false)]
     property is_final_customer: SmallInt read Fis_final_customer write Fis_final_customer;
 

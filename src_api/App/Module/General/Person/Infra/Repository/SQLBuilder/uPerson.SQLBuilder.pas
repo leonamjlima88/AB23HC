@@ -8,10 +8,13 @@ uses
   uPerson,
   criteria.query.language,
   uPerson.SQLBuilder.Interfaces,
-  uBase.Entity;
+  uBase.Entity,
+  cqlbr.interfaces;
 
 type
   TPersonSQLBuilder = class(TInterfacedObject, IPersonSQLBuilder)
+  private
+    procedure LoadDefaultFieldsToInsertOrUpdate(const ACQL: ICQL; const APerson: TPerson);
   public
     FDBName: TDBName;
     constructor Create;
@@ -33,7 +36,6 @@ type
 implementation
 
 uses
-  cqlbr.interfaces,
   cqlbr.select.mysql,
   cqlbr.serialize.mysql,
   System.Classes,
@@ -83,41 +85,13 @@ begin
   lCQL := TCQL.New(FDBName)
     .Insert
     .Into('person')
-    .&Set('name',                   lPerson.name)
-    .&Set('alias_name',             lPerson.alias_name)
-    .&Set('ein',                    lPerson.ein)
-    .&Set('icms_taxpayer',          lPerson.icms_taxpayer)
-    .&Set('state_registration',     lPerson.state_registration)
-    .&Set('municipal_registration', lPerson.municipal_registration)
-    .&Set('zipcode',                lPerson.zipcode)
-    .&Set('address',                lPerson.address)
-    .&Set('address_number',         lPerson.address_number)
-    .&Set('complement',             lPerson.complement)
-    .&Set('district',               lPerson.district)
-    .&Set('reference_point',        lPerson.reference_point)
-    .&Set('phone_1',                lPerson.phone_1)
-    .&Set('phone_2',                lPerson.phone_2)
-    .&Set('phone_3',                lPerson.phone_3)
-    .&Set('company_email',          lPerson.company_email)
-    .&Set('financial_email',        lPerson.financial_email)
-    .&Set('internet_page',          lPerson.internet_page)
-    .&Set('note',                   lPerson.note)
-    .&Set('bank_note',              lPerson.bank_note)
-    .&Set('commercial_note',        lPerson.commercial_note)
-    .&Set('is_customer',            lPerson.is_customer)
-    .&Set('is_seller',              lPerson.is_seller)
-    .&Set('is_supplier',            lPerson.is_supplier)
-    .&Set('is_carrier',             lPerson.is_carrier)
-    .&Set('is_technician',          lPerson.is_technician)
-    .&Set('is_employee',            lPerson.is_employee)
-    .&Set('is_other',               lPerson.is_other)
-    .&Set('is_final_customer',      lPerson.is_final_customer)
     .&Set('created_at',             lPerson.created_at)
     .&Set('created_by_acl_user_id', lPerson.created_by_acl_user_id);
 
-  // Tratar chaves estrangeiras
-  if (lPerson.city_id > 0) then lCQL.&Set('city_id', lPerson.city_id);
+  // Carregar Campos Default
+  LoadDefaultFieldsToInsertOrUpdate(lCQL, lPerson);
 
+  // Retornar String SQL
   Result := lCQL.AsString;
 end;
 
@@ -126,6 +100,43 @@ begin
   case FDBName of
     dbnMySQL: Result := SELECT_LAST_INSERT_ID_MYSQL;
   end;
+end;
+
+procedure TPersonSQLBuilder.LoadDefaultFieldsToInsertOrUpdate(const ACQL: ICQL; const APerson: TPerson);
+begin
+  ACQL
+    .&Set('name',                   APerson.name)
+    .&Set('alias_name',             APerson.alias_name)
+    .&Set('ein',                    APerson.ein)
+    .&Set('icms_taxpayer',          APerson.icms_taxpayer)
+    .&Set('state_registration',     APerson.state_registration)
+    .&Set('municipal_registration', APerson.municipal_registration)
+    .&Set('zipcode',                APerson.zipcode)
+    .&Set('address',                APerson.address)
+    .&Set('address_number',         APerson.address_number)
+    .&Set('complement',             APerson.complement)
+    .&Set('district',               APerson.district)
+    .&Set('reference_point',        APerson.reference_point)
+    .&Set('phone_1',                APerson.phone_1)
+    .&Set('phone_2',                APerson.phone_2)
+    .&Set('phone_3',                APerson.phone_3)
+    .&Set('company_email',          APerson.company_email)
+    .&Set('financial_email',        APerson.financial_email)
+    .&Set('internet_page',          APerson.internet_page)
+    .&Set('note',                   APerson.note)
+    .&Set('bank_note',              APerson.bank_note)
+    .&Set('commercial_note',        APerson.commercial_note)
+    .&Set('is_customer',            APerson.is_customer)
+    .&Set('is_seller',              APerson.is_seller)
+    .&Set('is_supplier',            APerson.is_supplier)
+    .&Set('is_carrier',             APerson.is_carrier)
+    .&Set('is_technician',          APerson.is_technician)
+    .&Set('is_employee',            APerson.is_employee)
+    .&Set('is_other',               APerson.is_other)
+    .&Set('is_final_customer',      APerson.is_final_customer);
+
+  // Tratar chaves estrangeiras
+  if (APerson.city_id > 0) then ACQL.&Set('city_id', APerson.city_id);
 end;
 
 function TPersonSQLBuilder.SelectAll: String;
@@ -168,40 +179,11 @@ begin
   lPerson := AEntity as TPerson;
   lCQL := TCQL.New(FDBName)
     .Update('person')
-    .&Set('name',                   lPerson.name)
-    .&Set('alias_name',             lPerson.alias_name)
-    .&Set('ein',                    lPerson.ein)
-    .&Set('icms_taxpayer',          lPerson.icms_taxpayer)
-    .&Set('state_registration',     lPerson.state_registration)
-    .&Set('municipal_registration', lPerson.municipal_registration)
-    .&Set('zipcode',                lPerson.zipcode)
-    .&Set('address',                lPerson.address)
-    .&Set('address_number',         lPerson.address_number)
-    .&Set('complement',             lPerson.complement)
-    .&Set('district',               lPerson.district)
-    .&Set('reference_point',        lPerson.reference_point)
-    .&Set('phone_1',                lPerson.phone_1)
-    .&Set('phone_2',                lPerson.phone_2)
-    .&Set('phone_3',                lPerson.phone_3)
-    .&Set('company_email',          lPerson.company_email)
-    .&Set('financial_email',        lPerson.financial_email)
-    .&Set('internet_page',          lPerson.internet_page)
-    .&Set('note',                   lPerson.note)
-    .&Set('bank_note',              lPerson.bank_note)
-    .&Set('commercial_note',        lPerson.commercial_note)
-    .&Set('is_customer',            lPerson.is_customer)
-    .&Set('is_seller',              lPerson.is_seller)
-    .&Set('is_supplier',            lPerson.is_supplier)
-    .&Set('is_carrier',             lPerson.is_carrier)
-    .&Set('is_technician',          lPerson.is_technician)
-    .&Set('is_employee',            lPerson.is_employee)
-    .&Set('is_other',               lPerson.is_other)
-    .&Set('is_final_customer',      lPerson.is_final_customer)
     .&Set('updated_at',             lPerson.updated_at)
     .&Set('updated_by_acl_user_id', lPerson.updated_by_acl_user_id);
 
-  // Tratar chaves estrangeiras
-  if lPerson.city_id > 0 then lCQL.&Set('city_id', lPerson.city_id);
+  // Carregar Campos Default
+  LoadDefaultFieldsToInsertOrUpdate(lCQL, lPerson);
 
   Result := lCQL.Where('person.id = ' + AId.ToString).AsString;
 end;
