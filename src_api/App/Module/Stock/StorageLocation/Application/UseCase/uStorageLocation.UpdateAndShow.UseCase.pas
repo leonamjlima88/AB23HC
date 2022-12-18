@@ -9,7 +9,7 @@ uses
 
 type
   IStorageLocationUpdateAndShowUseCase = Interface
-    ['{2537BB66-AF57-4B53-BA41-9A5CF02EFC29}']
+['{724ED545-B96B-484B-9A53-09BC99AF27A7}']
     function Execute(AInput: TStorageLocationDTO; APK: Int64): TStorageLocationShowDTO;
   end;
 

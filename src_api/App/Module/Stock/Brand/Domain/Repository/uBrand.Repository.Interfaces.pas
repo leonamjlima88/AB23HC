@@ -8,7 +8,7 @@ uses
 
 type
   IBrandRepository = interface(IBaseRepository)
-    ['{B598F0C8-B708-43C4-B015-84BAA83575D1}']
+    ['{023B5E3F-13ED-4D1A-AAFA-AF0284EFFCD5}']
     function Show(AId: Int64): TBrand;
   end;
 

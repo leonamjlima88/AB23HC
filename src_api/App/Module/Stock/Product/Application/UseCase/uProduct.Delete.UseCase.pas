@@ -7,7 +7,7 @@ uses
 
 type
   IProductDeleteUseCase = Interface
-    ['{0C975B53-23AB-4037-81DE-D835CFF11B43}']
+['{E8C2AB97-C2D8-43ED-BC14-AA3BC5BF0273}']
     function Execute(APK: Int64): Boolean;
   end;
 

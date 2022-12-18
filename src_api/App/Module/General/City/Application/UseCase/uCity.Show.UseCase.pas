@@ -8,7 +8,7 @@ uses
 
 type
   ICityShowUseCase = Interface
-    ['{4D34B8E1-3AAF-4C43-827D-A78094EB5F8F}']
+['{EF20F782-AC0E-430B-8627-A65AD3F91208}']
     function Execute(APK: Int64): TCityShowDTO;
   end;
 

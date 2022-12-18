@@ -7,7 +7,7 @@ uses
 
 type
   IUnitDeleteUseCase = Interface
-    ['{0C975B53-23AB-4037-81DE-D835CFF11B43}']
+['{A65B0349-6A50-4194-A55F-92052333A5F6}']
     function Execute(APK: Int64): Boolean;
   end;
 

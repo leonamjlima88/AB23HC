@@ -9,7 +9,7 @@ uses
 
 type
   IPersonUpdateAndShowUseCase = Interface
-    ['{2537BB66-AF57-4B53-BA41-9A5CF02EFC29}']
+['{89480FD9-7684-44D1-9AE6-F691DA1323A1}']
     function Execute(AInput: TPersonDTO; APK: Int64): TPersonShowDTO;
   end;
 

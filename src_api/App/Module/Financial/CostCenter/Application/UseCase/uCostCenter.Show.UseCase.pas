@@ -8,7 +8,7 @@ uses
 
 type
   ICostCenterShowUseCase = Interface
-    ['{4D34B8E1-3AAF-4C43-827D-A78094EB5F8F}']
+['{FB716BA4-0451-4CEF-940A-0133E7DDCCD8}']
     function Execute(APK: Int64): TCostCenterShowDTO;
   end;
 

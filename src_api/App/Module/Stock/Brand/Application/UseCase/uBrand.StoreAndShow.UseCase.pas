@@ -9,7 +9,7 @@ uses
 
 type
   IBrandStoreAndShowUseCase = Interface
-    ['{E5DA7F69-83B7-4C20-AF63-4D43EA9B01A0}']
+    ['{D8E1A50E-0B58-4461-9104-5C11033BBB97}']
     function Execute(AInput: TBrandDTO): TBrandShowDTO;
   end;
 

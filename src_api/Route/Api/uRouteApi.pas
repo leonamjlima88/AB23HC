@@ -14,6 +14,10 @@ type
 implementation
 
 uses
+  uPaymentTerm.Controller,
+  uDocument.Controller,
+  uBankAccount.Controller,
+  uBank.Controller,
   uPerson.Controller,
   uCity.Controller,
   uStorageLocation.Controller,
@@ -44,6 +48,10 @@ begin
       end
     );
 
+  THorseGBSwaggerRegister.RegisterPath(TPaymentTermController);
+  THorseGBSwaggerRegister.RegisterPath(TDocumentController);
+  THorseGBSwaggerRegister.RegisterPath(TBankAccountController);
+  THorseGBSwaggerRegister.RegisterPath(TBankController);
   THorseGBSwaggerRegister.RegisterPath(TProductController);
   THorseGBSwaggerRegister.RegisterPath(TPersonController);
   THorseGBSwaggerRegister.RegisterPath(TCityController);

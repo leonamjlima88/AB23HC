@@ -9,7 +9,7 @@ uses
 
 type
   IBrandUpdateAndShowUseCase = Interface
-    ['{2537BB66-AF57-4B53-BA41-9A5CF02EFC29}']
+    ['{D92E72A1-E818-4496-B76C-6AECC7C1B870}']
     function Execute(AInput: TBrandDTO; APK: Int64): TBrandShowDTO;
   end;
 

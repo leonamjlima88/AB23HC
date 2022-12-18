@@ -9,7 +9,7 @@ uses
 
 type
   ICostCenterStoreAndShowUseCase = Interface
-    ['{E5DA7F69-83B7-4C20-AF63-4D43EA9B01A0}']
+['{FF5935BF-A3C5-414D-A4C5-F855DFB21A91}']
     function Execute(AInput: TCostCenterDTO): TCostCenterShowDTO;
   end;
 

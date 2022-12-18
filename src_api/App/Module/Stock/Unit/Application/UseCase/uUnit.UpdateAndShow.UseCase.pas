@@ -9,7 +9,7 @@ uses
 
 type
   IUnitUpdateAndShowUseCase = Interface
-    ['{2537BB66-AF57-4B53-BA41-9A5CF02EFC29}']
+['{92454164-17CF-4E33-A687-231CC7ABF9D3}']
     function Execute(AInput: TUnitDTO; APK: Int64): TUnitShowDTO;
   end;
 

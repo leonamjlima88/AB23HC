@@ -7,7 +7,7 @@ uses
 
 type
   IStorageLocationDeleteUseCase = Interface
-    ['{0C975B53-23AB-4037-81DE-D835CFF11B43}']
+['{5CB7E47F-A461-4267-B3E0-E872CF909D61}']
     function Execute(APK: Int64): Boolean;
   end;
 

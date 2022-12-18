@@ -8,7 +8,7 @@ uses
 
 type
   IStorageLocationShowUseCase = Interface
-    ['{4D34B8E1-3AAF-4C43-827D-A78094EB5F8F}']
+['{48D60E26-2951-4E56-953B-2A06A154EF55}']
     function Execute(APK: Int64): TStorageLocationShowDTO;
   end;
 

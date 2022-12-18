@@ -7,7 +7,7 @@ uses
 
 type
   IPersonDeleteUseCase = Interface
-    ['{0C975B53-23AB-4037-81DE-D835CFF11B43}']
+['{71E437A6-19C9-45C0-A607-E0D79CA23CCF}']
     function Execute(APK: Int64): Boolean;
   end;
 

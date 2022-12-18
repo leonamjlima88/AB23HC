@@ -7,7 +7,7 @@ uses
 
 type
   IBrandDeleteUseCase = Interface
-    ['{0C975B53-23AB-4037-81DE-D835CFF11B43}']
+    ['{596944D4-AC7E-4612-8539-C7B4EF1316F5}']
     function Execute(APK: Int64): Boolean;
   end;
 

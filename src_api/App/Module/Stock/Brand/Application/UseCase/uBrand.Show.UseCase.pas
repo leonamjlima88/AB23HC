@@ -8,7 +8,7 @@ uses
 
 type
   IBrandShowUseCase = Interface
-    ['{4D34B8E1-3AAF-4C43-827D-A78094EB5F8F}']
+    ['{768BA1BB-108D-420C-9781-4C63A243846A}']
     function Execute(APK: Int64): TBrandShowDTO;
   end;
 

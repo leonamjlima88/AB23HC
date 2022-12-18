@@ -9,7 +9,7 @@ uses
 
 type
   IProductUpdateAndShowUseCase = Interface
-    ['{2537BB66-AF57-4B53-BA41-9A5CF02EFC29}']
+['{17CA726C-85D1-4F9A-83BB-72F3C64346E9}']
     function Execute(AInput: TProductDTO; APK: Int64): TProductShowDTO;
   end;
 

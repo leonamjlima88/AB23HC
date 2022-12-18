@@ -9,7 +9,7 @@ uses
 
 type
   ISizeStoreAndShowUseCase = Interface
-    ['{E5DA7F69-83B7-4C20-AF63-4D43EA9B01A0}']
+['{01F66C4A-AE43-40EB-AC70-0341ED3011FB}']
     function Execute(AInput: TSizeDTO): TSizeShowDTO;
   end;
 

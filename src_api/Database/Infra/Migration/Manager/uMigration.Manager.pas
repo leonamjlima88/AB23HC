@@ -54,7 +54,11 @@ uses
   u12CreateCityTable.Migration,
   u13CreatePersonTable.Migration,
   u14CreatePersonContactTable.Migration,
-  u15CreateProductTable.Migration;
+  u15CreateProductTable.Migration,
+  u16CreateBankTable.Migration,
+  u17CreateBankAccountTable.Migration,
+  u18CreateDocumentTable.Migration,
+  u19CreatePaymentTermTable.Migration;
 
 const
   MIGRATION_ORDER_BY_DESCRIPTION = 'select * from migration order by description';
@@ -86,6 +90,10 @@ begin
   FMigrations.Add(T13CreatePersonTable.Make(FConn));
   FMigrations.Add(T14CreatePersonContactTable.Make(FConn));
   FMigrations.Add(T15CreateProductTable.Make(FConn));
+  FMigrations.Add(T16CreateBankTable.Make(FConn));
+  FMigrations.Add(T17CreateBankAccountTable.Make(FConn));
+  FMigrations.Add(T18CreateDocumentTable.Make(FConn));
+  FMigrations.Add(T19CreatePaymentTermTable.Make(FConn));
 end;
 
 constructor TMigrationManager.Create(AConn: IConnection);

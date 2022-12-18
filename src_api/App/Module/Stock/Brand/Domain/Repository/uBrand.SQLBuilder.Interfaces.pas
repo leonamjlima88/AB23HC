@@ -11,7 +11,7 @@ uses
 
 type
   IBrandSQLBuilder = interface(IBaseSQLBuilder)
-    ['{5FD5DAE7-3104-45D1-8E56-C11717EBE03F}']
+    ['{B770B6DA-E002-4FD2-85C2-8E4FBE6846A0}']
 
     function ScriptSeedTable: String;
     function SelectAll: String;

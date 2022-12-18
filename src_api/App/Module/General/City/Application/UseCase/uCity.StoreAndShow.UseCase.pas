@@ -9,7 +9,7 @@ uses
 
 type
   ICityStoreAndShowUseCase = Interface
-    ['{E5DA7F69-83B7-4C20-AF63-4D43EA9B01A0}']
+['{3FB5A7AE-FB53-4FA7-AE78-9DD3DF500BC9}']
     function Execute(AInput: TCityDTO): TCityShowDTO;
   end;
 

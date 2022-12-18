@@ -9,7 +9,7 @@ uses
 
 type
   ISizeUpdateAndShowUseCase = Interface
-    ['{2537BB66-AF57-4B53-BA41-9A5CF02EFC29}']
+['{51C5860E-D044-40F1-9AEA-E0F08E96A30B}']
     function Execute(AInput: TSizeDTO; APK: Int64): TSizeShowDTO;
   end;
 

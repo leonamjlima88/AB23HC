@@ -9,7 +9,7 @@ uses
 
 type
   IUnitStoreAndShowUseCase = Interface
-    ['{E5DA7F69-83B7-4C20-AF63-4D43EA9B01A0}']
+['{CB94C184-08EB-460D-A4E3-B69FB400687A}']
     function Execute(AInput: TUnitDTO): TUnitShowDTO;
   end;
 

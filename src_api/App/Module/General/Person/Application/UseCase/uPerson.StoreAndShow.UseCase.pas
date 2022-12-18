@@ -9,7 +9,7 @@ uses
 
 type
   IPersonStoreAndShowUseCase = Interface
-    ['{E5DA7F69-83B7-4C20-AF63-4D43EA9B01A0}']
+['{F03C37BA-9320-47D8-A0E1-7F93F88DAF73}']
     function Execute(AInput: TPersonDTO): TPersonShowDTO;
   end;
 

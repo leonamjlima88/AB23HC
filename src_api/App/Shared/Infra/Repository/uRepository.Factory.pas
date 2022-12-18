@@ -3,6 +3,10 @@ unit uRepository.Factory;
 interface
 
 uses
+  uPaymentTerm.Repository.Interfaces,
+  uDocument.Repository.Interfaces,
+  uBankAccount.Repository.Interfaces,
+  uBank.Repository.Interfaces,
   uProduct.Repository.Interfaces,
   uPerson.Repository.Interfaces,
   uCity.Repository.Interfaces,
@@ -20,6 +24,11 @@ uses
 type
   IRepositoryFactory = Interface
     ['{4360ECF9-C170-41B5-8E9B-74C58AE06AA2}']
+
+    function PaymentTerm: IPaymentTermRepository;
+    function Document: IDocumentRepository;
+    function BankAccount: IBankAccountRepository;
+    function Bank: IBankRepository;
     function Product: IProductRepository;
     function Person: IPersonRepository;
     function City: ICityRepository;
@@ -42,6 +51,10 @@ type
   public
     class function Make(AConn: IConnection = nil; ARepoType: TRepositoryType = rtDefault; ADriverDB: TDriverDB = ddDefault): IRepositoryFactory;
 
+    function PaymentTerm: IPaymentTermRepository;
+    function Document: IDocumentRepository;
+    function BankAccount: IBankAccountRepository;
+    function Bank: IBankRepository;
     function Product: IProductRepository;
     function Person: IPersonRepository;
     function City: ICityRepository;
@@ -58,6 +71,10 @@ type
 implementation
 
 uses
+  uPaymentTerm.Repository.SQL,
+  uDocument.Repository.SQL,
+  uBankAccount.Repository.SQL,
+  uBank.Repository.SQL,
   uProduct.Repository.SQL,
   uPerson.Repository.SQL,
   uCity.Repository.SQL,
@@ -93,6 +110,20 @@ function TRepositoryFactory.AclUser: IAclUserRepository;
 begin
   case FRepoType of
     rtSQL: Result := TAclUserRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).AclUser);
+  end;
+end;
+
+function TRepositoryFactory.Bank: IBankRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TBankRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).Bank);
+  end;
+end;
+
+function TRepositoryFactory.BankAccount: IBankAccountRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TBankAccountRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).BankAccount);
   end;
 end;
 
@@ -145,9 +176,23 @@ begin
   end;
 end;
 
+function TRepositoryFactory.Document: IDocumentRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TDocumentRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).Document);
+  end;
+end;
+
 class function TRepositoryFactory.Make(AConn: IConnection; ARepoType: TRepositoryType; ADriverDB: TDriverDB): IRepositoryFactory;
 begin
   Result := Self.Create(AConn, ARepoType, ADriverDB);
+end;
+
+function TRepositoryFactory.PaymentTerm: IPaymentTermRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TPaymentTermRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).PaymentTerm);
+  end;
 end;
 
 function TRepositoryFactory.Person: IPersonRepository;

@@ -8,7 +8,7 @@ uses
 
 type
   IUnitShowUseCase = Interface
-    ['{4D34B8E1-3AAF-4C43-827D-A78094EB5F8F}']
+['{366F984E-04CB-4C31-AA87-5F1F8FD75CAD}']
     function Execute(APK: Int64): TUnitShowDTO;
   end;
 

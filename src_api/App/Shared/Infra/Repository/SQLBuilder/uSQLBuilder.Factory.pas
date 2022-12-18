@@ -3,6 +3,10 @@ unit uSQLBuilder.Factory;
 interface
 
 uses
+  uPaymentTerm.SQLBuilder.Interfaces,
+  uDocument.SQLBuilder.Interfaces,
+  uBankAccount.SQLBuilder.Interfaces,
+  uBank.SQLBuilder.Interfaces,
   uProduct.SQLBuilder.Interfaces,
   uPersonContact.SQLBuilder.Interfaces,
   uPerson.SQLBuilder.Interfaces,
@@ -20,6 +24,11 @@ uses
 type
   ISQLBuilderFactory = interface
     ['{865EBE81-EE3C-4E9B-A2CE-0DC3EAB7749F}']
+
+    function PaymentTerm: IPaymentTermSQLBuilder;
+    function Document: IDocumentSQLBuilder;
+    function BankAccount: IBankAccountSQLBuilder;
+    function Bank: IBankSQLBuilder;
     function Product: IProductSQLBuilder;
     function PersonContact: IPersonContactSQLBuilder;
     function Person: IPersonSQLBuilder;
@@ -41,6 +50,10 @@ type
   public
     class function Make(ADriverDB: TDriverDB = ddDefault): ISQLBuilderFactory;
 
+    function PaymentTerm: IPaymentTermSQLBuilder;
+    function Document: IDocumentSQLBuilder;
+    function BankAccount: IBankAccountSQLBuilder;
+    function Bank: IBankSQLBuilder;
     function Product: IProductSQLBuilder;
     function PersonContact: IPersonContactSQLBuilder;
     function Person: IPersonSQLBuilder;
@@ -58,6 +71,10 @@ type
 implementation
 
 uses
+  uPaymentTerm.SQLBuilder.MySQL,
+  uDocument.SQLBuilder.MySQL,
+  uBankAccount.SQLBuilder.MySQL,
+  uBank.SQLBuilder.MySQL,
   uProduct.SQLBuilder.MySQL,
   uPersonContact.SQLBuilder.MySQL,
   uPerson.SQLBuilder.MySQL,
@@ -92,6 +109,20 @@ function TSQLBuilderFactory.AclUser: IAclUserSQLBuilder;
 begin
   case FDriverDB of
     ddMySql: Result := TAclUserSQLBuilderMySQL.Make;
+  end;
+end;
+
+function TSQLBuilderFactory.Bank: IBankSQLBuilder;
+begin
+  case FDriverDB of
+    ddMySql: Result := TBankSQLBuilderMySQL.Make;
+  end;
+end;
+
+function TSQLBuilderFactory.BankAccount: IBankAccountSQLBuilder;
+begin
+  case FDriverDB of
+    ddMySql: Result := TBankAccountSQLBuilderMySQL.Make;
   end;
 end;
 
@@ -132,9 +163,23 @@ begin
     FDriverDB := Env.DriverDB;
 end;
 
+function TSQLBuilderFactory.Document: IDocumentSQLBuilder;
+begin
+  case FDriverDB of
+    ddMySql: Result := TDocumentSQLBuilderMySQL.Make;
+  end;
+end;
+
 class function TSQLBuilderFactory.Make(ADriverDB: TDriverDB): ISQLBuilderFactory;
 begin
   Result := Self.Create(ADriverDB);
+end;
+
+function TSQLBuilderFactory.PaymentTerm: IPaymentTermSQLBuilder;
+begin
+  case FDriverDB of
+    ddMySql: Result := TPaymentTermSQLBuilderMySQL.Make;
+  end;
 end;
 
 function TSQLBuilderFactory.Person: IPersonSQLBuilder;

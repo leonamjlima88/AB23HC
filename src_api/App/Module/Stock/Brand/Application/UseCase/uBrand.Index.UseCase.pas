@@ -9,7 +9,7 @@ uses
 
 type
   IBrandIndexUseCase = Interface
-    ['{FA991F53-A0CD-439C-BD8B-081609BA2BA7}']
+    ['{98C4BAB2-A881-469C-8E47-AE4F9FDF8789}']
     function Execute(APageFilter: IPageFilter): IIndexResult;
   end;
 

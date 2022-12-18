@@ -9,7 +9,7 @@ uses
 
 type
   ICityUpdateAndShowUseCase = Interface
-    ['{2537BB66-AF57-4B53-BA41-9A5CF02EFC29}']
+['{1F570FC7-BBC9-4192-8B27-CA2F0EF0F884}']
     function Execute(AInput: TCityDTO; APK: Int64): TCityShowDTO;
   end;
 
