@@ -73,15 +73,18 @@ begin
             ' `updated_at` datetime DEFAULT NULL, '+
             ' `created_by_acl_user_id` bigint(20) DEFAULT NULL, '+
             ' `updated_by_acl_user_id` bigint(20) DEFAULT NULL, '+
+            ' `tenant_id` bigint NOT NULL, '+
             ' PRIMARY KEY (`id`), '+
             ' KEY `person_idx_name` (`name`), '+
             ' KEY `person_idx_alias_name` (`alias_name`), '+
             ' KEY `person_fk_city_id` (`city_id`), '+
             ' KEY `person_fk_created_by_acl_user_id` (`created_by_acl_user_id`), '+
             ' KEY `person_fk_updated_by_acl_role_id` (`updated_by_acl_user_id`), '+
+            ' KEY `person_fk_tenant_id` (`tenant_id`), '+
             ' CONSTRAINT `person_fk_created_by_acl_user_id` FOREIGN KEY (`created_by_acl_user_id`) REFERENCES `acl_user` (`id`), '+
             ' CONSTRAINT `person_fk_updated_by_acl_role_id` FOREIGN KEY (`updated_by_acl_user_id`) REFERENCES `acl_user` (`id`), '+
-            ' CONSTRAINT `person_fk_city_id` FOREIGN KEY (`city_id`) REFERENCES `city` (`id`) '+
+            ' CONSTRAINT `person_fk_city_id` FOREIGN KEY (`city_id`) REFERENCES `city` (`id`), '+
+            ' CONSTRAINT `person_fk_tenant_id` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`id`) '+
             ' )  ';
 end;
 

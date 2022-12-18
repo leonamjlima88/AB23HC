@@ -68,6 +68,7 @@ begin
             '   `updated_at` datetime DEFAULT NULL, '+
             '   `created_by_acl_user_id` bigint(20) DEFAULT NULL, '+
             '   `updated_by_acl_user_id` bigint(20) DEFAULT NULL, '+
+            '   `tenant_id` bigint NOT NULL, '+
             '   PRIMARY KEY (`id`), '+
             '   KEY `product_fk_unit_id` (`unit_id`), '+
             '   KEY `product_fk_category_id` (`category_id`), '+
@@ -77,13 +78,15 @@ begin
             '   KEY `product_fk_created_by_acl_user_id` (`created_by_acl_user_id`), '+
             '   KEY `product_fk_updated_by_acl_user_id` (`updated_by_acl_user_id`), '+
             '   KEY `product_idx_name` (`name`), '+
+            '   KEY `product_fk_tenant_id` (`tenant_id`), '+
             '   CONSTRAINT `product_fk_brand_id` FOREIGN KEY (`brand_id`) REFERENCES `brand` (`id`) , '+
             '   CONSTRAINT `product_fk_category_id` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) , '+
             '   CONSTRAINT `product_fk_created_by_acl_user_id` FOREIGN KEY (`created_by_acl_user_id`) REFERENCES `acl_user` (`id`) , '+
             '   CONSTRAINT `product_fk_size_id` FOREIGN KEY (`size_id`) REFERENCES `size` (`id`) , '+
             '   CONSTRAINT `product_fk_storage_location_id` FOREIGN KEY (`storage_location_id`) REFERENCES `storage_location` (`id`) , '+
             '   CONSTRAINT `product_fk_unit_id` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`id`) , '+
-            '   CONSTRAINT `product_fk_updated_by_acl_user_id` FOREIGN KEY (`updated_by_acl_user_id`) REFERENCES `acl_user` (`id`)  '+
+            '   CONSTRAINT `product_fk_updated_by_acl_user_id` FOREIGN KEY (`updated_by_acl_user_id`) REFERENCES `acl_user` (`id`),  '+
+            '   CONSTRAINT `product_fk_tenant_id` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`id`) '+
             ' )  ';
 end;
 

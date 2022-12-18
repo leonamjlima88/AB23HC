@@ -3,6 +3,7 @@ unit uRepository.Factory;
 interface
 
 uses
+  uTenant.Repository.Interfaces,
   uTaxRule.Repository.Interfaces,
   uNCM.Repository.Interfaces,
   uChartOfAccount.Repository.Interfaces,
@@ -30,6 +31,7 @@ type
   IRepositoryFactory = Interface
     ['{4360ECF9-C170-41B5-8E9B-74C58AE06AA2}']
 
+    function Tenant: ITenantRepository;
     function TaxRule: ITaxRuleRepository;
     function NCM: INCMRepository;
     function ChartOfAccount: IChartOfAccountRepository;
@@ -61,6 +63,7 @@ type
   public
     class function Make(AConn: IConnection = nil; ARepoType: TRepositoryType = rtDefault; ADriverDB: TDriverDB = ddDefault): IRepositoryFactory;
 
+    function Tenant: ITenantRepository;
     function TaxRule: ITaxRuleRepository;
     function NCM: INCMRepository;
     function ChartOfAccount: IChartOfAccountRepository;
@@ -86,6 +89,7 @@ type
 implementation
 
 uses
+  uTenant.Repository.SQL,
   uTaxRule.Repository.SQL,
   uNCM.Repository.SQL,
   uChartOfAccount.Repository.SQL,
@@ -275,6 +279,13 @@ function TRepositoryFactory.TaxRule: ITaxRuleRepository;
 begin
   case FRepoType of
     rtSQL: Result := TTaxRuleRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).TaxRule);
+  end;
+end;
+
+function TRepositoryFactory.Tenant: ITenantRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TTenantRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).Tenant);
   end;
 end;
 

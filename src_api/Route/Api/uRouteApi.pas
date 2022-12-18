@@ -14,6 +14,7 @@ type
 implementation
 
 uses
+  uTenant.Controller,
   uTaxRule.Controller,
   uNCM.Controller,
   uChartOfAccount.Controller,
@@ -53,6 +54,7 @@ begin
       end
     );
 
+  THorseGBSwaggerRegister.RegisterPath(TTenantController);
   THorseGBSwaggerRegister.RegisterPath(TTaxRuleController);
   THorseGBSwaggerRegister.RegisterPath(TNCMController);
   THorseGBSwaggerRegister.RegisterPath(TChartOfAccountController);

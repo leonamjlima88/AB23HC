@@ -189,7 +189,7 @@
         <DCCReference Include="App\Module\Auth\AclUser\Domain\Entity\uAclUser.pas"/>
         <DCCReference Include="App\Module\Auth\AclRole\Domain\Entity\uAclRole.pas"/>
         <DCCReference Include="Database\Infra\Migration\u13CreatePersonTable.Migration.pas"/>
-        <DCCReference Include="Database\Infra\Migration\u12CreateCityTable.Migration.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u00CreateCityTable.Migration.pas"/>
         <DCCReference Include="Database\Infra\Migration\u11CreateStorageLocationTable.Migration.pas"/>
         <DCCReference Include="Database\Infra\Migration\u10CreateUnitTable.Migration.pas"/>
         <DCCReference Include="Database\Infra\Migration\u09CreateSizeTable.Migration.pas"/>
@@ -478,6 +478,23 @@
         <DCCReference Include="Database\Infra\Migration\u24CreateTaxRuleTable.Migration.pas"/>
         <DCCReference Include="Database\Infra\Migration\u25CreateTaxRuleStateTable.Migration.pas"/>
         <DCCReference Include="App\Module\Fiscal\TaxRule\Domain\Entity\uTaxRuleState.Types.pas"/>
+        <DCCReference Include="App\Module\General\Tenant\Infra\Repository\SQLBuilder\uTenant.SQLBuilder.pas"/>
+        <DCCReference Include="App\Module\General\Tenant\Infra\Repository\SQLBuilder\MySQL\uTenant.SQLBuilder.MySQL.pas"/>
+        <DCCReference Include="App\Module\General\Tenant\Infra\Repository\SQL\uTenant.Repository.SQL.pas"/>
+        <DCCReference Include="App\Module\General\Tenant\Infra\Controller\uTenant.Controller.pas"/>
+        <DCCReference Include="App\Module\General\Tenant\Domain\Entity\uTenant.pas"/>
+        <DCCReference Include="App\Module\General\Tenant\Application\DTO\uTenant.Base.DTO.pas"/>
+        <DCCReference Include="App\Module\General\Tenant\Domain\Repository\uTenant.SQLBuilder.Interfaces.pas"/>
+        <DCCReference Include="App\Module\General\Tenant\Domain\Repository\uTenant.Repository.Interfaces.pas"/>
+        <DCCReference Include="App\Module\General\Tenant\Application\UseCase\uTenant.UpdateAndShow.UseCase.pas"/>
+        <DCCReference Include="App\Module\General\Tenant\Application\UseCase\uTenant.StoreAndShow.UseCase.pas"/>
+        <DCCReference Include="App\Module\General\Tenant\Application\UseCase\uTenant.Show.UseCase.pas"/>
+        <DCCReference Include="App\Module\General\Tenant\Application\UseCase\uTenant.Index.UseCase.pas"/>
+        <DCCReference Include="App\Module\General\Tenant\Application\UseCase\uTenant.Delete.UseCase.pas"/>
+        <DCCReference Include="App\Module\General\Tenant\Application\DTO\uTenant.Show.DTO.pas"/>
+        <DCCReference Include="App\Module\General\Tenant\Application\DTO\uTenant.DTO.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u01CreateTenantTable.Migration.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u01TenantSeed.Migration.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

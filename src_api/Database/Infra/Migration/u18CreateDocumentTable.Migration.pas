@@ -59,7 +59,7 @@ begin
   end;
 
   // Migration Executada
-  lDuration := (GetTickCount - lStartTime)/1800;
+  lDuration := (GetTickCount - lStartTime)/1000;
   FInformation.Executed(True).Duration(lDuration);
 end;
 

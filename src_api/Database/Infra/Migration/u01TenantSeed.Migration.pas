@@ -1,4 +1,4 @@
-unit u12CreateCityTable.Migration;
+unit u01TenantSeed.Migration;
 
 interface
 
@@ -8,13 +8,12 @@ uses
   uConnection.Interfaces;
 
 type
-  T12CreateCityTable = class(TMigrationBase, IMigration)
+  T01TenantSeed = class(TMigrationBase, IMigration)
   private
     function RunMigrate: IMigration;
     constructor Create(AConn: IConnection);
   public
     class function Make(AConn: IConnection): IMigration;
-
     function Execute: IMigration;
   end;
 
@@ -25,20 +24,20 @@ uses
   System.SysUtils,
   System.Classes,
   uMigration.Helper,
-  uCity.SQLBuilder.Interfaces,
+  uTenant.SQLBuilder.Interfaces,
   uSQLBuilder.Factory;
 
-{ T12CreateCityTable }
+{ T01TenantSeed }
 
-function T12CreateCityTable.RunMigrate: IMigration;
+function T01TenantSeed.RunMigrate: IMigration;
 var
   lStartTime: Cardinal;
   lDuration: Double;
-  lSQLBuilder: ICitySQLBuilder;
+  lSQLBuilder: ITenantSQLBuilder;
 begin
   Result      := Self;
   lStartTime  := GetTickCount;
-  lSQLBuilder := TSQLBuilderFactory.Make(FConn.DriverDB).&City;
+  lSQLBuilder := TSQLBuilderFactory.Make(FConn.DriverDB).Tenant;
 
   // Criar Tabela
   try
@@ -46,10 +45,10 @@ begin
 
     FScript
       .SQLScriptsClear
-      .SQLScriptsAdd(lSQLBuilder.ScriptCreateTable)
+      .SQLScriptsAdd(lSQLBuilder.ScriptSeedTable)
       .ValidateAll;
     if not FScript.ExecuteAll then
-      raise Exception.Create('Error validation in migration. ' + Self.ClassName);
+      raise Exception.Create('Error validation in seed. ' + Self.ClassName);
 
     // Commit
     FConn.CommitTransaction;
@@ -59,38 +58,25 @@ begin
   end;
 
   // Migration Executada
-  lDuration := (GetTickCount - lStartTime)/1200;
+  lDuration := (GetTickCount - lStartTime)/1000;
   FInformation.Executed(True).Duration(lDuration);
 end;
 
-constructor T12CreateCityTable.Create(AConn: IConnection);
+constructor T01TenantSeed.Create(AConn: IConnection);
 begin
   inherited Create(AConn);
 
   // Informações da Migration
-  FInformation.CreatedAtByDev(StrToDateTime('15/12/2022 09:04:00'));
+  FInformation.CreatedAtByDev(StrToDateTime('18/12/2022 17:52:00'));
 end;
 
-function T12CreateCityTable.Execute: IMigration;
+function T01TenantSeed.Execute: IMigration;
 begin
   Result := Self;
-
-  // Não executar migration se tabela já existir
-  FQry.Open(TMigrationHelper.SQLLocateMigrationTable(
-    FConn.DriverDB,
-    FConn.DataBaseName,
-    'city'
-  ));
-  if not FQry.DataSet.IsEmpty then
-  begin
-    FInformation.Executed(True).Duration(-1);
-    Exit;
-  end;
-
   RunMigrate;
 end;
 
-class function T12CreateCityTable.Make(AConn: IConnection): IMigration;
+class function T01TenantSeed.Make(AConn: IConnection): IMigration;
 begin
   Result := Self.Create(AConn);
 end;

@@ -48,11 +48,7 @@ begin
             '   `created_by_acl_user_id` bigint(20), '+
             '   `updated_by_acl_user_id` bigint(20), '+
             '   PRIMARY KEY (`id`), '+
-            '   KEY `city_idx_state` (`state`), '+
-            '   KEY `city_fk_created_by_acl_user_id` (`created_by_acl_user_id`), '+
-            '   KEY `city_fk_updated_by_acl_user_id` (`updated_by_acl_user_id`), '+
-            '   CONSTRAINT `city_fk_created_by_acl_user_id` FOREIGN KEY (`created_by_acl_user_id`) REFERENCES `acl_user` (`id`), '+
-            '   CONSTRAINT `city_fk_updated_by_acl_user_id` FOREIGN KEY (`updated_by_acl_user_id`) REFERENCES `acl_user` (`id`) '+
+            '   KEY `city_idx_state` (`state`) '+
             ' ) ';
 end;
 

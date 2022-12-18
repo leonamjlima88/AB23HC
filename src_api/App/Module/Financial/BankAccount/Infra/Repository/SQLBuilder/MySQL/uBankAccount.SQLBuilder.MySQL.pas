@@ -44,14 +44,17 @@ begin
             '   `updated_at` datetime DEFAULT NULL, '+
             '   `created_by_acl_user_id` bigint(20) DEFAULT NULL, '+
             '   `updated_by_acl_user_id` bigint(20) DEFAULT NULL, '+
+            '   `tenant_id` bigint NOT NULL, '+
             '   PRIMARY KEY (`id`), '+
             '   KEY `bank_account_idx_name` (`name`), '+
             '   KEY `bank_account_fk_created_by_acl_user_id` (`created_by_acl_user_id`), '+
             '   KEY `bank_account_fk_updated_by_acl_role_id` (`updated_by_acl_user_id`), '+
             '   KEY `bank_account_fk_bank_id` (`bank_id`), '+
+            '   KEY `bank_account_fk_tenant_id` (`tenant_id`), '+
             '   CONSTRAINT `bank_account_fk_bank_id` FOREIGN KEY (`bank_id`) REFERENCES `bank` (`id`), '+
             '   CONSTRAINT `bank_account_fk_created_by_acl_user_id` FOREIGN KEY (`created_by_acl_user_id`) REFERENCES `acl_user` (`id`), '+
-            '   CONSTRAINT `bank_account_fk_updated_by_acl_role_id` FOREIGN KEY (`updated_by_acl_user_id`) REFERENCES `acl_user` (`id`) '+
+            '   CONSTRAINT `bank_account_fk_updated_by_acl_role_id` FOREIGN KEY (`updated_by_acl_user_id`) REFERENCES `acl_user` (`id`), '+
+            '   CONSTRAINT `bank_account_fk_tenant_id` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`id`) '+
             ' ) ';
 end;
 

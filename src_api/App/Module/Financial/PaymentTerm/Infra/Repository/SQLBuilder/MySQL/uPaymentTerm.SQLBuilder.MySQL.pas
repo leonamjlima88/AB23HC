@@ -47,16 +47,19 @@ begin
             '   `updated_at` datetime DEFAULT NULL, '+
             '   `created_by_acl_user_id` bigint(20) DEFAULT NULL, '+
             '   `updated_by_acl_user_id` bigint(20) DEFAULT NULL, '+
+            '   `tenant_id` bigint NOT NULL, '+
             '   PRIMARY KEY (`id`), '+
             '   KEY `payment_term_idx_name` (`name`), '+
             '   KEY `payment_term_fk_created_by_acl_user_id` (`created_by_acl_user_id`), '+
             '   KEY `payment_term_fk_updated_by_acl_role_id` (`updated_by_acl_user_id`), '+
             '   KEY `payment_term_fk_bank_account_id` (`bank_account_id`), '+
             '   KEY `payment_term_fk_document_id` (`document_id`), '+
+            '   KEY `payment_term_fk_tenant_id` (`tenant_id`), '+
             '   CONSTRAINT `payment_term_fk_bank_account_id` FOREIGN KEY (`bank_account_id`) REFERENCES `bank_account` (`id`), '+
             '   CONSTRAINT `payment_term_fk_created_by_acl_user_id` FOREIGN KEY (`created_by_acl_user_id`) REFERENCES `acl_user` (`id`), '+
             '   CONSTRAINT `payment_term_fk_document_id` FOREIGN KEY (`document_id`) REFERENCES `document` (`id`), '+
-            '   CONSTRAINT `payment_term_fk_updated_by_acl_role_id` FOREIGN KEY (`updated_by_acl_user_id`) REFERENCES `acl_user` (`id`) '+
+            '   CONSTRAINT `payment_term_fk_updated_by_acl_role_id` FOREIGN KEY (`updated_by_acl_user_id`) REFERENCES `acl_user` (`id`), '+
+            '   CONSTRAINT `payment_term_fk_tenant_id` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`id`) '+
             ' ) ';
 end;
 

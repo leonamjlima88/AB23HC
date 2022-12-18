@@ -41,6 +41,9 @@ uses
   System.DateUtils,
   uEnv,
   uMigration.Helper,
+  u00CreateCityTable.Migration,
+  u01CreateTenantTable.Migration,
+  u01TenantSeed.Migration,
   u02CreateAclRoleTable.Migration,
   u03CreateAclUserTable.Migration,
   u04CreateBrandTable.Migration,
@@ -51,7 +54,6 @@ uses
   u09CreateSizeTable.Migration,
   u10CreateUnitTable.Migration,
   u11CreateStorageLocationTable.Migration,
-  u12CreateCityTable.Migration,
   u13CreatePersonTable.Migration,
   u14CreatePersonContactTable.Migration,
   u15CreateProductTable.Migration,
@@ -82,6 +84,9 @@ begin
 
   // Migrações
   FMigrations.Clear;
+  FMigrations.Add(T00CreateCityTable.Make(FConn));
+  FMigrations.Add(T01CreateTenantTable.Make(FConn));
+  FMigrations.Add(T01TenantSeed.Make(FConn));
   FMigrations.Add(T02CreateAclRoleTable.Make(FConn));
   FMigrations.Add(T03CreateAclUserTable.Make(FConn));
   FMigrations.Add(T04CreateBrandTable.Make(FConn));
@@ -92,7 +97,6 @@ begin
   FMigrations.Add(T09CreateSizeTable.Make(FConn));
   FMigrations.Add(T10CreateUnitTable.Make(FConn));
   FMigrations.Add(T11CreateStorageLocationTable.Make(FConn));
-  FMigrations.Add(T12CreateCityTable.Make(FConn));
   FMigrations.Add(T13CreatePersonTable.Make(FConn));
   FMigrations.Add(T14CreatePersonContactTable.Make(FConn));
   FMigrations.Add(T15CreateProductTable.Make(FConn));

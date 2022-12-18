@@ -35,20 +35,21 @@ end;
 
 function TAclRoleSQLBuilderMySQL.ScriptCreateTable: String;
 begin
-  Result :=
-    ' CREATE TABLE `acl_role` (                  '+
-    '   `id` bigint(20) NOT NULL AUTO_INCREMENT, '+
-    '   `name` varchar(100) NOT NULL,            '+
-    '   PRIMARY KEY (`id`),                      '+
-    '   KEY `acl_role_idx_name` (`name`)         '+
-    ' )                                          ';
+  Result := ' CREATE TABLE `acl_role` ('+
+            '  `id` bigint NOT NULL AUTO_INCREMENT,'+
+            '   `name` varchar(100) NOT NULL,'+
+            '   `tenant_id` bigint NOT NULL,'+
+            '   PRIMARY KEY (`id`),'+
+            '   KEY `acl_role_fk_tenant_id` (`tenant_id`),'+
+            '   CONSTRAINT `acl_role_fk_tenant_id` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`id`)'+
+            ' ) ';
 end;
 
 function TAclRoleSQLBuilderMySQL.ScriptSeedTable: String;
 begin
   Result :=
-    ' insert into acl_role (name) values (''Administrador''); '+
-    ' insert into acl_role (name) values (''Colaborador'');   ';
+    ' insert into acl_role (name, tenant_id) values (''Administrador'', 1); '+
+    ' insert into acl_role (name, tenant_id) values (''Colaborador'', 1);   ';
 end;
 
 end.
