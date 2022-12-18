@@ -3,6 +3,10 @@ unit uRepository.Factory;
 interface
 
 uses
+  uNCM.Repository.Interfaces,
+  uChartOfAccount.Repository.Interfaces,
+  uOperationType.Repository.Interfaces,
+  uCFOP.Repository.Interfaces,
   uPaymentTerm.Repository.Interfaces,
   uDocument.Repository.Interfaces,
   uBankAccount.Repository.Interfaces,
@@ -25,6 +29,10 @@ type
   IRepositoryFactory = Interface
     ['{4360ECF9-C170-41B5-8E9B-74C58AE06AA2}']
 
+    function NCM: INCMRepository;
+    function ChartOfAccount: IChartOfAccountRepository;
+    function OperationType: IOperationTypeRepository;
+    function CFOP: ICFOPRepository;
     function PaymentTerm: IPaymentTermRepository;
     function Document: IDocumentRepository;
     function BankAccount: IBankAccountRepository;
@@ -51,6 +59,10 @@ type
   public
     class function Make(AConn: IConnection = nil; ARepoType: TRepositoryType = rtDefault; ADriverDB: TDriverDB = ddDefault): IRepositoryFactory;
 
+    function NCM: INCMRepository;
+    function ChartOfAccount: IChartOfAccountRepository;
+    function OperationType: IOperationTypeRepository;
+    function CFOP: ICFOPRepository;
     function PaymentTerm: IPaymentTermRepository;
     function Document: IDocumentRepository;
     function BankAccount: IBankAccountRepository;
@@ -71,6 +83,10 @@ type
 implementation
 
 uses
+  uNCM.Repository.SQL,
+  uChartOfAccount.Repository.SQL,
+  uOperationType.Repository.SQL,
+  uCFOP.Repository.SQL,
   uPaymentTerm.Repository.SQL,
   uDocument.Repository.SQL,
   uBankAccount.Repository.SQL,
@@ -141,6 +157,20 @@ begin
   end;
 end;
 
+function TRepositoryFactory.CFOP: ICFOPRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TCFOPRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).CFOP);
+  end;
+end;
+
+function TRepositoryFactory.ChartOfAccount: IChartOfAccountRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TChartOfAccountRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).ChartOfAccount);
+  end;
+end;
+
 function TRepositoryFactory.City: ICityRepository;
 begin
   case FRepoType of
@@ -186,6 +216,20 @@ end;
 class function TRepositoryFactory.Make(AConn: IConnection; ARepoType: TRepositoryType; ADriverDB: TDriverDB): IRepositoryFactory;
 begin
   Result := Self.Create(AConn, ARepoType, ADriverDB);
+end;
+
+function TRepositoryFactory.NCM: INCMRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TNCMRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).NCM);
+  end;
+end;
+
+function TRepositoryFactory.OperationType: IOperationTypeRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TOperationTypeRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).OperationType);
+  end;
 end;
 
 function TRepositoryFactory.PaymentTerm: IPaymentTermRepository;

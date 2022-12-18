@@ -3,6 +3,10 @@ unit uSQLBuilder.Factory;
 interface
 
 uses
+  uNCM.SQLBuilder.Interfaces,
+  uChartOfAccount.SQLBuilder.Interfaces,
+  uOperationType.SQLBuilder.Interfaces,
+  uCFOP.SQLBuilder.Interfaces,
   uPaymentTerm.SQLBuilder.Interfaces,
   uDocument.SQLBuilder.Interfaces,
   uBankAccount.SQLBuilder.Interfaces,
@@ -25,6 +29,10 @@ type
   ISQLBuilderFactory = interface
     ['{865EBE81-EE3C-4E9B-A2CE-0DC3EAB7749F}']
 
+    function NCM: INCMSQLBuilder;
+    function ChartOfAccount: IChartOfAccountSQLBuilder;
+    function OperationType: IOperationTypeSQLBuilder;
+    function CFOP: ICFOPSQLBuilder;
     function PaymentTerm: IPaymentTermSQLBuilder;
     function Document: IDocumentSQLBuilder;
     function BankAccount: IBankAccountSQLBuilder;
@@ -50,6 +58,10 @@ type
   public
     class function Make(ADriverDB: TDriverDB = ddDefault): ISQLBuilderFactory;
 
+    function NCM: INCMSQLBuilder;
+    function ChartOfAccount: IChartOfAccountSQLBuilder;
+    function OperationType: IOperationTypeSQLBuilder;
+    function CFOP: ICFOPSQLBuilder;
     function PaymentTerm: IPaymentTermSQLBuilder;
     function Document: IDocumentSQLBuilder;
     function BankAccount: IBankAccountSQLBuilder;
@@ -71,6 +83,10 @@ type
 implementation
 
 uses
+  uNCM.SQLBuilder.MySQL,
+  uChartOfAccount.SQLBuilder.MySQL,
+  uOperationType.SQLBuilder.MySQL,
+  uCFOP.SQLBuilder.MySQL,
   uPaymentTerm.SQLBuilder.MySQL,
   uDocument.SQLBuilder.MySQL,
   uBankAccount.SQLBuilder.MySQL,
@@ -140,6 +156,20 @@ begin
   end;
 end;
 
+function TSQLBuilderFactory.CFOP: ICFOPSQLBuilder;
+begin
+  case FDriverDB of
+    ddMySql: Result := TCFOPSQLBuilderMySQL.Make;
+  end;
+end;
+
+function TSQLBuilderFactory.ChartOfAccount: IChartOfAccountSQLBuilder;
+begin
+  case FDriverDB of
+    ddMySql: Result := TChartOfAccountSQLBuilderMySQL.Make;
+  end;
+end;
+
 function TSQLBuilderFactory.City: ICitySQLBuilder;
 begin
   case FDriverDB of
@@ -173,6 +203,20 @@ end;
 class function TSQLBuilderFactory.Make(ADriverDB: TDriverDB): ISQLBuilderFactory;
 begin
   Result := Self.Create(ADriverDB);
+end;
+
+function TSQLBuilderFactory.NCM: INCMSQLBuilder;
+begin
+  case FDriverDB of
+    ddMySql: Result := TNCMSQLBuilderMySQL.Make;
+  end;
+end;
+
+function TSQLBuilderFactory.OperationType: IOperationTypeSQLBuilder;
+begin
+  case FDriverDB of
+    ddMySql: Result := TOperationTypeSQLBuilderMySQL.Make;
+  end;
 end;
 
 function TSQLBuilderFactory.PaymentTerm: IPaymentTermSQLBuilder;

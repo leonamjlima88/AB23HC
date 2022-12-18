@@ -14,6 +14,10 @@ type
 implementation
 
 uses
+  uNCM.Controller,
+  uChartOfAccount.Controller,
+  uCFOP.Controller,
+  uOperationType.Controller,
   uPaymentTerm.Controller,
   uDocument.Controller,
   uBankAccount.Controller,
@@ -48,6 +52,10 @@ begin
       end
     );
 
+  THorseGBSwaggerRegister.RegisterPath(TNCMController);
+  THorseGBSwaggerRegister.RegisterPath(TChartOfAccountController);
+  THorseGBSwaggerRegister.RegisterPath(TCFOPController);
+  THorseGBSwaggerRegister.RegisterPath(TOperationTypeController);
   THorseGBSwaggerRegister.RegisterPath(TPaymentTermController);
   THorseGBSwaggerRegister.RegisterPath(TDocumentController);
   THorseGBSwaggerRegister.RegisterPath(TBankAccountController);
