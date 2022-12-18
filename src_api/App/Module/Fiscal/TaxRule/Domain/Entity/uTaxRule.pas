@@ -90,7 +90,6 @@ var
   lIsInserting: Boolean;
   lTaxRuleState: TTaxRuleState;
 begin
-  // Validar CPF/CNPJ se preenchido
   if Fname.Trim.IsEmpty then
     raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['name']));
 
