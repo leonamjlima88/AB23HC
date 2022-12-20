@@ -102,6 +102,7 @@ var
   lPageFilter: IPageFilter;
   lIndexResult: IIndexResult;
 begin
+  // Pesquisar
   lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
   lIndexResult := TAclUserIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
@@ -110,7 +111,7 @@ begin
   lIndexResult.Data.DataSet.FieldByName('last_token').Visible      := False;
   lIndexResult.Data.DataSet.FieldByName('last_expiration').Visible := False;
 
-  // Pesquisar
+  // Retornar
   TRes.Success(FRes, lIndexResult.ToSuperObject);
 end;
 

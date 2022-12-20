@@ -102,11 +102,12 @@ var
   lPageFilter: IPageFilter;
   lIndexResult: IIndexResult;
 begin
+  // Filtro
   lPageFilter := TPageFilter.Make.FromJsonString(FReq.Body);
   lPageFilter.AddWhere('product.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
-  lIndexResult := TProductIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
-  // Pesquisar
+  // Pesquisar e retornar
+  lIndexResult := TProductIndexUseCase.Make(FRepository).Execute(lPageFilter);
   TRes.Success(FRes, lIndexResult.ToSuperObject);
 end;
 

@@ -101,10 +101,11 @@ var
   lPageFilter: IPageFilter;
   lIndexResult: IIndexResult;
 begin
-  lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
-  lIndexResult := TCFOPIndexUseCase.Make(FRepository).Execute(lPageFilter);
+  // Filtro
+  lPageFilter := TPageFilter.Make.FromJsonString(FReq.Body);
 
-  // Pesquisar
+  // Pesquisar e retornar
+  lIndexResult := TCFOPIndexUseCase.Make(FRepository).Execute(lPageFilter);
   TRes.Success(FRes, lIndexResult.ToSuperObject);
 end;
 
