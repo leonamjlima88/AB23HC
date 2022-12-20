@@ -9,7 +9,7 @@ uses
 type
   IPaymentTermShowUseCase = Interface
     ['{768BA1BB-108D-420C-9781-4C63A243846A}']
-    function Execute(APK: Int64): TPaymentTermShowDTO;
+    function Execute(APK, ATenantId: Int64): TPaymentTermShowDTO;
   end;
 
   TPaymentTermShowUseCase = class(TInterfacedObject, IPaymentTermShowUseCase)
@@ -18,7 +18,7 @@ type
     constructor Create(ARepository: IPaymentTermRepository);
   public
     class function Make(ARepository: IPaymentTermRepository): IPaymentTermShowUseCase;
-    function Execute(APK: Int64): TPaymentTermShowDTO;
+    function Execute(APK, ATenantId: Int64): TPaymentTermShowDTO;
   end;
 
 implementation
@@ -39,12 +39,12 @@ begin
   FRepository := ARepository;
 end;
 
-function TPaymentTermShowUseCase.Execute(APK: Int64): TPaymentTermShowDTO;
+function TPaymentTermShowUseCase.Execute(APK, ATenantId: Int64): TPaymentTermShowDTO;
 var
   lPaymentTermFound: Shared<TPaymentTerm>;
 begin
   // Localizar Registro
-  lPaymentTermFound := FRepository.Show(APK);
+  lPaymentTermFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lPaymentTermFound.Value) then
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 

@@ -47,12 +47,18 @@ begin
 end;
 
 function TPaymentTermSQLBuilder.DeleteById(AId, ATenantId: Int64): String;
+var
+  lCQL: ICQL;
 begin
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Delete
     .From('payment_term')
-    .Where('payment_term.id = ' + AId.ToString)
-  .AsString;
+    .Where('payment_term.id = ' + AId.ToString);
+
+  if (ATenantId > 0) then
+    lCQL.&And('payment_term.tenant_id = ' + ATenantId.ToString);
+
+  Result := lCQL.AsString;
 end;
 
 function TPaymentTermSQLBuilder.InsertInto(AEntity: TBaseEntity): String;
@@ -71,6 +77,7 @@ begin
     .&Set('document_id',                   lPaymentTerm.document_id)
     .&Set('created_at',                    lPaymentTerm.created_at)
     .&Set('created_by_acl_user_id',        lPaymentTerm.created_by_acl_user_id)
+    .&Set('tenant_id',                     lPaymentTerm.tenant_id)
   .AsString;
 end;
 
@@ -112,6 +119,8 @@ end;
 function TPaymentTermSQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE payment_term.id = ' + AId.ToString;
+  if (ATenantId > 0) then
+    Result := Result + ' AND payment_term.tenant_id = ' + ATenantId.ToString;
 end;
 
 function TPaymentTermSQLBuilder.Update(AEntity: TBaseEntity; AId: Int64): String;
@@ -129,7 +138,8 @@ begin
     .&Set('document_id',                   lPaymentTerm.document_id)
     .&Set('updated_at',                    lPaymentTerm.updated_at)
     .&Set('updated_by_acl_user_id',        lPaymentTerm.updated_by_acl_user_id)
-    .Where('payment_term.id = ' + AId.ToString)
+    .Where('payment_term.id = '       + AId.ToString)
+    .&And('payment_term.tenant_id = ' + lPaymentTerm.tenant_id.ToString)
   .AsString;
 end;
 

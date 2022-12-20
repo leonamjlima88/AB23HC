@@ -47,12 +47,18 @@ begin
 end;
 
 function TSizeSQLBuilder.DeleteById(AId, ATenantId: Int64): String;
+var
+  lCQL: ICQL;
 begin
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Delete
     .From('size')
-    .Where('size.id = ' + AId.ToString)
-  .AsString;
+    .Where('size.id = ' + AId.ToString);
+
+  if (ATenantId > 0) then
+    lCQL.&And('size.tenant_id = ' + ATenantId.ToString);
+
+  Result := lCQL.AsString;
 end;
 
 function TSizeSQLBuilder.InsertInto(AEntity: TBaseEntity): String;
@@ -66,6 +72,7 @@ begin
     .&Set('name',                   lSize.name)
     .&Set('created_at',             lSize.created_at)
     .&Set('created_by_acl_user_id', lSize.created_by_acl_user_id)
+    .&Set('tenant_id',              lSize.tenant_id)
   .AsString;
 end;
 
@@ -101,6 +108,8 @@ end;
 function TSizeSQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE size.id = ' + AId.ToString;
+  if (ATenantId > 0) then
+    Result := Result + ' AND size.tenant_id = ' + ATenantId.ToString;
 end;
 
 function TSizeSQLBuilder.Update(AEntity: TBaseEntity; AId: Int64): String;
@@ -113,7 +122,8 @@ begin
     .&Set('name',                   lSize.name)
     .&Set('updated_at',             lSize.updated_at)
     .&Set('updated_by_acl_user_id', lSize.updated_by_acl_user_id)
-    .Where('size.id = ' + AId.ToString)
+    .Where('size.id = '       + AId.ToString)
+    .&And('size.tenant_id = ' + lSize.tenant_id.ToString)
   .AsString;
 end;
 

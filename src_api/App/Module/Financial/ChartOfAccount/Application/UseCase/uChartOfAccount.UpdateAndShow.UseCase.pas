@@ -54,7 +54,7 @@ begin
 
   // Atualizar e Localizar registro atualizado
   FRepository.Update(lChartOfAccountToUpdate, APK);
-  lChartOfAccountUpdated := FRepository.Show(APK);
+  lChartOfAccountUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TChartOfAccountShowDTO.FromEntity(lChartOfAccountUpdated.Value);

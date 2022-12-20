@@ -27,7 +27,7 @@ type
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IPersonSQLBuilder): IPersonRepository;
-    function Show(AId: Int64): TPerson;
+    function Show(AId, ATenantId: Int64): TPerson;
     function Store(APerson: TPerson; AManageTransaction: Boolean): Int64; overload;
     function Update(APerson: TPerson; AId: Int64; AManageTransaction: Boolean): Boolean; overload;
  end;
@@ -113,14 +113,14 @@ begin
   Result := FPersonSQLBuilder.SelectAllWithFilter(APageFilter);
 end;
 
-function TPersonRepositorySQL.Show(AId: Int64): TPerson;
+function TPersonRepositorySQL.Show(AId, ATenantId: Int64): TPerson;
 var
   lPerson: TPerson;
 begin
   Result := nil;
 
   // Person
-  lPerson := ShowById(AId) as TPerson;
+  lPerson := ShowById(AId, ATenantId) as TPerson;
   if not Assigned(lPerson) then
     Exit;
 

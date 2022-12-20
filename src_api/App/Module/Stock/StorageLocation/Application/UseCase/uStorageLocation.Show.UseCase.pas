@@ -8,8 +8,8 @@ uses
 
 type
   IStorageLocationShowUseCase = Interface
-['{48D60E26-2951-4E56-953B-2A06A154EF55}']
-    function Execute(APK: Int64): TStorageLocationShowDTO;
+    ['{48D60E26-2951-4E56-953B-2A06A154EF55}']
+    function Execute(APK, ATenantId: Int64): TStorageLocationShowDTO;
   end;
 
   TStorageLocationShowUseCase = class(TInterfacedObject, IStorageLocationShowUseCase)
@@ -18,7 +18,7 @@ type
     constructor Create(ARepository: IStorageLocationRepository);
   public
     class function Make(ARepository: IStorageLocationRepository): IStorageLocationShowUseCase;
-    function Execute(APK: Int64): TStorageLocationShowDTO;
+    function Execute(APK, ATenantId: Int64): TStorageLocationShowDTO;
   end;
 
 implementation
@@ -39,12 +39,12 @@ begin
   FRepository := ARepository;
 end;
 
-function TStorageLocationShowUseCase.Execute(APK: Int64): TStorageLocationShowDTO;
+function TStorageLocationShowUseCase.Execute(APK, ATenantId: Int64): TStorageLocationShowDTO;
 var
   lStorageLocationFound: Shared<TStorageLocation>;
 begin
   // Localizar Registro
-  lStorageLocationFound := FRepository.Show(APK);
+  lStorageLocationFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lStorageLocationFound.Value) then
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 

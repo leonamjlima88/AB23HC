@@ -54,7 +54,7 @@ begin
 
   // Atualizar e Localizar registro atualizado
   FRepository.Update(lBankAccountToUpdate, APK);
-  lBankAccountUpdated := FRepository.Show(APK);
+  lBankAccountUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TBankAccountShowDTO.FromEntity(lBankAccountUpdated.Value);

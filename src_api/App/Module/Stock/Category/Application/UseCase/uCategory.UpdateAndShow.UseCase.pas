@@ -54,7 +54,7 @@ begin
 
   // Atualizar e Localizar registro atualizado
   FRepository.Update(lCategoryToUpdate, APK);
-  lCategoryUpdated := FRepository.Show(APK);
+  lCategoryUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TCategoryShowDTO.FromEntity(lCategoryUpdated.Value);

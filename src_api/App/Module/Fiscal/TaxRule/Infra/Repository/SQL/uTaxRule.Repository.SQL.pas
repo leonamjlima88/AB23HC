@@ -27,7 +27,7 @@ type
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: ITaxRuleSQLBuilder): ITaxRuleRepository;
-    function Show(AId: Int64): TTaxRule;
+    function Show(AId, ATenantId: Int64): TTaxRule;
     function Store(ATaxRule: TTaxRule; AManageTransaction: Boolean): Int64; overload;
     function Update(ATaxRule: TTaxRule; AId: Int64; AManageTransaction: Boolean): Boolean; overload;
  end;
@@ -111,14 +111,14 @@ begin
   Result := FTaxRuleSQLBuilder.SelectAllWithFilter(APageFilter);
 end;
 
-function TTaxRuleRepositorySQL.Show(AId: Int64): TTaxRule;
+function TTaxRuleRepositorySQL.Show(AId, ATenantId: Int64): TTaxRule;
 var
   lTaxRule: TTaxRule;
 begin
   Result := nil;
 
   // TaxRule
-  lTaxRule := ShowById(AId) as TTaxRule;
+  lTaxRule := ShowById(AId, ATenantId) as TTaxRule;
   if not Assigned(lTaxRule) then
     Exit;
 

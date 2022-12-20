@@ -7,8 +7,8 @@ uses
 
 type
   IPersonDeleteUseCase = Interface
-['{71E437A6-19C9-45C0-A607-E0D79CA23CCF}']
-    function Execute(APK: Int64): Boolean;
+    ['{71E437A6-19C9-45C0-A607-E0D79CA23CCF}']
+    function Execute(APK, ATenantId: Int64): Boolean;
   end;
 
   TPersonDeleteUseCase = class(TInterfacedObject, IPersonDeleteUseCase)
@@ -17,7 +17,7 @@ type
     constructor Create(ARepository: IPersonRepository);
   public
     class function Make(ARepository: IPersonRepository): IPersonDeleteUseCase;
-    function Execute(APK: Int64): Boolean;
+    function Execute(APK, ATenantId: Int64): Boolean;
   end;
 
 implementation
@@ -30,10 +30,10 @@ begin
   FRepository := ARepository;
 end;
 
-function TPersonDeleteUseCase.Execute(APK: Int64): Boolean;
+function TPersonDeleteUseCase.Execute(APK, ATenantId: Int64): Boolean;
 begin
   // Deletar Registro
-  Result := FRepository.Delete(APK);
+  Result := FRepository.Delete(APK, ATenantId);
 end;
 
 class function TPersonDeleteUseCase.Make(ARepository: IPersonRepository): IPersonDeleteUseCase;

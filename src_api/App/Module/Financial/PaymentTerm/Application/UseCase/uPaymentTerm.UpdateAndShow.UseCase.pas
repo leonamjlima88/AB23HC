@@ -54,7 +54,7 @@ begin
 
   // Atualizar e Localizar registro atualizado
   FRepository.Update(lPaymentTermToUpdate, APK);
-  lPaymentTermUpdated := FRepository.Show(APK);
+  lPaymentTermUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TPaymentTermShowDTO.FromEntity(lPaymentTermUpdated.Value);

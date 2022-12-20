@@ -7,8 +7,8 @@ uses
 
 type
   IStorageLocationDeleteUseCase = Interface
-['{5CB7E47F-A461-4267-B3E0-E872CF909D61}']
-    function Execute(APK: Int64): Boolean;
+    ['{5CB7E47F-A461-4267-B3E0-E872CF909D61}']
+    function Execute(APK, ATenantId: Int64): Boolean;
   end;
 
   TStorageLocationDeleteUseCase = class(TInterfacedObject, IStorageLocationDeleteUseCase)
@@ -17,7 +17,7 @@ type
     constructor Create(ARepository: IStorageLocationRepository);
   public
     class function Make(ARepository: IStorageLocationRepository): IStorageLocationDeleteUseCase;
-    function Execute(APK: Int64): Boolean;
+    function Execute(APK, ATenantId: Int64): Boolean;
   end;
 
 implementation
@@ -30,10 +30,10 @@ begin
   FRepository := ARepository;
 end;
 
-function TStorageLocationDeleteUseCase.Execute(APK: Int64): Boolean;
+function TStorageLocationDeleteUseCase.Execute(APK, ATenantId: Int64): Boolean;
 begin
   // Deletar Registro
-  Result := FRepository.Delete(APK);
+  Result := FRepository.Delete(APK, ATenantId);
 end;
 
 class function TStorageLocationDeleteUseCase.Make(ARepository: IStorageLocationRepository): IStorageLocationDeleteUseCase;

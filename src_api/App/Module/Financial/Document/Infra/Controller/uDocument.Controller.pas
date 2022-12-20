@@ -89,10 +89,11 @@ end;
 
 procedure TDocumentController.Delete;
 var
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   lPK := THlp.StrInt(FReq.Params['id']);
-  TDocumentDeleteUseCase.Make(FRepository).Execute(lPK);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  TDocumentDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
 
@@ -102,6 +103,7 @@ var
   lIndexResult: IIndexResult;
 begin
   lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter.AddWhere('document.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TDocumentIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
   // Pesquisar
@@ -111,13 +113,14 @@ end;
 procedure TDocumentController.Show;
 var
   lDocumentShowDTO: Shared<TDocumentShowDTO>;
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   // Localizar registro
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   lDocumentShowDTO := TDocumentShowUseCase
     .Make    (FRepository)
-    .Execute (lPk);
+    .Execute (lPk, lTenantId);
 
   // Retorno
   TRes.Success(FRes, lDocumentShowDTO.Value);
@@ -131,6 +134,7 @@ begin
   // Validar DTO
   lDocumentToStoreDTO := TDocumentDTO.FromJSON(FReq.Body);
   lDocumentToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lDocumentToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lDocumentToStoreDTO);
 
   // Inserir e retornar registro inserido
@@ -151,6 +155,7 @@ begin
   // Validar DTO
   lDocumentToUpdateDTO := TDocumentDTO.FromJSON(FReq.Body);
   lDocumentToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lDocumentToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lDocumentToUpdateDTO);
 
   // Atualizar e retornar registro atualizado

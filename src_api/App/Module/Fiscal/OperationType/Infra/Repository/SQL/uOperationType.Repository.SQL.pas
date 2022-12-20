@@ -23,7 +23,7 @@ type
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IOperationTypeSQLBuilder): IOperationTypeRepository;
-    function Show(AId: Int64): TOperationType;
+    function Show(AId, ATenantId: Int64): TOperationType;
  end;
 
 implementation
@@ -67,9 +67,9 @@ begin
   Result := FOperationTypeSQLBuilder.SelectAllWithFilter(APageFilter);
 end;
 
-function TOperationTypeRepositorySQL.Show(AId: Int64): TOperationType;
+function TOperationTypeRepositorySQL.Show(AId, ATenantId: Int64): TOperationType;
 begin
-  Result := ShowById(AId) as TOperationType;
+  Result := ShowById(AId, ATenantId) as TOperationType;
 end;
 
 procedure TOperationTypeRepositorySQL.Validate(AEntity: TBaseEntity);

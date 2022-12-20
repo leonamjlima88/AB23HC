@@ -24,7 +24,7 @@ type
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IChartOfAccountSQLBuilder): IChartOfAccountRepository;
-    function Show(AId: Int64): TChartOfAccount;
+    function Show(AId, ATenantId: Int64): TChartOfAccount;
  end;
 
 implementation
@@ -77,9 +77,9 @@ begin
   Result := FChartOfAccountSQLBuilder.SelectAllWithFilter(APageFilter);
 end;
 
-function TChartOfAccountRepositorySQL.Show(AId: Int64): TChartOfAccount;
+function TChartOfAccountRepositorySQL.Show(AId, ATenantId: Int64): TChartOfAccount;
 begin
-  Result := ShowById(AId) as TChartOfAccount;
+  Result := ShowById(AId, ATenantId) as TChartOfAccount;
 end;
 
 procedure TChartOfAccountRepositorySQL.Validate(AEntity: TBaseEntity);

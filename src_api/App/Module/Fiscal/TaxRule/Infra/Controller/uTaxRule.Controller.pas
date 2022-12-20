@@ -90,10 +90,11 @@ end;
 
 procedure TTaxRuleController.Delete;
 var
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
-  lPK := THlp.StrInt(FReq.Params['id']);
-  TTaxRuleDeleteUseCase.Make(FRepository).Execute(lPK);
+  lPK       := THlp.StrInt(FReq.Params['id']);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  TTaxRuleDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
 
@@ -103,6 +104,7 @@ var
   lIndexResult: IIndexResult;
 begin
   lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter.AddWhere('tax_rule.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TTaxRuleIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
   // Pesquisar
@@ -112,13 +114,14 @@ end;
 procedure TTaxRuleController.Show;
 var
   lTaxRuleShowDTO: Shared<TTaxRuleShowDTO>;
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   // Localizar registro
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   lTaxRuleShowDTO := TTaxRuleShowUseCase
     .Make    (FRepository)
-    .Execute (lPk);
+    .Execute (lPk, lTenantId);
 
   // Retorno
   TRes.Success(FRes, lTaxRuleShowDTO.Value);
@@ -132,6 +135,7 @@ begin
   // Validar DTO
   lTaxRuleToStoreDTO := TTaxRuleDTO.FromJSON(FReq.Body);
   lTaxRuleToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lTaxRuleToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lTaxRuleToStoreDTO);
 
   // Inserir e retornar registro inserido
@@ -152,6 +156,7 @@ begin
   // Validar DTO
   lTaxRuleToUpdateDTO := TTaxRuleDTO.FromJSON(FReq.Body);
   lTaxRuleToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lTaxRuleToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lTaxRuleToUpdateDTO);
 
   // Atualizar e retornar registro atualizado

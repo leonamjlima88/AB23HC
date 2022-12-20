@@ -89,10 +89,11 @@ end;
 
 procedure TBankAccountController.Delete;
 var
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   lPK := THlp.StrInt(FReq.Params['id']);
-  TBankAccountDeleteUseCase.Make(FRepository).Execute(lPK);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  TBankAccountDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
 
@@ -102,6 +103,7 @@ var
   lIndexResult: IIndexResult;
 begin
   lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter.AddWhere('bank_account.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TBankAccountIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
   // Pesquisar
@@ -111,13 +113,14 @@ end;
 procedure TBankAccountController.Show;
 var
   lBankAccountShowDTO: Shared<TBankAccountShowDTO>;
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   // Localizar registro
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   lBankAccountShowDTO := TBankAccountShowUseCase
     .Make    (FRepository)
-    .Execute (lPk);
+    .Execute (lPk, lTenantId);
 
   // Retorno
   TRes.Success(FRes, lBankAccountShowDTO.Value);
@@ -131,6 +134,7 @@ begin
   // Validar DTO
   lBankAccountToStoreDTO := TBankAccountDTO.FromJSON(FReq.Body);
   lBankAccountToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lBankAccountToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lBankAccountToStoreDTO);
 
   // Inserir e retornar registro inserido
@@ -151,6 +155,7 @@ begin
   // Validar DTO
   lBankAccountToUpdateDTO := TBankAccountDTO.FromJSON(FReq.Body);
   lBankAccountToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lBankAccountToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lBankAccountToUpdateDTO);
 
   // Atualizar e retornar registro atualizado

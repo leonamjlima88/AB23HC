@@ -9,7 +9,7 @@ uses
 type
   IOperationTypeShowUseCase = Interface
     ['{768BA1BB-108D-420C-9781-4C63A243846A}']
-    function Execute(APK: Int64): TOperationTypeShowDTO;
+    function Execute(APK, ATenantId: Int64): TOperationTypeShowDTO;
   end;
 
   TOperationTypeShowUseCase = class(TInterfacedObject, IOperationTypeShowUseCase)
@@ -18,7 +18,7 @@ type
     constructor Create(ARepository: IOperationTypeRepository);
   public
     class function Make(ARepository: IOperationTypeRepository): IOperationTypeShowUseCase;
-    function Execute(APK: Int64): TOperationTypeShowDTO;
+    function Execute(APK, ATenantId: Int64): TOperationTypeShowDTO;
   end;
 
 implementation
@@ -39,12 +39,12 @@ begin
   FRepository := ARepository;
 end;
 
-function TOperationTypeShowUseCase.Execute(APK: Int64): TOperationTypeShowDTO;
+function TOperationTypeShowUseCase.Execute(APK, ATenantId: Int64): TOperationTypeShowDTO;
 var
   lOperationTypeFound: Shared<TOperationType>;
 begin
   // Localizar Registro
-  lOperationTypeFound := FRepository.Show(APK);
+  lOperationTypeFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lOperationTypeFound.Value) then
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 

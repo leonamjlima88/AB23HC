@@ -76,8 +76,7 @@ uses
   XSuperObject,
   uMyClaims,
   uPerson.StoreAndShow.UseCase,
-  uPerson.UpdateAndShow.UseCase,
-  System.SysUtils;
+  uPerson.UpdateAndShow.UseCase;
 
 { TPersonController }
 
@@ -90,10 +89,11 @@ end;
 
 procedure TPersonController.Delete;
 var
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   lPK := THlp.StrInt(FReq.Params['id']);
-  TPersonDeleteUseCase.Make(FRepository).Execute(lPK);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  TPersonDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
 
@@ -103,6 +103,7 @@ var
   lIndexResult: IIndexResult;
 begin
   lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter.AddWhere('person.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TPersonIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
   // Pesquisar
@@ -112,13 +113,14 @@ end;
 procedure TPersonController.Show;
 var
   lPersonShowDTO: Shared<TPersonShowDTO>;
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   // Localizar registro
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   lPersonShowDTO := TPersonShowUseCase
     .Make    (FRepository)
-    .Execute (lPk);
+    .Execute (lPk, lTenantId);
 
   // Retorno
   TRes.Success(FRes, lPersonShowDTO.Value);
@@ -132,6 +134,7 @@ begin
   // Validar DTO
   lPersonToStoreDTO := TPersonDTO.FromJSON(FReq.Body);
   lPersonToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lPersonToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lPersonToStoreDTO);
 
   // Inserir e retornar registro inserido
@@ -152,6 +155,7 @@ begin
   // Validar DTO
   lPersonToUpdateDTO := TPersonDTO.FromJSON(FReq.Body);
   lPersonToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lPersonToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lPersonToUpdateDTO);
 
   // Atualizar e retornar registro atualizado

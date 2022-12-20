@@ -23,7 +23,7 @@ type
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: ISizeSQLBuilder): ISizeRepository;
-    function Show(AId: Int64): TSize;
+    function Show(AId, ATenantId: Int64): TSize;
  end;
 
 implementation
@@ -67,9 +67,9 @@ begin
   Result := FSizeSQLBuilder.SelectAllWithFilter(APageFilter);
 end;
 
-function TSizeRepositorySQL.Show(AId: Int64): TSize;
+function TSizeRepositorySQL.Show(AId, ATenantId: Int64): TSize;
 begin
-  Result := ShowById(AId) as TSize;
+  Result := ShowById(AId, ATenantId) as TSize;
 end;
 
 procedure TSizeRepositorySQL.Validate(AEntity: TBaseEntity);

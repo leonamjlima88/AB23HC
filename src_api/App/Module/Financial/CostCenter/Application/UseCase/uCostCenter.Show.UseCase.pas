@@ -8,8 +8,8 @@ uses
 
 type
   ICostCenterShowUseCase = Interface
-['{FB716BA4-0451-4CEF-940A-0133E7DDCCD8}']
-    function Execute(APK: Int64): TCostCenterShowDTO;
+    ['{FB716BA4-0451-4CEF-940A-0133E7DDCCD8}']
+    function Execute(APK, ATenantId: Int64): TCostCenterShowDTO;
   end;
 
   TCostCenterShowUseCase = class(TInterfacedObject, ICostCenterShowUseCase)
@@ -18,7 +18,7 @@ type
     constructor Create(ARepository: ICostCenterRepository);
   public
     class function Make(ARepository: ICostCenterRepository): ICostCenterShowUseCase;
-    function Execute(APK: Int64): TCostCenterShowDTO;
+    function Execute(APK, ATenantId: Int64): TCostCenterShowDTO;
   end;
 
 implementation
@@ -39,12 +39,12 @@ begin
   FRepository := ARepository;
 end;
 
-function TCostCenterShowUseCase.Execute(APK: Int64): TCostCenterShowDTO;
+function TCostCenterShowUseCase.Execute(APK, ATenantId: Int64): TCostCenterShowDTO;
 var
   lCostCenterFound: Shared<TCostCenter>;
 begin
   // Localizar Registro
-  lCostCenterFound := FRepository.Show(APK);
+  lCostCenterFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lCostCenterFound.Value) then
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 

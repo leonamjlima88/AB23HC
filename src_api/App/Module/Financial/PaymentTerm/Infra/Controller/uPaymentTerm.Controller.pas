@@ -89,10 +89,11 @@ end;
 
 procedure TPaymentTermController.Delete;
 var
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   lPK := THlp.StrInt(FReq.Params['id']);
-  TPaymentTermDeleteUseCase.Make(FRepository).Execute(lPK);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  TPaymentTermDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
 
@@ -102,6 +103,7 @@ var
   lIndexResult: IIndexResult;
 begin
   lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter.AddWhere('payment_term.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TPaymentTermIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
   // Pesquisar
@@ -111,13 +113,14 @@ end;
 procedure TPaymentTermController.Show;
 var
   lPaymentTermShowDTO: Shared<TPaymentTermShowDTO>;
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   // Localizar registro
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   lPaymentTermShowDTO := TPaymentTermShowUseCase
     .Make    (FRepository)
-    .Execute (lPk);
+    .Execute (lPk, lTenantId);
 
   // Retorno
   TRes.Success(FRes, lPaymentTermShowDTO.Value);
@@ -131,6 +134,7 @@ begin
   // Validar DTO
   lPaymentTermToStoreDTO := TPaymentTermDTO.FromJSON(FReq.Body);
   lPaymentTermToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lPaymentTermToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lPaymentTermToStoreDTO);
 
   // Inserir e retornar registro inserido
@@ -151,6 +155,7 @@ begin
   // Validar DTO
   lPaymentTermToUpdateDTO := TPaymentTermDTO.FromJSON(FReq.Body);
   lPaymentTermToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lPaymentTermToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lPaymentTermToUpdateDTO);
 
   // Atualizar e retornar registro atualizado

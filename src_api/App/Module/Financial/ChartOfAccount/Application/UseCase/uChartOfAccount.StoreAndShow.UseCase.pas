@@ -49,7 +49,7 @@ begin
 
   // Incluir e Localizar registro incluso
   lPK := FRepository.Store(lChartOfAccountToStore);
-  lChartOfAccountStored := FRepository.Show(lPK);
+  lChartOfAccountStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TChartOfAccountShowDTO.FromEntity(lChartOfAccountStored.Value);

@@ -49,7 +49,7 @@ begin
 
   // Incluir e Localizar registro incluso
   lPK := FRepository.Store(lOperationTypeToStore);
-  lOperationTypeStored := FRepository.Show(lPK);
+  lOperationTypeStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TOperationTypeShowDTO.FromEntity(lOperationTypeStored.Value);

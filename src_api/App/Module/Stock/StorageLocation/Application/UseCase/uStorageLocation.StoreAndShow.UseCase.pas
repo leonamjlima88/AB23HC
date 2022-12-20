@@ -49,7 +49,7 @@ begin
 
   // Incluir e Localizar registro incluso
   lPK := FRepository.Store(lStorageLocationToStore);
-  lStorageLocationStored := FRepository.Show(lPK);
+  lStorageLocationStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TStorageLocationShowDTO.FromEntity(lStorageLocationStored.Value);

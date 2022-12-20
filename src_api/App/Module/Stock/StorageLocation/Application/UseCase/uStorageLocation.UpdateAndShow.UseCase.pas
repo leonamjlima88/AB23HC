@@ -54,7 +54,7 @@ begin
 
   // Atualizar e Localizar registro atualizado
   FRepository.Update(lStorageLocationToUpdate, APK);
-  lStorageLocationUpdated := FRepository.Show(APK);
+  lStorageLocationUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TStorageLocationShowDTO.FromEntity(lStorageLocationUpdated.Value);

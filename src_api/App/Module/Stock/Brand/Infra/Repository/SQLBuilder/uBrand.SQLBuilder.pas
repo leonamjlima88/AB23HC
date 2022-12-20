@@ -72,9 +72,9 @@ begin
   lCQL := TCQL.New(FDBName)
     .Insert
     .Into('brand')
-    .&Set('tenant_id',              lBrand.tenant_id)
     .&Set('created_at',             lBrand.created_at)
-    .&Set('created_by_acl_user_id', lBrand.created_by_acl_user_id);
+    .&Set('created_by_acl_user_id', lBrand.created_by_acl_user_id)
+    .&Set('tenant_id',              lBrand.tenant_id);
 
   // Carregar Campos Default
   LoadDefaultFieldsToInsertOrUpdate(lCQL, lBrand);

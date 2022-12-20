@@ -61,12 +61,18 @@ begin
 end;
 
 function TTaxRuleSQLBuilder.DeleteById(AId, ATenantId: Int64): String;
+var
+  lCQL: ICQL;
 begin
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Delete
     .From('tax_rule')
-    .Where('tax_rule.id = ' + AId.ToString)
-  .AsString;
+    .Where('tax_rule.id = ' + AId.ToString);
+
+  if (ATenantId > 0) then
+    lCQL.&And('tax_rule.tenant_id = ' + ATenantId.ToString);
+
+  Result := lCQL.AsString;
 end;
 
 destructor TTaxRuleSQLBuilder.Destroy;
@@ -87,6 +93,7 @@ begin
     .&Set('is_final_customer',      lTaxRule.is_final_customer)
     .&Set('created_at',             lTaxRule.created_at)
     .&Set('created_by_acl_user_id', lTaxRule.created_by_acl_user_id)
+    .&Set('tenant_id',              lTaxRule.tenant_id)
   .AsString;
 end;
 
@@ -122,6 +129,8 @@ end;
 function TTaxRuleSQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE tax_rule.id = ' + AId.ToString;
+  if (ATenantId > 0) then
+    Result := Result + ' AND tax_rule.tenant_id = ' + ATenantId.ToString;
 end;
 
 function TTaxRuleSQLBuilder.Update(AEntity: TBaseEntity; AId: Int64): String;
@@ -137,6 +146,7 @@ begin
     .&Set('updated_at',             lTaxRule.updated_at)
     .&Set('updated_by_acl_user_id', lTaxRule.updated_by_acl_user_id)
     .Where('tax_rule.id = ' + AId.ToString)
+    .&And('tax_rule.tenant_id = ' + lTaxRule.tenant_id.ToString)
   .AsString;
 end;
 

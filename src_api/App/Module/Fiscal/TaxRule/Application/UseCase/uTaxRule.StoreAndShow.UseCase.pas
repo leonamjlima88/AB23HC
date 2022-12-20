@@ -49,7 +49,7 @@ begin
 
   // Incluir e Localizar registro incluso
   lPK := FRepository.Store(lTaxRuleToStore, true);
-  lTaxRuleStored := FRepository.Show(lPK);
+  lTaxRuleStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TTaxRuleShowDTO.FromEntity(lTaxRuleStored.Value);

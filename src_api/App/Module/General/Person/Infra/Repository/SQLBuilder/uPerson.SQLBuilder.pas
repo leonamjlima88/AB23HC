@@ -63,12 +63,18 @@ begin
 end;
 
 function TPersonSQLBuilder.DeleteById(AId, ATenantId: Int64): String;
+var
+  lCQL: ICQL;
 begin
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Delete
     .From('person')
-    .Where('person.id = ' + AId.ToString)
-  .AsString;
+    .Where('person.id = ' + AId.ToString);
+
+  if (ATenantId > 0) then
+    lCQL.&And('person.tenant_id = ' + ATenantId.ToString);
+
+  Result := lCQL.AsString;
 end;
 
 destructor TPersonSQLBuilder.Destroy;
@@ -86,7 +92,8 @@ begin
     .Insert
     .Into('person')
     .&Set('created_at',             lPerson.created_at)
-    .&Set('created_by_acl_user_id', lPerson.created_by_acl_user_id);
+    .&Set('created_by_acl_user_id', lPerson.created_by_acl_user_id)
+    .&Set('tenant_id',              lPerson.tenant_id);
 
   // Carregar Campos Default
   LoadDefaultFieldsToInsertOrUpdate(lCQL, lPerson);
@@ -169,6 +176,8 @@ end;
 function TPersonSQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE person.id = ' + AId.ToString;
+  if (ATenantId > 0) then
+    Result := Result + ' AND person.tenant_id = ' + ATenantId.ToString;
 end;
 
 function TPersonSQLBuilder.Update(AEntity: TBaseEntity; AId: Int64): String;
@@ -185,7 +194,10 @@ begin
   // Carregar Campos Default
   LoadDefaultFieldsToInsertOrUpdate(lCQL, lPerson);
 
-  Result := lCQL.Where('person.id = ' + AId.ToString).AsString;
+  Result := lCQL
+    .Where('person.id = '       + AId.ToString)
+    .&And('person.tenant_id = ' + lPerson.tenant_id.ToString)
+  .AsString;
 end;
 
 end.

@@ -48,12 +48,18 @@ begin
 end;
 
 function TChartOfAccountSQLBuilder.DeleteById(AId, ATenantId: Int64): String;
+var
+  lCQL: ICQL;
 begin
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Delete
     .From('chart_of_account')
-    .Where('chart_of_account.id = ' + AId.ToString)
-  .AsString;
+    .Where('chart_of_account.id = ' + AId.ToString);
+
+  if (ATenantId > 0) then
+    lCQL.&And('chart_of_account.tenant_id = ' + ATenantId.ToString);
+
+  Result := lCQL.AsString;
 end;
 
 function TChartOfAccountSQLBuilder.InsertInto(AEntity: TBaseEntity): String;
@@ -70,6 +76,7 @@ begin
     .&Set('note',                   lChartOfAccount.note)
     .&Set('created_at',             lChartOfAccount.created_at)
     .&Set('created_by_acl_user_id', lChartOfAccount.created_by_acl_user_id)
+    .&Set('tenant_id',              lChartOfAccount.tenant_id)
   .AsString;
 end;
 
@@ -116,6 +123,8 @@ end;
 function TChartOfAccountSQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE chart_of_account.id = ' + AId.ToString;
+  if (ATenantId > 0) then
+    Result := Result + ' AND chart_of_account.tenant_id = ' + ATenantId.ToString;
 end;
 
 function TChartOfAccountSQLBuilder.Update(AEntity: TBaseEntity; AId: Int64): String;
@@ -131,7 +140,8 @@ begin
     .&Set('note',                   lChartOfAccount.note)
     .&Set('updated_at',             lChartOfAccount.updated_at)
     .&Set('updated_by_acl_user_id', lChartOfAccount.updated_by_acl_user_id)
-    .Where('chart_of_account.id = ' + AId.ToString)
+    .Where('chart_of_account.id = '       + AId.ToString)
+    .&And('chart_of_account.tenant_id = ' + lChartOfAccount.tenant_id.ToString)
   .AsString;
 end;
 

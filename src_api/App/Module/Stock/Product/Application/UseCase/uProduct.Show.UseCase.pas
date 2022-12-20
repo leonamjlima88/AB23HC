@@ -8,8 +8,8 @@ uses
 
 type
   IProductShowUseCase = Interface
-['{EF49441B-0BCE-4969-BF29-D81734350309}']
-    function Execute(APK: Int64): TProductShowDTO;
+    ['{EF49441B-0BCE-4969-BF29-D81734350309}']
+    function Execute(APK, ATenantId: Int64): TProductShowDTO;
   end;
 
   TProductShowUseCase = class(TInterfacedObject, IProductShowUseCase)
@@ -18,7 +18,7 @@ type
     constructor Create(ARepository: IProductRepository);
   public
     class function Make(ARepository: IProductRepository): IProductShowUseCase;
-    function Execute(APK: Int64): TProductShowDTO;
+    function Execute(APK, ATenantId: Int64): TProductShowDTO;
   end;
 
 implementation
@@ -39,12 +39,12 @@ begin
   FRepository := ARepository;
 end;
 
-function TProductShowUseCase.Execute(APK: Int64): TProductShowDTO;
+function TProductShowUseCase.Execute(APK, ATenantId: Int64): TProductShowDTO;
 var
   lProductFound: Shared<TProduct>;
 begin
   // Localizar Registro
-  lProductFound := FRepository.Show(APK);
+  lProductFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lProductFound.Value) then
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 

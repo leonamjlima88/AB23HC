@@ -54,7 +54,7 @@ begin
 
   // Atualizar e Localizar registro atualizado
   FRepository.Update(lTaxRuleToUpdate, APK, true);
-  lTaxRuleUpdated := FRepository.Show(APK);
+  lTaxRuleUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TTaxRuleShowDTO.FromEntity(lTaxRuleUpdated.Value);

@@ -23,7 +23,7 @@ type
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IDocumentSQLBuilder): IDocumentRepository;
-    function Show(AId: Int64): TDocument;
+    function Show(AId, ATenantId: Int64): TDocument;
  end;
 
 implementation
@@ -67,9 +67,9 @@ begin
   Result := FDocumentSQLBuilder.SelectAllWithFilter(APageFilter);
 end;
 
-function TDocumentRepositorySQL.Show(AId: Int64): TDocument;
+function TDocumentRepositorySQL.Show(AId, ATenantId: Int64): TDocument;
 begin
-  Result := ShowById(AId) as TDocument;
+  Result := ShowById(AId, ATenantId) as TDocument;
 end;
 
 procedure TDocumentRepositorySQL.Validate(AEntity: TBaseEntity);

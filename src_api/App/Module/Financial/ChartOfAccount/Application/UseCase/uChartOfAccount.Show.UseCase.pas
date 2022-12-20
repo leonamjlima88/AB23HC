@@ -9,7 +9,7 @@ uses
 type
   IChartOfAccountShowUseCase = Interface
     ['{768BA1BB-108D-420C-9781-4C63A243846A}']
-    function Execute(APK: Int64): TChartOfAccountShowDTO;
+    function Execute(APK, ATenantId: Int64): TChartOfAccountShowDTO;
   end;
 
   TChartOfAccountShowUseCase = class(TInterfacedObject, IChartOfAccountShowUseCase)
@@ -18,7 +18,7 @@ type
     constructor Create(ARepository: IChartOfAccountRepository);
   public
     class function Make(ARepository: IChartOfAccountRepository): IChartOfAccountShowUseCase;
-    function Execute(APK: Int64): TChartOfAccountShowDTO;
+    function Execute(APK, ATenantId: Int64): TChartOfAccountShowDTO;
   end;
 
 implementation
@@ -39,12 +39,12 @@ begin
   FRepository := ARepository;
 end;
 
-function TChartOfAccountShowUseCase.Execute(APK: Int64): TChartOfAccountShowDTO;
+function TChartOfAccountShowUseCase.Execute(APK, ATenantId: Int64): TChartOfAccountShowDTO;
 var
   lChartOfAccountFound: Shared<TChartOfAccount>;
 begin
   // Localizar Registro
-  lChartOfAccountFound := FRepository.Show(APK);
+  lChartOfAccountFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lChartOfAccountFound.Value) then
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 

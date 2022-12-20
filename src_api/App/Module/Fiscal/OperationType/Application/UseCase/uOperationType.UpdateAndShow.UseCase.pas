@@ -54,7 +54,7 @@ begin
 
   // Atualizar e Localizar registro atualizado
   FRepository.Update(lOperationTypeToUpdate, APK);
-  lOperationTypeUpdated := FRepository.Show(APK);
+  lOperationTypeUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TOperationTypeShowDTO.FromEntity(lOperationTypeUpdated.Value);

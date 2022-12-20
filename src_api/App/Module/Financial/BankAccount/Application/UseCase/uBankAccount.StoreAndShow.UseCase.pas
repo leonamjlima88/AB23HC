@@ -49,7 +49,7 @@ begin
 
   // Incluir e Localizar registro incluso
   lPK := FRepository.Store(lBankAccountToStore);
-  lBankAccountStored := FRepository.Show(lPK);
+  lBankAccountStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TBankAccountShowDTO.FromEntity(lBankAccountStored.Value);

@@ -54,7 +54,7 @@ begin
 
   // Atualizar e Localizar registro atualizado
   FRepository.Update(lCostCenterToUpdate, APK);
-  lCostCenterUpdated := FRepository.Show(APK);
+  lCostCenterUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TCostCenterShowDTO.FromEntity(lCostCenterUpdated.Value);

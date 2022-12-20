@@ -49,6 +49,7 @@ type
     Fupdated_at: TDateTime;
     Fupdated_by_acl_user_id: Int64;
     Fcreated_by_acl_user_id: Int64;
+    Ftenant_id: Int64;
 
     // OneToOne
     Funit: TUnit;
@@ -95,6 +96,7 @@ type
     property updated_at: TDateTime read Fupdated_at write Fupdated_at;
     property created_by_acl_user_id: Int64 read Fcreated_by_acl_user_id write Fcreated_by_acl_user_id;
     property updated_by_acl_user_id: Int64 read Fupdated_by_acl_user_id write Fupdated_by_acl_user_id;
+    property tenant_id: Int64 read Ftenant_id write Ftenant_id;
 
     // OneToOne
     property &unit: TUnit read Funit write Funit;
@@ -151,6 +153,9 @@ var
 begin
   if Fname.Trim.IsEmpty then
     raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['name']));
+
+  if (Ftenant_id <= 0) then
+    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['tenant_id']));
 
   if Fsimplified_name.Trim.IsEmpty then
     raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['simplified_name']));

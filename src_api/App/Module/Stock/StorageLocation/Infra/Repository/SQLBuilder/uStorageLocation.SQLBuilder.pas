@@ -47,12 +47,18 @@ begin
 end;
 
 function TStorageLocationSQLBuilder.DeleteById(AId, ATenantId: Int64): String;
+var
+  lCQL: ICQL;
 begin
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Delete
     .From('storage_location')
-    .Where('storage_location.id = ' + AId.ToString)
-  .AsString;
+    .Where('storage_location.id = ' + AId.ToString);
+
+  if (ATenantId > 0) then
+    lCQL.&And('storage_location.tenant_id = ' + ATenantId.ToString);
+
+  Result := lCQL.AsString;
 end;
 
 function TStorageLocationSQLBuilder.InsertInto(AEntity: TBaseEntity): String;
@@ -66,6 +72,7 @@ begin
     .&Set('name',                   lStorageLocation.name)
     .&Set('created_at',             lStorageLocation.created_at)
     .&Set('created_by_acl_user_id', lStorageLocation.created_by_acl_user_id)
+    .&Set('tenant_id',              lStorageLocation.tenant_id)
   .AsString;
 end;
 
@@ -101,6 +108,8 @@ end;
 function TStorageLocationSQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE storage_location.id = ' + AId.ToString;
+  if (ATenantId > 0) then
+    Result := Result + ' AND storage_location.tenant_id = ' + ATenantId.ToString;
 end;
 
 function TStorageLocationSQLBuilder.Update(AEntity: TBaseEntity; AId: Int64): String;
@@ -113,7 +122,8 @@ begin
     .&Set('name',                   lStorageLocation.name)
     .&Set('updated_at',             lStorageLocation.updated_at)
     .&Set('updated_by_acl_user_id', lStorageLocation.updated_by_acl_user_id)
-    .Where('storage_location.id = ' + AId.ToString)
+    .Where('storage_location.id = '       + AId.ToString)
+    .&And('storage_location.tenant_id = ' + lStorageLocation.tenant_id.ToString)
   .AsString;
 end;
 

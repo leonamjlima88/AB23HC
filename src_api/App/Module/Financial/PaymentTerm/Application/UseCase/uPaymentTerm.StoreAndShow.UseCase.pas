@@ -49,7 +49,7 @@ begin
 
   // Incluir e Localizar registro incluso
   lPK := FRepository.Store(lPaymentTermToStore);
-  lPaymentTermStored := FRepository.Show(lPK);
+  lPaymentTermStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TPaymentTermShowDTO.FromEntity(lPaymentTermStored.Value);

@@ -114,7 +114,7 @@ var
   lPK: Int64;
 begin
   // Localizar registro
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
   lCFOPShowDTO := TCFOPShowUseCase
     .Make    (FRepository)
     .Execute (lPk);

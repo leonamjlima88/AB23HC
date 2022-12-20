@@ -50,12 +50,18 @@ begin
 end;
 
 function TProductSQLBuilder.DeleteById(AId, ATenantId: Int64): String;
+var
+  lCQL: ICQL;
 begin
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Delete
     .From('product')
-    .Where('product.id = ' + AId.ToString)
-  .AsString;
+    .Where('product.id = ' + AId.ToString);
+
+  if (ATenantId > 0) then
+    lCQL.&And('product.tenant_id = ' + ATenantId.ToString);
+
+  Result := lCQL.AsString;
 end;
 
 function TProductSQLBuilder.InsertInto(AEntity: TBaseEntity): String;
@@ -68,7 +74,8 @@ begin
     .Insert
     .Into('product')
     .&Set('created_at',             lProduct.created_at)
-    .&Set('created_by_acl_user_id', lProduct.created_by_acl_user_id);
+    .&Set('created_by_acl_user_id', lProduct.created_by_acl_user_id)
+    .&Set('tenant_id',              lProduct.tenant_id);
 
   // Carregar campos default
   LoadDefaultFieldsToInsertOrUpdate(lCQL, lProduct);
@@ -171,6 +178,8 @@ end;
 function TProductSQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE product.id = ' + AId.ToString;
+  if (ATenantId > 0) then
+    Result := Result + ' AND product.tenant_id = ' + ATenantId.ToString;
 end;
 
 function TProductSQLBuilder.Update(AEntity: TBaseEntity; AId: Int64): String;
@@ -188,7 +197,10 @@ begin
   LoadDefaultFieldsToInsertOrUpdate(lCQL, lProduct);
 
   // Retornar String SQL
-  Result := lCQL.Where('product.id = ' + AId.ToString).AsString;
+  Result := lCQL
+    .Where('product.id = '       + AId.ToString)
+    .&And('product.tenant_id = ' + lProduct.tenant_id.ToString)
+  .AsString;
 end;
 
 end.

@@ -23,7 +23,7 @@ type
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IBankAccountSQLBuilder): IBankAccountRepository;
-    function Show(AId: Int64): TBankAccount;
+    function Show(AId, ATenantId: Int64): TBankAccount;
  end;
 
 implementation
@@ -69,9 +69,9 @@ begin
   Result := FBankAccountSQLBuilder.SelectAllWithFilter(APageFilter);
 end;
 
-function TBankAccountRepositorySQL.Show(AId: Int64): TBankAccount;
+function TBankAccountRepositorySQL.Show(AId, ATenantId: Int64): TBankAccount;
 begin
-  Result := ShowById(AId) as TBankAccount;
+  Result := ShowById(AId, ATenantId) as TBankAccount;
 end;
 
 procedure TBankAccountRepositorySQL.Validate(AEntity: TBaseEntity);

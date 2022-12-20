@@ -54,7 +54,7 @@ begin
 
   // Incluir e Localizar registro incluso
   lPK := FRepository.Store(lPersonToStore, true);
-  lPersonStored := FRepository.Show(lPK);
+  lPersonStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TPersonShowDTO.FromEntity(lPersonStored.Value);

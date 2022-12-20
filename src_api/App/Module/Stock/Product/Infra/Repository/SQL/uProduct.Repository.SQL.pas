@@ -24,7 +24,7 @@ type
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IProductSQLBuilder): IProductRepository;
-    function Show(AId: Int64): TProduct;
+    function Show(AId, ATenantId: Int64): TProduct;
  end;
 
 implementation
@@ -80,9 +80,9 @@ begin
   Result := FProductSQLBuilder.SelectAllWithFilter(APageFilter);
 end;
 
-function TProductRepositorySQL.Show(AId: Int64): TProduct;
+function TProductRepositorySQL.Show(AId, ATenantId: Int64): TProduct;
 begin
-  Result := ShowById(AId) as TProduct;
+  Result := ShowById(AId, ATenantId) as TProduct;
 end;
 
 function TProductRepositorySQL.FieldExists(AColumName, AColumnValue: String; AId: Int64): Boolean;

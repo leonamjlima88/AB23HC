@@ -49,12 +49,18 @@ begin
 end;
 
 function TBankAccountSQLBuilder.DeleteById(AId, ATenantId: Int64): String;
+var
+  lCQL: ICQL;
 begin
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Delete
     .From('bank_account')
-    .Where('bank_account.id = ' + AId.ToString)
-  .AsString;
+    .Where('bank_account.id = ' + AId.ToString);
+
+  if (ATenantId > 0) then
+    lCQL.&And('bank_account.tenant_id = ' + ATenantId.ToString);
+
+  Result := lCQL.AsString;
 end;
 
 function TBankAccountSQLBuilder.InsertInto(AEntity: TBaseEntity): String;
@@ -67,7 +73,8 @@ begin
     .Insert
     .Into('bank_account')
     .&Set('created_at',             lBankAccount.created_at)
-    .&Set('created_by_acl_user_id', lBankAccount.created_by_acl_user_id);
+    .&Set('created_by_acl_user_id', lBankAccount.created_by_acl_user_id)
+    .&Set('tenant_id',              lBankAccount.tenant_id);
 
   // Carregar campos default
   LoadDefaultFieldsToInsertOrUpdate(lCQL, lBankAccount);
@@ -121,6 +128,8 @@ end;
 function TBankAccountSQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE bank_account.id = ' + AId.ToString;
+  if (ATenantId > 0) then
+    Result := Result + ' AND bank_account.tenant_id = ' + ATenantId.ToString;
 end;
 
 function TBankAccountSQLBuilder.Update(AEntity: TBaseEntity; AId: Int64): String;
@@ -138,7 +147,10 @@ begin
   LoadDefaultFieldsToInsertOrUpdate(lCQL, lBankAccount);
 
   // Retornar String SQL
-  Result := lCQL.Where('bank_account.id = ' + AId.ToString).AsString;
+  Result := lCQL
+    .Where('bank_account.id = ' + AId.ToString)
+    .&And('bank_account.tenant_id = ' + lBankAccount.tenant_id.ToString)
+  .AsString;
 end;
 
 end.

@@ -8,7 +8,7 @@ uses
 type
   IPaymentTermDeleteUseCase = Interface
     ['{596944D4-AC7E-4612-8539-C7B4EF1316F5}']
-    function Execute(APK: Int64): Boolean;
+    function Execute(APK, ATenantId: Int64): Boolean;
   end;
 
   TPaymentTermDeleteUseCase = class(TInterfacedObject, IPaymentTermDeleteUseCase)
@@ -17,7 +17,7 @@ type
     constructor Create(ARepository: IPaymentTermRepository);
   public
     class function Make(ARepository: IPaymentTermRepository): IPaymentTermDeleteUseCase;
-    function Execute(APK: Int64): Boolean;
+    function Execute(APK, ATenantId: Int64): Boolean;
   end;
 
 implementation
@@ -30,7 +30,7 @@ begin
   FRepository := ARepository;
 end;
 
-function TPaymentTermDeleteUseCase.Execute(APK: Int64): Boolean;
+function TPaymentTermDeleteUseCase.Execute(APK, ATenantId: Int64): Boolean;
 begin
   // Deletar Registro
   Result := FRepository.Delete(APK);

@@ -9,7 +9,7 @@ uses
 type
   ICategoryShowUseCase = Interface
     ['{365F3D45-C59E-4857-AA98-5B359B8232DE}']
-    function Execute(APK: Int64): TCategoryShowDTO;
+    function Execute(APK, ATenantId: Int64): TCategoryShowDTO;
   end;
 
   TCategoryShowUseCase = class(TInterfacedObject, ICategoryShowUseCase)
@@ -18,7 +18,7 @@ type
     constructor Create(ARepository: ICategoryRepository);
   public
     class function Make(ARepository: ICategoryRepository): ICategoryShowUseCase;
-    function Execute(APK: Int64): TCategoryShowDTO;
+    function Execute(APK, ATenantId: Int64): TCategoryShowDTO;
   end;
 
 implementation
@@ -39,12 +39,12 @@ begin
   FRepository := ARepository;
 end;
 
-function TCategoryShowUseCase.Execute(APK: Int64): TCategoryShowDTO;
+function TCategoryShowUseCase.Execute(APK, ATenantId: Int64): TCategoryShowDTO;
 var
   lCategoryFound: Shared<TCategory>;
 begin
   // Localizar Registro
-  lCategoryFound := FRepository.Show(APK);
+  lCategoryFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lCategoryFound.Value) then
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 

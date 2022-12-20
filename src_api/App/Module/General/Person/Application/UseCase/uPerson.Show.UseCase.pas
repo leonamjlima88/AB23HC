@@ -9,7 +9,7 @@ uses
 type
   IPersonShowUseCase = Interface
     ['{98591DAC-EFA1-48B3-B656-A60B2BDB55BA}']
-    function Execute(APK: Int64): TPersonShowDTO;
+    function Execute(APK, ATenantId: Int64): TPersonShowDTO;
   end;
 
   TPersonShowUseCase = class(TInterfacedObject, IPersonShowUseCase)
@@ -18,7 +18,7 @@ type
     constructor Create(ARepository: IPersonRepository);
   public
     class function Make(ARepository: IPersonRepository): IPersonShowUseCase;
-    function Execute(APK: Int64): TPersonShowDTO;
+    function Execute(APK, ATenantId: Int64): TPersonShowDTO;
   end;
 
 implementation
@@ -39,12 +39,12 @@ begin
   FRepository := ARepository;
 end;
 
-function TPersonShowUseCase.Execute(APK: Int64): TPersonShowDTO;
+function TPersonShowUseCase.Execute(APK, ATenantId: Int64): TPersonShowDTO;
 var
   lPersonFound: Shared<TPerson>;
 begin
   // Localizar Registro
-  lPersonFound := FRepository.Show(APK);
+  lPersonFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lPersonFound.Value) then
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 

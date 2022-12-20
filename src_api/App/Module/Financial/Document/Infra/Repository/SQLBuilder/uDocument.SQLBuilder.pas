@@ -47,12 +47,18 @@ begin
 end;
 
 function TDocumentSQLBuilder.DeleteById(AId, ATenantId: Int64): String;
+var
+  lCQL: ICQL;
 begin
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Delete
     .From('document')
-    .Where('document.id = ' + AId.ToString)
-  .AsString;
+    .Where('document.id = ' + AId.ToString);
+
+  if (ATenantId > 0) then
+    lCQL.&And('document.tenant_id = ' + ATenantId.ToString);
+
+  Result := lCQL.AsString;
 end;
 
 function TDocumentSQLBuilder.InsertInto(AEntity: TBaseEntity): String;
@@ -67,6 +73,7 @@ begin
     .&Set('is_release_as_completed', lDocument.is_release_as_completed)
     .&Set('created_at',              lDocument.created_at)
     .&Set('created_by_acl_user_id',  lDocument.created_by_acl_user_id)
+    .&Set('tenant_id',               lDocument.tenant_id)
   .AsString;
 end;
 
@@ -102,6 +109,8 @@ end;
 function TDocumentSQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE document.id = ' + AId.ToString;
+  if (ATenantId > 0) then
+    Result := Result + ' AND document.tenant_id = ' + ATenantId.ToString;
 end;
 
 function TDocumentSQLBuilder.Update(AEntity: TBaseEntity; AId: Int64): String;
@@ -115,7 +124,8 @@ begin
     .&Set('is_release_as_completed', lDocument.is_release_as_completed)
     .&Set('updated_at',              lDocument.updated_at)
     .&Set('updated_by_acl_user_id',  lDocument.updated_by_acl_user_id)
-    .Where('document.id = ' + AId.ToString)
+    .Where('document.id = '       + AId.ToString)
+    .&And('document.tenant_id = ' + lDocument.tenant_id.ToString)
   .AsString;
 end;
 

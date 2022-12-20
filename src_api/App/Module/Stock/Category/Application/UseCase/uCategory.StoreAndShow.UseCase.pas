@@ -49,7 +49,7 @@ begin
 
   // Incluir e Localizar registro incluso
   lPK := FRepository.Store(lCategoryToStore);
-  lCategoryStored := FRepository.Show(lPK);
+  lCategoryStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TCategoryShowDTO.FromEntity(lCategoryStored.Value);

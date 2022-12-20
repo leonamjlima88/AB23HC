@@ -15,7 +15,7 @@ uses
   uResponse.DTO;
 
 Type
-  [SwagPath('chart_of_accounts', 'Planos de Conta')]
+  [SwagPath('chart_of_accounts', 'Plano de Conta')]
   TChartOfAccountController = class
   private
     FReq: THorseRequest;
@@ -89,10 +89,11 @@ end;
 
 procedure TChartOfAccountController.Delete;
 var
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   lPK := THlp.StrInt(FReq.Params['id']);
-  TChartOfAccountDeleteUseCase.Make(FRepository).Execute(lPK);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  TChartOfAccountDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
 
@@ -102,6 +103,7 @@ var
   lIndexResult: IIndexResult;
 begin
   lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter.AddWhere('chart_of_account.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TChartOfAccountIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
   // Pesquisar
@@ -111,13 +113,14 @@ end;
 procedure TChartOfAccountController.Show;
 var
   lChartOfAccountShowDTO: Shared<TChartOfAccountShowDTO>;
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   // Localizar registro
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   lChartOfAccountShowDTO := TChartOfAccountShowUseCase
     .Make    (FRepository)
-    .Execute (lPk);
+    .Execute (lPk, lTenantId);
 
   // Retorno
   TRes.Success(FRes, lChartOfAccountShowDTO.Value);
@@ -131,6 +134,7 @@ begin
   // Validar DTO
   lChartOfAccountToStoreDTO := TChartOfAccountDTO.FromJSON(FReq.Body);
   lChartOfAccountToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lChartOfAccountToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lChartOfAccountToStoreDTO);
 
   // Inserir e retornar registro inserido
@@ -151,6 +155,7 @@ begin
   // Validar DTO
   lChartOfAccountToUpdateDTO := TChartOfAccountDTO.FromJSON(FReq.Body);
   lChartOfAccountToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lChartOfAccountToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lChartOfAccountToUpdateDTO);
 
   // Atualizar e retornar registro atualizado

@@ -7,8 +7,8 @@ uses
 
 type
   ICostCenterDeleteUseCase = Interface
-['{6CF66C19-D90E-4737-9A29-F20FC737DF41}']
-    function Execute(APK: Int64): Boolean;
+    ['{6CF66C19-D90E-4737-9A29-F20FC737DF41}']
+    function Execute(APK, ATenantId: Int64): Boolean;
   end;
 
   TCostCenterDeleteUseCase = class(TInterfacedObject, ICostCenterDeleteUseCase)
@@ -17,7 +17,7 @@ type
     constructor Create(ARepository: ICostCenterRepository);
   public
     class function Make(ARepository: ICostCenterRepository): ICostCenterDeleteUseCase;
-    function Execute(APK: Int64): Boolean;
+    function Execute(APK, ATenantId: Int64): Boolean;
   end;
 
 implementation
@@ -30,10 +30,10 @@ begin
   FRepository := ARepository;
 end;
 
-function TCostCenterDeleteUseCase.Execute(APK: Int64): Boolean;
+function TCostCenterDeleteUseCase.Execute(APK, ATenantId: Int64): Boolean;
 begin
   // Deletar Registro
-  Result := FRepository.Delete(APK);
+  Result := FRepository.Delete(APK, ATenantId);
 end;
 
 class function TCostCenterDeleteUseCase.Make(ARepository: ICostCenterRepository): ICostCenterDeleteUseCase;

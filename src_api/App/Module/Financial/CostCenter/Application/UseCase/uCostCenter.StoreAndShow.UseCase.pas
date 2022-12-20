@@ -49,7 +49,7 @@ begin
 
   // Incluir e Localizar registro incluso
   lPK := FRepository.Store(lCostCenterToStore);
-  lCostCenterStored := FRepository.Show(lPK);
+  lCostCenterStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TCostCenterShowDTO.FromEntity(lCostCenterStored.Value);

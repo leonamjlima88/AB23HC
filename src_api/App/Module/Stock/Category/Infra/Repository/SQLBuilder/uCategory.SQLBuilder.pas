@@ -8,10 +8,13 @@ uses
   uCategory,
   criteria.query.language,
   uCategory.SQLBuilder.Interfaces,
+  cqlbr.interfaces,
   uBase.Entity;
 
 type
   TCategorySQLBuilder = class(TInterfacedObject, ICategorySQLBuilder)
+  private
+    procedure LoadDefaultFieldsToInsertOrUpdate(const ACQL: ICQL; const ACategory: TCategory);
   public
     FDBName: TDBName;
     constructor Create;
@@ -31,7 +34,6 @@ type
 implementation
 
 uses
-  cqlbr.interfaces,
   cqlbr.select.mysql,
   cqlbr.serialize.mysql,
   System.Classes,
@@ -47,26 +49,38 @@ begin
 end;
 
 function TCategorySQLBuilder.DeleteById(AId, ATenantId: Int64): String;
+var
+  lCQL: ICQL;
 begin
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Delete
     .From('category')
-    .Where('category.id = ' + AId.ToString)
-  .AsString;
+    .Where('category.id = ' + AId.ToString);
+
+  if (ATenantId > 0) then
+    lCQL.&And('category.tenant_id = ' + ATenantId.ToString);
+
+  Result := lCQL.AsString;
 end;
 
 function TCategorySQLBuilder.InsertInto(AEntity: TBaseEntity): String;
 var
   lCategory: TCategory;
+  lCQL: ICQL;
 begin
   lCategory := AEntity as TCategory;
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Insert
     .Into('category')
-    .&Set('name',                   lCategory.name)
+    .&Set('tenant_id',              lCategory.tenant_id)
     .&Set('created_at',             lCategory.created_at)
-    .&Set('created_by_acl_user_id', lCategory.created_by_acl_user_id)
-  .AsString;
+    .&Set('created_by_acl_user_id', lCategory.created_by_acl_user_id);
+
+  // Carregar Campos Default
+  LoadDefaultFieldsToInsertOrUpdate(lCQL, lCategory);
+
+  // Retornar String SQL
+  Result := lCQL.AsString;
 end;
 
 function TCategorySQLBuilder.LastInsertId: String;
@@ -74,6 +88,12 @@ begin
   case FDBName of
     dbnMySQL: Result := SELECT_LAST_INSERT_ID_MYSQL;
   end;
+end;
+
+procedure TCategorySQLBuilder.LoadDefaultFieldsToInsertOrUpdate(const ACQL: ICQL; const ACategory: TCategory);
+begin
+  ACQL
+    .&Set('name', ACategory.name);
 end;
 
 function TCategorySQLBuilder.SelectAll: String;
@@ -101,19 +121,28 @@ end;
 function TCategorySQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE category.id = ' + AId.ToString;
+  if (ATenantId > 0) then
+    Result := Result + ' AND category.tenant_id = ' + ATenantId.ToString;
 end;
 
 function TCategorySQLBuilder.Update(AEntity: TBaseEntity; AId: Int64): String;
 var
   lCategory: TCategory;
+  lCQL: ICQL;
 begin
   lCategory := AEntity as TCategory;
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Update('category')
-    .&Set('name',                   lCategory.name)
     .&Set('updated_at',             lCategory.updated_at)
-    .&Set('updated_by_acl_user_id', lCategory.updated_by_acl_user_id)
+    .&Set('updated_by_acl_user_id', lCategory.updated_by_acl_user_id);
+
+  // Carregar Campos Default
+  LoadDefaultFieldsToInsertOrUpdate(lCQL, lCategory);
+
+  // Retornar String SQL
+  Result := lCQL
     .Where('category.id = ' + AId.ToString)
+    .&And('category.tenant_id = ' + lCategory.tenant_id.ToString)
   .AsString;
 end;
 

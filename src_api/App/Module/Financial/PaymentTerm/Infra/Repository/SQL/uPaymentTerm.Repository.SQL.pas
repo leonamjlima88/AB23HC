@@ -23,7 +23,7 @@ type
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IPaymentTermSQLBuilder): IPaymentTermRepository;
-    function Show(AId: Int64): TPaymentTerm;
+    function Show(AId, ATenantId: Int64): TPaymentTerm;
  end;
 
 implementation
@@ -71,9 +71,9 @@ begin
   Result := FPaymentTermSQLBuilder.SelectAllWithFilter(APageFilter);
 end;
 
-function TPaymentTermRepositorySQL.Show(AId: Int64): TPaymentTerm;
+function TPaymentTermRepositorySQL.Show(AId, ATenantId: Int64): TPaymentTerm;
 begin
-  Result := ShowById(AId) as TPaymentTerm;
+  Result := ShowById(AId, ATenantId) as TPaymentTerm;
 end;
 
 procedure TPaymentTermRepositorySQL.Validate(AEntity: TBaseEntity);

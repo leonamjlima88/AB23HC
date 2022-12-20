@@ -15,7 +15,7 @@ uses
   uResponse.DTO;
 
 Type
-  [SwagPath('products', 'Produto/Serviço')]
+  [SwagPath('products', 'Produto')]
   TProductController = class
   private
     FReq: THorseRequest;
@@ -89,10 +89,11 @@ end;
 
 procedure TProductController.Delete;
 var
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   lPK := THlp.StrInt(FReq.Params['id']);
-  TProductDeleteUseCase.Make(FRepository).Execute(lPK);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  TProductDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
 
@@ -102,6 +103,7 @@ var
   lIndexResult: IIndexResult;
 begin
   lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter.AddWhere('product.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TProductIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
   // Pesquisar
@@ -111,13 +113,14 @@ end;
 procedure TProductController.Show;
 var
   lProductShowDTO: Shared<TProductShowDTO>;
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   // Localizar registro
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   lProductShowDTO := TProductShowUseCase
     .Make    (FRepository)
-    .Execute (lPk);
+    .Execute (lPk, lTenantId);
 
   // Retorno
   TRes.Success(FRes, lProductShowDTO.Value);
@@ -131,6 +134,7 @@ begin
   // Validar DTO
   lProductToStoreDTO := TProductDTO.FromJSON(FReq.Body);
   lProductToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lProductToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lProductToStoreDTO);
 
   // Inserir e retornar registro inserido
@@ -151,6 +155,7 @@ begin
   // Validar DTO
   lProductToUpdateDTO := TProductDTO.FromJSON(FReq.Body);
   lProductToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lProductToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lProductToUpdateDTO);
 
   // Atualizar e retornar registro atualizado

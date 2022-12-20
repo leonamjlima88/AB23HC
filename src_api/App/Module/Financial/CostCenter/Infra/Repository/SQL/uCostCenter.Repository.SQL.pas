@@ -23,7 +23,7 @@ type
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: ICostCenterSQLBuilder): ICostCenterRepository;
-    function Show(AId: Int64): TCostCenter;
+    function Show(AId, ATenantId: Int64): TCostCenter;
  end;
 
 implementation
@@ -67,9 +67,9 @@ begin
   Result := FCostCenterSQLBuilder.SelectAllWithFilter(APageFilter);
 end;
 
-function TCostCenterRepositorySQL.Show(AId: Int64): TCostCenter;
+function TCostCenterRepositorySQL.Show(AId, ATenantId: Int64): TCostCenter;
 begin
-  Result := ShowById(AId) as TCostCenter;
+  Result := ShowById(AId, ATenantId) as TCostCenter;
 end;
 
 procedure TCostCenterRepositorySQL.Validate(AEntity: TBaseEntity);

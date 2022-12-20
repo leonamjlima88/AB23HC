@@ -15,7 +15,7 @@ uses
   uResponse.DTO;
 
 Type
-  [SwagPath('categories', 'Categoria')]
+  [SwagPath('categorys', 'Categoria')]
   TCategoryController = class
   private
     FReq: THorseRequest;
@@ -89,10 +89,11 @@ end;
 
 procedure TCategoryController.Delete;
 var
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   lPK := THlp.StrInt(FReq.Params['id']);
-  TCategoryDeleteUseCase.Make(FRepository).Execute(lPK);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  TCategoryDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
 
@@ -102,6 +103,7 @@ var
   lIndexResult: IIndexResult;
 begin
   lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter.AddWhere('category.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TCategoryIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
   // Pesquisar
@@ -111,13 +113,14 @@ end;
 procedure TCategoryController.Show;
 var
   lCategoryShowDTO: Shared<TCategoryShowDTO>;
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   // Localizar registro
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   lCategoryShowDTO := TCategoryShowUseCase
     .Make    (FRepository)
-    .Execute (lPk);
+    .Execute (lPk, lTenantId);
 
   // Retorno
   TRes.Success(FRes, lCategoryShowDTO.Value);
@@ -131,6 +134,7 @@ begin
   // Validar DTO
   lCategoryToStoreDTO := TCategoryDTO.FromJSON(FReq.Body);
   lCategoryToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lCategoryToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lCategoryToStoreDTO);
 
   // Inserir e retornar registro inserido
@@ -151,6 +155,7 @@ begin
   // Validar DTO
   lCategoryToUpdateDTO := TCategoryDTO.FromJSON(FReq.Body);
   lCategoryToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lCategoryToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lCategoryToUpdateDTO);
 
   // Atualizar e retornar registro atualizado

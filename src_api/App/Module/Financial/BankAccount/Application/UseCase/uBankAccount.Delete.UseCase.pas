@@ -7,8 +7,8 @@ uses
 
 type
   IBankAccountDeleteUseCase = Interface
-['{09562C0F-0140-468F-98E9-B5FEFBE4B141}']
-    function Execute(APK: Int64): Boolean;
+    ['{09562C0F-0140-468F-98E9-B5FEFBE4B141}']
+    function Execute(APK, ATenantId: Int64): Boolean;
   end;
 
   TBankAccountDeleteUseCase = class(TInterfacedObject, IBankAccountDeleteUseCase)
@@ -17,7 +17,7 @@ type
     constructor Create(ARepository: IBankAccountRepository);
   public
     class function Make(ARepository: IBankAccountRepository): IBankAccountDeleteUseCase;
-    function Execute(APK: Int64): Boolean;
+    function Execute(APK, ATenantId: Int64): Boolean;
   end;
 
 implementation
@@ -30,10 +30,10 @@ begin
   FRepository := ARepository;
 end;
 
-function TBankAccountDeleteUseCase.Execute(APK: Int64): Boolean;
+function TBankAccountDeleteUseCase.Execute(APK, ATenantId: Int64): Boolean;
 begin
   // Deletar Registro
-  Result := FRepository.Delete(APK);
+  Result := FRepository.Delete(APK, ATenantId);
 end;
 
 class function TBankAccountDeleteUseCase.Make(ARepository: IBankAccountRepository): IBankAccountDeleteUseCase;

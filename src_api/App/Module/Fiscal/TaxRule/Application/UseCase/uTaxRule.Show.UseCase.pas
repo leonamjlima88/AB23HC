@@ -9,7 +9,7 @@ uses
 type
   ITaxRuleShowUseCase = Interface
     ['{98591DAC-EFA1-48B3-B656-A60B2BDB55BA}']
-    function Execute(APK: Int64): TTaxRuleShowDTO;
+    function Execute(APK, ATenantId: Int64): TTaxRuleShowDTO;
   end;
 
   TTaxRuleShowUseCase = class(TInterfacedObject, ITaxRuleShowUseCase)
@@ -18,7 +18,7 @@ type
     constructor Create(ARepository: ITaxRuleRepository);
   public
     class function Make(ARepository: ITaxRuleRepository): ITaxRuleShowUseCase;
-    function Execute(APK: Int64): TTaxRuleShowDTO;
+    function Execute(APK, ATenantId: Int64): TTaxRuleShowDTO;
   end;
 
 implementation
@@ -39,12 +39,12 @@ begin
   FRepository := ARepository;
 end;
 
-function TTaxRuleShowUseCase.Execute(APK: Int64): TTaxRuleShowDTO;
+function TTaxRuleShowUseCase.Execute(APK, ATenantId: Int64): TTaxRuleShowDTO;
 var
   lTaxRuleFound: Shared<TTaxRule>;
 begin
   // Localizar Registro
-  lTaxRuleFound := FRepository.Show(APK);
+  lTaxRuleFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lTaxRuleFound.Value) then
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 

@@ -54,7 +54,7 @@ begin
 
   // Atualizar e Localizar registro atualizado
   FRepository.Update(lSizeToUpdate, APK);
-  lSizeUpdated := FRepository.Show(APK);
+  lSizeUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TSizeShowDTO.FromEntity(lSizeUpdated.Value);

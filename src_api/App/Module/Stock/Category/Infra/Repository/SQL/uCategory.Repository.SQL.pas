@@ -23,7 +23,7 @@ type
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: ICategorySQLBuilder): ICategoryRepository;
-    function Show(AId: Int64): TCategory;
+    function Show(AId, ATenantId: Int64): TCategory;
  end;
 
 implementation
@@ -67,9 +67,9 @@ begin
   Result := FCategorySQLBuilder.SelectAllWithFilter(APageFilter);
 end;
 
-function TCategoryRepositorySQL.Show(AId: Int64): TCategory;
+function TCategoryRepositorySQL.Show(AId, ATenantId: Int64): TCategory;
 begin
-  Result := ShowById(AId) as TCategory;
+  Result := ShowById(AId, ATenantId) as TCategory;
 end;
 
 procedure TCategoryRepositorySQL.Validate(AEntity: TBaseEntity);

@@ -23,7 +23,7 @@ type
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IStorageLocationSQLBuilder): IStorageLocationRepository;
-    function Show(AId: Int64): TStorageLocation;
+    function Show(AId, AInput: Int64): TStorageLocation;
  end;
 
 implementation
@@ -67,9 +67,9 @@ begin
   Result := FStorageLocationSQLBuilder.SelectAllWithFilter(APageFilter);
 end;
 
-function TStorageLocationRepositorySQL.Show(AId: Int64): TStorageLocation;
+function TStorageLocationRepositorySQL.Show(AId, AInput: Int64): TStorageLocation;
 begin
-  Result := ShowById(AId) as TStorageLocation;
+  Result := ShowById(AId, AInput) as TStorageLocation;
 end;
 
 procedure TStorageLocationRepositorySQL.Validate(AEntity: TBaseEntity);

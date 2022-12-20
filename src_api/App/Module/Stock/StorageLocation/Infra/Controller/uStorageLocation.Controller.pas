@@ -15,7 +15,7 @@ uses
   uResponse.DTO;
 
 Type
-  [SwagPath('storage_locations', 'Local de Armazenamento')]
+  [SwagPath('storage_locations', 'Local de armazenamento')]
   TStorageLocationController = class
   private
     FReq: THorseRequest;
@@ -89,10 +89,11 @@ end;
 
 procedure TStorageLocationController.Delete;
 var
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   lPK := THlp.StrInt(FReq.Params['id']);
-  TStorageLocationDeleteUseCase.Make(FRepository).Execute(lPK);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  TStorageLocationDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
 
@@ -102,6 +103,7 @@ var
   lIndexResult: IIndexResult;
 begin
   lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter.AddWhere('storage_location.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TStorageLocationIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
   // Pesquisar
@@ -111,13 +113,14 @@ end;
 procedure TStorageLocationController.Show;
 var
   lStorageLocationShowDTO: Shared<TStorageLocationShowDTO>;
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   // Localizar registro
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   lStorageLocationShowDTO := TStorageLocationShowUseCase
     .Make    (FRepository)
-    .Execute (lPk);
+    .Execute (lPk, lTenantId);
 
   // Retorno
   TRes.Success(FRes, lStorageLocationShowDTO.Value);
@@ -131,6 +134,7 @@ begin
   // Validar DTO
   lStorageLocationToStoreDTO := TStorageLocationDTO.FromJSON(FReq.Body);
   lStorageLocationToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lStorageLocationToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lStorageLocationToStoreDTO);
 
   // Inserir e retornar registro inserido
@@ -151,6 +155,7 @@ begin
   // Validar DTO
   lStorageLocationToUpdateDTO := TStorageLocationDTO.FromJSON(FReq.Body);
   lStorageLocationToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  lStorageLocationToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lStorageLocationToUpdateDTO);
 
   // Atualizar e retornar registro atualizado
