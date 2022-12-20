@@ -134,9 +134,6 @@ var
   lTaxRuleState: TTaxRuleState;
   lQry: IQry;
 begin
-  // Validar antes de persistir
-  Validate(ATaxRule);
-
   // Instanciar Qry
   lQry := FConn.MakeQry;
 
@@ -172,9 +169,6 @@ var
   lTaxRuleState: TTaxRuleState;
   lQry: IQry;
 begin
-  // Validar antes de persistir
-  Validate(ATaxRule);
-
   // Instanciar Qry
   lQry := FConn.MakeQry;
 

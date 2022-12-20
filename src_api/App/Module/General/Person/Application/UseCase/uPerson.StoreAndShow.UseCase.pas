@@ -9,7 +9,7 @@ uses
 
 type
   IPersonStoreAndShowUseCase = Interface
-['{F03C37BA-9320-47D8-A0E1-7F93F88DAF73}']
+    ['{F03C37BA-9320-47D8-A0E1-7F93F88DAF73}']
     function Execute(AInput: TPersonDTO): TPersonShowDTO;
   end;
 
@@ -27,7 +27,8 @@ implementation
 uses
   uSmartPointer,
   uPerson,
-  XSuperObject;
+  XSuperObject,
+  uEin.VO;
 
 { TPersonStoreAndShowUseCase }
 
@@ -42,9 +43,13 @@ var
   lPersonToStore: Shared<TPerson>;
   lPersonStored: Shared<TPerson>;
   lPK: Int64;
+  lI: Integer;
 begin
   // Carregar dados em Entity
   lPersonToStore := TPerson.FromJSON(AInput.AsJSON);
+  lPersonToStore.Value.ein := TEinVO.Make(AInput.ein);
+  for lI := 0 to Pred(lPersonToStore.Value.person_contact_list.Count) do
+    lPersonToStore.Value.person_contact_list.Items[lI].ein := TEinVO.Make(AInput.person_contact_list.Items[lI].ein);
   lPersonToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso

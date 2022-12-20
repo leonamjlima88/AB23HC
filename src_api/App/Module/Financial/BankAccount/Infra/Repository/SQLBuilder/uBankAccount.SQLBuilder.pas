@@ -22,9 +22,9 @@ type
     // BankAccount
     function ScriptCreateTable: String; virtual; abstract;
     function ScriptSeedTable: String; virtual; abstract;
-    function DeleteById(AId: Int64): String;
+    function DeleteById(AId: Int64; ATenantId: Int64 = 0): String;
     function SelectAll: String;
-    function SelectById(AId: Int64): String;
+    function SelectById(AId: Int64; ATenantId: Int64 = 0): String;
     function InsertInto(AEntity: TBaseEntity): String;
     function LastInsertId: String;
     function Update(AEntity: TBaseEntity; AId: Int64): String;
@@ -48,7 +48,7 @@ begin
   FDBName := dbnDB2;
 end;
 
-function TBankAccountSQLBuilder.DeleteById(AId: Int64): String;
+function TBankAccountSQLBuilder.DeleteById(AId, ATenantId: Int64): String;
 begin
   Result := TCQL.New(FDBName)
     .Delete
@@ -118,7 +118,7 @@ begin
   end;
 end;
 
-function TBankAccountSQLBuilder.SelectById(AId: Int64): String;
+function TBankAccountSQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE bank_account.id = ' + AId.ToString;
 end;

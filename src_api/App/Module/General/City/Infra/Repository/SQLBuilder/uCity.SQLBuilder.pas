@@ -19,9 +19,9 @@ type
     // City
     function ScriptCreateTable: String; virtual; abstract;
     function ScriptSeedTable: String; virtual; abstract;
-    function DeleteById(AId: Int64): String;
+    function DeleteById(AId: Int64; ATenantId: Int64 = 0): String;
     function SelectAll: String;
-    function SelectById(AId: Int64): String;
+    function SelectById(AId: Int64; ATenantId: Int64 = 0): String;
     function InsertInto(AEntity: TBaseEntity): String;
     function LastInsertId: String;
     function Update(AEntity: TBaseEntity; AId: Int64): String;
@@ -46,7 +46,7 @@ begin
   FDBName := dbnDB2;
 end;
 
-function TCitySQLBuilder.DeleteById(AId: Int64): String;
+function TCitySQLBuilder.DeleteById(AId, ATenantId: Int64): String;
 begin
   Result := TCQL.New(FDBName)
     .Delete
@@ -103,7 +103,7 @@ begin
   end;
 end;
 
-function TCitySQLBuilder.SelectById(AId: Int64): String;
+function TCitySQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE city.id = ' + AId.ToString;
 end;

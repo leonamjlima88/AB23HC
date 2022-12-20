@@ -107,7 +107,10 @@ type
 implementation
 
 uses
-  uHlp, System.TypInfo, System.SysUtils;
+  uHlp,
+  System.TypInfo,
+  System.SysUtils,
+  uMyClaims;
 
 { TPageFilter }
 

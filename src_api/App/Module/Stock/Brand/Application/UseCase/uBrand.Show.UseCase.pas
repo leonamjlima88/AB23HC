@@ -9,7 +9,7 @@ uses
 type
   IBrandShowUseCase = Interface
     ['{768BA1BB-108D-420C-9781-4C63A243846A}']
-    function Execute(APK: Int64): TBrandShowDTO;
+    function Execute(APK, ATenantId: Int64): TBrandShowDTO;
   end;
 
   TBrandShowUseCase = class(TInterfacedObject, IBrandShowUseCase)
@@ -18,7 +18,7 @@ type
     constructor Create(ARepository: IBrandRepository);
   public
     class function Make(ARepository: IBrandRepository): IBrandShowUseCase;
-    function Execute(APK: Int64): TBrandShowDTO;
+    function Execute(APK, ATenantId: Int64): TBrandShowDTO;
   end;
 
 implementation
@@ -39,12 +39,12 @@ begin
   FRepository := ARepository;
 end;
 
-function TBrandShowUseCase.Execute(APK: Int64): TBrandShowDTO;
+function TBrandShowUseCase.Execute(APK, ATenantId: Int64): TBrandShowDTO;
 var
   lBrandFound: Shared<TBrand>;
 begin
   // Localizar Registro
-  lBrandFound := FRepository.Show(APK);
+  lBrandFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lBrandFound.Value) then
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 

@@ -43,7 +43,8 @@ uses
   uQtdStr,
   uHlp,
   uApplication.Types,
-  uSQLBuilder.Factory;
+  uSQLBuilder.Factory,
+  uEin.VO;
 
 { TPersonRepositorySQL }
 
@@ -68,7 +69,7 @@ begin
   lPerson := TPerson.FromJSON(ADtsPerson.ToJSONObjectString);
 
   // Person - Virtuais
-  lPerson.ein                      := ADtsPerson.FieldByName('ein').AsString;
+  lPerson.ein                      := TEinVO.Make(ADtsPerson.FieldByName('ein').AsString);
   lPerson.city.id                  := ADtsPerson.FieldByName('city_id').AsLargeInt;
   lPerson.city.name                := ADtsPerson.FieldByName('city_name').AsString;
   lPerson.city.state               := ADtsPerson.FieldByName('city_state').AsString;
@@ -99,6 +100,8 @@ begin
     while not DataSet.Eof do
     begin
       lPersonContact := TPersonContact.FromJSON(DataSet.ToJSONObjectString);
+      lPersonContact.ein := TEinVO.Make(DataSet.FieldByName('ein').AsString);
+
       APerson.person_contact_list.Add(lPersonContact);
       DataSet.Next;
     end;
@@ -133,9 +136,6 @@ var
   lPersonContact: TPersonContact;
   lQry: IQry;
 begin
-  // Validar antes de persistir
-//  Validate(APerson);
-
   // Instanciar Qry
   lQry := FConn.MakeQry;
 
@@ -171,9 +171,6 @@ var
   lPersonContact: TPersonContact;
   lQry: IQry;
 begin
-  // Validar antes de persistir
-//  Validate(APerson);
-
   // Instanciar Qry
   lQry := FConn.MakeQry;
 
@@ -212,9 +209,9 @@ begin
   lPerson := AEntity as TPerson;
 
   // Verificar se CPF/CNPJ já existe
-  if not lPerson.ein.Trim.IsEmpty then
+  if not lPerson.ein.Value.Trim.IsEmpty then
   begin
-    if EinExists(lPerson.ein, lPerson.id) then
+    if EinExists(lPerson.ein.Value, lPerson.id) then
       raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['person.ein', lPerson.ein]));
   end;
 end;

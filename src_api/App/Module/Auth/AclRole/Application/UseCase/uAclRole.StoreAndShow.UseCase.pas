@@ -49,7 +49,7 @@ begin
 
   // Incluir e Localizar registro incluso
   lPK            := FRepository.Store(lAclRoleToStore);
-  lAclRoleStored := FRepository.Show(lPK);
+  lAclRoleStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TAclRoleShowDTO.FromEntity(lAclRoleStored.Value);

@@ -90,7 +90,6 @@ uses
   uPerson.Show.UseCase in 'App\Module\General\Person\Application\UseCase\uPerson.Show.UseCase.pas',
   uPerson.Controller in 'App\Module\General\Person\Infra\Controller\uPerson.Controller.pas',
   uEin.VO in 'App\Shared\Domain\VO\uEin.VO.pas',
-  uValueObject.Interfaces in 'App\Shared\Domain\VO\uValueObject.Interfaces.pas',
   uUnit in 'App\Module\Stock\Unit\Domain\Entity\uUnit.pas',
   uStorageLocation in 'App\Module\Stock\StorageLocation\Domain\Entity\uStorageLocation.pas',
   uSize in 'App\Module\Stock\Size\Domain\Entity\uSize.pas',

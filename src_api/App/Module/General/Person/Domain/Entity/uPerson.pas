@@ -10,7 +10,8 @@ uses
   uCity,
   uPersonContact,
   System.Generics.Collections,
-  XSuperObject;
+  XSuperObject,
+  uEin.VO;
 
 type
   TPerson = class(TBaseEntity)
@@ -33,7 +34,7 @@ type
     Fis_employee: SmallInt;
     Fnote: String;
     Fcomplement: String;
-    Fein: String;
+    Fein: IEinVO;
     Fis_other: SmallInt;
     Fis_carrier: SmallInt;
     Fis_customer: SmallInt;
@@ -60,7 +61,6 @@ type
     Fperson_contact_list: TObjectList<TPersonContact>;
 
     procedure Initialize;
-    function Getein: String;
   public
     constructor Create; overload;
     destructor Destroy; override;
@@ -68,7 +68,7 @@ type
     property id: Int64 read Fid write Fid;
     property name: string read Fname write Fname;
     property alias_name: String read Falias_name write Falias_name;
-    property ein: String read Getein write Fein;
+    property ein: IEinVO read Fein write Fein;
     property icms_taxpayer: SmallInt read Ficms_taxpayer write Ficms_taxpayer;
     property state_registration: String read Fstate_registration write Fstate_registration;
     property municipal_registration: String read Fmunicipal_registration write Fmunicipal_registration;
@@ -136,13 +136,9 @@ begin
   inherited;
 end;
 
-function TPerson.Getein: String;
-begin
-  Result := Thlp.OnlyNumbers(Fein);
-end;
-
 procedure TPerson.Initialize;
 begin
+  Fein                 := TEinVO.Make(EmptyStr);
   Fcreated_at          := now;
   Fcreated_by_acl_user := TAclUser.Create;
   Fupdated_by_acl_user := TAclUser.Create;
@@ -156,13 +152,6 @@ var
   lHasAtLeastOneFilled: Boolean;
   lPersonContact: TPersonContact;
 begin
-  // Validar CPF/CNPJ se preenchido
-  if not Fein.Trim.IsEmpty then
-  begin
-    if not THlp.CpfOrCnpjIsValid(Fein) then
-      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_INVALID, ['ein', Fein]));
-  end;
-
   // Tipo de Pessoa
   lHasAtLeastOneFilled := (Fis_customer > 0)   or (Fis_seller > 0)   or
                           (Fis_supplier > 0)   or (Fis_carrier > 0)  or

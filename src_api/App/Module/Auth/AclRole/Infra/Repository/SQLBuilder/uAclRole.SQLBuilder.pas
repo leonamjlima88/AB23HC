@@ -19,9 +19,9 @@ type
     // AclRole
     function ScriptCreateTable: String; virtual; abstract;
     function ScriptSeedTable: String; virtual; abstract;
-    function DeleteById(AId: Int64): String;
+    function DeleteById(AId: Int64; ATenantId: Int64 = 0): String;
     function SelectAll: String;
-    function SelectById(AId: Int64): String;
+    function SelectById(AId: Int64; ATenantId: Int64 = 0): String;
     function InsertInto(AEntity: TBaseEntity): String;
     function LastInsertId: String;
     function Update(AEntity: TBaseEntity; AId: Int64): String;
@@ -46,13 +46,19 @@ begin
   FDBName := dbnDB2;
 end;
 
-function TAclRoleSQLBuilder.DeleteById(AId: Int64): String;
+function TAclRoleSQLBuilder.DeleteById(AId, ATenantId: Int64): String;
+var
+  lCQL: ICQL;
 begin
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Delete
     .From('acl_role')
-    .Where('acl_role.id = ' + AId.ToString)
-  .AsString;
+    .Where('acl_role.id = ' + AId.ToString);
+
+  if (ATenantId > 0) then
+    lCQL.&And('acl_role.tenant_id = ' + ATenantId.ToString);
+
+  Result := lCQL.AsString;
 end;
 
 function TAclRoleSQLBuilder.InsertInto(AEntity: TBaseEntity): String;
@@ -63,7 +69,8 @@ begin
   Result := TCQL.New(FDBName)
     .Insert
     .Into('acl_role')
-    .&Set('name', lAclRole.name)
+    .&Set('name',      lAclRole.name)
+    .&Set('tenant_id', lAclRole.tenant_id)
   .AsString;
 end;
 
@@ -90,9 +97,11 @@ begin
   end;
 end;
 
-function TAclRoleSQLBuilder.SelectById(AId: Int64): String;
+function TAclRoleSQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE acl_role.id = ' + AId.ToString;
+  if (ATenantId > 0) then
+    Result := Result + ' AND acl_role.tenant_id = ' + ATenantId.ToString;
 end;
 
 function TAclRoleSQLBuilder.Update(AEntity: TBaseEntity; AId: Int64): String;
@@ -104,6 +113,7 @@ begin
     .Update('acl_role')
     .&Set('name', lAclRole.name)
     .Where('acl_role.id = ' + AId.ToString)
+    .&And('acl_role.tenant_id = ' + lAclRole.tenant_id.ToString)
   .AsString;
 end;
 

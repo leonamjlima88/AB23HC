@@ -89,10 +89,11 @@ end;
 
 procedure TAclRoleController.Delete;
 var
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
-  lPK := THlp.StrInt(FReq.Params['id']);
-  TAclRoleDeleteUseCase.Make(FRepository).Execute(lPK);
+  lPK       := THlp.StrInt(FReq.Params['id']);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  TAclRoleDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
 
@@ -102,6 +103,7 @@ var
   lIndexResult: IIndexResult;
 begin
   lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter.AddWhere('acl_role.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TAclRoleIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
   // Pesquisar
@@ -111,13 +113,14 @@ end;
 procedure TAclRoleController.Show;
 var
   lAclRoleShowDTO: Shared<TAclRoleShowDTO>;
-  lPK: Int64;
+  lPK, lTenantId: Int64;
 begin
   // Localizar registro
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
+  lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   lAclRoleShowDTO := TAclRoleShowUseCase
     .Make    (FRepository)
-    .Execute (lPk);
+    .Execute (lPk, lTenantId);
 
   // Retorno
   TRes.Success(FRes, lAclRoleShowDTO.Value);
@@ -130,6 +133,7 @@ var
 begin
   // Validar DTO
   lAclRoleToStoreDTO := TAclRoleDTO.FromJSON(FReq.Body);
+  lAclRoleToStoreDTO.Value.tenant_id := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lAclRoleToStoreDTO);
 
   // Inserir e retornar registro inserido
@@ -149,6 +153,7 @@ var
 begin
   // Validar DTO
   lAclRoleToUpdateDTO := TAclRoleDTO.FromJSON(FReq.Body);
+  lAclRoleToUpdateDTO.Value.tenant_id := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   SwaggerValidator.Validate(lAclRoleToUpdateDTO);
 
   // Atualizar e retornar registro atualizado

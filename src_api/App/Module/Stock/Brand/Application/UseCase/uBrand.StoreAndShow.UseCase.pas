@@ -49,7 +49,7 @@ begin
 
   // Incluir e Localizar registro incluso
   lPK := FRepository.Store(lBrandToStore);
-  lBrandStored := FRepository.Show(lPK);
+  lBrandStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TBrandShowDTO.FromEntity(lBrandStored.Value);

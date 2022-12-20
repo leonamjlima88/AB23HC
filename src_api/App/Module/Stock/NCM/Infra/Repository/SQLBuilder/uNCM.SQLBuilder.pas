@@ -8,10 +8,13 @@ uses
   uNCM,
   criteria.query.language,
   uNCM.SQLBuilder.Interfaces,
-  uBase.Entity;
+  uBase.Entity,
+  cqlbr.interfaces;
 
 type
   TNCMSQLBuilder = class(TInterfacedObject, INCMSQLBuilder)
+  private
+    procedure LoadDefaultFieldsToInsertOrUpdate(const ACQL: ICQL; const ANCM: TNCM);
   public
     FDBName: TDBName;
     constructor Create;
@@ -19,9 +22,9 @@ type
     // NCM
     function ScriptCreateTable: String; virtual; abstract;
     function ScriptSeedTable: String; virtual; abstract;
-    function DeleteById(AId: Int64): String;
+    function DeleteById(AId: Int64; ATenantId: Int64 = 0): String;
     function SelectAll: String;
-    function SelectById(AId: Int64): String;
+    function SelectById(AId: Int64; ATenantId: Int64 = 0): String;
     function InsertInto(AEntity: TBaseEntity): String;
     function LastInsertId: String;
     function Update(AEntity: TBaseEntity; AId: Int64): String;
@@ -32,7 +35,6 @@ type
 implementation
 
 uses
-  cqlbr.interfaces,
   cqlbr.select.mysql,
   cqlbr.serialize.mysql,
   System.Classes,
@@ -47,7 +49,7 @@ begin
   FDBName := dbnDB2;
 end;
 
-function TNCMSQLBuilder.DeleteById(AId: Int64): String;
+function TNCMSQLBuilder.DeleteById(AId, ATenantId: Int64): String;
 begin
   Result := TCQL.New(FDBName)
     .Delete
@@ -59,24 +61,20 @@ end;
 function TNCMSQLBuilder.InsertInto(AEntity: TBaseEntity): String;
 var
   lNCM: TNCM;
+  lCQL: ICQL;
 begin
   lNCM := AEntity as TNCM;
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Insert
     .Into('ncm')
-    .&Set('name',                   lNCM.name)
-    .&Set('ncm',                    lNCM.ncm)
-    .&Set('national_rate',          Extended(lNCM.national_rate))
-    .&Set('imported_rate',          Extended(lNCM.imported_rate))
-    .&Set('state_rate',             Extended(lNCM.state_rate))
-    .&Set('municipal_rate',         Extended(lNCM.municipal_rate))
-    .&Set('cest',                   lNCM.cest)
-    .&Set('additional_information', lNCM.additional_information)
-    .&Set('start_of_validity',      lNCM.start_of_validity)
-    .&Set('end_of_validity',        lNCM.end_of_validity)
     .&Set('created_at',             lNCM.created_at)
-    .&Set('created_by_acl_user_id', lNCM.created_by_acl_user_id)
-  .AsString;
+    .&Set('created_by_acl_user_id', lNCM.created_by_acl_user_id);
+
+  // Carregar campos default
+  LoadDefaultFieldsToInsertOrUpdate(lCQL, lNCM);
+
+  // Retornar String SQL
+  Result := lCQL.AsString;
 end;
 
 function TNCMSQLBuilder.LastInsertId: String;
@@ -84,6 +82,23 @@ begin
   case FDBName of
     dbnMySQL: Result := SELECT_LAST_INSERT_ID_MYSQL;
   end;
+end;
+
+procedure TNCMSQLBuilder.LoadDefaultFieldsToInsertOrUpdate(const ACQL: ICQL; const ANCM: TNCM);
+const
+  LDECIMAL_PLACES = 4;
+begin
+  ACQL
+    .&Set('name',                   ANCM.name)
+    .&Set('ncm',                    ANCM.ncm)
+    .&Set('national_rate',          ANCM.national_rate, LDECIMAL_PLACES)
+    .&Set('imported_rate',          ANCM.imported_rate, LDECIMAL_PLACES)
+    .&Set('state_rate',             ANCM.state_rate, LDECIMAL_PLACES)
+    .&Set('municipal_rate',         ANCM.municipal_rate, LDECIMAL_PLACES)
+    .&Set('cest',                   ANCM.cest)
+    .&Set('additional_information', ANCM.additional_information)
+    .&Set('start_of_validity',      ANCM.start_of_validity)
+    .&Set('end_of_validity',        ANCM.end_of_validity)
 end;
 
 function TNCMSQLBuilder.RegisteredFields(AColumName, AColumnValue: String; AId: Int64): String;
@@ -119,7 +134,7 @@ begin
   end;
 end;
 
-function TNCMSQLBuilder.SelectById(AId: Int64): String;
+function TNCMSQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE ncm.id = ' + AId.ToString;
 end;
@@ -127,24 +142,19 @@ end;
 function TNCMSQLBuilder.Update(AEntity: TBaseEntity; AId: Int64): String;
 var
   lNCM: TNCM;
+  lCQL: ICQL;
 begin
   lNCM := AEntity as TNCM;
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Update('ncm')
-    .&Set('name',                   lNCM.name)
-    .&Set('ncm',                    lNCM.ncm)
-    .&Set('national_rate',          Extended(lNCM.national_rate))
-    .&Set('imported_rate',          Extended(lNCM.imported_rate))
-    .&Set('state_rate',             Extended(lNCM.state_rate))
-    .&Set('municipal_rate',         Extended(lNCM.municipal_rate))
-    .&Set('cest',                   lNCM.cest)
-    .&Set('additional_information', lNCM.additional_information)
-    .&Set('start_of_validity',      lNCM.start_of_validity)
-    .&Set('end_of_validity',        lNCM.end_of_validity)
     .&Set('updated_at',             lNCM.updated_at)
-    .&Set('updated_by_acl_user_id', lNCM.updated_by_acl_user_id)
-    .Where('ncm.id = ' + AId.ToString)
-  .AsString;
+    .&Set('updated_by_acl_user_id', lNCM.updated_by_acl_user_id);
+
+  // Carregar campos default
+  LoadDefaultFieldsToInsertOrUpdate(lCQL, lNCM);
+
+  // Retornar String SQL
+  Result := lCQL.Where('ncm.id = ' + AId.ToString).AsString;
 end;
 
 end.

@@ -9,7 +9,7 @@ uses
 type
   IAclRoleShowUseCase = Interface
     ['{F189F8A7-C63B-48B5-BB1D-2E90DC16FC5C}']
-    function Execute(APK: Int64): TAclRoleShowDTO;
+    function Execute(APK, ATenantId: Int64): TAclRoleShowDTO;
   end;
 
   TAclRoleShowUseCase = class(TInterfacedObject, IAclRoleShowUseCase)
@@ -18,7 +18,7 @@ type
     constructor Create(ARepository: IAclRoleRepository);
   public
     class function Make(ARepository: IAclRoleRepository): IAclRoleShowUseCase;
-    function Execute(APK: Int64): TAclRoleShowDTO;
+    function Execute(APK, ATenantId: Int64): TAclRoleShowDTO;
   end;
 
 implementation
@@ -39,12 +39,12 @@ begin
   FRepository := ARepository;
 end;
 
-function TAclRoleShowUseCase.Execute(APK: Int64): TAclRoleShowDTO;
+function TAclRoleShowUseCase.Execute(APK, ATenantId: Int64): TAclRoleShowDTO;
 var
   lAclRoleFound: Shared<TAclRole>;
 begin
   // Localizar Registro
-  lAclRoleFound := FRepository.Show(APK);
+  lAclRoleFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lAclRoleFound.Value) then
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 

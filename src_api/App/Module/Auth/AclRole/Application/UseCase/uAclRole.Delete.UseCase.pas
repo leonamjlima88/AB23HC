@@ -8,7 +8,7 @@ uses
 type
   IAclRoleDeleteUseCase = Interface
     ['{8F46D58C-FA88-402C-A764-9F22CC57B9A7}']
-    function Execute(APK: Int64): Boolean;
+    function Execute(APK, ATenantId: Int64): Boolean;
   end;
 
   TAclRoleDeleteUseCase = class(TInterfacedObject, IAclRoleDeleteUseCase)
@@ -17,7 +17,7 @@ type
     constructor Create(ARepository: IAclRoleRepository);
   public
     class function Make(ARepository: IAclRoleRepository): IAclRoleDeleteUseCase;
-    function Execute(APK: Int64): Boolean;
+    function Execute(APK, ATenantId: Int64): Boolean;
   end;
 
 implementation
@@ -30,10 +30,10 @@ begin
   FRepository := ARepository;
 end;
 
-function TAclRoleDeleteUseCase.Execute(APK: Int64): Boolean;
+function TAclRoleDeleteUseCase.Execute(APK, ATenantId: Int64): Boolean;
 begin
   // Deletar Registro
-  Result := FRepository.Delete(APK);
+  Result := FRepository.Delete(APK, ATenantId);
 end;
 
 class function TAclRoleDeleteUseCase.Make(ARepository: IAclRoleRepository): IAclRoleDeleteUseCase;

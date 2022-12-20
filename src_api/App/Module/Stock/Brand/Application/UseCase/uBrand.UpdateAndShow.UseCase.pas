@@ -54,7 +54,7 @@ begin
 
   // Atualizar e Localizar registro atualizado
   FRepository.Update(lBrandToUpdate, APK);
-  lBrandUpdated := FRepository.Show(APK);
+  lBrandUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TBrandShowDTO.FromEntity(lBrandUpdated.Value);

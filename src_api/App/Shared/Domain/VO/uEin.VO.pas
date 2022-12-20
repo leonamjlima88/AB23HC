@@ -2,11 +2,13 @@ unit uEin.VO;
 
 interface
 
-uses
-  uValueObject.Interfaces;
-
 type
-  TEinVO = class(TInterfacedObject, IValueObject)
+  IEinVO = Interface
+    ['{04A84EA8-C93A-4B87-94B3-E649EC73151D}']
+    function Value: String;
+  end;
+
+  TEinVO = class(TInterfacedObject, IEinVO)
   private
     FEin: String;
     class function CPFOrCNPJIsValid(AValue: string): boolean;
@@ -15,8 +17,8 @@ type
     class function OnlyNumbers(const S: string): string;
     constructor Create(AValue: String);
   public
-    class function Make(AValue: String): TEinVO;
-    property Value: String read FEin;
+    class function Make(AValue: String): IEinVO;
+    function Value: String;
   end;
 
 implementation
@@ -31,7 +33,7 @@ begin
   FEin := AValue;
 end;
 
-class function TEinVO.Make(AValue: String): TEinVO;
+class function TEinVO.Make(AValue: String): IEinVO;
 begin
   // Validar Campo
   if not AValue.Trim.IsEmpty then
@@ -146,6 +148,11 @@ begin
   end;
 
   Result := Result.Trim;
+end;
+
+function TEinVO.Value: String;
+begin
+  Result := OnlyNumbers(FEin.Trim);
 end;
 
 end.

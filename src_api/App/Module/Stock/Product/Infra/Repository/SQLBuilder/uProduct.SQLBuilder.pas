@@ -22,9 +22,9 @@ type
     // Product
     function ScriptCreateTable: String; virtual; abstract;
     function ScriptSeedTable: String; virtual; abstract;
-    function DeleteById(AId: Int64): String;
+    function DeleteById(AId: Int64; ATenantId: Int64 = 0): String;
     function SelectAll: String;
-    function SelectById(AId: Int64): String;
+    function SelectById(AId: Int64; ATenantId: Int64 = 0): String;
     function InsertInto(AEntity: TBaseEntity): String;
     function LastInsertId: String;
     function Update(AEntity: TBaseEntity; AId: Int64): String;
@@ -49,7 +49,7 @@ begin
   FDBName := dbnDB2;
 end;
 
-function TProductSQLBuilder.DeleteById(AId: Int64): String;
+function TProductSQLBuilder.DeleteById(AId, ATenantId: Int64): String;
 begin
   Result := TCQL.New(FDBName)
     .Delete
@@ -85,6 +85,8 @@ begin
 end;
 
 procedure TProductSQLBuilder.LoadDefaultFieldsToInsertOrUpdate(const ACQL: ICQL; const AProduct: TProduct);
+const
+  LDECIMAL_PLACES = 4;
 begin
   ACQL
     .&Set('name',                   AProduct.name)
@@ -94,15 +96,15 @@ begin
     .&Set('ean_code',               AProduct.ean_code)
     .&Set('manufacturing_code',     AProduct.manufacturing_code)
     .&Set('identification_code',    AProduct.identification_code)
-    .&Set('cost',                   Extended(AProduct.cost))
-    .&Set('marketup',               Extended(AProduct.marketup))
-    .&Set('price',                  Extended(AProduct.price))
-    .&Set('current_quantity',       Extended(AProduct.current_quantity))
-    .&Set('minimum_quantity',       Extended(AProduct.minimum_quantity))
-    .&Set('maximum_quantity',       Extended(AProduct.maximum_quantity))
-    .&Set('gross_weight',           Extended(AProduct.gross_weight))
-    .&Set('net_weight',             Extended(AProduct.net_weight))
-    .&Set('packing_weight',         Extended(AProduct.packing_weight))
+    .&Set('cost',                   AProduct.cost, LDECIMAL_PLACES)
+    .&Set('marketup',               AProduct.marketup, LDECIMAL_PLACES)
+    .&Set('price',                  AProduct.price, LDECIMAL_PLACES)
+    .&Set('current_quantity',       AProduct.current_quantity, LDECIMAL_PLACES)
+    .&Set('minimum_quantity',       AProduct.minimum_quantity, LDECIMAL_PLACES)
+    .&Set('maximum_quantity',       AProduct.maximum_quantity, LDECIMAL_PLACES)
+    .&Set('gross_weight',           AProduct.gross_weight, LDECIMAL_PLACES)
+    .&Set('net_weight',             AProduct.net_weight, LDECIMAL_PLACES)
+    .&Set('packing_weight',         AProduct.packing_weight, LDECIMAL_PLACES)
     .&Set('is_to_move_the_stock',   AProduct.is_to_move_the_stock)
     .&Set('is_product_for_scales',  AProduct.is_product_for_scales)
     .&Set('internal_note',          AProduct.internal_note)
@@ -166,7 +168,7 @@ begin
   end;
 end;
 
-function TProductSQLBuilder.SelectById(AId: Int64): String;
+function TProductSQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE product.id = ' + AId.ToString;
 end;

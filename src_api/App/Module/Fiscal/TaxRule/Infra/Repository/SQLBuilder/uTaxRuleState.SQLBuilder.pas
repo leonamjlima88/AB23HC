@@ -5,17 +5,20 @@ interface
 uses
   uTaxRuleState.SQLBuilder.Interfaces,
   cqlbr.interfaces,
-  uBase.Entity;
+  uBase.Entity,
+  uTaxRuleState;
 
 type
   TTaxRuleStateSQLBuilder = class(TInterfacedObject, ITaxRuleStateSQLBuilder)
+  private
+    procedure LoadDefaultFieldsToInsertOrUpdate(const ACQL: ICQL; const ATaxRuleState: TTaxRuleState);
   public
     FDBName: TDBName;
     constructor Create;
 
     function ScriptCreateTable: String; virtual; abstract;
-    function DeleteById(AId: Int64): String;
-    function SelectById(AId: Int64): String;
+    function DeleteById(AId: Int64; ATenantId: Int64 = 0): String;
+    function SelectById(AId: Int64; ATenantId: Int64 = 0): String;
     function SelectAll: String;
     function InsertInto(AEntity: TBaseEntity): String;
     function LastInsertId: String;
@@ -29,7 +32,6 @@ implementation
 uses
   criteria.query.language,
   System.SysUtils,
-  uTaxRuleState,
   uApplication.Types,
   uConnection.Types;
 
@@ -40,7 +42,7 @@ begin
   FDBName := dbnDB2;
 end;
 
-function TTaxRuleStateSQLBuilder.DeleteById(AId: Int64): String;
+function TTaxRuleStateSQLBuilder.DeleteById(AId, ATenantId: Int64): String;
 begin
   Result := TCQL.New(FDBName)
     .Delete
@@ -61,48 +63,18 @@ end;
 function TTaxRuleStateSQLBuilder.InsertInto(AEntity: TBaseEntity): String;
 var
   lTaxRuleState: TTaxRuleState;
+  lCQL: ICQL;
 begin
   lTaxRuleState := AEntity as TTaxRuleState;
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Insert
-    .Into('tax_rule_state')
-    .&Set('tax_rule_id',                             lTaxRuleState.tax_rule_id)
-    .&Set('target_state',                            lTaxRuleState.target_state)
-    .&Set('cfop_id',                                 lTaxRuleState.cfop_id)
-    .&Set('icms_regime',                             Ord(lTaxRuleState.icms_regime))
-    .&Set('icms_situation',                          Ord(lTaxRuleState.icms_situation))
-    .&Set('icms_origin',                             Ord(lTaxRuleState.icms_origin))
-    .&Set('icms_applicable_credit_calc_rate',        Extended(lTaxRuleState.icms_applicable_credit_calc_rate))
-    .&Set('icms_perc_of_used_credit',                Extended(lTaxRuleState.icms_perc_of_used_credit))
-    .&Set('icms_calc_base_mode',                     Ord(lTaxRuleState.icms_calc_base_mode))
-    .&Set('icms_perc_of_calc_base_reduction',        Extended(lTaxRuleState.icms_perc_of_calc_base_reduction))
-    .&Set('icms_rate',                               Extended(lTaxRuleState.icms_rate))
-    .&Set('icms_perc_of_own_operation_calc_base',    Extended(lTaxRuleState.icms_perc_of_own_operation_calc_base))
-    .&Set('icms_deferral_perc',                      Extended(lTaxRuleState.icms_deferral_perc))
-    .&Set('icms_pst',                                Extended(lTaxRuleState.icms_pst))
-    .&Set('icms_coupon_rate',                        Extended(lTaxRuleState.icms_coupon_rate))
-    .&Set('icms_is_calc_base_with_insurance',        lTaxRuleState.icms_is_calc_base_with_insurance)
-    .&Set('icms_is_calc_base_with_freight',          lTaxRuleState.icms_is_calc_base_with_freight)
-    .&Set('icms_is_calc_base_with_ipi',              lTaxRuleState.icms_is_calc_base_with_ipi)
-    .&Set('icms_is_calc_base_with_other_expenses',   lTaxRuleState.icms_is_calc_base_with_other_expenses)
-    .&Set('icmsst_calc_base_mode',                   Ord(lTaxRuleState.icmsst_calc_base_mode))
-    .&Set('icmsst_perc_of_calc_base_reduction',      Extended(lTaxRuleState.icmsst_perc_of_calc_base_reduction))
-    .&Set('icmsst_rate',                             Extended(lTaxRuleState.icmsst_rate))
-    .&Set('icmsst_interstate_rate',                  Extended(lTaxRuleState.icmsst_interstate_rate))
-    .&Set('icmsst_is_calc_base_with_insurance',      lTaxRuleState.icmsst_is_calc_base_with_insurance)
-    .&Set('icmsst_is_calc_base_with_freight',        lTaxRuleState.icmsst_is_calc_base_with_freight)
-    .&Set('icmsst_is_calc_base_with_ipi',            lTaxRuleState.icmsst_is_calc_base_with_ipi)
-    .&Set('icmsst_is_calc_base_with_other_expenses', lTaxRuleState.icmsst_is_calc_base_with_other_expenses)
-    .&Set('ipi_situation',                           Ord(lTaxRuleState.ipi_situation))
-    .&Set('ipi_rate',                                Extended(lTaxRuleState.ipi_rate))
-    .&Set('pis_situation',                           Ord(lTaxRuleState.pis_situation))
-    .&Set('pis_rate',                                Extended(lTaxRuleState.pis_rate))
-    .&Set('pisst_rate',                              Extended(lTaxRuleState.pisst_rate))
-    .&Set('cofins_situation',                        Ord(lTaxRuleState.cofins_situation))
-    .&Set('cofins_rate',                             Extended(lTaxRuleState.cofins_rate))
-    .&Set('cofinsst_rate',                           Extended(lTaxRuleState.cofinsst_rate))
-    .&Set('taxpayer_note',                           lTaxRuleState.taxpayer_note)
-  .AsString;
+    .Into('tax_rule_state');
+
+  // Carregar campos default
+  LoadDefaultFieldsToInsertOrUpdate(lCQL, lTaxRuleState);
+
+  // Retornar String SQL
+  Result := lCQL.AsString;
 end;
 
 function TTaxRuleStateSQLBuilder.LastInsertId: String;
@@ -110,6 +82,49 @@ begin
   case FDBName of
     dbnMySQL: Result := SELECT_LAST_INSERT_ID_MYSQL;
   end;
+end;
+
+procedure TTaxRuleStateSQLBuilder.LoadDefaultFieldsToInsertOrUpdate(const ACQL: ICQL; const ATaxRuleState: TTaxRuleState);
+const
+  LDECIMAL_PLACES = 4;
+begin
+  ACQL
+    .&Set('tax_rule_id',                             ATaxRuleState.tax_rule_id)
+    .&Set('target_state',                            ATaxRuleState.target_state)
+    .&Set('cfop_id',                                 ATaxRuleState.cfop_id)
+    .&Set('icms_regime',                             Ord(ATaxRuleState.icms_regime))
+    .&Set('icms_situation',                          Ord(ATaxRuleState.icms_situation))
+    .&Set('icms_origin',                             Ord(ATaxRuleState.icms_origin))
+    .&Set('icms_applicable_credit_calc_rate',        ATaxRuleState.icms_applicable_credit_calc_rate, LDECIMAL_PLACES)
+    .&Set('icms_perc_of_used_credit',                ATaxRuleState.icms_perc_of_used_credit, LDECIMAL_PLACES)
+    .&Set('icms_calc_base_mode',                     Ord(ATaxRuleState.icms_calc_base_mode))
+    .&Set('icms_perc_of_calc_base_reduction',        ATaxRuleState.icms_perc_of_calc_base_reduction, LDECIMAL_PLACES)
+    .&Set('icms_rate',                               ATaxRuleState.icms_rate, LDECIMAL_PLACES)
+    .&Set('icms_perc_of_own_operation_calc_base',    ATaxRuleState.icms_perc_of_own_operation_calc_base, LDECIMAL_PLACES)
+    .&Set('icms_deferral_perc',                      ATaxRuleState.icms_deferral_perc, LDECIMAL_PLACES)
+    .&Set('icms_pst',                                ATaxRuleState.icms_pst, LDECIMAL_PLACES)
+    .&Set('icms_coupon_rate',                        ATaxRuleState.icms_coupon_rate, LDECIMAL_PLACES)
+    .&Set('icms_is_calc_base_with_insurance',        ATaxRuleState.icms_is_calc_base_with_insurance)
+    .&Set('icms_is_calc_base_with_freight',          ATaxRuleState.icms_is_calc_base_with_freight)
+    .&Set('icms_is_calc_base_with_ipi',              ATaxRuleState.icms_is_calc_base_with_ipi)
+    .&Set('icms_is_calc_base_with_other_expenses',   ATaxRuleState.icms_is_calc_base_with_other_expenses)
+    .&Set('icmsst_calc_base_mode',                   Ord(ATaxRuleState.icmsst_calc_base_mode))
+    .&Set('icmsst_perc_of_calc_base_reduction',      ATaxRuleState.icmsst_perc_of_calc_base_reduction, LDECIMAL_PLACES)
+    .&Set('icmsst_rate',                             ATaxRuleState.icmsst_rate, LDECIMAL_PLACES)
+    .&Set('icmsst_interstate_rate',                  ATaxRuleState.icmsst_interstate_rate, LDECIMAL_PLACES)
+    .&Set('icmsst_is_calc_base_with_insurance',      ATaxRuleState.icmsst_is_calc_base_with_insurance)
+    .&Set('icmsst_is_calc_base_with_freight',        ATaxRuleState.icmsst_is_calc_base_with_freight)
+    .&Set('icmsst_is_calc_base_with_ipi',            ATaxRuleState.icmsst_is_calc_base_with_ipi)
+    .&Set('icmsst_is_calc_base_with_other_expenses', ATaxRuleState.icmsst_is_calc_base_with_other_expenses)
+    .&Set('ipi_situation',                           Ord(ATaxRuleState.ipi_situation))
+    .&Set('ipi_rate',                                ATaxRuleState.ipi_rate, LDECIMAL_PLACES)
+    .&Set('pis_situation',                           Ord(ATaxRuleState.pis_situation))
+    .&Set('pis_rate',                                ATaxRuleState.pis_rate, LDECIMAL_PLACES)
+    .&Set('pisst_rate',                              ATaxRuleState.pisst_rate, LDECIMAL_PLACES)
+    .&Set('cofins_situation',                        Ord(ATaxRuleState.cofins_situation))
+    .&Set('cofins_rate',                             ATaxRuleState.cofins_rate, LDECIMAL_PLACES)
+    .&Set('cofinsst_rate',                           ATaxRuleState.cofinsst_rate, LDECIMAL_PLACES)
+    .&Set('taxpayer_note',                           ATaxRuleState.taxpayer_note);
 end;
 
 function TTaxRuleStateSQLBuilder.SelectAll: String;
@@ -125,7 +140,7 @@ begin
   .AsString;
 end;
 
-function TTaxRuleStateSQLBuilder.SelectById(AId: Int64): String;
+function TTaxRuleStateSQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE tax_rule_state.id = ' + AId.ToString;
 end;
@@ -138,49 +153,18 @@ end;
 function TTaxRuleStateSQLBuilder.Update(AEntity: TBaseEntity; AId: Int64): String;
 var
   lTaxRuleState: TTaxRuleState;
+  lCQL: ICQL;
 begin
   lTaxRuleState := AEntity as TTaxRuleState;
-  Result := TCQL.New(FDBName)
+  lCQL := TCQL.New(FDBName)
     .Insert
-    .Into('tax_rule_state')
-    .&Set('tax_rule_id',                             lTaxRuleState.tax_rule_id)
-    .&Set('target_state',                            lTaxRuleState.target_state)
-    .&Set('cfop_id',                                 lTaxRuleState.cfop_id)
-    .&Set('icms_regime',                             Ord(lTaxRuleState.icms_regime))
-    .&Set('icms_situation',                          Ord(lTaxRuleState.icms_situation))
-    .&Set('icms_origin',                             Ord(lTaxRuleState.icms_origin))
-    .&Set('icms_applicable_credit_calc_rate',        Extended(lTaxRuleState.icms_applicable_credit_calc_rate))
-    .&Set('icms_perc_of_used_credit',                Extended(lTaxRuleState.icms_perc_of_used_credit))
-    .&Set('icms_calc_base_mode',                     Ord(lTaxRuleState.icms_calc_base_mode))
-    .&Set('icms_perc_of_calc_base_reduction',        Extended(lTaxRuleState.icms_perc_of_calc_base_reduction))
-    .&Set('icms_rate',                               Extended(lTaxRuleState.icms_rate))
-    .&Set('icms_perc_of_own_operation_calc_base',    Extended(lTaxRuleState.icms_perc_of_own_operation_calc_base))
-    .&Set('icms_deferral_perc',                      Extended(lTaxRuleState.icms_deferral_perc))
-    .&Set('icms_pst',                                Extended(lTaxRuleState.icms_pst))
-    .&Set('icms_coupon_rate',                        Extended(lTaxRuleState.icms_coupon_rate))
-    .&Set('icms_is_calc_base_with_insurance',        lTaxRuleState.icms_is_calc_base_with_insurance)
-    .&Set('icms_is_calc_base_with_freight',          lTaxRuleState.icms_is_calc_base_with_freight)
-    .&Set('icms_is_calc_base_with_ipi',              lTaxRuleState.icms_is_calc_base_with_ipi)
-    .&Set('icms_is_calc_base_with_other_expenses',   lTaxRuleState.icms_is_calc_base_with_other_expenses)
-    .&Set('icmsst_calc_base_mode',                   Ord(lTaxRuleState.icmsst_calc_base_mode))
-    .&Set('icmsst_perc_of_calc_base_reduction',      Extended(lTaxRuleState.icmsst_perc_of_calc_base_reduction))
-    .&Set('icmsst_rate',                             Extended(lTaxRuleState.icmsst_rate))
-    .&Set('icmsst_interstate_rate',                  Extended(lTaxRuleState.icmsst_interstate_rate))
-    .&Set('icmsst_is_calc_base_with_insurance',      lTaxRuleState.icmsst_is_calc_base_with_insurance)
-    .&Set('icmsst_is_calc_base_with_freight',        lTaxRuleState.icmsst_is_calc_base_with_freight)
-    .&Set('icmsst_is_calc_base_with_ipi',            lTaxRuleState.icmsst_is_calc_base_with_ipi)
-    .&Set('icmsst_is_calc_base_with_other_expenses', lTaxRuleState.icmsst_is_calc_base_with_other_expenses)
-    .&Set('ipi_situation',                           Ord(lTaxRuleState.ipi_situation))
-    .&Set('ipi_rate',                                Extended(lTaxRuleState.ipi_rate))
-    .&Set('pis_situation',                           Ord(lTaxRuleState.pis_situation))
-    .&Set('pis_rate',                                Extended(lTaxRuleState.pis_rate))
-    .&Set('pisst_rate',                              Extended(lTaxRuleState.pisst_rate))
-    .&Set('cofins_situation',                        Ord(lTaxRuleState.cofins_situation))
-    .&Set('cofins_rate',                             Extended(lTaxRuleState.cofins_rate))
-    .&Set('cofinsst_rate',                           Extended(lTaxRuleState.cofinsst_rate))
-    .&Set('taxpayer_note',                           lTaxRuleState.taxpayer_note)
-    .Where('tax_rule_state.id = ' + AId.ToString)
-  .AsString;
+    .Into('tax_rule_state');
+
+  // Carregar campos default
+  LoadDefaultFieldsToInsertOrUpdate(lCQL, lTaxRuleState);
+
+  // Retornar String SQL
+  Result := lCQL.Where('tax_rule_state.id = ' + AId.ToString).AsString;
 end;
 
 end.

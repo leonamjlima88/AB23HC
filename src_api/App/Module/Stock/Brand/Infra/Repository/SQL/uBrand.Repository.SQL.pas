@@ -23,7 +23,7 @@ type
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IBrandSQLBuilder): IBrandRepository;
-    function Show(AId: Int64): TBrand;
+    function Show(AId, ATenantId: Int64): TBrand;
  end;
 
 implementation
@@ -67,9 +67,9 @@ begin
   Result := FBrandSQLBuilder.SelectAllWithFilter(APageFilter);
 end;
 
-function TBrandRepositorySQL.Show(AId: Int64): TBrand;
+function TBrandRepositorySQL.Show(AId, ATenantId: Int64): TBrand;
 begin
-  Result := ShowById(AId) as TBrand;
+  Result := ShowById(AId, ATenantId) as TBrand;
 end;
 
 procedure TBrandRepositorySQL.Validate(AEntity: TBaseEntity);

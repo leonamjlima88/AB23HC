@@ -9,7 +9,7 @@ uses
 type
   IAclRoleRepository = interface(IBaseRepository)
     ['{BFC833C4-854D-4AD2-8CFD-60BF3E2C87C8}']
-    function Show(AId: Int64): TAclRole;
+    function Show(AId, ATenantId: Int64): TAclRole;
   end;
 
 implementation

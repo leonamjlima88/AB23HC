@@ -14,8 +14,8 @@ type
     constructor Create;
 
     function ScriptCreateTable: String; virtual; abstract;
-    function DeleteById(AId: Int64): String;
-    function SelectById(AId: Int64): String;
+    function DeleteById(AId: Int64; ATenantId: Int64 = 0): String;
+    function SelectById(AId: Int64; ATenantId: Int64 = 0): String;
     function SelectAll: String;
     function InsertInto(AEntity: TBaseEntity): String;
     function LastInsertId: String;
@@ -40,7 +40,7 @@ begin
   FDBName := dbnDB2;
 end;
 
-function TPersonContactSQLBuilder.DeleteById(AId: Int64): String;
+function TPersonContactSQLBuilder.DeleteById(AId, ATenantId: Int64): String;
 begin
   Result := TCQL.New(FDBName)
     .Delete
@@ -68,7 +68,7 @@ begin
     .Into('person_contact')
     .&Set('person_id', lPersonContact.person_id)
     .&Set('name',      lPersonContact.name)
-    .&Set('ein',       lPersonContact.ein)
+    .&Set('ein',       lPersonContact.ein.Value)
     .&Set('type',      lPersonContact.&type)
     .&Set('note',      lPersonContact.note)
     .&Set('phone',     lPersonContact.phone)
@@ -92,7 +92,7 @@ begin
   .AsString;
 end;
 
-function TPersonContactSQLBuilder.SelectById(AId: Int64): String;
+function TPersonContactSQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE person_contact.id = ' + AId.ToString;
 end;
@@ -112,7 +112,7 @@ begin
     .Into('person_contact')
     .&Set('person_id', lPersonContact.person_id)
     .&Set('name',      lPersonContact.name)
-    .&Set('ein',       lPersonContact.ein)
+    .&Set('ein',       lPersonContact.ein.Value)
     .&Set('type',      lPersonContact.&type)
     .&Set('note',      lPersonContact.note)
     .&Set('phone',     lPersonContact.phone)

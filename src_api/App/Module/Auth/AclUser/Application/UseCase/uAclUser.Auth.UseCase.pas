@@ -88,10 +88,11 @@ begin
       lTokenIsExpired := (IncMinute(lAclUser.last_expiration, l10_MIN_MARGIN_OF_ERROR) < Now);
       if not lTokenIsExpired then
       begin
-        Result       := TAclUserAuthMeDTO.Create;
-        Result.name  := lAclUser.name;
-        Result.login := lAclUser.login;
-        Result.token := lAclUser.last_token;
+        Result           := TAclUserAuthMeDTO.Create;
+        Result.name      := lAclUser.name;
+        Result.login     := lAclUser.login;
+        Result.token     := lAclUser.last_token;
+        Result.tenant_id := lAclUser.acl_role.tenant_id;
         Exit;
       end;
     end;
@@ -104,6 +105,7 @@ begin
     lClaims.Login       := lAclUser.login;
     lClaims.AclRoleId   := lAclUser.acl_role_id.ToString;
     lClaims.IsSuperuser := lAclUser.is_superuser.ToString;
+    lClaims.TenantId    := lAclUser.acl_role.tenant_id.ToString;
     lClaims.Expiration  := IncHour(Now, 2);
     lToken              := TJOSE.SHA256CompactToken(JWT_KEY, lJWT);
 
@@ -113,10 +115,11 @@ begin
     FRepository.Update(lAclUser, lAclUser.id);
 
     // Retornar Token
-    Result       := TAclUserAuthMeDTO.Create;
-    Result.name  := lAclUser.name;
-    Result.login := lAclUser.login;
-    Result.token := lAclUser.last_token;
+    Result           := TAclUserAuthMeDTO.Create;
+    Result.name      := lAclUser.name;
+    Result.login     := lAclUser.login;
+    Result.token     := lAclUser.last_token;
+    Result.tenant_id := lAclUser.acl_role.tenant_id;
   finally
     lAclUser.Free;
   end;

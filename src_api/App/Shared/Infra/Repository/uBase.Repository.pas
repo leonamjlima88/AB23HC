@@ -21,8 +21,8 @@ type
     procedure Validate(AEntity: TBaseEntity); virtual; abstract;
   public
     function Conn: IConnection;
-    function Delete(AId: Int64): Boolean; virtual;
-    function ShowById(AId: Int64): TBaseEntity; virtual;
+    function Delete(AId: Int64; ATenantId: Int64 = 0): Boolean; virtual;
+    function ShowById(AId: Int64; ATenantId: Int64 = 0): TBaseEntity; virtual;
     function Store(AEntity: TBaseEntity): Int64; virtual;
     function Update(AEntity: TBaseEntity; AId: Int64): Boolean; virtual;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; virtual; abstract;
@@ -43,9 +43,9 @@ begin
   Result := FConn;
 end;
 
-function TBaseRepository.Delete(AId: Int64): Boolean;
+function TBaseRepository.Delete(AId, ATenantId: Int64): Boolean;
 begin
-  FConn.MakeQry.ExecSQL(FSQLBuilder.DeleteById(AId));
+  FConn.MakeQry.ExecSQL(FSQLBuilder.DeleteById(AId, ATenantId));
   Result := True;
 end;
 
@@ -92,10 +92,10 @@ begin
   end;
 end;
 
-function TBaseRepository.ShowById(AId: Int64): TBaseEntity;
+function TBaseRepository.ShowById(AId, ATenantId: Int64): TBaseEntity;
 begin
   Result := nil;
-  With FConn.MakeQry.Open(FSQLBuilder.SelectById(AId)) do
+  With FConn.MakeQry.Open(FSQLBuilder.SelectById(AId, ATenantId)) do
   begin
     if DataSet.IsEmpty then Exit;
     Result := DataSetToEntity(DataSet);

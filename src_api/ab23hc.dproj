@@ -179,7 +179,6 @@
         <DCCReference Include="App\Module\General\Person\Application\UseCase\uPerson.Show.UseCase.pas"/>
         <DCCReference Include="App\Module\General\Person\Infra\Controller\uPerson.Controller.pas"/>
         <DCCReference Include="App\Shared\Domain\VO\uEin.VO.pas"/>
-        <DCCReference Include="App\Shared\Domain\VO\uValueObject.Interfaces.pas"/>
         <DCCReference Include="App\Module\Stock\Unit\Domain\Entity\uUnit.pas"/>
         <DCCReference Include="App\Module\Stock\StorageLocation\Domain\Entity\uStorageLocation.pas"/>
         <DCCReference Include="App\Module\Stock\Size\Domain\Entity\uSize.pas"/>

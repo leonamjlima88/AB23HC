@@ -23,7 +23,7 @@ type
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IAclRoleSQLBuilder): IAclRoleRepository;
-    function Show(AId: Int64): TAclRole;
+    function Show(AId, ATenantId: Int64): TAclRole;
  end;
 
 implementation
@@ -60,9 +60,9 @@ begin
   Result := FAclRoleSQLBuilder.SelectAllWithFilter(APageFilter);
 end;
 
-function TAclRoleRepositorySQL.Show(AId: Int64): TAclRole;
+function TAclRoleRepositorySQL.Show(AId, ATenantId: Int64): TAclRole;
 begin
-  Result := ShowById(AId) as TAclRole;
+  Result := ShowById(AId, ATenantId) as TAclRole;
 end;
 
 procedure TAclRoleRepositorySQL.Validate(AEntity: TBaseEntity);

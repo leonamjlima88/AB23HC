@@ -100,15 +100,20 @@ uses
 { TPersonShowDTO }
 
 class function TPersonShowDTO.FromEntity(APerson: TPerson): TPersonShowDTO;
+var
+  lI: Integer;
 begin
   // Instanciar, retornar DTO e tratar campos diferenciados
   Result                          := TPersonShowDTO.FromJSON(APerson.AsJSON);
-  Result.ein                      := APerson.ein;
+  Result.ein                      := APerson.ein.Value;
   Result.city_name                := APerson.city.name;
   Result.city_state               := APerson.city.state;
   Result.city_ibge_code           := APerson.city.ibge_code;
   Result.created_by_acl_user_name := APerson.created_by_acl_user.name;
   Result.updated_by_acl_user_name := APerson.updated_by_acl_user.name;
+
+  for lI := 0 to Pred(Result.person_contact_list.Count) do
+    Result.person_contact_list.Items[lI].ein := APerson.person_contact_list.Items[lI].ein.Value;
 end;
 
 end.

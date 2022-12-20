@@ -12,6 +12,7 @@ type
     Fname: string;
     Ftoken: string;
     Flogin: string;
+    Ftenant_id: Int64;
   public
     [SwagString(100)]
     [SwagProp('name', 'name', true)]
@@ -24,6 +25,10 @@ type
     [SwagString(100)]
     [SwagProp('token', 'token', true)]
     property token: string read Ftoken write Ftoken;
+
+    [SwagNumber]
+    [SwagProp('tenant_id', 'tenant_id', true)]
+    property tenant_id: Int64 read Ftenant_id write Ftenant_id;
   end;
 
   {$REGION 'Swagger DOC'}

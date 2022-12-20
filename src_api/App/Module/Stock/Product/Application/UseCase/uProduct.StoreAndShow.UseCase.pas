@@ -9,7 +9,7 @@ uses
 
 type
   IProductStoreAndShowUseCase = Interface
-['{54222AA1-DBED-4455-9DDB-57777730400E}']
+    ['{54222AA1-DBED-4455-9DDB-57777730400E}']
     function Execute(AInput: TProductDTO): TProductShowDTO;
   end;
 

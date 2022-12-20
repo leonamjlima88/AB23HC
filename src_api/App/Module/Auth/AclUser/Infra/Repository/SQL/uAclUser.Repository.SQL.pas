@@ -50,8 +50,9 @@ begin
   lAclUser := TAclUser.FromJSON(ADtsAclUser.ToJSONObjectString);
 
   // AclUser - Virtuais
-  lAclUser.acl_role.id   := ADtsAclUser.FieldByName('acl_role_id').AsLargeInt;
-  lAclUser.acl_role.name := ADtsAclUser.FieldByName('acl_role_name').AsString;
+  lAclUser.acl_role.id        := ADtsAclUser.FieldByName('acl_role_id').AsLargeInt;
+  lAclUser.acl_role.name      := ADtsAclUser.FieldByName('acl_role_name').AsString;
+  lAclUser.acl_role.tenant_id := ADtsAclUser.FieldByName('acl_role_tenant_id').AsLargeInt;
 
   Result := lAclUser;
 end;

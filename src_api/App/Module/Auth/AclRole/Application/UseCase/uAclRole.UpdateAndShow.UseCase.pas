@@ -41,7 +41,6 @@ function TAclRoleUpdateAndShowUseCase.Execute(AInput: TAclRoleDTO; APK: Int64): 
 var
   lAclRoleToUpdate: Shared<TAclRole>;
   lAclRoleUpdated: Shared<TAclRole>;
-  lPK: Int64;
 begin
   // Carregar dados em Entity
   lAclRoleToUpdate := TAclRole.FromJSON(AInput.AsJSON);
@@ -53,7 +52,7 @@ begin
 
   // Atualizar e Localizar registro atualizado
   FRepository.Update(lAclRoleToUpdate, APK);
-  lAclRoleUpdated := FRepository.Show(lPK);
+  lAclRoleUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
   Result := TAclRoleShowDTO.FromEntity(lAclRoleUpdated.Value);
