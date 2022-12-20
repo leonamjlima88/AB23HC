@@ -15,7 +15,7 @@ uses
   uResponse.DTO;
 
 Type
-  [SwagPath('tenants', 'Inquilinos')]
+  [SwagPath('tenants', 'Inquilino')]
   TTenantController = class
   private
     FReq: THorseRequest;
@@ -76,8 +76,7 @@ uses
   XSuperObject,
   uMyClaims,
   uTenant.StoreAndShow.UseCase,
-  uTenant.UpdateAndShow.UseCase,
-  System.SysUtils;
+  uTenant.UpdateAndShow.UseCase;
 
 { TTenantController }
 
@@ -92,7 +91,7 @@ procedure TTenantController.Delete;
 var
   lPK: Int64;
 begin
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
   TTenantDeleteUseCase.Make(FRepository).Execute(lPK);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
@@ -111,57 +110,63 @@ end;
 
 procedure TTenantController.Show;
 var
-  lTenantShowDTO: Shared<TTenantShowDTO>;
+  lResult: Shared<TTenantShowDTO>;
   lPK: Int64;
 begin
   // Localizar registro
-  lPK := THlp.StrInt(FReq.Params['id']);
-  lTenantShowDTO := TTenantShowUseCase
+  lPK       := THlp.StrInt(FReq.Params['id']);
+  lResult   := TTenantShowUseCase
     .Make    (FRepository)
     .Execute (lPk);
 
   // Retorno
-  TRes.Success(FRes, lTenantShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 procedure TTenantController.Store;
 var
-  lTenantToStoreDTO: Shared<TTenantDTO>;
-  lTenantShowDTO: Shared<TTenantShowDTO>;
+  lInput: Shared<TTenantDTO>;
+  lResult: Shared<TTenantShowDTO>;
 begin
   // Validar DTO
-  lTenantToStoreDTO := TTenantDTO.FromJSON(FReq.Body);
-  lTenantToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  SwaggerValidator.Validate(lTenantToStoreDTO);
+  lInput := TTenantDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Inserir e retornar registro inserido
-  lTenantShowDTO := TTenantStoreAndShowUseCase
+  lResult := TTenantStoreAndShowUseCase
     .Make    (FRepository)
-    .Execute (lTenantToStoreDTO.Value);
+    .Execute (lInput.Value);
 
   // Retorno
-  TRes.Success(FRes, lTenantShowDTO.Value, HTTP_CREATED);
+  TRes.Success(FRes, lResult.Value, HTTP_CREATED);
 end;
 
 procedure TTenantController.Update;
 var
-  lTenantToUpdateDTO: Shared<TTenantDTO>;
-  lTenantShowDTO: Shared<TTenantShowDTO>;
+  lInput: Shared<TTenantDTO>;
+  lResult: Shared<TTenantShowDTO>;
   lPK: Int64;
 begin
   // Validar DTO
-  lTenantToUpdateDTO := TTenantDTO.FromJSON(FReq.Body);
-  lTenantToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  SwaggerValidator.Validate(lTenantToUpdateDTO);
+  lInput := TTenantDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
-  lTenantShowDTO := TTenantUpdateAndShowUseCase
+  lResult := TTenantUpdateAndShowUseCase
     .Make    (FRepository)
-    .Execute (lTenantToUpdateDTO.Value, lPk);
+    .Execute (lInput.Value, lPk);
 
   // Retorno
-  TRes.Success(FRes, lTenantShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 end.

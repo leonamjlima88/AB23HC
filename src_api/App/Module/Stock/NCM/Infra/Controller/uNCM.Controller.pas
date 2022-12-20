@@ -91,7 +91,7 @@ procedure TNCMController.Delete;
 var
   lPK: Int64;
 begin
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
   TNCMDeleteUseCase.Make(FRepository).Execute(lPK);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
@@ -110,57 +110,63 @@ end;
 
 procedure TNCMController.Show;
 var
-  lNCMShowDTO: Shared<TNCMShowDTO>;
+  lResult: Shared<TNCMShowDTO>;
   lPK: Int64;
 begin
   // Localizar registro
-  lPK := THlp.StrInt(FReq.Params['id']);
-  lNCMShowDTO := TNCMShowUseCase
+  lPK       := THlp.StrInt(FReq.Params['id']);
+  lResult   := TNCMShowUseCase
     .Make    (FRepository)
     .Execute (lPk);
 
   // Retorno
-  TRes.Success(FRes, lNCMShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 procedure TNCMController.Store;
 var
-  lNCMToStoreDTO: Shared<TNCMDTO>;
-  lNCMShowDTO: Shared<TNCMShowDTO>;
+  lInput: Shared<TNCMDTO>;
+  lResult: Shared<TNCMShowDTO>;
 begin
   // Validar DTO
-  lNCMToStoreDTO := TNCMDTO.FromJSON(FReq.Body);
-  lNCMToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  SwaggerValidator.Validate(lNCMToStoreDTO);
+  lInput := TNCMDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Inserir e retornar registro inserido
-  lNCMShowDTO := TNCMStoreAndShowUseCase
+  lResult := TNCMStoreAndShowUseCase
     .Make    (FRepository)
-    .Execute (lNCMToStoreDTO.Value);
+    .Execute (lInput.Value);
 
   // Retorno
-  TRes.Success(FRes, lNCMShowDTO.Value, HTTP_CREATED);
+  TRes.Success(FRes, lResult.Value, HTTP_CREATED);
 end;
 
 procedure TNCMController.Update;
 var
-  lNCMToUpdateDTO: Shared<TNCMDTO>;
-  lNCMShowDTO: Shared<TNCMShowDTO>;
+  lInput: Shared<TNCMDTO>;
+  lResult: Shared<TNCMShowDTO>;
   lPK: Int64;
 begin
   // Validar DTO
-  lNCMToUpdateDTO := TNCMDTO.FromJSON(FReq.Body);
-  lNCMToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  SwaggerValidator.Validate(lNCMToUpdateDTO);
+  lInput := TNCMDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
-  lNCMShowDTO := TNCMUpdateAndShowUseCase
+  lResult := TNCMUpdateAndShowUseCase
     .Make    (FRepository)
-    .Execute (lNCMToUpdateDTO.Value, lPk);
+    .Execute (lInput.Value, lPk);
 
   // Retorno
-  TRes.Success(FRes, lNCMShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 end.

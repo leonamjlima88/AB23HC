@@ -91,7 +91,7 @@ procedure TCostCenterController.Delete;
 var
   lPK, lTenantId: Int64;
 begin
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
   lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   TCostCenterDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
@@ -102,7 +102,7 @@ var
   lPageFilter: IPageFilter;
   lIndexResult: IIndexResult;
 begin
-  lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter := TPageFilter.Make.FromJsonString(FReq.Body);
   lPageFilter.AddWhere('cost_center.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TCostCenterIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
@@ -112,60 +112,66 @@ end;
 
 procedure TCostCenterController.Show;
 var
-  lCostCenterShowDTO: Shared<TCostCenterShowDTO>;
+  lResult: Shared<TCostCenterShowDTO>;
   lPK, lTenantId: Int64;
 begin
   // Localizar registro
   lPK       := THlp.StrInt(FReq.Params['id']);
   lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  lCostCenterShowDTO := TCostCenterShowUseCase
+  lResult   := TCostCenterShowUseCase
     .Make    (FRepository)
     .Execute (lPk, lTenantId);
 
   // Retorno
-  TRes.Success(FRes, lCostCenterShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 procedure TCostCenterController.Store;
 var
-  lCostCenterToStoreDTO: Shared<TCostCenterDTO>;
-  lCostCenterShowDTO: Shared<TCostCenterShowDTO>;
+  lInput: Shared<TCostCenterDTO>;
+  lResult: Shared<TCostCenterShowDTO>;
 begin
   // Validar DTO
-  lCostCenterToStoreDTO := TCostCenterDTO.FromJSON(FReq.Body);
-  lCostCenterToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  lCostCenterToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lCostCenterToStoreDTO);
+  lInput := TCostCenterDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+    tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Inserir e retornar registro inserido
-  lCostCenterShowDTO := TCostCenterStoreAndShowUseCase
+  lResult := TCostCenterStoreAndShowUseCase
     .Make    (FRepository)
-    .Execute (lCostCenterToStoreDTO.Value);
+    .Execute (lInput.Value);
 
   // Retorno
-  TRes.Success(FRes, lCostCenterShowDTO.Value, HTTP_CREATED);
+  TRes.Success(FRes, lResult.Value, HTTP_CREATED);
 end;
 
 procedure TCostCenterController.Update;
 var
-  lCostCenterToUpdateDTO: Shared<TCostCenterDTO>;
-  lCostCenterShowDTO: Shared<TCostCenterShowDTO>;
+  lInput: Shared<TCostCenterDTO>;
+  lResult: Shared<TCostCenterShowDTO>;
   lPK: Int64;
 begin
   // Validar DTO
-  lCostCenterToUpdateDTO := TCostCenterDTO.FromJSON(FReq.Body);
-  lCostCenterToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  lCostCenterToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lCostCenterToUpdateDTO);
+  lInput := TCostCenterDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+    tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
-  lCostCenterShowDTO := TCostCenterUpdateAndShowUseCase
+  lResult := TCostCenterUpdateAndShowUseCase
     .Make    (FRepository)
-    .Execute (lCostCenterToUpdateDTO.Value, lPk);
+    .Execute (lInput.Value, lPk);
 
   // Retorno
-  TRes.Success(FRes, lCostCenterShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 end.

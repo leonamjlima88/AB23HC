@@ -91,7 +91,7 @@ procedure TBankAccountController.Delete;
 var
   lPK, lTenantId: Int64;
 begin
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
   lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   TBankAccountDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
@@ -102,7 +102,7 @@ var
   lPageFilter: IPageFilter;
   lIndexResult: IIndexResult;
 begin
-  lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter := TPageFilter.Make.FromJsonString(FReq.Body);
   lPageFilter.AddWhere('bank_account.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TBankAccountIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
@@ -112,60 +112,66 @@ end;
 
 procedure TBankAccountController.Show;
 var
-  lBankAccountShowDTO: Shared<TBankAccountShowDTO>;
+  lResult: Shared<TBankAccountShowDTO>;
   lPK, lTenantId: Int64;
 begin
   // Localizar registro
   lPK       := THlp.StrInt(FReq.Params['id']);
   lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  lBankAccountShowDTO := TBankAccountShowUseCase
+  lResult   := TBankAccountShowUseCase
     .Make    (FRepository)
     .Execute (lPk, lTenantId);
 
   // Retorno
-  TRes.Success(FRes, lBankAccountShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 procedure TBankAccountController.Store;
 var
-  lBankAccountToStoreDTO: Shared<TBankAccountDTO>;
-  lBankAccountShowDTO: Shared<TBankAccountShowDTO>;
+  lInput: Shared<TBankAccountDTO>;
+  lResult: Shared<TBankAccountShowDTO>;
 begin
   // Validar DTO
-  lBankAccountToStoreDTO := TBankAccountDTO.FromJSON(FReq.Body);
-  lBankAccountToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  lBankAccountToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lBankAccountToStoreDTO);
+  lInput := TBankAccountDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+    tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Inserir e retornar registro inserido
-  lBankAccountShowDTO := TBankAccountStoreAndShowUseCase
+  lResult := TBankAccountStoreAndShowUseCase
     .Make    (FRepository)
-    .Execute (lBankAccountToStoreDTO.Value);
+    .Execute (lInput.Value);
 
   // Retorno
-  TRes.Success(FRes, lBankAccountShowDTO.Value, HTTP_CREATED);
+  TRes.Success(FRes, lResult.Value, HTTP_CREATED);
 end;
 
 procedure TBankAccountController.Update;
 var
-  lBankAccountToUpdateDTO: Shared<TBankAccountDTO>;
-  lBankAccountShowDTO: Shared<TBankAccountShowDTO>;
+  lInput: Shared<TBankAccountDTO>;
+  lResult: Shared<TBankAccountShowDTO>;
   lPK: Int64;
 begin
   // Validar DTO
-  lBankAccountToUpdateDTO := TBankAccountDTO.FromJSON(FReq.Body);
-  lBankAccountToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  lBankAccountToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lBankAccountToUpdateDTO);
+  lInput := TBankAccountDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+    tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
-  lBankAccountShowDTO := TBankAccountUpdateAndShowUseCase
+  lResult := TBankAccountUpdateAndShowUseCase
     .Make    (FRepository)
-    .Execute (lBankAccountToUpdateDTO.Value, lPk);
+    .Execute (lInput.Value, lPk);
 
   // Retorno
-  TRes.Success(FRes, lBankAccountShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 end.

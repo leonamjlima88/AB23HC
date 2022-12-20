@@ -91,7 +91,7 @@ procedure TChartOfAccountController.Delete;
 var
   lPK, lTenantId: Int64;
 begin
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
   lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   TChartOfAccountDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
@@ -102,7 +102,7 @@ var
   lPageFilter: IPageFilter;
   lIndexResult: IIndexResult;
 begin
-  lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter := TPageFilter.Make.FromJsonString(FReq.Body);
   lPageFilter.AddWhere('chart_of_account.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TChartOfAccountIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
@@ -112,60 +112,66 @@ end;
 
 procedure TChartOfAccountController.Show;
 var
-  lChartOfAccountShowDTO: Shared<TChartOfAccountShowDTO>;
+  lResult: Shared<TChartOfAccountShowDTO>;
   lPK, lTenantId: Int64;
 begin
   // Localizar registro
   lPK       := THlp.StrInt(FReq.Params['id']);
   lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  lChartOfAccountShowDTO := TChartOfAccountShowUseCase
+  lResult   := TChartOfAccountShowUseCase
     .Make    (FRepository)
     .Execute (lPk, lTenantId);
 
   // Retorno
-  TRes.Success(FRes, lChartOfAccountShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 procedure TChartOfAccountController.Store;
 var
-  lChartOfAccountToStoreDTO: Shared<TChartOfAccountDTO>;
-  lChartOfAccountShowDTO: Shared<TChartOfAccountShowDTO>;
+  lInput: Shared<TChartOfAccountDTO>;
+  lResult: Shared<TChartOfAccountShowDTO>;
 begin
   // Validar DTO
-  lChartOfAccountToStoreDTO := TChartOfAccountDTO.FromJSON(FReq.Body);
-  lChartOfAccountToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  lChartOfAccountToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lChartOfAccountToStoreDTO);
+  lInput := TChartOfAccountDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+    tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Inserir e retornar registro inserido
-  lChartOfAccountShowDTO := TChartOfAccountStoreAndShowUseCase
+  lResult := TChartOfAccountStoreAndShowUseCase
     .Make    (FRepository)
-    .Execute (lChartOfAccountToStoreDTO.Value);
+    .Execute (lInput.Value);
 
   // Retorno
-  TRes.Success(FRes, lChartOfAccountShowDTO.Value, HTTP_CREATED);
+  TRes.Success(FRes, lResult.Value, HTTP_CREATED);
 end;
 
 procedure TChartOfAccountController.Update;
 var
-  lChartOfAccountToUpdateDTO: Shared<TChartOfAccountDTO>;
-  lChartOfAccountShowDTO: Shared<TChartOfAccountShowDTO>;
+  lInput: Shared<TChartOfAccountDTO>;
+  lResult: Shared<TChartOfAccountShowDTO>;
   lPK: Int64;
 begin
   // Validar DTO
-  lChartOfAccountToUpdateDTO := TChartOfAccountDTO.FromJSON(FReq.Body);
-  lChartOfAccountToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  lChartOfAccountToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lChartOfAccountToUpdateDTO);
+  lInput := TChartOfAccountDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+    tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
-  lChartOfAccountShowDTO := TChartOfAccountUpdateAndShowUseCase
+  lResult := TChartOfAccountUpdateAndShowUseCase
     .Make    (FRepository)
-    .Execute (lChartOfAccountToUpdateDTO.Value, lPk);
+    .Execute (lInput.Value, lPk);
 
   // Retorno
-  TRes.Success(FRes, lChartOfAccountShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 end.

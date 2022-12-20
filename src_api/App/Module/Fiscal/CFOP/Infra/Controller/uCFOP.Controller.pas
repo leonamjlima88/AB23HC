@@ -91,7 +91,7 @@ procedure TCFOPController.Delete;
 var
   lPK: Int64;
 begin
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
   TCFOPDeleteUseCase.Make(FRepository).Execute(lPK);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
@@ -110,57 +110,63 @@ end;
 
 procedure TCFOPController.Show;
 var
-  lCFOPShowDTO: Shared<TCFOPShowDTO>;
+  lResult: Shared<TCFOPShowDTO>;
   lPK: Int64;
 begin
   // Localizar registro
   lPK       := THlp.StrInt(FReq.Params['id']);
-  lCFOPShowDTO := TCFOPShowUseCase
+  lResult   := TCFOPShowUseCase
     .Make    (FRepository)
     .Execute (lPk);
 
   // Retorno
-  TRes.Success(FRes, lCFOPShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 procedure TCFOPController.Store;
 var
-  lCFOPToStoreDTO: Shared<TCFOPDTO>;
-  lCFOPShowDTO: Shared<TCFOPShowDTO>;
+  lInput: Shared<TCFOPDTO>;
+  lResult: Shared<TCFOPShowDTO>;
 begin
   // Validar DTO
-  lCFOPToStoreDTO := TCFOPDTO.FromJSON(FReq.Body);
-  lCFOPToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  SwaggerValidator.Validate(lCFOPToStoreDTO);
+  lInput := TCFOPDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Inserir e retornar registro inserido
-  lCFOPShowDTO := TCFOPStoreAndShowUseCase
+  lResult := TCFOPStoreAndShowUseCase
     .Make    (FRepository)
-    .Execute (lCFOPToStoreDTO.Value);
+    .Execute (lInput.Value);
 
   // Retorno
-  TRes.Success(FRes, lCFOPShowDTO.Value, HTTP_CREATED);
+  TRes.Success(FRes, lResult.Value, HTTP_CREATED);
 end;
 
 procedure TCFOPController.Update;
 var
-  lCFOPToUpdateDTO: Shared<TCFOPDTO>;
-  lCFOPShowDTO: Shared<TCFOPShowDTO>;
+  lInput: Shared<TCFOPDTO>;
+  lResult: Shared<TCFOPShowDTO>;
   lPK: Int64;
 begin
   // Validar DTO
-  lCFOPToUpdateDTO := TCFOPDTO.FromJSON(FReq.Body);
-  lCFOPToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  SwaggerValidator.Validate(lCFOPToUpdateDTO);
+  lInput := TCFOPDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
-  lCFOPShowDTO := TCFOPUpdateAndShowUseCase
+  lResult := TCFOPUpdateAndShowUseCase
     .Make    (FRepository)
-    .Execute (lCFOPToUpdateDTO.Value, lPk);
+    .Execute (lInput.Value, lPk);
 
   // Retorno
-  TRes.Success(FRes, lCFOPShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 end.

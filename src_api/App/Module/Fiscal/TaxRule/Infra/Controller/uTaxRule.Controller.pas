@@ -76,8 +76,7 @@ uses
   XSuperObject,
   uMyClaims,
   uTaxRule.StoreAndShow.UseCase,
-  uTaxRule.UpdateAndShow.UseCase,
-  System.SysUtils;
+  uTaxRule.UpdateAndShow.UseCase;
 
 { TTaxRuleController }
 
@@ -103,7 +102,7 @@ var
   lPageFilter: IPageFilter;
   lIndexResult: IIndexResult;
 begin
-  lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter := TPageFilter.Make.FromJsonString(FReq.Body);
   lPageFilter.AddWhere('tax_rule.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TTaxRuleIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
@@ -113,60 +112,66 @@ end;
 
 procedure TTaxRuleController.Show;
 var
-  lTaxRuleShowDTO: Shared<TTaxRuleShowDTO>;
+  lResult: Shared<TTaxRuleShowDTO>;
   lPK, lTenantId: Int64;
 begin
   // Localizar registro
   lPK       := THlp.StrInt(FReq.Params['id']);
   lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  lTaxRuleShowDTO := TTaxRuleShowUseCase
+  lResult   := TTaxRuleShowUseCase
     .Make    (FRepository)
     .Execute (lPk, lTenantId);
 
   // Retorno
-  TRes.Success(FRes, lTaxRuleShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 procedure TTaxRuleController.Store;
 var
-  lTaxRuleToStoreDTO: Shared<TTaxRuleDTO>;
-  lTaxRuleShowDTO: Shared<TTaxRuleShowDTO>;
+  lInput: Shared<TTaxRuleDTO>;
+  lResult: Shared<TTaxRuleShowDTO>;
 begin
   // Validar DTO
-  lTaxRuleToStoreDTO := TTaxRuleDTO.FromJSON(FReq.Body);
-  lTaxRuleToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  lTaxRuleToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lTaxRuleToStoreDTO);
+  lInput := TTaxRuleDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+    tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Inserir e retornar registro inserido
-  lTaxRuleShowDTO := TTaxRuleStoreAndShowUseCase
+  lResult := TTaxRuleStoreAndShowUseCase
     .Make    (FRepository)
-    .Execute (lTaxRuleToStoreDTO.Value);
+    .Execute (lInput.Value);
 
   // Retorno
-  TRes.Success(FRes, lTaxRuleShowDTO.Value, HTTP_CREATED);
+  TRes.Success(FRes, lResult.Value, HTTP_CREATED);
 end;
 
 procedure TTaxRuleController.Update;
 var
-  lTaxRuleToUpdateDTO: Shared<TTaxRuleDTO>;
-  lTaxRuleShowDTO: Shared<TTaxRuleShowDTO>;
+  lInput: Shared<TTaxRuleDTO>;
+  lResult: Shared<TTaxRuleShowDTO>;
   lPK: Int64;
 begin
   // Validar DTO
-  lTaxRuleToUpdateDTO := TTaxRuleDTO.FromJSON(FReq.Body);
-  lTaxRuleToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  lTaxRuleToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lTaxRuleToUpdateDTO);
+  lInput := TTaxRuleDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+    tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
-  lTaxRuleShowDTO := TTaxRuleUpdateAndShowUseCase
+  lResult := TTaxRuleUpdateAndShowUseCase
     .Make    (FRepository)
-    .Execute (lTaxRuleToUpdateDTO.Value, lPk);
+    .Execute (lInput.Value, lPk);
 
   // Retorno
-  TRes.Success(FRes, lTaxRuleShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 end.

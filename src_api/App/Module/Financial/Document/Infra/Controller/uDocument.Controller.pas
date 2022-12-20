@@ -91,7 +91,7 @@ procedure TDocumentController.Delete;
 var
   lPK, lTenantId: Int64;
 begin
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
   lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   TDocumentDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
@@ -102,7 +102,7 @@ var
   lPageFilter: IPageFilter;
   lIndexResult: IIndexResult;
 begin
-  lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter := TPageFilter.Make.FromJsonString(FReq.Body);
   lPageFilter.AddWhere('document.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TDocumentIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
@@ -112,60 +112,66 @@ end;
 
 procedure TDocumentController.Show;
 var
-  lDocumentShowDTO: Shared<TDocumentShowDTO>;
+  lResult: Shared<TDocumentShowDTO>;
   lPK, lTenantId: Int64;
 begin
   // Localizar registro
   lPK       := THlp.StrInt(FReq.Params['id']);
   lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  lDocumentShowDTO := TDocumentShowUseCase
+  lResult   := TDocumentShowUseCase
     .Make    (FRepository)
     .Execute (lPk, lTenantId);
 
   // Retorno
-  TRes.Success(FRes, lDocumentShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 procedure TDocumentController.Store;
 var
-  lDocumentToStoreDTO: Shared<TDocumentDTO>;
-  lDocumentShowDTO: Shared<TDocumentShowDTO>;
+  lInput: Shared<TDocumentDTO>;
+  lResult: Shared<TDocumentShowDTO>;
 begin
   // Validar DTO
-  lDocumentToStoreDTO := TDocumentDTO.FromJSON(FReq.Body);
-  lDocumentToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  lDocumentToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lDocumentToStoreDTO);
+  lInput := TDocumentDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+    tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Inserir e retornar registro inserido
-  lDocumentShowDTO := TDocumentStoreAndShowUseCase
+  lResult := TDocumentStoreAndShowUseCase
     .Make    (FRepository)
-    .Execute (lDocumentToStoreDTO.Value);
+    .Execute (lInput.Value);
 
   // Retorno
-  TRes.Success(FRes, lDocumentShowDTO.Value, HTTP_CREATED);
+  TRes.Success(FRes, lResult.Value, HTTP_CREATED);
 end;
 
 procedure TDocumentController.Update;
 var
-  lDocumentToUpdateDTO: Shared<TDocumentDTO>;
-  lDocumentShowDTO: Shared<TDocumentShowDTO>;
+  lInput: Shared<TDocumentDTO>;
+  lResult: Shared<TDocumentShowDTO>;
   lPK: Int64;
 begin
   // Validar DTO
-  lDocumentToUpdateDTO := TDocumentDTO.FromJSON(FReq.Body);
-  lDocumentToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  lDocumentToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lDocumentToUpdateDTO);
+  lInput := TDocumentDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+    tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
-  lDocumentShowDTO := TDocumentUpdateAndShowUseCase
+  lResult := TDocumentUpdateAndShowUseCase
     .Make    (FRepository)
-    .Execute (lDocumentToUpdateDTO.Value, lPk);
+    .Execute (lInput.Value, lPk);
 
   // Retorno
-  TRes.Success(FRes, lDocumentShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 end.

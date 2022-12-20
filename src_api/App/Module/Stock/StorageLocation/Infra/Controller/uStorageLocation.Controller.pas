@@ -91,7 +91,7 @@ procedure TStorageLocationController.Delete;
 var
   lPK, lTenantId: Int64;
 begin
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
   lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   TStorageLocationDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
@@ -102,7 +102,7 @@ var
   lPageFilter: IPageFilter;
   lIndexResult: IIndexResult;
 begin
-  lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter := TPageFilter.Make.FromJsonString(FReq.Body);
   lPageFilter.AddWhere('storage_location.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TStorageLocationIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
@@ -112,60 +112,66 @@ end;
 
 procedure TStorageLocationController.Show;
 var
-  lStorageLocationShowDTO: Shared<TStorageLocationShowDTO>;
+  lResult: Shared<TStorageLocationShowDTO>;
   lPK, lTenantId: Int64;
 begin
   // Localizar registro
   lPK       := THlp.StrInt(FReq.Params['id']);
   lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  lStorageLocationShowDTO := TStorageLocationShowUseCase
+  lResult   := TStorageLocationShowUseCase
     .Make    (FRepository)
     .Execute (lPk, lTenantId);
 
   // Retorno
-  TRes.Success(FRes, lStorageLocationShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 procedure TStorageLocationController.Store;
 var
-  lStorageLocationToStoreDTO: Shared<TStorageLocationDTO>;
-  lStorageLocationShowDTO: Shared<TStorageLocationShowDTO>;
+  lInput: Shared<TStorageLocationDTO>;
+  lResult: Shared<TStorageLocationShowDTO>;
 begin
   // Validar DTO
-  lStorageLocationToStoreDTO := TStorageLocationDTO.FromJSON(FReq.Body);
-  lStorageLocationToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  lStorageLocationToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lStorageLocationToStoreDTO);
+  lInput := TStorageLocationDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+    tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Inserir e retornar registro inserido
-  lStorageLocationShowDTO := TStorageLocationStoreAndShowUseCase
+  lResult := TStorageLocationStoreAndShowUseCase
     .Make    (FRepository)
-    .Execute (lStorageLocationToStoreDTO.Value);
+    .Execute (lInput.Value);
 
   // Retorno
-  TRes.Success(FRes, lStorageLocationShowDTO.Value, HTTP_CREATED);
+  TRes.Success(FRes, lResult.Value, HTTP_CREATED);
 end;
 
 procedure TStorageLocationController.Update;
 var
-  lStorageLocationToUpdateDTO: Shared<TStorageLocationDTO>;
-  lStorageLocationShowDTO: Shared<TStorageLocationShowDTO>;
+  lInput: Shared<TStorageLocationDTO>;
+  lResult: Shared<TStorageLocationShowDTO>;
   lPK: Int64;
 begin
   // Validar DTO
-  lStorageLocationToUpdateDTO := TStorageLocationDTO.FromJSON(FReq.Body);
-  lStorageLocationToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  lStorageLocationToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lStorageLocationToUpdateDTO);
+  lInput := TStorageLocationDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+    tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
-  lStorageLocationShowDTO := TStorageLocationUpdateAndShowUseCase
+  lResult := TStorageLocationUpdateAndShowUseCase
     .Make    (FRepository)
-    .Execute (lStorageLocationToUpdateDTO.Value, lPk);
+    .Execute (lInput.Value, lPk);
 
   // Retorno
-  TRes.Success(FRes, lStorageLocationShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 end.

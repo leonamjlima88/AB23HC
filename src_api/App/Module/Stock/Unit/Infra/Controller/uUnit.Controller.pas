@@ -91,7 +91,7 @@ procedure TUnitController.Delete;
 var
   lPK: Int64;
 begin
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
   TUnitDeleteUseCase.Make(FRepository).Execute(lPK);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
 end;
@@ -110,57 +110,63 @@ end;
 
 procedure TUnitController.Show;
 var
-  lUnitShowDTO: Shared<TUnitShowDTO>;
+  lResult: Shared<TUnitShowDTO>;
   lPK: Int64;
 begin
   // Localizar registro
-  lPK := THlp.StrInt(FReq.Params['id']);
-  lUnitShowDTO := TUnitShowUseCase
+  lPK       := THlp.StrInt(FReq.Params['id']);
+  lResult   := TUnitShowUseCase
     .Make    (FRepository)
     .Execute (lPk);
 
   // Retorno
-  TRes.Success(FRes, lUnitShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 procedure TUnitController.Store;
 var
-  lUnitToStoreDTO: Shared<TUnitDTO>;
-  lUnitShowDTO: Shared<TUnitShowDTO>;
+  lInput: Shared<TUnitDTO>;
+  lResult: Shared<TUnitShowDTO>;
 begin
   // Validar DTO
-  lUnitToStoreDTO := TUnitDTO.FromJSON(FReq.Body);
-  lUnitToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  SwaggerValidator.Validate(lUnitToStoreDTO);
+  lInput := TUnitDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Inserir e retornar registro inserido
-  lUnitShowDTO := TUnitStoreAndShowUseCase
+  lResult := TUnitStoreAndShowUseCase
     .Make    (FRepository)
-    .Execute (lUnitToStoreDTO.Value);
+    .Execute (lInput.Value);
 
   // Retorno
-  TRes.Success(FRes, lUnitShowDTO.Value, HTTP_CREATED);
+  TRes.Success(FRes, lResult.Value, HTTP_CREATED);
 end;
 
 procedure TUnitController.Update;
 var
-  lUnitToUpdateDTO: Shared<TUnitDTO>;
-  lUnitShowDTO: Shared<TUnitShowDTO>;
+  lInput: Shared<TUnitDTO>;
+  lResult: Shared<TUnitShowDTO>;
   lPK: Int64;
 begin
   // Validar DTO
-  lUnitToUpdateDTO := TUnitDTO.FromJSON(FReq.Body);
-  lUnitToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  SwaggerValidator.Validate(lUnitToUpdateDTO);
+  lInput := TUnitDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
-  lUnitShowDTO := TUnitUpdateAndShowUseCase
+  lResult := TUnitUpdateAndShowUseCase
     .Make    (FRepository)
-    .Execute (lUnitToUpdateDTO.Value, lPk);
+    .Execute (lInput.Value, lPk);
 
   // Retorno
-  TRes.Success(FRes, lUnitShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 end.

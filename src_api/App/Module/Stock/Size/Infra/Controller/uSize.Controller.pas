@@ -91,7 +91,7 @@ procedure TSizeController.Delete;
 var
   lPK, lTenantId: Int64;
 begin
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
   lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   TSizeDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
@@ -102,7 +102,7 @@ var
   lPageFilter: IPageFilter;
   lIndexResult: IIndexResult;
 begin
-  lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter := TPageFilter.Make.FromJsonString(FReq.Body);
   lPageFilter.AddWhere('size.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TSizeIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
@@ -112,60 +112,66 @@ end;
 
 procedure TSizeController.Show;
 var
-  lSizeShowDTO: Shared<TSizeShowDTO>;
+  lResult: Shared<TSizeShowDTO>;
   lPK, lTenantId: Int64;
 begin
   // Localizar registro
   lPK       := THlp.StrInt(FReq.Params['id']);
   lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  lSizeShowDTO := TSizeShowUseCase
+  lResult   := TSizeShowUseCase
     .Make    (FRepository)
     .Execute (lPk, lTenantId);
 
   // Retorno
-  TRes.Success(FRes, lSizeShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 procedure TSizeController.Store;
 var
-  lSizeToStoreDTO: Shared<TSizeDTO>;
-  lSizeShowDTO: Shared<TSizeShowDTO>;
+  lInput: Shared<TSizeDTO>;
+  lResult: Shared<TSizeShowDTO>;
 begin
   // Validar DTO
-  lSizeToStoreDTO := TSizeDTO.FromJSON(FReq.Body);
-  lSizeToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  lSizeToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lSizeToStoreDTO);
+  lInput := TSizeDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+    tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Inserir e retornar registro inserido
-  lSizeShowDTO := TSizeStoreAndShowUseCase
+  lResult := TSizeStoreAndShowUseCase
     .Make    (FRepository)
-    .Execute (lSizeToStoreDTO.Value);
+    .Execute (lInput.Value);
 
   // Retorno
-  TRes.Success(FRes, lSizeShowDTO.Value, HTTP_CREATED);
+  TRes.Success(FRes, lResult.Value, HTTP_CREATED);
 end;
 
 procedure TSizeController.Update;
 var
-  lSizeToUpdateDTO: Shared<TSizeDTO>;
-  lSizeShowDTO: Shared<TSizeShowDTO>;
+  lInput: Shared<TSizeDTO>;
+  lResult: Shared<TSizeShowDTO>;
   lPK: Int64;
 begin
   // Validar DTO
-  lSizeToUpdateDTO := TSizeDTO.FromJSON(FReq.Body);
-  lSizeToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  lSizeToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lSizeToUpdateDTO);
+  lInput := TSizeDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+    tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
-  lSizeShowDTO := TSizeUpdateAndShowUseCase
+  lResult := TSizeUpdateAndShowUseCase
     .Make    (FRepository)
-    .Execute (lSizeToUpdateDTO.Value, lPk);
+    .Execute (lInput.Value, lPk);
 
   // Retorno
-  TRes.Success(FRes, lSizeShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 end.

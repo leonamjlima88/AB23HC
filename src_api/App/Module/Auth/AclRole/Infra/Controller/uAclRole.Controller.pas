@@ -112,43 +112,43 @@ end;
 
 procedure TAclRoleController.Show;
 var
-  lAclRoleShowDTO: Shared<TAclRoleShowDTO>;
+  lResult: Shared<TAclRoleShowDTO>;
   lPK, lTenantId: Int64;
 begin
   // Localizar registro
   lPK       := THlp.StrInt(FReq.Params['id']);
   lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  lAclRoleShowDTO := TAclRoleShowUseCase
+  lResult   := TAclRoleShowUseCase
     .Make    (FRepository)
     .Execute (lPk, lTenantId);
 
   // Retorno
-  TRes.Success(FRes, lAclRoleShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 procedure TAclRoleController.Store;
 var
-  lAclRoleToStoreDTO: Shared<TAclRoleDTO>;
-  lAclRoleShowDTO: Shared<TAclRoleShowDTO>;
+  lInput: Shared<TAclRoleDTO>;
+  lResult: Shared<TAclRoleShowDTO>;
 begin
   // Validar DTO
-  lAclRoleToStoreDTO := TAclRoleDTO.FromJSON(FReq.Body);
-  lAclRoleToStoreDTO.Value.tenant_id := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lAclRoleToStoreDTO);
+  lInput := TAclRoleDTO.FromJSON(FReq.Body);
+  lInput.Value.tenant_id := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  SwaggerValidator.Validate(lInput);
 
   // Inserir e retornar registro inserido
-  lAclRoleShowDTO := TAclRoleStoreAndShowUseCase
+  lResult := TAclRoleStoreAndShowUseCase
     .Make    (FRepository)
-    .Execute (lAclRoleToStoreDTO.Value);
+    .Execute (lInput.Value);
 
   // Retorno
-  TRes.Success(FRes, lAclRoleShowDTO.Value, HTTP_CREATED);
+  TRes.Success(FRes, lResult.Value, HTTP_CREATED);
 end;
 
 procedure TAclRoleController.Update;
 var
   lAclRoleToUpdateDTO: Shared<TAclRoleDTO>;
-  lAclRoleShowDTO: Shared<TAclRoleShowDTO>;
+  lResult: Shared<TAclRoleShowDTO>;
   lPK: Int64;
 begin
   // Validar DTO
@@ -158,12 +158,12 @@ begin
 
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
-  lAclRoleShowDTO := TAclRoleUpdateAndShowUseCase
+  lResult := TAclRoleUpdateAndShowUseCase
     .Make    (FRepository)
     .Execute (lAclRoleToUpdateDTO.Value, lPk);
 
   // Retorno
-  TRes.Success(FRes, lAclRoleShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 end.

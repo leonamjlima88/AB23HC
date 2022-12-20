@@ -15,7 +15,7 @@ uses
   uResponse.DTO;
 
 Type
-  [SwagPath('payment_terms', 'Condição de Pagamento')]
+  [SwagPath('payment_terms', 'Condição de pagamento')]
   TPaymentTermController = class
   private
     FReq: THorseRequest;
@@ -91,7 +91,7 @@ procedure TPaymentTermController.Delete;
 var
   lPK, lTenantId: Int64;
 begin
-  lPK := THlp.StrInt(FReq.Params['id']);
+  lPK       := THlp.StrInt(FReq.Params['id']);
   lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
   TPaymentTermDeleteUseCase.Make(FRepository).Execute(lPK, lTenantId);
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
@@ -102,7 +102,7 @@ var
   lPageFilter: IPageFilter;
   lIndexResult: IIndexResult;
 begin
-  lPageFilter  := TPageFilter.Make.FromJsonString(FReq.Body);
+  lPageFilter := TPageFilter.Make.FromJsonString(FReq.Body);
   lPageFilter.AddWhere('payment_term.tenant_id', coEqual, FReq.Session<TMyClaims>.TenantId);
   lIndexResult := TPaymentTermIndexUseCase.Make(FRepository).Execute(lPageFilter);
 
@@ -112,60 +112,66 @@ end;
 
 procedure TPaymentTermController.Show;
 var
-  lPaymentTermShowDTO: Shared<TPaymentTermShowDTO>;
+  lResult: Shared<TPaymentTermShowDTO>;
   lPK, lTenantId: Int64;
 begin
   // Localizar registro
   lPK       := THlp.StrInt(FReq.Params['id']);
   lTenantId := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  lPaymentTermShowDTO := TPaymentTermShowUseCase
+  lResult   := TPaymentTermShowUseCase
     .Make    (FRepository)
     .Execute (lPk, lTenantId);
 
   // Retorno
-  TRes.Success(FRes, lPaymentTermShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 procedure TPaymentTermController.Store;
 var
-  lPaymentTermToStoreDTO: Shared<TPaymentTermDTO>;
-  lPaymentTermShowDTO: Shared<TPaymentTermShowDTO>;
+  lInput: Shared<TPaymentTermDTO>;
+  lResult: Shared<TPaymentTermShowDTO>;
 begin
   // Validar DTO
-  lPaymentTermToStoreDTO := TPaymentTermDTO.FromJSON(FReq.Body);
-  lPaymentTermToStoreDTO.Value.created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  lPaymentTermToStoreDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lPaymentTermToStoreDTO);
+  lInput := TPaymentTermDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    created_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+    tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Inserir e retornar registro inserido
-  lPaymentTermShowDTO := TPaymentTermStoreAndShowUseCase
+  lResult := TPaymentTermStoreAndShowUseCase
     .Make    (FRepository)
-    .Execute (lPaymentTermToStoreDTO.Value);
+    .Execute (lInput.Value);
 
   // Retorno
-  TRes.Success(FRes, lPaymentTermShowDTO.Value, HTTP_CREATED);
+  TRes.Success(FRes, lResult.Value, HTTP_CREATED);
 end;
 
 procedure TPaymentTermController.Update;
 var
-  lPaymentTermToUpdateDTO: Shared<TPaymentTermDTO>;
-  lPaymentTermShowDTO: Shared<TPaymentTermShowDTO>;
+  lInput: Shared<TPaymentTermDTO>;
+  lResult: Shared<TPaymentTermShowDTO>;
   lPK: Int64;
 begin
   // Validar DTO
-  lPaymentTermToUpdateDTO := TPaymentTermDTO.FromJSON(FReq.Body);
-  lPaymentTermToUpdateDTO.Value.updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
-  lPaymentTermToUpdateDTO.Value.tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
-  SwaggerValidator.Validate(lPaymentTermToUpdateDTO);
+  lInput := TPaymentTermDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    updated_by_acl_user_id := THlp.StrInt(FReq.Session<TMyClaims>.Id);
+    tenant_id              := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  SwaggerValidator.Validate(lInput);
 
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
-  lPaymentTermShowDTO := TPaymentTermUpdateAndShowUseCase
+  lResult := TPaymentTermUpdateAndShowUseCase
     .Make    (FRepository)
-    .Execute (lPaymentTermToUpdateDTO.Value, lPk);
+    .Execute (lInput.Value, lPk);
 
   // Retorno
-  TRes.Success(FRes, lPaymentTermShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 end.
