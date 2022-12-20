@@ -20,7 +20,7 @@ type
     constructor Create(AConn: IConnection; ASQLBuilder: IProductSQLBuilder);
     function DataSetToEntity(ADtsProduct: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
-    function FieldExists(AColumName, AColumnValue: String; AId: Int64): Boolean;
+    function FieldExists(AColumName, AColumnValue: String; AId, ATenantId: Int64): Boolean;
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IProductSQLBuilder): IProductRepository;
@@ -85,10 +85,10 @@ begin
   Result := ShowById(AId, ATenantId) as TProduct;
 end;
 
-function TProductRepositorySQL.FieldExists(AColumName, AColumnValue: String; AId: Int64): Boolean;
+function TProductRepositorySQL.FieldExists(AColumName, AColumnValue: String; AId, ATenantId: Int64): Boolean;
 begin
   Result := not FConn.MakeQry.Open(
-    FProductSQLBuilder.RegisteredFields(AColumName, AColumnValue, AId)
+    FProductSQLBuilder.RegisteredFields(AColumName, AColumnValue, AId, ATenantId)
   ).DataSet.IsEmpty;
 end;
 
@@ -101,21 +101,21 @@ begin
   // Verificar se sku_code já existe
   if not lProduct.sku_code.Trim.IsEmpty then
   begin
-    if FieldExists('product.sku_code', lProduct.sku_code, lProduct.id) then
+    if FieldExists('product.sku_code', lProduct.sku_code, lProduct.id, lProduct.tenant_id) then
       raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['product.sku_code', lProduct.sku_code]));
   end;
 
   // Verificar se ean_code já existe
   if not lProduct.ean_code.Trim.IsEmpty then
   begin
-    if FieldExists('product.ean_code', lProduct.ean_code, lProduct.id) then
+    if FieldExists('product.ean_code', lProduct.ean_code, lProduct.id, lProduct.tenant_id) then
       raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['product.ean_code', lProduct.ean_code]));
   end;
 
   // Verificar se manufacturing_code já existe
   if not lProduct.manufacturing_code.Trim.IsEmpty then
   begin
-    if FieldExists('product.manufacturing_code', lProduct.manufacturing_code, lProduct.id) then
+    if FieldExists('product.manufacturing_code', lProduct.manufacturing_code, lProduct.id, lProduct.tenant_id) then
       raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['product.manufacturing_code', lProduct.manufacturing_code]));
   end;
 end;

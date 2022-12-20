@@ -16,7 +16,7 @@ type
     function ScriptSeedTable: String;
     function SelectAll: String;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter;
-    function RegisteredFields(AColumName, AColumnValue: String; AId: Int64): String;
+    function RegisteredFields(AColumName, AColumnValue: String; AId, ATenantId: Int64): String;
   end;
 
 implementation

@@ -23,7 +23,7 @@ type
     function DataSetToEntity(ADtsPerson: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     function LoadPersonContactsToShow(APerson: TPerson): IPersonRepository;
-    function EinExists(AEin: String; AId: Int64): Boolean;
+    function EinExists(AEin: String; AId, ATenantId: Int64): Boolean;
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IPersonSQLBuilder): IPersonRepository;
@@ -82,10 +82,10 @@ begin
   Result := lPerson;
 end;
 
-function TPersonRepositorySQL.EinExists(AEin: String; AId: Int64): Boolean;
+function TPersonRepositorySQL.EinExists(AEin: String; AId, ATenantId: Int64): Boolean;
 begin
   Result := not FConn.MakeQry.Open(
-    FPersonSQLBuilder.RegisteredEins(THlp.OnlyNumbers(AEin), AId)
+    FPersonSQLBuilder.RegisteredEins(THlp.OnlyNumbers(AEin), AId, ATenantId)
   ).DataSet.IsEmpty;
 end;
 
@@ -211,8 +211,8 @@ begin
   // Verificar se CPF/CNPJ já existe
   if not lPerson.ein.Value.Trim.IsEmpty then
   begin
-    if EinExists(lPerson.ein.Value, lPerson.id) then
-      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['person.ein', lPerson.ein]));
+    if EinExists(lPerson.ein.Value, lPerson.id, lPerson.tenant_id) then
+      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['person.ein', lPerson.ein.Value]));
   end;
 end;
 

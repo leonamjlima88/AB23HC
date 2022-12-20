@@ -20,7 +20,7 @@ type
     constructor Create(AConn: IConnection; ASQLBuilder: IChartOfAccountSQLBuilder);
     function DataSetToEntity(ADtsChartOfAccount: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
-    function FieldExists(AColumName, AColumnValue: String; AId: Int64): Boolean;
+    function FieldExists(AColumName, AColumnValue: String; AId, ATenantId: Int64): Boolean;
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IChartOfAccountSQLBuilder): IChartOfAccountRepository;
@@ -65,10 +65,10 @@ begin
   Result := lChartOfAccount;
 end;
 
-function TChartOfAccountRepositorySQL.FieldExists(AColumName, AColumnValue: String; AId: Int64): Boolean;
+function TChartOfAccountRepositorySQL.FieldExists(AColumName, AColumnValue: String; AId, ATenantId: Int64): Boolean;
 begin
   Result := not FConn.MakeQry.Open(
-    FChartOfAccountSQLBuilder.RegisteredFields(AColumName, AColumnValue, AId)
+    FChartOfAccountSQLBuilder.RegisteredFields(AColumName, AColumnValue, AId, ATenantId)
   ).DataSet.IsEmpty;
 end;
 
@@ -91,7 +91,12 @@ begin
   // Verificar se hierarchy_code já existe
   if not lChartOfAccount.hierarchy_code.Trim.IsEmpty then
   begin
-    if FieldExists('chart_of_account.hierarchy_code', lChartOfAccount.hierarchy_code, lChartOfAccount.id) then
+    if FieldExists(
+      'chart_of_account.hierarchy_code',
+      lChartOfAccount.hierarchy_code,
+      lChartOfAccount.id,
+      lChartOfAccount.tenant_id
+    ) then
       raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['chart_of_account.hierarchy_code', lChartOfAccount.hierarchy_code]));
   end;
 end;

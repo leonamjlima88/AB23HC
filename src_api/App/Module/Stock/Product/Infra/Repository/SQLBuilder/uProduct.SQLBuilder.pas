@@ -29,7 +29,7 @@ type
     function LastInsertId: String;
     function Update(AEntity: TBaseEntity; AId: Int64): String;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter;
-    function RegisteredFields(AColumName, AColumnValue: String; AId: Int64): String;
+    function RegisteredFields(AColumName, AColumnValue: String; AId, ATenantId: Int64): String;
   end;
 
 implementation
@@ -127,7 +127,7 @@ begin
   if (AProduct.storage_location_id > 0) then ACQL.&Set('storage_location_id', AProduct.storage_location_id);
 end;
 
-function TProductSQLBuilder.RegisteredFields(AColumName, AColumnValue: String; AId: Int64): String;
+function TProductSQLBuilder.RegisteredFields(AColumName, AColumnValue: String; AId, ATenantId: Int64): String;
 begin
   Result := TCQL.New(FDBName)
     .Select
@@ -135,6 +135,7 @@ begin
     .From('product')
     .Where(AColumName).Equal(AColumnValue)
     .&And('product.id').NotEqual(AId)
+    .&And('product.tenant_id').Equal(ATenantId)
   .AsString;
 end;
 

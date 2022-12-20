@@ -26,7 +26,7 @@ type
     function LastInsertId: String;
     function Update(AEntity: TBaseEntity; AId: Int64): String;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter;
-    function RegisteredFields(AColumName, AColumnValue: String; AId: Int64): String;
+    function RegisteredFields(AColumName, AColumnValue: String; AId, ATenantId: Int64): String;
   end;
 
 implementation
@@ -87,7 +87,7 @@ begin
   end;
 end;
 
-function TChartOfAccountSQLBuilder.RegisteredFields(AColumName, AColumnValue: String; AId: Int64): String;
+function TChartOfAccountSQLBuilder.RegisteredFields(AColumName, AColumnValue: String; AId, ATenantId: Int64): String;
 begin
   Result := TCQL.New(FDBName)
     .Select
@@ -95,6 +95,7 @@ begin
     .From('chart_of_account')
     .Where(AColumName).Equal(AColumnValue)
     .&And('chart_of_account.id').NotEqual(AId)
+    .&And('chart_of_account.tenant_id').Equal(ATenantId)
   .AsString;
 end;
 
