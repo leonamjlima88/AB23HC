@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uAclRole,
-  XSuperObject;
+  uAclRole.Mapper;
 
 { TAclRoleUpdateAndShowUseCase }
 
@@ -43,7 +43,7 @@ var
   lAclRoleUpdated: Shared<TAclRole>;
 begin
   // Carregar dados em Entity
-  lAclRoleToUpdate := TAclRole.FromJSON(AInput.AsJSON);
+  lAclRoleToUpdate := TAclRoleMapper.AclRoleDtoToEntity(AInput);
   With lAclRoleToUpdate.Value do
   begin
     id := APK;
@@ -55,7 +55,7 @@ begin
   lAclRoleUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TAclRoleShowDTO.FromEntity(lAclRoleUpdated.Value);
+  Result := TAclRoleMapper.EntityToAclRoleShowDto(lAclRoleUpdated);
 end;
 
 class function TAclRoleUpdateAndShowUseCase.Make(ARepository: IAclRoleRepository): IAclRoleUpdateAndShowUseCase;

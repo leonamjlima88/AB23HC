@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uCategory,
-  XSuperObject;
+  uCategory.Mapper;
 
 { TCategoryStoreAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lCategoryToStore := TCategory.FromJSON(AInput.AsJSON);
+  lCategoryToStore := TCategoryMapper.CategoryDtoToEntity(AInput);
   lCategoryToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +52,7 @@ begin
   lCategoryStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TCategoryShowDTO.FromEntity(lCategoryStored.Value);
+  Result := TCategoryMapper.EntityToCategoryShowDto(lCategoryStored);
 end;
 
 class function TCategoryStoreAndShowUseCase.Make(ARepository: ICategoryRepository): ICategoryStoreAndShowUseCase;

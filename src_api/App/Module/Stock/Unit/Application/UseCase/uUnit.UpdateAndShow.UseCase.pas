@@ -27,8 +27,8 @@ implementation
 uses
   uSmartPointer,
   uUnit,
-  XSuperObject,
-  System.SysUtils;
+  System.SysUtils,
+  uUnit.Mapper;
 
 { TUnitUpdateAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lUnitUpdated: Shared<TUnit>;
 begin
   // Carregar dados em Entity
-  lUnitToUpdate := TUnit.FromJSON(AInput.AsJSON);
+  lUnitToUpdate := TUnitMapper.UnitDtoToEntity(AInput);
   With lUnitToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +57,7 @@ begin
   lUnitUpdated := FRepository.Show(APK);
 
   // Retornar DTO
-  Result := TUnitShowDTO.FromEntity(lUnitUpdated.Value);
+  Result := TUnitMapper.EntityToUnitShowDto(lUnitUpdated);
 end;
 
 class function TUnitUpdateAndShowUseCase.Make(ARepository: IUnitRepository): IUnitUpdateAndShowUseCase;

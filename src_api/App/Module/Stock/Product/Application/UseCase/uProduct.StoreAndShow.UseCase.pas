@@ -27,7 +27,8 @@ implementation
 uses
   uSmartPointer,
   uProduct,
-  XSuperObject;
+  XSuperObject,
+  uProduct.Mapper;
 
 { TProductStoreAndShowUseCase }
 
@@ -44,6 +45,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
+  lProductToStore := TProductMapper.ProductDtoToEntity(AInput);
   lProductToStore := TProduct.FromJSON(AInput.AsJSON);
   lProductToStore.Value.Validate;
 
@@ -52,7 +54,7 @@ begin
   lProductStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TProductShowDTO.FromEntity(lProductStored.Value);
+  Result := TProductMapper.EntityToProductShowDto(lProductStored);
 end;
 
 class function TProductStoreAndShowUseCase.Make(ARepository: IProductRepository): IProductStoreAndShowUseCase;

@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uDocument,
-  XSuperObject;
+  uDocument.Mapper;
 
 { TDocumentStoreAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lDocumentToStore := TDocument.FromJSON(AInput.AsJSON);
+  lDocumentToStore := TDocumentMapper.DocumentDtoToEntity(AInput);
   lDocumentToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +52,7 @@ begin
   lDocumentStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TDocumentShowDTO.FromEntity(lDocumentStored.Value);
+  Result := TDocumentMapper.EntityToDocumentShowDto(lDocumentStored);
 end;
 
 class function TDocumentStoreAndShowUseCase.Make(ARepository: IDocumentRepository): IDocumentStoreAndShowUseCase;

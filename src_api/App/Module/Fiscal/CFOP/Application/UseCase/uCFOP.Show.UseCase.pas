@@ -27,9 +27,9 @@ uses
   uSmartPointer,
   uCFOP,
   uHlp,
-  XSuperObject,
   System.SysUtils,
-  uApplication.Types;
+  uApplication.Types,
+  uCFOP.Mapper;
 
 { TCFOPShowUseCase }
 
@@ -49,7 +49,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TCFOPShowDTO.FromEntity(lCFOPFound.Value);
+  Result := TCFOPMapper.EntityToCFOPShowDto(lCFOPFound);
 end;
 
 class function TCFOPShowUseCase.Make(ARepository: ICFOPRepository): ICFOPShowUseCase;

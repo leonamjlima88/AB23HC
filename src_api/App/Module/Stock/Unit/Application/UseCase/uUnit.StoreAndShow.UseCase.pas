@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uUnit,
-  XSuperObject;
+  uUnit.Mapper;
 
 { TUnitStoreAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lUnitToStore := TUnit.FromJSON(AInput.AsJSON);
+  lUnitToStore := TUnitMapper.UnitDtoToEntity(AInput);
   lUnitToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +52,7 @@ begin
   lUnitStored := FRepository.Show(lPK);
 
   // Retornar DTO
-  Result := TUnitShowDTO.FromEntity(lUnitStored.Value);
+  Result := TUnitMapper.EntityToUnitShowDto(lUnitStored);
 end;
 
 class function TUnitStoreAndShowUseCase.Make(ARepository: IUnitRepository): IUnitStoreAndShowUseCase;

@@ -26,8 +26,8 @@ implementation
 uses
   uSmartPointer,
   uAclUser,
+  uAclUser.Mapper,
   uHlp,
-  XSuperObject,
   System.SysUtils,
   uApplication.Types;
 
@@ -49,7 +49,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TAclUserShowDTO.FromEntity(lAclUserFound.Value);
+  Result := TAclUserMapper.EntityToAclUserShowDto(lAclUserFound);
 end;
 
 class function TAclUserShowUseCase.Make(ARepository: IAclUserRepository): IAclUserShowUseCase;

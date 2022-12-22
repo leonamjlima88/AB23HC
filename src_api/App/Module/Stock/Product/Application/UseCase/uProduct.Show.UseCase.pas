@@ -29,7 +29,8 @@ uses
   uHlp,
   XSuperObject,
   System.SysUtils,
-  uApplication.Types;
+  uApplication.Types,
+  uProduct.Mapper;
 
 { TProductShowUseCase }
 
@@ -49,7 +50,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TProductShowDTO.FromEntity(lProductFound.Value);
+  Result := TProductMapper.EntityToProductShowDto(lProductFound);
 end;
 
 class function TProductShowUseCase.Make(ARepository: IProductRepository): IProductShowUseCase;

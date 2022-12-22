@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uPaymentTerm,
-  XSuperObject;
+  uPaymentTerm.Mapper;
 
 { TPaymentTermStoreAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lPaymentTermToStore := TPaymentTerm.FromJSON(AInput.AsJSON);
+  lPaymentTermToStore := TPaymentTermMapper.PaymentTermDtoToEntity(AInput);
   lPaymentTermToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +52,7 @@ begin
   lPaymentTermStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TPaymentTermShowDTO.FromEntity(lPaymentTermStored.Value);
+  Result := TPaymentTermMapper.EntityToPaymentTermShowDto(lPaymentTermStored);
 end;
 
 class function TPaymentTermStoreAndShowUseCase.Make(ARepository: IPaymentTermRepository): IPaymentTermStoreAndShowUseCase;

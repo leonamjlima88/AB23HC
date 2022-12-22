@@ -27,9 +27,9 @@ uses
   uSmartPointer,
   uDocument,
   uHlp,
-  XSuperObject,
   System.SysUtils,
-  uApplication.Types;
+  uApplication.Types,
+  uDocument.Mapper;
 
 { TDocumentShowUseCase }
 
@@ -49,7 +49,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TDocumentShowDTO.FromEntity(lDocumentFound.Value);
+  Result := TDocumentMapper.EntityToDocumentShowDto(lDocumentFound);
 end;
 
 class function TDocumentShowUseCase.Make(ARepository: IDocumentRepository): IDocumentShowUseCase;

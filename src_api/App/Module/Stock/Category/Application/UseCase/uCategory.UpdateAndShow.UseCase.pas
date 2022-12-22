@@ -27,8 +27,8 @@ implementation
 uses
   uSmartPointer,
   uCategory,
-  XSuperObject,
-  System.SysUtils;
+  System.SysUtils,
+  uCategory.Mapper;
 
 { TCategoryUpdateAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lCategoryUpdated: Shared<TCategory>;
 begin
   // Carregar dados em Entity
-  lCategoryToUpdate := TCategory.FromJSON(AInput.AsJSON);
+  lCategoryToUpdate := TCategoryMapper.CategoryDtoToEntity(AInput);
   With lCategoryToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +57,7 @@ begin
   lCategoryUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TCategoryShowDTO.FromEntity(lCategoryUpdated.Value);
+  Result := TCategoryMapper.EntityToCategoryShowDto(lCategoryUpdated);
 end;
 
 class function TCategoryUpdateAndShowUseCase.Make(ARepository: ICategoryRepository): ICategoryUpdateAndShowUseCase;

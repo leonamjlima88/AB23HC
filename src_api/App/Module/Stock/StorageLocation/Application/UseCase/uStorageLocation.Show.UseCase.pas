@@ -27,9 +27,9 @@ uses
   uSmartPointer,
   uStorageLocation,
   uHlp,
-  XSuperObject,
   System.SysUtils,
-  uApplication.Types;
+  uApplication.Types,
+  uStorageLocation.Mapper;
 
 { TStorageLocationShowUseCase }
 
@@ -49,7 +49,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TStorageLocationShowDTO.FromEntity(lStorageLocationFound.Value);
+  Result := TStorageLocationMapper.EntityToStorageLocationShowDto(lStorageLocationFound);
 end;
 
 class function TStorageLocationShowUseCase.Make(ARepository: IStorageLocationRepository): IStorageLocationShowUseCase;

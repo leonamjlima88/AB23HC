@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uTaxRule,
-  XSuperObject;
+  uTaxRule.Mapper;
 
 { TTaxRuleStoreAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lTaxRuleToStore := TTaxRule.FromJSON(AInput.AsJSON);
+  lTaxRuleToStore := TTaxRuleMapper.TaxRuleDtoToEntity(AInput);
   lTaxRuleToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +52,7 @@ begin
   lTaxRuleStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TTaxRuleShowDTO.FromEntity(lTaxRuleStored.Value);
+  Result := TTaxRuleMapper.EntityToTaxRuleShowDto(lTaxRuleStored);
 end;
 
 class function TTaxRuleStoreAndShowUseCase.Make(ARepository: ITaxRuleRepository): ITaxRuleStoreAndShowUseCase;

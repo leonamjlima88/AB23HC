@@ -27,8 +27,8 @@ implementation
 uses
   uSmartPointer,
   uCFOP,
-  XSuperObject,
-  System.SysUtils;
+  System.SysUtils,
+  uCFOP.Mapper;
 
 { TCFOPUpdateAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lCFOPUpdated: Shared<TCFOP>;
 begin
   // Carregar dados em Entity
-  lCFOPToUpdate := TCFOP.FromJSON(AInput.AsJSON);
+  lCFOPToUpdate := TCFOPMapper.CFOPDtoToEntity(AInput);
   With lCFOPToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +57,7 @@ begin
   lCFOPUpdated := FRepository.Show(APK);
 
   // Retornar DTO
-  Result := TCFOPShowDTO.FromEntity(lCFOPUpdated.Value);
+  Result := TCFOPMapper.EntityToCFOPShowDto(lCFOPUpdated);
 end;
 
 class function TCFOPUpdateAndShowUseCase.Make(ARepository: ICFOPRepository): ICFOPUpdateAndShowUseCase;

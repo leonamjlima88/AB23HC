@@ -27,8 +27,8 @@ implementation
 uses
   uSmartPointer,
   uOperationType,
-  XSuperObject,
-  System.SysUtils;
+  System.SysUtils,
+  uOperationType.Mapper;
 
 { TOperationTypeUpdateAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lOperationTypeUpdated: Shared<TOperationType>;
 begin
   // Carregar dados em Entity
-  lOperationTypeToUpdate := TOperationType.FromJSON(AInput.AsJSON);
+  lOperationTypeToUpdate := TOperationTypeMapper.OperationTypeDtoToEntity(AInput);
   With lOperationTypeToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +57,7 @@ begin
   lOperationTypeUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TOperationTypeShowDTO.FromEntity(lOperationTypeUpdated.Value);
+  Result := TOperationTypeMapper.EntityToOperationTypeShowDto(lOperationTypeUpdated);
 end;
 
 class function TOperationTypeUpdateAndShowUseCase.Make(ARepository: IOperationTypeRepository): IOperationTypeUpdateAndShowUseCase;

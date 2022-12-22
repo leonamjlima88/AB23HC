@@ -27,8 +27,8 @@ implementation
 uses
   uSmartPointer,
   uChartOfAccount,
-  XSuperObject,
-  System.SysUtils;
+  System.SysUtils,
+  uChartOfAccount.Mapper;
 
 { TChartOfAccountUpdateAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lChartOfAccountUpdated: Shared<TChartOfAccount>;
 begin
   // Carregar dados em Entity
-  lChartOfAccountToUpdate := TChartOfAccount.FromJSON(AInput.AsJSON);
+  lChartOfAccountToUpdate := TChartOfAccountMapper.ChartOfAccountDtoToEntity(AInput);
   With lChartOfAccountToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +57,7 @@ begin
   lChartOfAccountUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TChartOfAccountShowDTO.FromEntity(lChartOfAccountUpdated.Value);
+  Result := TChartOfAccountMapper.EntityToChartOfAccountShowDto(lChartOfAccountUpdated);
 end;
 
 class function TChartOfAccountUpdateAndShowUseCase.Make(ARepository: IChartOfAccountRepository): IChartOfAccountUpdateAndShowUseCase;

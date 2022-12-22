@@ -27,9 +27,9 @@ implementation
 uses
   uSmartPointer,
   uAclUser,
+  uAclUser.Mapper,
   System.SysUtils,
-  uApplication.Types,
-  xSuperObject;
+  uApplication.Types;
 
 { TAclUserUpdateAndShowUseCase }
 
@@ -50,7 +50,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Carregar dados em Entity
-  lAclUserToUpdate := TAclUser.FromJSON(AInput.AsJSON);
+  lAclUserToUpdate := TAclUserMapper.AclUserDtoToEntity(AInput);
   With lAclUserToUpdate.Value do
   begin
     id := APK;
@@ -68,7 +68,7 @@ begin
   lAclUserUpdated := FRepository.Show(APK);
 
   // Retornar DTO
-  Result := TAclUserShowDTO.FromEntity(lAclUserUpdated.Value);
+  Result := TAclUserMapper.EntityToAclUserShowDto(lAclUserUpdated);
 end;
 
 class function TAclUserUpdateAndShowUseCase.Make(ARepository: IAclUserRepository): IAclUserUpdateAndShowUseCase;

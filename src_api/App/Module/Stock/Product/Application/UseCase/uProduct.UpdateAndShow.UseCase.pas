@@ -28,7 +28,8 @@ uses
   uSmartPointer,
   uProduct,
   XSuperObject,
-  System.SysUtils;
+  System.SysUtils,
+  uProduct.Mapper;
 
 { TProductUpdateAndShowUseCase }
 
@@ -44,7 +45,7 @@ var
   lProductUpdated: Shared<TProduct>;
 begin
   // Carregar dados em Entity
-  lProductToUpdate := TProduct.FromJSON(AInput.AsJSON);
+  lProductToUpdate := TProductMapper.ProductDtoToEntity(AInput);
   With lProductToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +58,7 @@ begin
   lProductUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TProductShowDTO.FromEntity(lProductUpdated.Value);
+  Result := TProductMapper.EntityToProductShowDto(lProductUpdated);
 end;
 
 class function TProductUpdateAndShowUseCase.Make(ARepository: IProductRepository): IProductUpdateAndShowUseCase;

@@ -7,8 +7,7 @@ uses
   uResponse.DTO,
   uApplication.Types,
   System.Generics.Collections,
-  uTaxRule.Base.DTO,
-  uTaxRule;
+  uTaxRule.Base.DTO;
 
 type
   TTaxRuleShowDTO = class(TTaxRuleBaseDTO)
@@ -48,8 +47,6 @@ type
     [SwagString]
     [SwagProp('updated_by_acl_user_name', UPDATED_BY_ACL_USER_NAME)]
     property updated_by_acl_user_name: String read Fupdated_by_acl_user_name write Fupdated_by_acl_user_name;
-
-    class function FromEntity(ATaxRule: TTaxRule): TTaxRuleShowDTO;
   end;
 
   {$REGION 'Swagger DOC'}
@@ -78,26 +75,5 @@ type
   {$ENDREGION}
 
 implementation
-
-uses
-  XSuperObject;
-
-{ TTaxRuleShowDTO }
-
-class function TTaxRuleShowDTO.FromEntity(ATaxRule: TTaxRule): TTaxRuleShowDTO;
-var
-  lI: Integer;
-begin
-  // Instanciar, retornar DTO e tratar campos diferenciados
-  Result                          := TTaxRuleShowDTO.FromJSON(ATaxRule.AsJSON);
-  Result.created_by_acl_user_name := ATaxRule.created_by_acl_user.name;
-  Result.updated_by_acl_user_name := ATaxRule.updated_by_acl_user.name;
-
-  for lI := 0 to Pred(Result.tax_rule_state_list.Count) do
-  begin
-    Result.tax_rule_state_list.Items[lI].cfop_code := ATaxRule.tax_rule_state_list.Items[lI].cfop.code;
-    Result.tax_rule_state_list.Items[lI].cfop_name := ATaxRule.tax_rule_state_list.Items[lI].cfop.name;
-  end;
-end;
 
 end.

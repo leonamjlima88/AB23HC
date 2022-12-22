@@ -26,8 +26,8 @@ implementation
 uses
   uSmartPointer,
   uAclRole,
+  uAclRole.Mapper,
   uHlp,
-  XSuperObject,
   System.SysUtils,
   uApplication.Types;
 
@@ -49,7 +49,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TAclRoleShowDTO.FromEntity(lAclRoleFound.Value);
+  Result := TAclRoleMapper.EntityToAclRoleShowDto(lAclRoleFound);
 end;
 
 class function TAclRoleShowUseCase.Make(ARepository: IAclRoleRepository): IAclRoleShowUseCase;

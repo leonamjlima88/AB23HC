@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uNCM,
-  XSuperObject;
+  uNCM.Mapper;
 
 { TNCMStoreAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lNCMToStore := TNCM.FromJSON(AInput.AsJSON);
+  lNCMToStore := TNCMMapper.NCMDtoToEntity(AInput);
   lNCMToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +52,7 @@ begin
   lNCMStored := FRepository.Show(lPK);
 
   // Retornar DTO
-  Result := TNCMShowDTO.FromEntity(lNCMStored.Value);
+  Result := TNCMMapper.EntityToNCMShowDto(lNCMStored);
 end;
 
 class function TNCMStoreAndShowUseCase.Make(ARepository: INCMRepository): INCMStoreAndShowUseCase;

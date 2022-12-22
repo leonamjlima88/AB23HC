@@ -6,13 +6,10 @@ uses
   GBSwagger.Model.Attributes,
   uResponse.DTO,
   System.Generics.Collections,
-  uAclUser,
   uAclUser.Base.DTO;
 
 type
   TAclUserShowDTO = class(TAclUserBaseDTO)
-  public
-    class function FromEntity(AAclUser: TAclUser): TAclUserShowDTO;
   end;
 
   {$REGION 'Swagger DOC'}
@@ -41,15 +38,5 @@ type
   {$ENDREGION}
 
 implementation
-
-uses
-  XSuperObject;
-
-{ TAclUserShowDTO }
-
-class function TAclUserShowDTO.FromEntity(AAclUser: TAclUser): TAclUserShowDTO;
-begin
-  Result := TAclUserShowDTO.FromJSON(AAclUser.AsJSON);
-end;
 
 end.

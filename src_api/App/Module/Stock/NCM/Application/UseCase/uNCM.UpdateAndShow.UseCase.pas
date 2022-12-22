@@ -27,8 +27,8 @@ implementation
 uses
   uSmartPointer,
   uNCM,
-  XSuperObject,
-  System.SysUtils;
+  System.SysUtils,
+  uNCM.Mapper;
 
 { TNCMUpdateAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lNCMUpdated: Shared<TNCM>;
 begin
   // Carregar dados em Entity
-  lNCMToUpdate := TNCM.FromJSON(AInput.AsJSON);
+  lNCMToUpdate := TNCMMapper.NCMDtoToEntity(AInput);
   With lNCMToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +57,7 @@ begin
   lNCMUpdated := FRepository.Show(APK);
 
   // Retornar DTO
-  Result := TNCMShowDTO.FromEntity(lNCMUpdated.Value);
+  Result := TNCMMapper.EntityToNCMShowDto(lNCMUpdated);
 end;
 
 class function TNCMUpdateAndShowUseCase.Make(ARepository: INCMRepository): INCMUpdateAndShowUseCase;

@@ -7,7 +7,6 @@ uses
   uResponse.DTO,
   uApplication.Types,
   System.Generics.Collections,
-  uPaymentTerm,
   uPaymentTerm.Base.DTO;
 
 type
@@ -58,8 +57,6 @@ type
     [SwagString]
     [SwagProp('updated_by_acl_user_name', UPDATED_BY_ACL_USER_NAME)]
     property updated_by_acl_user_name: String read Fupdated_by_acl_user_name write Fupdated_by_acl_user_name;
-
-    class function FromEntity(APaymentTerm: TPaymentTerm): TPaymentTermShowDTO;
   end;
 
   {$REGION 'Swagger DOC'}
@@ -89,19 +86,5 @@ type
 
 implementation
 
-uses
-  XSuperObject;
-
-{ TPaymentTermShowDTO }
-
-class function TPaymentTermShowDTO.FromEntity(APaymentTerm: TPaymentTerm): TPaymentTermShowDTO;
-begin
-  // Instanciar, retornar DTO e tratar campos diferenciados
-  Result                          := TPaymentTermShowDTO.FromJSON(APaymentTerm.AsJSON);
-  Result.bank_account_name        := APaymentTerm.bank_account.name;
-  Result.document_name            := APaymentTerm.document.name;
-  Result.created_by_acl_user_name := APaymentTerm.created_by_acl_user.name;
-  Result.updated_by_acl_user_name := APaymentTerm.updated_by_acl_user.name;
-end;
 
 end.

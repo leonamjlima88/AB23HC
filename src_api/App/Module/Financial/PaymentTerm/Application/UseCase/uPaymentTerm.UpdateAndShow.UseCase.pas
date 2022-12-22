@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uPaymentTerm,
-  XSuperObject,
+  uPaymentTerm.Mapper,
   System.SysUtils;
 
 { TPaymentTermUpdateAndShowUseCase }
@@ -44,7 +44,7 @@ var
   lPaymentTermUpdated: Shared<TPaymentTerm>;
 begin
   // Carregar dados em Entity
-  lPaymentTermToUpdate := TPaymentTerm.FromJSON(AInput.AsJSON);
+  lPaymentTermToUpdate := TPaymentTermMapper.PaymentTermDtoToEntity(AInput);
   With lPaymentTermToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +57,7 @@ begin
   lPaymentTermUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TPaymentTermShowDTO.FromEntity(lPaymentTermUpdated.Value);
+  Result := TPaymentTermMapper.EntityToPaymentTermShowDto(lPaymentTermUpdated);
 end;
 
 class function TPaymentTermUpdateAndShowUseCase.Make(ARepository: IPaymentTermRepository): IPaymentTermUpdateAndShowUseCase;

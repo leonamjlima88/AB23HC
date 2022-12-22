@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uTenant,
-  XSuperObject,
+  uTenant.Mapper,
   System.SysUtils;
 
 { TTenantUpdateAndShowUseCase }
@@ -44,7 +44,7 @@ var
   lTenantUpdated: Shared<TTenant>;
 begin
   // Carregar dados em Entity
-  lTenantToUpdate := TTenant.FromJSON(AInput.AsJSON);
+  lTenantToUpdate := TTenantMapper.TenantDtoToEntity(AInput);
   With lTenantToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +57,7 @@ begin
   lTenantUpdated := FRepository.Show(APK);
 
   // Retornar DTO
-  Result := TTenantShowDTO.FromEntity(lTenantUpdated.Value);
+  Result := TTenantMapper.EntityToTenantShowDto(lTenantUpdated);
 end;
 
 class function TTenantUpdateAndShowUseCase.Make(ARepository: ITenantRepository): ITenantUpdateAndShowUseCase;

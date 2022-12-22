@@ -27,9 +27,9 @@ uses
   uSmartPointer,
   uUnit,
   uHlp,
-  XSuperObject,
   System.SysUtils,
-  uApplication.Types;
+  uApplication.Types,
+  uUnit.Mapper;
 
 { TUnitShowUseCase }
 
@@ -49,7 +49,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TUnitShowDTO.FromEntity(lUnitFound.Value);
+  Result := TUnitMapper.EntityToUnitShowDto(lUnitFound);
 end;
 
 class function TUnitShowUseCase.Make(ARepository: IUnitRepository): IUnitShowUseCase;

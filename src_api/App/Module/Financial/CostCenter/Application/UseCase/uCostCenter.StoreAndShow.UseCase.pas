@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uCostCenter,
-  XSuperObject;
+  uCostCenter.Mapper;
 
 { TCostCenterStoreAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lCostCenterToStore := TCostCenter.FromJSON(AInput.AsJSON);
+  lCostCenterToStore := TCostCenterMapper.CostCenterDtoToEntity(AInput);
   lCostCenterToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +52,7 @@ begin
   lCostCenterStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TCostCenterShowDTO.FromEntity(lCostCenterStored.Value);
+  Result := TCostCenterMapper.EntityToCostCenterShowDto(lCostCenterStored);
 end;
 
 class function TCostCenterStoreAndShowUseCase.Make(ARepository: ICostCenterRepository): ICostCenterStoreAndShowUseCase;

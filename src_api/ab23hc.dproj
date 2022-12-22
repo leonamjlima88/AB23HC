@@ -498,6 +498,25 @@
         <DCCReference Include="App\Shared\Application\Mapper\uMapper.Interfaces.pas"/>
         <DCCReference Include="App\Module\General\Person\Application\Mapper\uPerson.Mapper.pas"/>
         <DCCReference Include="App\Module\Stock\Brand\Application\Mapper\uBrand.Mapper.pas"/>
+        <DCCReference Include="App\Module\Stock\Product\Application\Mapper\uProduct.Mapper.pas"/>
+        <DCCReference Include="App\Module\General\City\Application\Mapper\uCity.Mapper.pas"/>
+        <DCCReference Include="App\Module\Stock\Unit\Application\Mapper\uUnit.Mapper.pas"/>
+        <DCCReference Include="App\Module\Stock\StorageLocation\Application\Mapper\uStorageLocation.Mapper.pas"/>
+        <DCCReference Include="App\Module\Stock\Size\Application\Mapper\uSize.Mapper.pas"/>
+        <DCCReference Include="App\Module\Financial\CostCenter\Application\Mapper\uCostCenter.Mapper.pas"/>
+        <DCCReference Include="App\Module\Stock\Category\Application\Mapper\uCategory.Mapper.pas"/>
+        <DCCReference Include="App\Module\Financial\Bank\Application\Mapper\uBank.Mapper.pas"/>
+        <DCCReference Include="App\Module\Financial\Document\Application\Mapper\uDocument.Mapper.pas"/>
+        <DCCReference Include="App\Module\Fiscal\CFOP\Application\Mapper\uCFOP.Mapper.pas"/>
+        <DCCReference Include="App\Module\Fiscal\OperationType\Application\Mapper\uOperationType.Mapper.pas"/>
+        <DCCReference Include="App\Module\Financial\ChartOfAccount\Application\Mapper\uChartOfAccount.Mapper.pas"/>
+        <DCCReference Include="App\Module\Stock\NCM\Application\Mapper\uNCM.Mapper.pas"/>
+        <DCCReference Include="App\Module\Auth\Tenant\Application\Mapper\uTenant.Mapper.pas"/>
+        <DCCReference Include="App\Module\Financial\BankAccount\Application\Mapper\uBankAccount.Mapper.pas"/>
+        <DCCReference Include="App\Module\Financial\PaymentTerm\Application\Mapper\uPaymentTerm.Mapper.pas"/>
+        <DCCReference Include="App\Module\Fiscal\TaxRule\Application\Mapper\uTaxRule.Mapper.pas"/>
+        <DCCReference Include="App\Module\Auth\AclRole\Application\Mapper\uAclRole.Mapper.pas"/>
+        <DCCReference Include="App\Module\Auth\AclUser\Application\Mapper\uAclUser.Mapper.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

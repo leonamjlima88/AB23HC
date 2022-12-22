@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uCFOP,
-  XSuperObject;
+  uCFOP.Mapper;
 
 { TCFOPStoreAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lCFOPToStore := TCFOP.FromJSON(AInput.AsJSON);
+  lCFOPToStore := TCFOPMapper.CFOPDtoToEntity(AInput);
   lCFOPToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +52,7 @@ begin
   lCFOPStored := FRepository.Show(lPK);
 
   // Retornar DTO
-  Result := TCFOPShowDTO.FromEntity(lCFOPStored.Value);
+  Result := TCFOPMapper.EntityToCFOPShowDto(lCFOPStored);
 end;
 
 class function TCFOPStoreAndShowUseCase.Make(ARepository: ICFOPRepository): ICFOPStoreAndShowUseCase;

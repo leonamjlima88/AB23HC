@@ -27,8 +27,8 @@ implementation
 uses
   uSmartPointer,
   uDocument,
-  XSuperObject,
-  System.SysUtils;
+  System.SysUtils,
+  uDocument.Mapper;
 
 { TDocumentUpdateAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lDocumentUpdated: Shared<TDocument>;
 begin
   // Carregar dados em Entity
-  lDocumentToUpdate := TDocument.FromJSON(AInput.AsJSON);
+  lDocumentToUpdate := TDocumentMapper.DocumentDtoToEntity(AInput);
   With lDocumentToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +57,7 @@ begin
   lDocumentUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TDocumentShowDTO.FromEntity(lDocumentUpdated.Value);
+  Result := TDocumentMapper.EntityToDocumentShowDto(lDocumentUpdated);
 end;
 
 class function TDocumentUpdateAndShowUseCase.Make(ARepository: IDocumentRepository): IDocumentUpdateAndShowUseCase;

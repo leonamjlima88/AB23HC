@@ -27,9 +27,9 @@ uses
   uSmartPointer,
   uBank,
   uHlp,
-  XSuperObject,
   System.SysUtils,
-  uApplication.Types;
+  uApplication.Types,
+  uBank.Mapper;
 
 { TBankShowUseCase }
 
@@ -49,7 +49,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TBankShowDTO.FromEntity(lBankFound.Value);
+  Result := TBankMapper.EntityToBankShowDto(lBankFound);
 end;
 
 class function TBankShowUseCase.Make(ARepository: IBankRepository): IBankShowUseCase;

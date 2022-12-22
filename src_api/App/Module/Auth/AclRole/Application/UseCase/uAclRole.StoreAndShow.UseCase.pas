@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uAclRole,
-  XSuperObject;
+  uAclRole.Mapper;
 
 { TAclRoleStoreAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lAclRoleToStore := TAclRole.FromJSON(AInput.AsJSON);
+  lAclRoleToStore := TAclRoleMapper.AclRoleDtoToEntity(AInput);
   lAclRoleToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +52,7 @@ begin
   lAclRoleStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TAclRoleShowDTO.FromEntity(lAclRoleStored.Value);
+  Result := TAclRoleMapper.EntityToAclRoleShowDto(lAclRoleStored);
 end;
 
 class function TAclRoleStoreAndShowUseCase.Make(ARepository: IAclRoleRepository): IAclRoleStoreAndShowUseCase;

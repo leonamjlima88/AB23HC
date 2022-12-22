@@ -27,8 +27,8 @@ implementation
 uses
   uSmartPointer,
   uStorageLocation,
-  XSuperObject,
-  System.SysUtils;
+  System.SysUtils,
+  uStorageLocation.Mapper;
 
 { TStorageLocationUpdateAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lStorageLocationUpdated: Shared<TStorageLocation>;
 begin
   // Carregar dados em Entity
-  lStorageLocationToUpdate := TStorageLocation.FromJSON(AInput.AsJSON);
+  lStorageLocationToUpdate := TStorageLocationMapper.StorageLocationDtoToEntity(AInput);
   With lStorageLocationToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +57,7 @@ begin
   lStorageLocationUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TStorageLocationShowDTO.FromEntity(lStorageLocationUpdated.Value);
+  Result := TStorageLocationMapper.EntityToStorageLocationShowDto(lStorageLocationUpdated);
 end;
 
 class function TStorageLocationUpdateAndShowUseCase.Make(ARepository: IStorageLocationRepository): IStorageLocationUpdateAndShowUseCase;

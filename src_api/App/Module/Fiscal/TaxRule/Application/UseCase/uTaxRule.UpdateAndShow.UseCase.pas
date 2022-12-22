@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uTaxRule,
-  XSuperObject,
+  uTaxRule.Mapper,
   System.SysUtils;
 
 { TTaxRuleUpdateAndShowUseCase }
@@ -44,7 +44,7 @@ var
   lTaxRuleUpdated: Shared<TTaxRule>;
 begin
   // Carregar dados em Entity
-  lTaxRuleToUpdate := TTaxRule.FromJSON(AInput.AsJSON);
+  lTaxRuleToUpdate := TTaxRuleMapper.TaxRuleDtoToEntity(AInput);
   With lTaxRuleToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +57,7 @@ begin
   lTaxRuleUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TTaxRuleShowDTO.FromEntity(lTaxRuleUpdated.Value);
+  Result := TTaxRuleMapper.EntityToTaxRuleShowDto(lTaxRuleUpdated);
 end;
 
 class function TTaxRuleUpdateAndShowUseCase.Make(ARepository: ITaxRuleRepository): ITaxRuleUpdateAndShowUseCase;

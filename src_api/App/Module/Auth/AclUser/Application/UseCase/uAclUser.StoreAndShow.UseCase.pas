@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uAclUser,
-  XSuperObject,
+  uAclUser.Mapper,
   uHlp,
   uApplication.Types;
 
@@ -46,7 +46,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lAclUserToStore := TAclUser.FromJSON(AInput.AsJSON);
+  lAclUserToStore := TAclUserMapper.AclUserDtoToEntity(AInput);
   With lAclUserToStore.Value do
   begin
     login_password := THlp.Encrypt(ENCRYPTATION_KEY, login_password);
@@ -58,7 +58,7 @@ begin
   lAclUserStored := FRepository.Show(lPK);
 
   // Retornar DTO
-  Result := TAclUserShowDTO.FromEntity(lAclUserStored.Value);
+  Result := TAclUserMapper.EntityToAclUserShowDto(lAclUserStored);
 end;
 
 class function TAclUserStoreAndShowUseCase.Make(ARepository: IAclUserRepository): IAclUserStoreAndShowUseCase;

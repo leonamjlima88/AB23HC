@@ -26,8 +26,8 @@ implementation
 uses
   uSmartPointer,
   uTenant,
+  uTenant.Mapper,
   uHlp,
-  XSuperObject,
   System.SysUtils,
   uApplication.Types;
 
@@ -49,7 +49,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TTenantShowDTO.FromEntity(lTenantFound.Value);
+  Result := TTenantMapper.EntityToTenantShowDto(lTenantFound);
 end;
 
 class function TTenantShowUseCase.Make(ARepository: ITenantRepository): ITenantShowUseCase;

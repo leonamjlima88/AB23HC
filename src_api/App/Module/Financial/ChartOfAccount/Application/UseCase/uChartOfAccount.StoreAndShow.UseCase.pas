@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uChartOfAccount,
-  XSuperObject;
+  uChartOfAccount.Mapper;
 
 { TChartOfAccountStoreAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lChartOfAccountToStore := TChartOfAccount.FromJSON(AInput.AsJSON);
+  lChartOfAccountToStore := TChartOfAccountMapper.ChartOfAccountDtoToEntity(AInput);
   lChartOfAccountToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +52,7 @@ begin
   lChartOfAccountStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TChartOfAccountShowDTO.FromEntity(lChartOfAccountStored.Value);
+  Result := TChartOfAccountMapper.EntityToChartOfAccountShowDto(lChartOfAccountStored);
 end;
 
 class function TChartOfAccountStoreAndShowUseCase.Make(ARepository: IChartOfAccountRepository): IChartOfAccountStoreAndShowUseCase;

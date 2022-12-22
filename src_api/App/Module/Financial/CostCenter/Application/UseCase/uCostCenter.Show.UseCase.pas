@@ -27,9 +27,9 @@ uses
   uSmartPointer,
   uCostCenter,
   uHlp,
-  XSuperObject,
   System.SysUtils,
-  uApplication.Types;
+  uApplication.Types,
+  uCostCenter.Mapper;
 
 { TCostCenterShowUseCase }
 
@@ -49,7 +49,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TCostCenterShowDTO.FromEntity(lCostCenterFound.Value);
+  Result := TCostCenterMapper.EntityToCostCenterShowDto(lCostCenterFound);
 end;
 
 class function TCostCenterShowUseCase.Make(ARepository: ICostCenterRepository): ICostCenterShowUseCase;

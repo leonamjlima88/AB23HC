@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uSize,
-  XSuperObject;
+  uSize.Mapper;
 
 { TSizeStoreAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lSizeToStore := TSize.FromJSON(AInput.AsJSON);
+  lSizeToStore := TSizeMapper.SizeDtoToEntity(AInput);
   lSizeToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +52,7 @@ begin
   lSizeStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TSizeShowDTO.FromEntity(lSizeStored.Value);
+  Result := TSizeMapper.EntityToSizeShowDto(lSizeStored);
 end;
 
 class function TSizeStoreAndShowUseCase.Make(ARepository: ISizeRepository): ISizeStoreAndShowUseCase;

@@ -27,8 +27,8 @@ implementation
 uses
   uSmartPointer,
   uCity,
-  XSuperObject,
-  System.SysUtils;
+  System.SysUtils,
+  uCity.Mapper;
 
 { TCityUpdateAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lCityUpdated: Shared<TCity>;
 begin
   // Carregar dados em Entity
-  lCityToUpdate := TCity.FromJSON(AInput.AsJSON);
+  lCityToUpdate := TCityMapper.CityDtoToEntity(AInput);
   With lCityToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +57,7 @@ begin
   lCityUpdated := FRepository.Show(APK);
 
   // Retornar DTO
-  Result := TCityShowDTO.FromEntity(lCityUpdated.Value);
+  Result := TCityMapper.EntityToCityShowDto(lCityUpdated);
 end;
 
 class function TCityUpdateAndShowUseCase.Make(ARepository: ICityRepository): ICityUpdateAndShowUseCase;

@@ -27,9 +27,9 @@ uses
   uSmartPointer,
   uOperationType,
   uHlp,
-  XSuperObject,
   System.SysUtils,
-  uApplication.Types;
+  uApplication.Types,
+  uOperationType.Mapper;
 
 { TOperationTypeShowUseCase }
 
@@ -49,7 +49,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TOperationTypeShowDTO.FromEntity(lOperationTypeFound.Value);
+  Result := TOperationTypeMapper.EntityToOperationTypeShowDto(lOperationTypeFound);
 end;
 
 class function TOperationTypeShowUseCase.Make(ARepository: IOperationTypeRepository): IOperationTypeShowUseCase;

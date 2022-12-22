@@ -26,8 +26,8 @@ implementation
 uses
   uSmartPointer,
   uPaymentTerm,
+  uPaymentTerm.Mapper,
   uHlp,
-  XSuperObject,
   System.SysUtils,
   uApplication.Types;
 
@@ -49,7 +49,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TPaymentTermShowDTO.FromEntity(lPaymentTermFound.Value);
+  Result := TPaymentTermMapper.EntityToPaymentTermShowDto(lPaymentTermFound);
 end;
 
 class function TPaymentTermShowUseCase.Make(ARepository: IPaymentTermRepository): IPaymentTermShowUseCase;

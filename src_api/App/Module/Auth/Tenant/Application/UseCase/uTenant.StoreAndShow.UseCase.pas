@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uTenant,
-  XSuperObject;
+  uTenant.Mapper;
 
 { TTenantStoreAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lTenantToStore := TTenant.FromJSON(AInput.AsJSON);
+  lTenantToStore := TTenantMapper.TenantDtoToEntity(AInput);
   lTenantToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +52,7 @@ begin
   lTenantStored := FRepository.Show(lPK);
 
   // Retornar DTO
-  Result := TTenantShowDTO.FromEntity(lTenantStored.Value);
+  Result := TTenantMapper.EntityToTenantShowDto(lTenantStored);
 end;
 
 class function TTenantStoreAndShowUseCase.Make(ARepository: ITenantRepository): ITenantStoreAndShowUseCase;

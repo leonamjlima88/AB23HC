@@ -408,7 +408,26 @@ uses
   uValueObject.Interfaces in 'App\Shared\Domain\VO\uValueObject.Interfaces.pas',
   uMapper.Interfaces in 'App\Shared\Application\Mapper\uMapper.Interfaces.pas',
   uPerson.Mapper in 'App\Module\General\Person\Application\Mapper\uPerson.Mapper.pas',
-  uBrand.Mapper in 'App\Module\Stock\Brand\Application\Mapper\uBrand.Mapper.pas';
+  uBrand.Mapper in 'App\Module\Stock\Brand\Application\Mapper\uBrand.Mapper.pas',
+  uProduct.Mapper in 'App\Module\Stock\Product\Application\Mapper\uProduct.Mapper.pas',
+  uCity.Mapper in 'App\Module\General\City\Application\Mapper\uCity.Mapper.pas',
+  uUnit.Mapper in 'App\Module\Stock\Unit\Application\Mapper\uUnit.Mapper.pas',
+  uStorageLocation.Mapper in 'App\Module\Stock\StorageLocation\Application\Mapper\uStorageLocation.Mapper.pas',
+  uSize.Mapper in 'App\Module\Stock\Size\Application\Mapper\uSize.Mapper.pas',
+  uCostCenter.Mapper in 'App\Module\Financial\CostCenter\Application\Mapper\uCostCenter.Mapper.pas',
+  uCategory.Mapper in 'App\Module\Stock\Category\Application\Mapper\uCategory.Mapper.pas',
+  uBank.Mapper in 'App\Module\Financial\Bank\Application\Mapper\uBank.Mapper.pas',
+  uDocument.Mapper in 'App\Module\Financial\Document\Application\Mapper\uDocument.Mapper.pas',
+  uCFOP.Mapper in 'App\Module\Fiscal\CFOP\Application\Mapper\uCFOP.Mapper.pas',
+  uOperationType.Mapper in 'App\Module\Fiscal\OperationType\Application\Mapper\uOperationType.Mapper.pas',
+  uChartOfAccount.Mapper in 'App\Module\Financial\ChartOfAccount\Application\Mapper\uChartOfAccount.Mapper.pas',
+  uNCM.Mapper in 'App\Module\Stock\NCM\Application\Mapper\uNCM.Mapper.pas',
+  uTenant.Mapper in 'App\Module\Auth\Tenant\Application\Mapper\uTenant.Mapper.pas',
+  uBankAccount.Mapper in 'App\Module\Financial\BankAccount\Application\Mapper\uBankAccount.Mapper.pas',
+  uPaymentTerm.Mapper in 'App\Module\Financial\PaymentTerm\Application\Mapper\uPaymentTerm.Mapper.pas',
+  uTaxRule.Mapper in 'App\Module\Fiscal\TaxRule\Application\Mapper\uTaxRule.Mapper.pas',
+  uAclRole.Mapper in 'App\Module\Auth\AclRole\Application\Mapper\uAclRole.Mapper.pas',
+  uAclUser.Mapper in 'App\Module\Auth\AclUser\Application\Mapper\uAclUser.Mapper.pas';
 
 begin
   TMain.Start;

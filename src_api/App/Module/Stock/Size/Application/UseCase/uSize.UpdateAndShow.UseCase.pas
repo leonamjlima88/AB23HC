@@ -27,8 +27,8 @@ implementation
 uses
   uSmartPointer,
   uSize,
-  XSuperObject,
-  System.SysUtils;
+  System.SysUtils,
+  uSize.Mapper;
 
 { TSizeUpdateAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lSizeUpdated: Shared<TSize>;
 begin
   // Carregar dados em Entity
-  lSizeToUpdate := TSize.FromJSON(AInput.AsJSON);
+  lSizeToUpdate := TSizeMapper.SizeDtoToEntity(AInput);
   With lSizeToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +57,7 @@ begin
   lSizeUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TSizeShowDTO.FromEntity(lSizeUpdated.Value);
+  Result := TSizeMapper.EntityToSizeShowDto(lSizeUpdated);
 end;
 
 class function TSizeUpdateAndShowUseCase.Make(ARepository: ISizeRepository): ISizeUpdateAndShowUseCase;

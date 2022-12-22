@@ -27,9 +27,9 @@ uses
   uSmartPointer,
   uNCM,
   uHlp,
-  XSuperObject,
   System.SysUtils,
-  uApplication.Types;
+  uApplication.Types,
+  uNCM.Mapper;
 
 { TNCMShowUseCase }
 
@@ -49,7 +49,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TNCMShowDTO.FromEntity(lNCMFound.Value);
+  Result := TNCMMapper.EntityToNCMShowDto(lNCMFound);
 end;
 
 class function TNCMShowUseCase.Make(ARepository: INCMRepository): INCMShowUseCase;

@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uOperationType,
-  XSuperObject;
+  uOperationType.Mapper;
 
 { TOperationTypeStoreAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lOperationTypeToStore := TOperationType.FromJSON(AInput.AsJSON);
+  lOperationTypeToStore := TOperationTypeMapper.OperationTypeDtoToEntity(AInput);
   lOperationTypeToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +52,7 @@ begin
   lOperationTypeStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TOperationTypeShowDTO.FromEntity(lOperationTypeStored.Value);
+  Result := TOperationTypeMapper.EntityToOperationTypeShowDto(lOperationTypeStored);
 end;
 
 class function TOperationTypeStoreAndShowUseCase.Make(ARepository: IOperationTypeRepository): IOperationTypeStoreAndShowUseCase;

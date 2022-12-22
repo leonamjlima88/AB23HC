@@ -26,8 +26,8 @@ implementation
 uses
   uSmartPointer,
   uTaxRule,
+  uTaxRule.Mapper,
   uHlp,
-  XSuperObject,
   System.SysUtils,
   uApplication.Types;
 
@@ -49,7 +49,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TTaxRuleShowDTO.FromEntity(lTaxRuleFound.Value);
+  Result := TTaxRuleMapper.EntityToTaxRuleShowDto(lTaxRuleFound);
 end;
 
 class function TTaxRuleShowUseCase.Make(ARepository: ITaxRuleRepository): ITaxRuleShowUseCase;

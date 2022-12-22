@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uCity,
-  XSuperObject;
+  uCity.Mapper;
 
 { TCityStoreAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lCityToStore := TCity.FromJSON(AInput.AsJSON);
+  lCityToStore := TCityMapper.CityDtoToEntity(AInput);
   lCityToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +52,7 @@ begin
   lCityStored := FRepository.Show(lPK);
 
   // Retornar DTO
-  Result := TCityShowDTO.FromEntity(lCityStored.Value);
+  Result := TCityMapper.EntityToCityShowDto(lCityStored);
 end;
 
 class function TCityStoreAndShowUseCase.Make(ARepository: ICityRepository): ICityStoreAndShowUseCase;

@@ -7,7 +7,6 @@ uses
   uResponse.DTO,
   uApplication.Types,
   System.Generics.Collections,
-  uUnit,
   uUnit.Base.DTO;
 
 type
@@ -48,8 +47,6 @@ type
     [SwagString]
     [SwagProp('updated_by_acl_user_name', UPDATED_BY_ACL_USER_NAME)]
     property updated_by_acl_user_name: String read Fupdated_by_acl_user_name write Fupdated_by_acl_user_name;
-
-    class function FromEntity(AUnit: TUnit): TUnitShowDTO;
   end;
 
   {$REGION 'Swagger DOC'}
@@ -78,18 +75,5 @@ type
   {$ENDREGION}
 
 implementation
-
-uses
-  XSuperObject;
-
-{ TUnitShowDTO }
-
-class function TUnitShowDTO.FromEntity(AUnit: TUnit): TUnitShowDTO;
-begin
-  // Instanciar, retornar DTO e tratar campos diferenciados
-  Result                          := TUnitShowDTO.FromJSON(AUnit.AsJSON);
-  Result.created_by_acl_user_name := AUnit.created_by_acl_user.name;
-  Result.updated_by_acl_user_name := AUnit.updated_by_acl_user.name;
-end;
 
 end.

@@ -7,8 +7,7 @@ uses
   uResponse.DTO,
   uApplication.Types,
   System.Generics.Collections,
-  uTenant.Base.DTO,
-  uTenant;
+  uTenant.Base.DTO;
 
 type
   TTenantShowDTO = class(TTenantBaseDTO)
@@ -63,8 +62,6 @@ type
     [SwagString]
     [SwagProp('updated_by_acl_user_name', UPDATED_BY_ACL_USER_NAME)]
     property updated_by_acl_user_name: String read Fupdated_by_acl_user_name write Fupdated_by_acl_user_name;
-
-    class function FromEntity(ATenant: TTenant): TTenantShowDTO;
   end;
 
   {$REGION 'Swagger DOC'}
@@ -93,22 +90,5 @@ type
   {$ENDREGION}
 
 implementation
-
-uses
-  XSuperObject;
-
-{ TTenantShowDTO }
-
-class function TTenantShowDTO.FromEntity(ATenant: TTenant): TTenantShowDTO;
-begin
-  // Instanciar, retornar DTO e tratar campos diferenciados
-  Result                          := TTenantShowDTO.FromJSON(ATenant.AsJSON);
-  Result.legal_entity_number      := ATenant.legal_entity_number;
-  Result.city_name                := ATenant.city.name;
-  Result.city_state               := ATenant.city.state;
-  Result.city_ibge_code           := ATenant.city.ibge_code;
-  Result.created_by_acl_user_name := ATenant.created_by_acl_user.name;
-  Result.updated_by_acl_user_name := ATenant.updated_by_acl_user.name;
-end;
 
 end.

@@ -27,9 +27,9 @@ uses
   uSmartPointer,
   uChartOfAccount,
   uHlp,
-  XSuperObject,
   System.SysUtils,
-  uApplication.Types;
+  uApplication.Types,
+  uChartOfAccount.Mapper;
 
 { TChartOfAccountShowUseCase }
 
@@ -49,7 +49,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TChartOfAccountShowDTO.FromEntity(lChartOfAccountFound.Value);
+  Result := TChartOfAccountMapper.EntityToChartOfAccountShowDto(lChartOfAccountFound);
 end;
 
 class function TChartOfAccountShowUseCase.Make(ARepository: IChartOfAccountRepository): IChartOfAccountShowUseCase;

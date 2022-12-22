@@ -27,9 +27,9 @@ uses
   uSmartPointer,
   uCategory,
   uHlp,
-  XSuperObject,
   System.SysUtils,
-  uApplication.Types;
+  uApplication.Types,
+  uCategory.Mapper;
 
 { TCategoryShowUseCase }
 
@@ -49,7 +49,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TCategoryShowDTO.FromEntity(lCategoryFound.Value);
+  Result := TCategoryMapper.EntityToCategoryShowDto(lCategoryFound);
 end;
 
 class function TCategoryShowUseCase.Make(ARepository: ICategoryRepository): ICategoryShowUseCase;

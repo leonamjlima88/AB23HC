@@ -27,9 +27,9 @@ uses
   uSmartPointer,
   uCity,
   uHlp,
-  XSuperObject,
   System.SysUtils,
-  uApplication.Types;
+  uApplication.Types,
+  uCity.Mapper;
 
 { TCityShowUseCase }
 
@@ -49,7 +49,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TCityShowDTO.FromEntity(lCityFound.Value);
+  Result := TCityMapper.EntityToCityShowDto(lCityFound);
 end;
 
 class function TCityShowUseCase.Make(ARepository: ICityRepository): ICityShowUseCase;

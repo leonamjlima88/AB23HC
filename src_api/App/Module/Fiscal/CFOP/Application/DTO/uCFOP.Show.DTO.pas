@@ -7,7 +7,6 @@ uses
   uResponse.DTO,
   uApplication.Types,
   System.Generics.Collections,
-  uCFOP,
   uCFOP.Base.DTO;
 
 type
@@ -48,8 +47,6 @@ type
     [SwagString]
     [SwagProp('updated_by_acl_user_name', UPDATED_BY_ACL_USER_NAME)]
     property updated_by_acl_user_name: String read Fupdated_by_acl_user_name write Fupdated_by_acl_user_name;
-
-    class function FromEntity(ACFOP: TCFOP): TCFOPShowDTO;
   end;
 
   {$REGION 'Swagger DOC'}
@@ -78,18 +75,5 @@ type
   {$ENDREGION}
 
 implementation
-
-uses
-  XSuperObject;
-
-{ TCFOPShowDTO }
-
-class function TCFOPShowDTO.FromEntity(ACFOP: TCFOP): TCFOPShowDTO;
-begin
-  // Instanciar, retornar DTO e tratar campos diferenciados
-  Result                          := TCFOPShowDTO.FromJSON(ACFOP.AsJSON);
-  Result.created_by_acl_user_name := ACFOP.created_by_acl_user.name;
-  Result.updated_by_acl_user_name := ACFOP.updated_by_acl_user.name;
-end;
 
 end.

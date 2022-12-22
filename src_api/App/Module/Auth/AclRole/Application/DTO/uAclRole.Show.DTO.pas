@@ -6,8 +6,7 @@ uses
   GBSwagger.Model.Attributes,
   uResponse.DTO,
   uApplication.Types,
-  System.Generics.Collections,
-  uAclRole;
+  System.Generics.Collections;
 
 type
   TAclRoleShowDTO = class
@@ -22,8 +21,6 @@ type
     [SwagString]
     [SwagProp('name', 'Nome', true)]
     property name: String read Fname write Fname;
-
-    class function FromEntity(AAclRole: TAclRole): TAclRoleShowDTO;
   end;
 
   {$REGION 'Swagger DOC'}
@@ -52,15 +49,5 @@ type
   {$ENDREGION}
 
 implementation
-
-uses
-  XSuperObject;
-
-{ TAclRoleShowDTO }
-
-class function TAclRoleShowDTO.FromEntity(AAclRole: TAclRole): TAclRoleShowDTO;
-begin
-  Result := TAclRoleShowDTO.FromJSON(AAclRole.AsJSON);
-end;
 
 end.

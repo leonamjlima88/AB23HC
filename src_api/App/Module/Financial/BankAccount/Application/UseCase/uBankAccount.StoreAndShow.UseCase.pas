@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uBankAccount,
-  XSuperObject;
+  uBankAccount.Mapper;
 
 { TBankAccountStoreAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lBankAccountToStore := TBankAccount.FromJSON(AInput.AsJSON);
+  lBankAccountToStore := TBankAccountMapper.BankAccountDtoToEntity(AInput);
   lBankAccountToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +52,7 @@ begin
   lBankAccountStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TBankAccountShowDTO.FromEntity(lBankAccountStored.Value);
+  Result := TBankAccountMapper.EntityToBankAccountShowDto(lBankAccountStored);
 end;
 
 class function TBankAccountStoreAndShowUseCase.Make(ARepository: IBankAccountRepository): IBankAccountStoreAndShowUseCase;

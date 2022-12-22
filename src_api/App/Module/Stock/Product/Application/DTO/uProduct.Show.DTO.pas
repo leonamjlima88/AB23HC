@@ -7,7 +7,6 @@ uses
   uResponse.DTO,
   uApplication.Types,
   System.Generics.Collections,
-  uProduct,
   uProduct.Base.DTO;
 
 type
@@ -78,8 +77,6 @@ type
     [SwagString]
     [SwagProp('updated_by_acl_user_name', UPDATED_BY_ACL_USER_NAME)]
     property updated_by_acl_user_name: String read Fupdated_by_acl_user_name write Fupdated_by_acl_user_name;
-
-    class function FromEntity(AProduct: TProduct): TProductShowDTO;
   end;
 
   {$REGION 'Swagger DOC'}
@@ -108,23 +105,5 @@ type
   {$ENDREGION}
 
 implementation
-
-uses
-  XSuperObject;
-
-{ TProductShowDTO }
-
-class function TProductShowDTO.FromEntity(AProduct: TProduct): TProductShowDTO;
-begin
-  // Instanciar, retornar DTO e tratar campos diferenciados
-  Result                          := TProductShowDTO.FromJSON(AProduct.AsJSON);
-  Result.unit_name                := AProduct.&unit.name;
-  Result.category_name            := AProduct.category.name;
-  Result.brand_name               := AProduct.brand.name;
-  Result.size_name                := AProduct.size.name;
-  Result.storage_location_name    := AProduct.storage_location.name;
-  Result.created_by_acl_user_name := AProduct.created_by_acl_user.name;
-  Result.updated_by_acl_user_name := AProduct.updated_by_acl_user.name;
-end;
 
 end.

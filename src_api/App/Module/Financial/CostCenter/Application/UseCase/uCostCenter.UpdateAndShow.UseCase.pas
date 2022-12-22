@@ -27,8 +27,8 @@ implementation
 uses
   uSmartPointer,
   uCostCenter,
-  XSuperObject,
-  System.SysUtils;
+  System.SysUtils,
+  uCostCenter.Mapper;
 
 { TCostCenterUpdateAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lCostCenterUpdated: Shared<TCostCenter>;
 begin
   // Carregar dados em Entity
-  lCostCenterToUpdate := TCostCenter.FromJSON(AInput.AsJSON);
+  lCostCenterToUpdate := TCostCenterMapper.CostCenterDtoToEntity(AInput);
   With lCostCenterToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +57,7 @@ begin
   lCostCenterUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TCostCenterShowDTO.FromEntity(lCostCenterUpdated.Value);
+  Result := TCostCenterMapper.EntityToCostCenterShowDto(lCostCenterUpdated);
 end;
 
 class function TCostCenterUpdateAndShowUseCase.Make(ARepository: ICostCenterRepository): ICostCenterUpdateAndShowUseCase;

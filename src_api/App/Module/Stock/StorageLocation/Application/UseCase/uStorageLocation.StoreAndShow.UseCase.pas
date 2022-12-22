@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uStorageLocation,
-  XSuperObject;
+  uStorageLocation.Mapper;
 
 { TStorageLocationStoreAndShowUseCase }
 
@@ -44,7 +44,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lStorageLocationToStore := TStorageLocation.FromJSON(AInput.AsJSON);
+  lStorageLocationToStore := TStorageLocationMapper.StorageLocationDtoToEntity(AInput);
   lStorageLocationToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +52,7 @@ begin
   lStorageLocationStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TStorageLocationShowDTO.FromEntity(lStorageLocationStored.Value);
+  Result := TStorageLocationMapper.EntityToStorageLocationShowDto(lStorageLocationStored);
 end;
 
 class function TStorageLocationStoreAndShowUseCase.Make(ARepository: IStorageLocationRepository): IStorageLocationStoreAndShowUseCase;

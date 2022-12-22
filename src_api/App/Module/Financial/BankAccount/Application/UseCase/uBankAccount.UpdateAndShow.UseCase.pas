@@ -27,7 +27,7 @@ implementation
 uses
   uSmartPointer,
   uBankAccount,
-  XSuperObject,
+  uBankAccount.Mapper,
   System.SysUtils;
 
 { TBankAccountUpdateAndShowUseCase }
@@ -44,7 +44,7 @@ var
   lBankAccountUpdated: Shared<TBankAccount>;
 begin
   // Carregar dados em Entity
-  lBankAccountToUpdate := TBankAccount.FromJSON(AInput.AsJSON);
+  lBankAccountToUpdate := TBankAccountMapper.BankAccountDtoToEntity(AInput);
   With lBankAccountToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +57,7 @@ begin
   lBankAccountUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TBankAccountShowDTO.FromEntity(lBankAccountUpdated.Value);
+  Result := TBankAccountMapper.EntityToBankAccountShowDto(lBankAccountUpdated);
 end;
 
 class function TBankAccountUpdateAndShowUseCase.Make(ARepository: IBankAccountRepository): IBankAccountUpdateAndShowUseCase;
