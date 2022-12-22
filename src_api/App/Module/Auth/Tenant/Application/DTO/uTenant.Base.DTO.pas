@@ -22,7 +22,7 @@ type
     Fzipcode: String;
     Fnote: String;
     Fcomplement: String;
-    Fein: String;
+    Flegal_entity_number: String;
     Faddress: String;
     Fbank_note: String;
     Fphone_2: String;
@@ -46,8 +46,8 @@ type
     property alias_name: String read Falias_name write Falias_name;
 
     [SwagString(20)]
-    [SwagProp('ein', 'CPF / CNPJ', false)]
-    property ein: String read Fein write Fein;
+    [SwagProp('legal_entity_number', 'CPF / CNPJ', false)]
+    property legal_entity_number: String read Flegal_entity_number write Flegal_entity_number;
 
     [SwagNumber]
     [SwagProp('icms_taxpayer', 'Contribuinte de ICMS', false)]

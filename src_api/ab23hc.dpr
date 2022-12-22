@@ -89,7 +89,7 @@ uses
   uPersonContact.SQLBuilder.Interfaces in 'App\Module\General\Person\Domain\Repository\uPersonContact.SQLBuilder.Interfaces.pas',
   uPerson.Show.UseCase in 'App\Module\General\Person\Application\UseCase\uPerson.Show.UseCase.pas',
   uPerson.Controller in 'App\Module\General\Person\Infra\Controller\uPerson.Controller.pas',
-  uEin.VO in 'App\Shared\Domain\VO\uEin.VO.pas',
+  uLegalEntityNumber.VO in 'App\Shared\Domain\VO\uLegalEntityNumber.VO.pas',
   uUnit in 'App\Module\Stock\Unit\Domain\Entity\uUnit.pas',
   uStorageLocation in 'App\Module\Stock\StorageLocation\Domain\Entity\uStorageLocation.pas',
   uSize in 'App\Module\Stock\Size\Domain\Entity\uSize.pas',
@@ -404,7 +404,11 @@ uses
   uTenant.Show.DTO in 'App\Module\Auth\Tenant\Application\DTO\uTenant.Show.DTO.pas',
   uTenant.DTO in 'App\Module\Auth\Tenant\Application\DTO\uTenant.DTO.pas',
   u01CreateTenantTable.Migration in 'Database\Infra\Migration\u01CreateTenantTable.Migration.pas',
-  u01TenantSeed.Migration in 'Database\Infra\Migration\u01TenantSeed.Migration.pas';
+  u01TenantSeed.Migration in 'Database\Infra\Migration\u01TenantSeed.Migration.pas',
+  uValueObject.Interfaces in 'App\Shared\Domain\VO\uValueObject.Interfaces.pas',
+  uMapper.Interfaces in 'App\Shared\Application\Mapper\uMapper.Interfaces.pas',
+  uPerson.Mapper in 'App\Module\General\Person\Application\Mapper\uPerson.Mapper.pas',
+  uBrand.Mapper in 'App\Module\Stock\Brand\Application\Mapper\uBrand.Mapper.pas';
 
 begin
   TMain.Start;

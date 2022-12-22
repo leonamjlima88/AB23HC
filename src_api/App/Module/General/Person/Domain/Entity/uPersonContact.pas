@@ -4,7 +4,7 @@ interface
 
 uses
   uBase.Entity,
-  uEin.VO;
+  uLegalEntityNumber.VO;
 
 type
   TPersonContact = class(TBaseEntity)
@@ -15,7 +15,7 @@ type
     Femail: string;
     Fphone: string;
     Fnote: string;
-    Fein: IEinVO;
+    Flegal_entity_number: ILegalEntityNumberVO;
     Ftype: string;
     procedure Initialize;
   public
@@ -25,7 +25,7 @@ type
     property id: Int64 read Fid write Fid;
     property person_id: Int64 read Fperson_id write Fperson_id;
     property name: string read Fname write Fname;
-    property ein: IEinVO read Fein write Fein;
+    property legal_entity_number: ILegalEntityNumberVO read Flegal_entity_number write Flegal_entity_number;
     property &type: string read Ftype write Ftype;
     property note: string read Fnote write Fnote;
     property phone: string read Fphone write Fphone;
@@ -56,7 +56,7 @@ end;
 
 procedure TPersonContact.Initialize;
 begin
-  Fein := TEinVO.Make(EmptyStr);
+  Flegal_entity_number := TLegalEntityNumberVO.Make(EmptyStr);
 end;
 
 procedure TPersonContact.Validate;

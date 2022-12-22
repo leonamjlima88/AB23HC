@@ -27,7 +27,8 @@ implementation
 uses
   uSmartPointer,
   uBrand,
-  XSuperObject;
+  XSuperObject,
+  uBrand.Mapper;
 
 { TBrandStoreAndShowUseCase }
 
@@ -44,7 +45,7 @@ var
   lPK: Int64;
 begin
   // Carregar dados em Entity
-  lBrandToStore := TBrand.FromJSON(AInput.AsJSON);
+  lBrandToStore := TBrandMapper.BrandDtoToEntity(AInput);
   lBrandToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
@@ -52,7 +53,7 @@ begin
   lBrandStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TBrandShowDTO.FromEntity(lBrandStored.Value);
+  Result := TBrandMapper.EntityToBrandShowDto(lBrandStored);
 end;
 
 class function TBrandStoreAndShowUseCase.Make(ARepository: IBrandRepository): IBrandStoreAndShowUseCase;

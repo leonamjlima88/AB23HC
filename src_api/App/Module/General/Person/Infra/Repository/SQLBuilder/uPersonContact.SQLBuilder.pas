@@ -66,13 +66,13 @@ begin
   Result := TCQL.New(FDBName)
     .Insert
     .Into('person_contact')
-    .&Set('person_id', lPersonContact.person_id)
-    .&Set('name',      lPersonContact.name)
-    .&Set('ein',       lPersonContact.ein.Value)
-    .&Set('type',      lPersonContact.&type)
-    .&Set('note',      lPersonContact.note)
-    .&Set('phone',     lPersonContact.phone)
-    .&Set('email',     lPersonContact.email)
+    .&Set('person_id',           lPersonContact.person_id)
+    .&Set('name',                lPersonContact.name)
+    .&Set('legal_entity_number', lPersonContact.legal_entity_number.Value)
+    .&Set('type',                lPersonContact.&type)
+    .&Set('note',                lPersonContact.note)
+    .&Set('phone',               lPersonContact.phone)
+    .&Set('email',               lPersonContact.email)
   .AsString;
 end;
 
@@ -110,13 +110,13 @@ begin
   Result := TCQL.New(FDBName)
     .Insert
     .Into('person_contact')
-    .&Set('person_id', lPersonContact.person_id)
-    .&Set('name',      lPersonContact.name)
-    .&Set('ein',       lPersonContact.ein.Value)
-    .&Set('type',      lPersonContact.&type)
-    .&Set('note',      lPersonContact.note)
-    .&Set('phone',     lPersonContact.phone)
-    .&Set('email',     lPersonContact.email)
+    .&Set('person_id',            lPersonContact.person_id)
+    .&Set('name',                 lPersonContact.name)
+    .&Set('legal_entity_number',  lPersonContact.legal_entity_number.Value)
+    .&Set('type',                 lPersonContact.&type)
+    .&Set('note',                 lPersonContact.note)
+    .&Set('phone',                lPersonContact.phone)
+    .&Set('email',                lPersonContact.email)
     .Where('person_contact.id = ' + AId.ToString)
   .AsString;
 end;

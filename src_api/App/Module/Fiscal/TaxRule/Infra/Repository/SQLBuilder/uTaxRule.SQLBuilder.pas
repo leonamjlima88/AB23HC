@@ -27,7 +27,6 @@ type
     function LastInsertId: String;
     function Update(AEntity: TBaseEntity; AId: Int64): String;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter;
-    function RegisteredEins(AEin: String; AId: Int64): String;
   end;
 
 implementation
@@ -43,17 +42,6 @@ uses
   uHlp;
 
 { TTaxRuleSQLBuilder }
-function TTaxRuleSQLBuilder.RegisteredEins(AEin: String; AId: Int64): String;
-begin
-  Result := TCQL.New(FDBName)
-    .Select
-    .Column('tax_rule.ein')
-    .From('tax_rule')
-    .Where('tax_rule.ein').Equal(AEin)
-    .&And('tax_rule.id').NotEqual(AId)
-  .AsString;
-end;
-
 constructor TTaxRuleSQLBuilder.Create;
 begin
   inherited Create;

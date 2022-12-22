@@ -11,7 +11,7 @@ uses
   uPersonContact,
   System.Generics.Collections,
   XSuperObject,
-  uEin.VO;
+  uLegalEntityNumber.VO;
 
 type
   TPerson = class(TBaseEntity)
@@ -34,7 +34,7 @@ type
     Fis_employee: SmallInt;
     Fnote: String;
     Fcomplement: String;
-    Fein: IEinVO;
+    Flegal_entity_number: ILegalEntityNumberVO;
     Fis_other: SmallInt;
     Fis_carrier: SmallInt;
     Fis_customer: SmallInt;
@@ -69,7 +69,7 @@ type
     property id: Int64 read Fid write Fid;
     property name: string read Fname write Fname;
     property alias_name: String read Falias_name write Falias_name;
-    property ein: IEinVO read Fein write Fein;
+    property legal_entity_number: ILegalEntityNumberVO read Flegal_entity_number write Flegal_entity_number;
     property icms_taxpayer: SmallInt read Ficms_taxpayer write Ficms_taxpayer;
     property state_registration: String read Fstate_registration write Fstate_registration;
     property municipal_registration: String read Fmunicipal_registration write Fmunicipal_registration;
@@ -140,7 +140,7 @@ end;
 
 procedure TPerson.Initialize;
 begin
-  Fein                 := TEinVO.Make(EmptyStr);
+  Flegal_entity_number := TLegalEntityNumberVO.Make(EmptyStr);
   Fcreated_at          := now;
   Fcreated_by_acl_user := TAclUser.Create;
   Fupdated_by_acl_user := TAclUser.Create;

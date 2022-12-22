@@ -30,7 +30,7 @@ type
     function LastInsertId: String;
     function Update(AEntity: TBaseEntity; AId: Int64): String;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter;
-    function RegisteredEins(AEin: String; AId, ATenantId: Int64): String;
+    function RegisteredLegalEntityNumbers(ALegalEntityNumber: String; AId, ATenantId: Int64): String;
   end;
 
 implementation
@@ -45,13 +45,13 @@ uses
   uHlp;
 
 { TPersonSQLBuilder }
-function TPersonSQLBuilder.RegisteredEins(AEin: String; AId, ATenantId: Int64): String;
+function TPersonSQLBuilder.RegisteredLegalEntityNumbers(ALegalEntityNumber: String; AId, ATenantId: Int64): String;
 begin
   Result := TCQL.New(FDBName)
     .Select
-    .Column('person.ein')
+    .Column('person.legal_entity_number')
     .From('person')
-    .Where('person.ein').Equal(AEin)
+    .Where('person.legal_entity_number').Equal(ALegalEntityNumber)
     .&And('person.id').NotEqual(AId)
     .&And('person.tenant_id').Equal(ATenantId)
   .AsString;
@@ -115,7 +115,7 @@ begin
   ACQL
     .&Set('name',                   APerson.name)
     .&Set('alias_name',             APerson.alias_name)
-    .&Set('ein',                    APerson.ein.Value)
+    .&Set('legal_entity_number',    APerson.legal_entity_number.Value)
     .&Set('icms_taxpayer',          APerson.icms_taxpayer)
     .&Set('state_registration',     APerson.state_registration)
     .&Set('municipal_registration', APerson.municipal_registration)

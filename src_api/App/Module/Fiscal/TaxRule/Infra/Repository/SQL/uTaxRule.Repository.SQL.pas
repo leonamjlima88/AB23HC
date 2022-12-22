@@ -23,7 +23,6 @@ type
     function DataSetToEntity(ADtsTaxRule: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     function LoadTaxRuleStatesToShow(ATaxRule: TTaxRule): ITaxRuleRepository;
-    function EinExists(AEin: String; AId: Int64): Boolean;
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: ITaxRuleSQLBuilder): ITaxRuleRepository;
@@ -74,13 +73,6 @@ begin
   lTaxRule.updated_by_acl_user.name := ADtsTaxRule.FieldByName('updated_by_acl_user_name').AsString;
 
   Result := lTaxRule;
-end;
-
-function TTaxRuleRepositorySQL.EinExists(AEin: String; AId: Int64): Boolean;
-begin
-  Result := not FConn.MakeQry.Open(
-    FTaxRuleSQLBuilder.RegisteredEins(THlp.OnlyNumbers(AEin), AId)
-  ).DataSet.IsEmpty;
 end;
 
 function TTaxRuleRepositorySQL.LoadTaxRuleStatesToShow(ATaxRule: TTaxRule): ITaxRuleRepository;

@@ -29,7 +29,8 @@ uses
   uHlp,
   XSuperObject,
   System.SysUtils,
-  uApplication.Types;
+  uApplication.Types,
+  uBrand.Mapper;
 
 { TBrandShowUseCase }
 
@@ -49,7 +50,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TBrandShowDTO.FromEntity(lBrandFound.Value);
+  Result := TBrandMapper.EntityToBrandShowDto(lBrandFound);
 end;
 
 class function TBrandShowUseCase.Make(ARepository: IBrandRepository): IBrandShowUseCase;

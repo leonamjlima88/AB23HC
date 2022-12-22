@@ -9,7 +9,7 @@ uses
 
 type
   IPersonUpdateAndShowUseCase = Interface
-['{89480FD9-7684-44D1-9AE6-F691DA1323A1}']
+    ['{89480FD9-7684-44D1-9AE6-F691DA1323A1}']
     function Execute(AInput: TPersonDTO; APK: Int64): TPersonShowDTO;
   end;
 
@@ -28,7 +28,8 @@ uses
   uSmartPointer,
   uPerson,
   XSuperObject,
-  System.SysUtils;
+  System.SysUtils,
+  uPerson.Mapper;
 
 { TPersonUpdateAndShowUseCase }
 
@@ -44,7 +45,7 @@ var
   lPersonUpdated: Shared<TPerson>;
 begin
   // Carregar dados em Entity
-  lPersonToUpdate := TPerson.FromJSON(AInput.AsJSON);
+  lPersonToUpdate := TPersonMapper.PersonDtoToEntity(AInput);
   With lPersonToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +58,7 @@ begin
   lPersonUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TPersonShowDTO.FromEntity(lPersonUpdated.Value);
+  Result := TPersonMapper.EntityToPersonShowDto(lPersonUpdated.Value);
 end;
 
 class function TPersonUpdateAndShowUseCase.Make(ARepository: IPersonRepository): IPersonUpdateAndShowUseCase;

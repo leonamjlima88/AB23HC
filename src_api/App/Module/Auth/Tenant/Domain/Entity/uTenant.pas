@@ -28,7 +28,7 @@ type
     Fzipcode: String;
     Fnote: String;
     Fcomplement: String;
-    Fein: String;
+    Flegal_entity_number: String;
     Faddress: String;
     Fbank_note: String;
     Fphone_2: String;
@@ -48,7 +48,7 @@ type
     Fcreated_by_acl_user: TAclUser;
 
     procedure Initialize;
-    function Getein: String;
+    function Getlegal_entity_number: String;
   public
     constructor Create; overload;
     destructor Destroy; override;
@@ -56,7 +56,7 @@ type
     property id: Int64 read Fid write Fid;
     property name: string read Fname write Fname;
     property alias_name: String read Falias_name write Falias_name;
-    property ein: String read Getein write Fein;
+    property legal_entity_number: String read Getlegal_entity_number write Flegal_entity_number;
     property icms_taxpayer: SmallInt read Ficms_taxpayer write Ficms_taxpayer;
     property state_registration: String read Fstate_registration write Fstate_registration;
     property municipal_registration: String read Fmunicipal_registration write Fmunicipal_registration;
@@ -112,9 +112,9 @@ begin
   inherited;
 end;
 
-function TTenant.Getein: String;
+function TTenant.Getlegal_entity_number: String;
 begin
-  Result := Thlp.OnlyNumbers(Fein);
+  Result := Thlp.OnlyNumbers(Flegal_entity_number);
 end;
 
 procedure TTenant.Initialize;
@@ -131,10 +131,10 @@ var
   lHasAtLeastOneFilled: Boolean;
 begin
   // Validar CPF/CNPJ se preenchido
-  if not Fein.Trim.IsEmpty then
+  if not Flegal_entity_number.Trim.IsEmpty then
   begin
-    if not THlp.CpfOrCnpjIsValid(Fein) then
-      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_INVALID, ['ein', Fein]));
+    if not THlp.CpfOrCnpjIsValid(Flegal_entity_number) then
+      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_INVALID, ['legal_entity_number', Flegal_entity_number]));
   end;
 
   lIsInserting := Fid = 0;

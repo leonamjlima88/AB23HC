@@ -29,7 +29,8 @@ uses
   uHlp,
   XSuperObject,
   System.SysUtils,
-  uApplication.Types;
+  uApplication.Types,
+  uPerson.Mapper;
 
 { TPersonShowUseCase }
 
@@ -49,7 +50,7 @@ begin
     raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
 
   // Retornar DTO
-  Result := TPersonShowDTO.FromEntity(lPersonFound.Value);
+  Result := TPersonMapper.EntityToPersonShowDto(lPersonFound.Value);
 end;
 
 class function TPersonShowUseCase.Make(ARepository: IPersonRepository): IPersonShowUseCase;

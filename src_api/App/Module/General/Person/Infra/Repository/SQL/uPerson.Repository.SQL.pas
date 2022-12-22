@@ -23,7 +23,7 @@ type
     function DataSetToEntity(ADtsPerson: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     function LoadPersonContactsToShow(APerson: TPerson): IPersonRepository;
-    function EinExists(AEin: String; AId, ATenantId: Int64): Boolean;
+    function LegalEntityNumberExists(ALegalEntityNumber: String; AId, ATenantId: Int64): Boolean;
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: IPersonSQLBuilder): IPersonRepository;
@@ -44,7 +44,7 @@ uses
   uHlp,
   uApplication.Types,
   uSQLBuilder.Factory,
-  uEin.VO;
+  uLegalEntityNumber.VO;
 
 { TPersonRepositorySQL }
 
@@ -69,7 +69,7 @@ begin
   lPerson := TPerson.FromJSON(ADtsPerson.ToJSONObjectString);
 
   // Person - Virtuais
-  lPerson.ein                      := TEinVO.Make(ADtsPerson.FieldByName('ein').AsString);
+  lPerson.legal_entity_number      := TLegalEntityNumberVO.Make(ADtsPerson.FieldByName('legal_entity_number').AsString);
   lPerson.city.id                  := ADtsPerson.FieldByName('city_id').AsLargeInt;
   lPerson.city.name                := ADtsPerson.FieldByName('city_name').AsString;
   lPerson.city.state               := ADtsPerson.FieldByName('city_state').AsString;
@@ -82,10 +82,10 @@ begin
   Result := lPerson;
 end;
 
-function TPersonRepositorySQL.EinExists(AEin: String; AId, ATenantId: Int64): Boolean;
+function TPersonRepositorySQL.LegalEntityNumberExists(ALegalEntityNumber: String; AId, ATenantId: Int64): Boolean;
 begin
   Result := not FConn.MakeQry.Open(
-    FPersonSQLBuilder.RegisteredEins(THlp.OnlyNumbers(AEin), AId, ATenantId)
+    FPersonSQLBuilder.RegisteredLegalEntityNumbers(THlp.OnlyNumbers(ALegalEntityNumber), AId, ATenantId)
   ).DataSet.IsEmpty;
 end;
 
@@ -99,8 +99,8 @@ begin
     DataSet.First;
     while not DataSet.Eof do
     begin
-      lPersonContact := TPersonContact.FromJSON(DataSet.ToJSONObjectString);
-      lPersonContact.ein := TEinVO.Make(DataSet.FieldByName('ein').AsString);
+      lPersonContact                     := TPersonContact.FromJSON(DataSet.ToJSONObjectString);
+      lPersonContact.legal_entity_number := TLegalEntityNumberVO.Make(DataSet.FieldByName('legal_entity_number').AsString);
 
       APerson.person_contact_list.Add(lPersonContact);
       DataSet.Next;
@@ -209,10 +209,10 @@ begin
   lPerson := AEntity as TPerson;
 
   // Verificar se CPF/CNPJ já existe
-  if not lPerson.ein.Value.Trim.IsEmpty then
+  if not lPerson.legal_entity_number.Value.Trim.IsEmpty then
   begin
-    if EinExists(lPerson.ein.Value, lPerson.id, lPerson.tenant_id) then
-      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['person.ein', lPerson.ein.Value]));
+    if LegalEntityNumberExists(lPerson.legal_entity_number.Value, lPerson.id, lPerson.tenant_id) then
+      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['person.legal_entity_number', lPerson.legal_entity_number.Value]));
   end;
 end;
 

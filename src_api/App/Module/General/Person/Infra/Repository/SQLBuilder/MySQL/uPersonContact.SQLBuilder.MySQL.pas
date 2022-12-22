@@ -38,7 +38,7 @@ begin
             '   `id` bigint(20) NOT NULL AUTO_INCREMENT, '+
             '   `person_id` bigint(20) NOT NULL, '+
             '   `name` varchar(100) DEFAULT NULL, '+
-            '   `ein` varchar(20) DEFAULT NULL, '+
+            '   `legal_entity_number` varchar(20) DEFAULT NULL, '+
             '   `type` varchar(100) DEFAULT NULL, '+
             '   `note` text, '+
             '   `phone` varchar(40) DEFAULT NULL, '+

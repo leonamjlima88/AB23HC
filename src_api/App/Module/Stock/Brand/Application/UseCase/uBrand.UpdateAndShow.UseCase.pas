@@ -28,7 +28,8 @@ uses
   uSmartPointer,
   uBrand,
   XSuperObject,
-  System.SysUtils;
+  System.SysUtils,
+  uBrand.Mapper;
 
 { TBrandUpdateAndShowUseCase }
 
@@ -44,7 +45,7 @@ var
   lBrandUpdated: Shared<TBrand>;
 begin
   // Carregar dados em Entity
-  lBrandToUpdate := TBrand.FromJSON(AInput.AsJSON);
+  lBrandToUpdate := TBrandMapper.BrandDtoToEntity(AInput);
   With lBrandToUpdate.Value do
   begin
     id         := APK;
@@ -57,7 +58,7 @@ begin
   lBrandUpdated := FRepository.Show(APK, AInput.tenant_id);
 
   // Retornar DTO
-  Result := TBrandShowDTO.FromEntity(lBrandUpdated.Value);
+  Result := TBrandMapper.EntityToBrandShowDto(lBrandUpdated);
 end;
 
 class function TBrandUpdateAndShowUseCase.Make(ARepository: IBrandRepository): IBrandUpdateAndShowUseCase;

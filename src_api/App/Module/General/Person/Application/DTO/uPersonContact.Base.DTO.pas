@@ -12,7 +12,7 @@ type
     Femail: string;
     Fphone: string;
     Fnote: string;
-    Fein: string;
+    Flegal_entity_number: string;
     Ftype: string;
   public
     [SwagString(100)]
@@ -20,8 +20,8 @@ type
     property name: string read Fname write Fname;
 
     [SwagString(20)]
-    [SwagProp('ein', 'CPF/CNPJ', false)]
-    property ein: string read Fein write Fein;
+    [SwagProp('legal_entity_number', 'CPF/CNPJ', false)]
+    property legal_entity_number: string read Flegal_entity_number write Flegal_entity_number;
 
     [SwagString(100)]
     [SwagProp('type', 'Tipo de Contato', false)]

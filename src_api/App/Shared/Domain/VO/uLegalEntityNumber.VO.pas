@@ -1,23 +1,26 @@
-unit uEin.VO;
+unit uLegalEntityNumber.VO;
 
 interface
 
+uses
+  uValueObject.Interfaces;
+
 type
-  IEinVO = Interface
+  ILegalEntityNumberVO = Interface
     ['{04A84EA8-C93A-4B87-94B3-E649EC73151D}']
     function Value: String;
   end;
 
-  TEinVO = class(TInterfacedObject, IEinVO)
+  TLegalEntityNumberVO = class(TInterfacedObject, IValueObject, ILegalEntityNumberVO)
   private
-    FEin: String;
+    FLegalEntityNumber: String;
     class function CPFOrCNPJIsValid(ADocument: string): boolean;
     class function CPFIsValid(ACPF: string): boolean;
     class function CNPJIsValid(ACNPJ: string): boolean;
     class function OnlyNumbers(const S: string): string;
     constructor Create(AValue: String);
   public
-    class function Make(AValue: String): IEinVO;
+    class function Make(AValue: String): ILegalEntityNumberVO;
     function Value: String;
   end;
 
@@ -26,14 +29,14 @@ implementation
 uses
   System.SysUtils;
 
-{ TEin }
+{ TLegalEntityNumber }
 
-constructor TEinVO.Create(AValue: String);
+constructor TLegalEntityNumberVO.Create(AValue: String);
 begin
-  FEin := AValue;
+  FLegalEntityNumber := AValue;
 end;
 
-class function TEinVO.Make(AValue: String): IEinVO;
+class function TLegalEntityNumberVO.Make(AValue: String): ILegalEntityNumberVO;
 begin
   // Validar Campo
   if not AValue.Trim.IsEmpty then
@@ -45,7 +48,7 @@ begin
   Result := Self.Create(AValue);
 end;
 
-class function TEinVO.CPFIsValid(ACPF: string): boolean;
+class function TLegalEntityNumberVO.CPFIsValid(ACPF: string): boolean;
 var
   D1: array[1..9] of byte;
   I, DF1, DF2, DF3, DF4, DF5, DF6, Resto1, Resto2, PrimeiroDigito,
@@ -101,7 +104,7 @@ begin
       Result := false;
 End;
 
-class function TEinVO.CPFOrCNPJIsValid(ADocument: string): boolean;
+class function TLegalEntityNumberVO.CPFOrCNPJIsValid(ADocument: string): boolean;
 var
   lIsCPF: Boolean;
 begin
@@ -113,7 +116,7 @@ begin
   end;
 end;
 
-class function TEinVO.CNPJIsValid(ACNPJ: string): boolean;
+class function TLegalEntityNumberVO.CNPJIsValid(ACNPJ: string): boolean;
 var
   D1: array[1..12] of byte;
   I, DF1, DF2, DF3, DF4, DF5, DF6, Resto1, Resto2, PrimeiroDigito,
@@ -168,7 +171,7 @@ begin
       Result := false;
 end;
 
-class function TEinVO.OnlyNumbers(const S: string): string;
+class function TLegalEntityNumberVO.OnlyNumbers(const S: string): string;
 var
   vText : PChar;
 begin
@@ -190,9 +193,9 @@ begin
   Result := Result.Trim;
 end;
 
-function TEinVO.Value: String;
+function TLegalEntityNumberVO.Value: String;
 begin
-  Result := OnlyNumbers(FEin.Trim);
+  Result := OnlyNumbers(FLegalEntityNumber.Trim);
 end;
 
 end.

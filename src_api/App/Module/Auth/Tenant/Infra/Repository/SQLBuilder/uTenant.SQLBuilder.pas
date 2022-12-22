@@ -30,7 +30,7 @@ type
     function LastInsertId: String;
     function Update(AEntity: TBaseEntity; AId: Int64): String;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter;
-    function RegisteredEins(AEin: String; AId: Int64): String;
+    function RegisteredLegalEntityNumbers(ALegalEntityNumber: String; AId: Int64): String;
   end;
 
 implementation
@@ -45,13 +45,13 @@ uses
   uHlp;
 
 { TTenantSQLBuilder }
-function TTenantSQLBuilder.RegisteredEins(AEin: String; AId: Int64): String;
+function TTenantSQLBuilder.RegisteredLegalEntityNumbers(ALegalEntityNumber: String; AId: Int64): String;
 begin
   Result := TCQL.New(FDBName)
     .Select
-    .Column('tenant.ein')
+    .Column('tenant.legal_entity_number')
     .From('tenant')
-    .Where('tenant.ein').Equal(AEin)
+    .Where('tenant.legal_entity_number').Equal(ALegalEntityNumber)
     .&And('tenant.id').NotEqual(AId)
   .AsString;
 end;
@@ -107,7 +107,7 @@ begin
   ACQL
     .&Set('name',                   ATenant.name)
     .&Set('alias_name',             ATenant.alias_name)
-    .&Set('ein',                    ATenant.ein)
+    .&Set('legal_entity_number',    ATenant.legal_entity_number)
     .&Set('icms_taxpayer',          ATenant.icms_taxpayer)
     .&Set('state_registration',     ATenant.state_registration)
     .&Set('municipal_registration', ATenant.municipal_registration)

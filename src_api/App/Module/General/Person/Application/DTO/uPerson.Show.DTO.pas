@@ -7,8 +7,7 @@ uses
   uResponse.DTO,
   uApplication.Types,
   System.Generics.Collections,
-  uPerson.Base.DTO,
-  uPerson;
+  uPerson.Base.DTO;
 
 type
   TPersonShowDTO = class(TPersonBaseDTO)
@@ -63,8 +62,6 @@ type
     [SwagString]
     [SwagProp('updated_by_acl_user_name', UPDATED_BY_ACL_USER_NAME)]
     property updated_by_acl_user_name: String read Fupdated_by_acl_user_name write Fupdated_by_acl_user_name;
-
-    class function FromEntity(APerson: TPerson): TPersonShowDTO;
   end;
 
   {$REGION 'Swagger DOC'}
@@ -96,24 +93,5 @@ implementation
 
 uses
   XSuperObject;
-
-{ TPersonShowDTO }
-
-class function TPersonShowDTO.FromEntity(APerson: TPerson): TPersonShowDTO;
-var
-  lI: Integer;
-begin
-  // Instanciar, retornar DTO e tratar campos diferenciados
-  Result                          := TPersonShowDTO.FromJSON(APerson.AsJSON);
-  Result.ein                      := APerson.ein.Value;
-  Result.city_name                := APerson.city.name;
-  Result.city_state               := APerson.city.state;
-  Result.city_ibge_code           := APerson.city.ibge_code;
-  Result.created_by_acl_user_name := APerson.created_by_acl_user.name;
-  Result.updated_by_acl_user_name := APerson.updated_by_acl_user.name;
-
-  for lI := 0 to Pred(Result.person_contact_list.Count) do
-    Result.person_contact_list.Items[lI].ein := APerson.person_contact_list.Items[lI].ein.Value;
-end;
 
 end.

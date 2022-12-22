@@ -103,7 +103,7 @@ class function TTenantShowDTO.FromEntity(ATenant: TTenant): TTenantShowDTO;
 begin
   // Instanciar, retornar DTO e tratar campos diferenciados
   Result                          := TTenantShowDTO.FromJSON(ATenant.AsJSON);
-  Result.ein                      := ATenant.ein;
+  Result.legal_entity_number      := ATenant.legal_entity_number;
   Result.city_name                := ATenant.city.name;
   Result.city_state               := ATenant.city.state;
   Result.city_ibge_code           := ATenant.city.ibge_code;

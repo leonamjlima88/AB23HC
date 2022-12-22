@@ -41,7 +41,7 @@ begin
             ' `id` bigint(20) NOT NULL AUTO_INCREMENT, '+
             ' `name` varchar(100) NOT NULL, '+
             ' `alias_name` varchar(100) NOT NULL, '+
-            ' `ein` varchar(20) DEFAULT NULL, '+
+            ' `legal_entity_number` varchar(20) DEFAULT NULL, '+
             ' `icms_taxpayer` tinyint(4) DEFAULT NULL, '+
             ' `state_registration` varchar(20) DEFAULT NULL, '+
             ' `municipal_registration` varchar(20) DEFAULT NULL, '+

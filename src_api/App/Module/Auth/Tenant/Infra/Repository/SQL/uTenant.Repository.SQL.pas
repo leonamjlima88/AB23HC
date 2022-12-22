@@ -20,7 +20,7 @@ type
     constructor Create(AConn: IConnection; ASQLBuilder: ITenantSQLBuilder);
     function DataSetToEntity(ADtsTenant: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
-    function EinExists(AEin: String; AId: Int64): Boolean;
+    function LegalEntityNumberExists(ALegalEntityNumber: String; AId: Int64): Boolean;
     procedure Validate(AEntity: TBaseEntity); override;
   public
     class function Make(AConn: IConnection; ASQLBuilder: ITenantSQLBuilder): ITenantRepository;
@@ -63,7 +63,7 @@ begin
   lTenant := TTenant.FromJSON(ADtsTenant.ToJSONObjectString);
 
   // Tenant - Virtuais
-  lTenant.ein                      := ADtsTenant.FieldByName('ein').AsString;
+  lTenant.legal_entity_number      := ADtsTenant.FieldByName('legal_entity_number').AsString;
   lTenant.city.id                  := ADtsTenant.FieldByName('city_id').AsLargeInt;
   lTenant.city.name                := ADtsTenant.FieldByName('city_name').AsString;
   lTenant.city.state               := ADtsTenant.FieldByName('city_state').AsString;
@@ -76,10 +76,10 @@ begin
   Result := lTenant;
 end;
 
-function TTenantRepositorySQL.EinExists(AEin: String; AId: Int64): Boolean;
+function TTenantRepositorySQL.LegalEntityNumberExists(ALegalEntityNumber: String; AId: Int64): Boolean;
 begin
   Result := not FConn.MakeQry.Open(
-    FTenantSQLBuilder.RegisteredEins(THlp.OnlyNumbers(AEin), AId)
+    FTenantSQLBuilder.RegisteredLegalEntityNumbers(THlp.OnlyNumbers(ALegalEntityNumber), AId)
   ).DataSet.IsEmpty;
 end;
 
@@ -170,10 +170,10 @@ begin
   lTenant := AEntity as TTenant;
 
   // Verificar se CPF/CNPJ já existe
-  if not lTenant.ein.Trim.IsEmpty then
+  if not lTenant.legal_entity_number.Trim.IsEmpty then
   begin
-    if EinExists(lTenant.ein, lTenant.id) then
-      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['tenant.ein', lTenant.ein]));
+    if LegalEntityNumberExists(lTenant.legal_entity_number, lTenant.id) then
+      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['tenant.legal_entity_number', lTenant.legal_entity_number]));
   end;
 end;
 
