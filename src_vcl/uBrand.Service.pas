@@ -11,11 +11,11 @@ uses
 type
   IBrandService = Interface
     ['{87DB5C73-D62B-4C23-B730-1CCDEB79D11E}']
-    function Delete(AId: Int64): Boolean;
+    function Delete(const AId: Int64): Boolean;
     function Index: IZLMemTable;
-    function Show(AId: Int64): TBrand;
-    function Store(ABrand: TBrand): Either<String, TBrand>;
-    function Update(ABrand: TBrand; AId: Int64): Either<String, TBrand>;
+    function Show(const AId: Int64): TBrand;
+    function Store(const ABrand: TBrand): Either<String, TBrand>;
+    function Update(const ABrand: TBrand; const AId: Int64): Either<String, TBrand>;
   end;
 
   TBrandService = class(TInterfacedObject, IBrandService)
@@ -23,11 +23,11 @@ type
     FRes: IRes;
   public
     class function Make: IBrandService;
-    function Delete(AId: Int64): Boolean;
+    function Delete(const AId: Int64): Boolean;
     function Index: IZLMemTable;
-    function Show(AId: Int64): TBrand;
-    function Store(ABrand: TBrand): Either<String, TBrand>;
-    function Update(ABrand: TBrand; AId: Int64): Either<String, TBrand>;
+    function Show(const AId: Int64): TBrand;
+    function Store(const ABrand: TBrand): Either<String, TBrand>;
+    function Update(const ABrand: TBrand; const AId: Int64): Either<String, TBrand>;
     function CreateMemTableStructureForIndex: IZLMemTable;
   end;
 
@@ -55,7 +55,7 @@ begin
     .AddField('updated_by_acl_user_id', ftLargeint);
 end;
 
-function TBrandService.Delete(AId: Int64): Boolean;
+function TBrandService.Delete(const AId: Int64): Boolean;
 begin
   // Efetuar requisição
   TReq.Make(ENDPOINT+AId.ToString).Execute(rtDelete);
@@ -81,7 +81,7 @@ begin
   Result := Self.Create;
 end;
 
-function TBrandService.Show(AId: Int64): TBrand;
+function TBrandService.Show(const AId: Int64): TBrand;
 begin
   Result := nil;
 
@@ -99,7 +99,7 @@ begin
   Result := TBrand.FromJSON(SO(FRes.Content).O['data']);
 end;
 
-function TBrandService.Store(ABrand: TBrand): Either<String, TBrand>;
+function TBrandService.Store(const ABrand: TBrand): Either<String, TBrand>;
 var
   lErrors: String;
 begin
@@ -125,7 +125,7 @@ begin
   Result := TBrand.FromJSON(SO(FRes.Content).O['data']);
 end;
 
-function TBrandService.Update(ABrand: TBrand; AId: Int64): Either<String, TBrand>;
+function TBrandService.Update(const ABrand: TBrand; const AId: Int64): Either<String, TBrand>;
 var
   lErrors: String;
 begin

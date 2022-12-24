@@ -43,6 +43,7 @@ begin
     lErrors := lErrors + 'O campo [Nome] é obrigatório' + #13;
 
   Result := lErrors;
+  Notify('Validation', 'Sem erros', nil);
 end;
 
 end.

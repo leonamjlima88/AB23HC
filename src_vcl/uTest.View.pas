@@ -50,7 +50,7 @@ implementation
 uses
   uSmartPointer,
   uBrand,
-  uEither;
+  uEither, uObserver;
 
 {$R *.dfm}
 

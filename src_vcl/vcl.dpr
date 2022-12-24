@@ -22,7 +22,9 @@ uses
   uHandle.Exception in 'uHandle.Exception.pas',
   uBrand.Service in 'uBrand.Service.pas',
   uReq in 'uReq.pas',
-  uEither in 'uEither.pas';
+  uEither in 'uEither.pas',
+  uObservable in 'uObservable.pas',
+  uObserver in 'uObserver.pas';
 
 {$R *.res}
 
