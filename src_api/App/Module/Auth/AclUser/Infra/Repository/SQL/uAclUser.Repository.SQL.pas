@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uAclUser.Repository.Interfaces,
   uAclUser.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,12 +17,12 @@ type
   TAclUserRepositorySQL = class(TBaseRepository, IAclUserRepository)
   private
     FAclUserSQLBuilder: IAclUserSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: IAclUserSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: IAclUserSQLBuilder);
     function DataSetToEntity(ADtsAclUser: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: IAclUserSQLBuilder): IAclUserRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: IAclUserSQLBuilder): IAclUserRepository;
     function Show(AId: Int64): TAclUser;
     function ShowByLoginAndPassword(ALogin, APassword: String): TAclUser;
  end;
@@ -35,7 +35,7 @@ uses
 
 { TAclUserRepositorySQL }
 
-constructor TAclUserRepositorySQL.Create(AConn: IConnection; ASQLBuilder: IAclUserSQLBuilder);
+constructor TAclUserRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: IAclUserSQLBuilder);
 begin
   inherited Create;
   FConn              := AConn;
@@ -50,6 +50,7 @@ begin
   lAclUser := TAclUser.FromJSON(ADtsAclUser.ToJSONObjectString);
 
   // AclUser - Virtuais
+  lAclUser.last_expiration    := ADtsAclUser.FieldByName('last_expiration').AsDateTime;
   lAclUser.acl_role.id        := ADtsAclUser.FieldByName('acl_role_id').AsLargeInt;
   lAclUser.acl_role.name      := ADtsAclUser.FieldByName('acl_role_name').AsString;
   lAclUser.acl_role.tenant_id := ADtsAclUser.FieldByName('acl_role_tenant_id').AsLargeInt;
@@ -57,7 +58,7 @@ begin
   Result := lAclUser;
 end;
 
-class function TAclUserRepositorySQL.Make(AConn: IConnection; ASQLBuilder: IAclUserSQLBuilder): IAclUserRepository;
+class function TAclUserRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: IAclUserSQLBuilder): IAclUserRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;

@@ -43,10 +43,12 @@ function TChartOfAccountShowUseCase.Execute(APK, ATenantId: Int64): TChartOfAcco
 var
   lChartOfAccountFound: Shared<TChartOfAccount>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lChartOfAccountFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lChartOfAccountFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TChartOfAccountMapper.EntityToChartOfAccountShowDto(lChartOfAccountFound);

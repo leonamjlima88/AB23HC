@@ -1,9 +1,9 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{68ADFFC5-B53B-4731-BCA5-973BEEEFA9B1}</ProjectGuid>
+        <ProjectGuid>{BFADF9BD-6467-42B1-8206-6830043664BB}</ProjectGuid>
         <ProjectVersion>18.4</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
-        <MainSource>ab23hcvcl.dpr</MainSource>
+        <MainSource>vcl.dpr</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
@@ -58,10 +58,10 @@
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
-        <SanitizedProjectName>ab23hcvcl</SanitizedProjectName>
+        <SanitizedProjectName>vcl</SanitizedProjectName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
-        <DCC_UsePackage>DBXSqliteDriver;DBXDb2Driver;vclactnband;vclFireDAC;tethering;FireDACADSDriver;ACBr_BPeDabpeESCPOS;ACBr_BPe;pckUserControl_DT;JvPluginSystem;FireDACMSSQLDriver;vcltouch;ACBr_NFe;ACBr_NFeDanfeFR;vcldb;JvBands;svn;JvJans;ACBr_NFeDanfeESCPOS;pckUserControl_RT;ACBr_OFX;JvDotNetCtrls;ACBr_SATExtratoFR;FireDACDBXDriver;ACBr_NFSeDanfseFR;vclx;ACBr_SATExtratoRL;ACBr_GTIN;ACBr_Reinf;VCLRESTComponents;vclie;fs25;bindengine;ACBr_PAF;FireDACMySQLDriver;JvHMI;ACBr_SATECFVirtual;pckUCDataConnector;DataSnapClient;bindcompdbx;ACBr_CTeDacteRL;ACBr_TCP;DBXSybaseASEDriver;IndyIPServer;ACBr_CTe;IndySystem;ACBr_PagFor;dsnapcon;ACBre_Social;FireDACMSAccDriver;fmxFireDAC;FireDACInfxDriver;vclimg;fsADO25;ACBr_SPEDImportar;Jcl;ACBr_SPED;ACBr_MDFe;emshosting;ACBr_BoletoRL;ACBr_LFD;frxADO25;DBXOdbcDriver;FireDACTDataDriver;FMXTee;DbxCommonDriver;ACBr_CIOT;ACBr_NFSeDanfseRL;JvManagedThreads;xmlrtl;DataSnapNativeClient;fmxobj;frx25;JvTimeFramework;rtl;DbxClientDriver;DBXSybaseASADriver;JvSystem;JvStdCtrls;fsDB25;ACBr_Convenio115;appanalytics;IndyIPClient;bindcompvcl;TeeUI;ACBr_NFSeXDANFSeFR;JvDocking;JvPascalInterpreter;VclSmp;FireDACODBCDriver;JclVcl;DataSnapIndy10ServerTransport;ACBr_Boleto;DataSnapProviderClient;ACBr_SEF2;FireDACMongoDBDriver;JvControls;JvPrintPreview;ACBr_MDFeDamdfeFR;ACBr_NFSe;DataSnapServerMidas;pckFireDacConn;DBXInterBaseDriver;ACBr_NF3e;ACBr_TEFD;ACBr_SATWS;svnui;JvGlobus;frxe25;DBXMSSQLDriver;JvMM;ACBr_MDFeDamdfeRL;DatasnapConnectorsFreePascal;ACBr_EDI;ACBr_ONE;bindcompfmx;JvNet;DBXOracleDriver;inetdb;JvAppFrm;ACBr_Diversos;ACBr_GNREGuiaFR;FmxTeeUI;emsedge;ACBr_LCDPR;fmx;fmxdae;frxDB25;ACBr_CTeDacteFR;frxTee25;JvWizards;ACBr_Ponto;dbexpress;IndyCore;JvPageComps;dsnap;DataSnapCommon;fsTee25;JvDB;ACBr_NFSeX;DataSnapConnectors;ACBR_DeSTDA;ACBr_SAT;JclDeveloperTools;QRWRunDXE10_2_w64;FireDACOracleDriver;DBXMySQLDriver;JvCmp;DBXFirebirdDriver;ACBr_Sintegra;FireDACCommonODBC;ACBr_GNRE;ACBr_ADRCST;IndyIPCommon;JvCustom;vcl;ACBr_NFeDanfeRL;ACBr_SATExtratoESCPOS;JvXPCtrls;FireDACDb2Driver;ACBr_Integrador;pckHistorico;TeeDB;JvCore;ACBr_Comum;JvCrypt;FireDACPgDriver;ACBr_GNREGuiaRL;FireDACASADriver;JvDlgs;JvRuntimeDesign;Tee;DataSnapServer;vclwinx;FireDACDSDriver;ACBr_OpenSSL;pckMD5;CustomIPTransport;vcldsnap;ACBr_PIXCD;bindcomp;ACBr_Serial;DBXInformixDriver;frxDBX25;frce;ACBr_NFSeXDanfseRL;ACBr_BlocoX;dbxcds;ACBr_NFCeECFVirtual;adortl;ACBr_BoletoFR;ACBr_ANe;dsnapxml;dbrtl;inetdbxpress;IndyProtocols;JclContainers;ACBr_NF3eDANF3eESCPOS;ACBr_MTER;TCFLib100;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_UsePackage>DBXSqliteDriver;DBXDb2Driver;vclactnband;vclFireDAC;tethering;FireDACADSDriver;ACBr_BPeDabpeESCPOS;ACBr_BPe;pckUserControl_DT;JvPluginSystem;FireDACMSSQLDriver;vcltouch;ACBr_NFe;ACBr_NFeDanfeFR;vcldb;JvBands;svn;JvJans;ACBr_NFeDanfeESCPOS;pckUserControl_RT;ACBr_OFX;JvDotNetCtrls;ACBr_SATExtratoFR;FireDACDBXDriver;ACBr_NFSeDanfseFR;vclx;ACBr_SATExtratoRL;ACBr_GTIN;ACBr_Reinf;VCLRESTComponents;Skia.Package.FMX;vclie;fs25;bindengine;ACBr_PAF;FireDACMySQLDriver;JvHMI;ACBr_SATECFVirtual;pckUCDataConnector;DataSnapClient;bindcompdbx;ACBr_CTeDacteRL;ACBr_TCP;DBXSybaseASEDriver;IndyIPServer;ACBr_CTe;IndySystem;ACBr_PagFor;dsnapcon;ACBre_Social;FireDACMSAccDriver;fmxFireDAC;FireDACInfxDriver;vclimg;fsADO25;ACBr_SPEDImportar;Jcl;ACBr_SPED;ACBr_MDFe;emshosting;ACBr_BoletoRL;ACBr_LFD;frxADO25;DBXOdbcDriver;FireDACTDataDriver;FMXTee;DbxCommonDriver;ACBr_CIOT;ACBr_NFSeDanfseRL;JvManagedThreads;xmlrtl;DataSnapNativeClient;fmxobj;frx25;JvTimeFramework;rtl;DbxClientDriver;DBXSybaseASADriver;JvSystem;JvStdCtrls;fsDB25;ACBr_Convenio115;appanalytics;IndyIPClient;bindcompvcl;TeeUI;ACBr_NFSeXDANFSeFR;JvDocking;JvPascalInterpreter;VclSmp;FireDACODBCDriver;JclVcl;DataSnapIndy10ServerTransport;ACBr_Boleto;DataSnapProviderClient;ACBr_SEF2;FireDACMongoDBDriver;JvControls;JvPrintPreview;ACBr_MDFeDamdfeFR;ACBr_NFSe;DataSnapServerMidas;pckFireDacConn;DBXInterBaseDriver;ACBr_NF3e;ACBr_TEFD;ACBr_SATWS;svnui;JvGlobus;frxe25;DBXMSSQLDriver;JvMM;ACBr_MDFeDamdfeRL;DatasnapConnectorsFreePascal;ACBr_EDI;ACBr_ONE;bindcompfmx;JvNet;DBXOracleDriver;inetdb;JvAppFrm;ACBr_Diversos;ACBr_GNREGuiaFR;FmxTeeUI;emsedge;ACBr_LCDPR;fmx;fmxdae;frxDB25;ACBr_CTeDacteFR;frxTee25;JvWizards;ACBr_Ponto;dbexpress;IndyCore;JvPageComps;dsnap;DataSnapCommon;fsTee25;JvDB;ACBr_NFSeX;DataSnapConnectors;ACBR_DeSTDA;Skia.Package.VCL;ACBr_SAT;JclDeveloperTools;QRWRunDXE10_2_w64;FireDACOracleDriver;DBXMySQLDriver;JvCmp;DBXFirebirdDriver;ACBr_Sintegra;FireDACCommonODBC;ACBr_GNRE;ACBr_ADRCST;IndyIPCommon;JvCustom;vcl;ACBr_NFeDanfeRL;ACBr_SATExtratoESCPOS;JvXPCtrls;FireDACDb2Driver;ACBr_Integrador;pckHistorico;TeeDB;JvCore;ACBr_Comum;JvCrypt;FireDACPgDriver;ACBr_GNREGuiaRL;FireDACASADriver;JvDlgs;JvRuntimeDesign;Tee;DataSnapServer;vclwinx;FireDACDSDriver;ACBr_OpenSSL;pckMD5;CustomIPTransport;vcldsnap;ACBr_PIXCD;bindcomp;ACBr_Serial;DBXInformixDriver;frxDBX25;frce;Skia.Package.RTL;ACBr_NFSeXDanfseRL;ACBr_BlocoX;dbxcds;ACBr_NFCeECFVirtual;adortl;ACBr_BoletoFR;ACBr_ANe;dsnapxml;dbrtl;inetdbxpress;IndyProtocols;JclContainers;ACBr_NF3eDANF3eESCPOS;ACBr_MTER;TCFLib100;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
@@ -70,7 +70,7 @@
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
-        <DCC_UsePackage>DBXSqliteDriver;DBXDb2Driver;vclactnband;vclFireDAC;tethering;FireDACADSDriver;pckUserControl_DT;FireDACMSSQLDriver;vcltouch;vcldb;FireDACDBXDriver;vclx;VCLRESTComponents;vclie;bindengine;FireDACMySQLDriver;pckUCDataConnector;DataSnapClient;bindcompdbx;DBXSybaseASEDriver;IndyIPServer;IndySystem;dsnapcon;FireDACMSAccDriver;fmxFireDAC;FireDACInfxDriver;vclimg;emshosting;DBXOdbcDriver;FireDACTDataDriver;FMXTee;DbxCommonDriver;xmlrtl;DataSnapNativeClient;fmxobj;rtl;DbxClientDriver;DBXSybaseASADriver;appanalytics;IndyIPClient;bindcompvcl;TeeUI;VclSmp;FireDACODBCDriver;DataSnapIndy10ServerTransport;DataSnapProviderClient;FireDACMongoDBDriver;DataSnapServerMidas;pckFireDacConn;DBXInterBaseDriver;DBXMSSQLDriver;DatasnapConnectorsFreePascal;bindcompfmx;DBXOracleDriver;inetdb;FmxTeeUI;emsedge;fmx;fmxdae;dbexpress;IndyCore;dsnap;DataSnapCommon;DataSnapConnectors;QRWRunDXE10_2_w64;FireDACOracleDriver;DBXMySQLDriver;DBXFirebirdDriver;FireDACCommonODBC;IndyIPCommon;vcl;FireDACDb2Driver;pckHistorico;TeeDB;FireDACPgDriver;FireDACASADriver;Tee;DataSnapServer;vclwinx;FireDACDSDriver;pckMD5;CustomIPTransport;vcldsnap;bindcomp;DBXInformixDriver;dbxcds;adortl;dsnapxml;dbrtl;inetdbxpress;IndyProtocols;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_UsePackage>DBXSqliteDriver;DBXDb2Driver;vclactnband;vclFireDAC;tethering;FireDACADSDriver;pckUserControl_DT;FireDACMSSQLDriver;vcltouch;vcldb;FireDACDBXDriver;vclx;VCLRESTComponents;Skia.Package.FMX;vclie;bindengine;FireDACMySQLDriver;pckUCDataConnector;DataSnapClient;bindcompdbx;DBXSybaseASEDriver;IndyIPServer;IndySystem;dsnapcon;FireDACMSAccDriver;fmxFireDAC;FireDACInfxDriver;vclimg;emshosting;DBXOdbcDriver;FireDACTDataDriver;FMXTee;DbxCommonDriver;xmlrtl;DataSnapNativeClient;fmxobj;rtl;DbxClientDriver;DBXSybaseASADriver;appanalytics;IndyIPClient;bindcompvcl;TeeUI;VclSmp;FireDACODBCDriver;DataSnapIndy10ServerTransport;DataSnapProviderClient;FireDACMongoDBDriver;DataSnapServerMidas;pckFireDacConn;DBXInterBaseDriver;DBXMSSQLDriver;DatasnapConnectorsFreePascal;bindcompfmx;DBXOracleDriver;inetdb;FmxTeeUI;emsedge;fmx;fmxdae;dbexpress;IndyCore;dsnap;DataSnapCommon;DataSnapConnectors;Skia.Package.VCL;QRWRunDXE10_2_w64;FireDACOracleDriver;DBXMySQLDriver;DBXFirebirdDriver;FireDACCommonODBC;IndyIPCommon;vcl;FireDACDb2Driver;pckHistorico;TeeDB;FireDACPgDriver;FireDACASADriver;Tee;DataSnapServer;vclwinx;FireDACDSDriver;pckMD5;CustomIPTransport;vcldsnap;bindcomp;DBXInformixDriver;Skia.Package.RTL;dbxcds;adortl;dsnapxml;dbrtl;inetdbxpress;IndyProtocols;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
@@ -84,6 +84,11 @@
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
+        <DCC_ExeOutput>..\output\app\exec\$(Platform)\$(Config)</DCC_ExeOutput>
+        <DCC_DcpOutput>..\output\app\dcu\$(Platform)\$(Config)</DCC_DcpOutput>
+        <DCC_DcuOutput>..\output\app\dcu\$(Platform)\$(Config)</DCC_DcuOutput>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -99,10 +104,51 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="uMainView.pas">
+        <DCCReference Include="App\Module\AclUser\Domain\Entity\uAclUser.pas"/>
+        <DCCReference Include="App\Module\AclRole\Domain\Entity\uAclRole.pas"/>
+        <DCCReference Include="App\Shared\Domain\Entity\uBase.Entity.pas"/>
+        <DCCReference Include="Config\Infra\uSession.DTM.pas">
+            <Form>SessionDTM</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="uMain.View.pas">
             <Form>MainView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="App\Module\AclUser\Presentation\uLogin.View.pas">
+            <Form>LoginView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="uUserLogged.pas"/>
+        <DCCReference Include="uEnv.pas"/>
+        <DCCReference Include="uHlp.pas"/>
+        <DCCReference Include="uBase.CreateUpdate.View.pas">
+            <Form>BaseCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="uBase.Index.View.pas">
+            <Form>BaseIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="uNotificationView.pas">
+            <Form>NotificationView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="uBrand.Index.View.pas">
+            <Form>BrandIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="uMemTable.Factory.pas"/>
+        <DCCReference Include="uTest.View.pas">
+            <Form>TestView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="uBrand.pas"/>
+        <DCCReference Include="uHandle.Exception.pas"/>
+        <DCCReference Include="uBrand.Service.pas"/>
+        <DCCReference Include="uReq.pas"/>
+        <DCCReference Include="uEither.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -121,13 +167,17 @@
         <BorlandProject>
             <Delphi.Personality>
                 <Source>
-                    <Source Name="MainSource">ab23hcvcl.dpr</Source>
+                    <Source Name="MainSource">vcl.dpr</Source>
                 </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k250.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp250.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="Win32\Debug\ab23hcvcl.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="..\output\app\exec\Win32\Debug\vcl.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
-                        <RemoteName>ab23hcvcl.exe</RemoteName>
+                        <RemoteName>vcl.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

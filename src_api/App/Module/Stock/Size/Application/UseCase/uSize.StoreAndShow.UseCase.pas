@@ -48,7 +48,7 @@ begin
   lSizeToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
-  lPK := FRepository.Store(lSizeToStore);
+  lPK         := FRepository.Store(lSizeToStore);
   lSizeStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO

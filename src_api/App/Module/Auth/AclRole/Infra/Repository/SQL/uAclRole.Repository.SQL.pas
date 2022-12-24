@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uAclRole.Repository.Interfaces,
   uAclRole.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,12 +17,12 @@ type
   TAclRoleRepositorySQL = class(TBaseRepository, IAclRoleRepository)
   private
     FAclRoleSQLBuilder: IAclRoleSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: IAclRoleSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: IAclRoleSQLBuilder);
     function DataSetToEntity(ADtsAclRole: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: IAclRoleSQLBuilder): IAclRoleRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: IAclRoleSQLBuilder): IAclRoleRepository;
     function Show(AId, ATenantId: Int64): TAclRole;
  end;
 
@@ -34,7 +34,7 @@ uses
 
 { TAclRoleRepositorySQL }
 
-constructor TAclRoleRepositorySQL.Create(AConn: IConnection; ASQLBuilder: IAclRoleSQLBuilder);
+constructor TAclRoleRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: IAclRoleSQLBuilder);
 begin
   inherited Create;
   FConn              := AConn;
@@ -50,7 +50,7 @@ begin
   Result := lAclRole;
 end;
 
-class function TAclRoleRepositorySQL.Make(AConn: IConnection; ASQLBuilder: IAclRoleSQLBuilder): IAclRoleRepository;
+class function TAclRoleRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: IAclRoleSQLBuilder): IAclRoleRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;

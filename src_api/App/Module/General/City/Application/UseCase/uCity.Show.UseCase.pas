@@ -43,10 +43,12 @@ function TCityShowUseCase.Execute(APK: Int64): TCityShowDTO;
 var
   lCityFound: Shared<TCity>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lCityFound := FRepository.Show(APK);
   if not Assigned(lCityFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TCityMapper.EntityToCityShowDto(lCityFound);

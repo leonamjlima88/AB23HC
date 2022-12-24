@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uCFOP.Repository.Interfaces,
   uCFOP.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,13 +17,13 @@ type
   TCFOPRepositorySQL = class(TBaseRepository, ICFOPRepository)
   private
     FCFOPSQLBuilder: ICFOPSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: ICFOPSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: ICFOPSQLBuilder);
     function DataSetToEntity(ADtsCFOP: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     function FieldExists(AColumName, AColumnValue: String; AId: Int64): Boolean;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: ICFOPSQLBuilder): ICFOPRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: ICFOPSQLBuilder): ICFOPRepository;
     function Show(AId: Int64): TCFOP;
  end;
 
@@ -37,12 +37,12 @@ uses
 
 { TCFOPRepositorySQL }
 
-class function TCFOPRepositorySQL.Make(AConn: IConnection; ASQLBuilder: ICFOPSQLBuilder): ICFOPRepository;
+class function TCFOPRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: ICFOPSQLBuilder): ICFOPRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TCFOPRepositorySQL.Create(AConn: IConnection; ASQLBuilder: ICFOPSQLBuilder);
+constructor TCFOPRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: ICFOPSQLBuilder);
 begin
   inherited Create;
   FConn            := AConn;

@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uSize.Repository.Interfaces,
   uSize.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,12 +17,12 @@ type
   TSizeRepositorySQL = class(TBaseRepository, ISizeRepository)
   private
     FSizeSQLBuilder: ISizeSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: ISizeSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: ISizeSQLBuilder);
     function DataSetToEntity(ADtsSize: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: ISizeSQLBuilder): ISizeRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: ISizeSQLBuilder): ISizeRepository;
     function Show(AId, ATenantId: Int64): TSize;
  end;
 
@@ -34,12 +34,12 @@ uses
 
 { TSizeRepositorySQL }
 
-class function TSizeRepositorySQL.Make(AConn: IConnection; ASQLBuilder: ISizeSQLBuilder): ISizeRepository;
+class function TSizeRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: ISizeSQLBuilder): ISizeRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TSizeRepositorySQL.Create(AConn: IConnection; ASQLBuilder: ISizeSQLBuilder);
+constructor TSizeRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: ISizeSQLBuilder);
 begin
   inherited Create;
   FConn            := AConn;

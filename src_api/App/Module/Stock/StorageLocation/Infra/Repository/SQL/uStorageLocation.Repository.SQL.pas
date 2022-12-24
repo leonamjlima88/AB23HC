@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uStorageLocation.Repository.Interfaces,
   uStorageLocation.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,12 +17,12 @@ type
   TStorageLocationRepositorySQL = class(TBaseRepository, IStorageLocationRepository)
   private
     FStorageLocationSQLBuilder: IStorageLocationSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: IStorageLocationSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: IStorageLocationSQLBuilder);
     function DataSetToEntity(ADtsStorageLocation: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: IStorageLocationSQLBuilder): IStorageLocationRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: IStorageLocationSQLBuilder): IStorageLocationRepository;
     function Show(AId, AInput: Int64): TStorageLocation;
  end;
 
@@ -34,12 +34,12 @@ uses
 
 { TStorageLocationRepositorySQL }
 
-class function TStorageLocationRepositorySQL.Make(AConn: IConnection; ASQLBuilder: IStorageLocationSQLBuilder): IStorageLocationRepository;
+class function TStorageLocationRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: IStorageLocationSQLBuilder): IStorageLocationRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TStorageLocationRepositorySQL.Create(AConn: IConnection; ASQLBuilder: IStorageLocationSQLBuilder);
+constructor TStorageLocationRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: IStorageLocationSQLBuilder);
 begin
   inherited Create;
   FConn            := AConn;

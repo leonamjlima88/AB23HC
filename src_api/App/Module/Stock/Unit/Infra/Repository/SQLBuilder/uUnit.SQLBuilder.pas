@@ -36,7 +36,7 @@ uses
   cqlbr.serialize.mysql,
   System.Classes,
   System.SysUtils,
-  uConnection.Types,
+  uZLConnection.Types,
   uApplication.Types;
 
 { TUnitSQLBuilder }

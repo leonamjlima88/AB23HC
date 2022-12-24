@@ -43,10 +43,12 @@ function TPaymentTermShowUseCase.Execute(APK, ATenantId: Int64): TPaymentTermSho
 var
   lPaymentTermFound: Shared<TPaymentTerm>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lPaymentTermFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lPaymentTermFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TPaymentTermMapper.EntityToPaymentTermShowDto(lPaymentTermFound);

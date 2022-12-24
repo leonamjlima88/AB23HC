@@ -43,10 +43,12 @@ function TAclUserShowUseCase.Execute(APK: Int64): TAclUserShowDTO;
 var
   lAclUserFound: Shared<TAclUser>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lAclUserFound := FRepository.Show(APK);
   if not Assigned(lAclUserFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TAclUserMapper.EntityToAclUserShowDto(lAclUserFound);

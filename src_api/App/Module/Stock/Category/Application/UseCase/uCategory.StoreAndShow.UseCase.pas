@@ -48,7 +48,7 @@ begin
   lCategoryToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
-  lPK := FRepository.Store(lCategoryToStore);
+  lPK             := FRepository.Store(lCategoryToStore);
   lCategoryStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO

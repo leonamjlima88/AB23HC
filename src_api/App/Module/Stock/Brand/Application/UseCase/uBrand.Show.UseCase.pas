@@ -44,10 +44,12 @@ function TBrandShowUseCase.Execute(APK, ATenantId: Int64): TBrandShowDTO;
 var
   lBrandFound: Shared<TBrand>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lBrandFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lBrandFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TBrandMapper.EntityToBrandShowDto(lBrandFound);

@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uPerson.Repository.Interfaces,
   uPerson.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -19,14 +19,14 @@ type
   private
     FPersonSQLBuilder: IPersonSQLBuilder;
     FPersonContactSQLBuilder: IPersonContactSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: IPersonSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: IPersonSQLBuilder);
     function DataSetToEntity(ADtsPerson: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     function LoadPersonContactsToShow(APerson: TPerson): IPersonRepository;
     function LegalEntityNumberExists(ALegalEntityNumber: String; AId, ATenantId: Int64): Boolean;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: IPersonSQLBuilder): IPersonRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: IPersonSQLBuilder): IPersonRepository;
     function Show(AId, ATenantId: Int64): TPerson;
     function Store(APerson: TPerson; AManageTransaction: Boolean): Int64; overload;
     function Update(APerson: TPerson; AId: Int64; AManageTransaction: Boolean): Boolean; overload;
@@ -38,7 +38,7 @@ uses
   XSuperObject,
   DataSet.Serialize,
   uPersonContact,
-  uQry.Interfaces,
+  uZLQry.Interfaces,
   System.SysUtils,
   uQtdStr,
   uHlp,
@@ -48,12 +48,12 @@ uses
 
 { TPersonRepositorySQL }
 
-class function TPersonRepositorySQL.Make(AConn: IConnection; ASQLBuilder: IPersonSQLBuilder): IPersonRepository;
+class function TPersonRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: IPersonSQLBuilder): IPersonRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TPersonRepositorySQL.Create(AConn: IConnection; ASQLBuilder: IPersonSQLBuilder);
+constructor TPersonRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: IPersonSQLBuilder);
 begin
   inherited Create;
   FConn                    := AConn;
@@ -134,7 +134,7 @@ function TPersonRepositorySQL.Store(APerson: TPerson; AManageTransaction: Boolea
 var
   lPk: Int64;
   lPersonContact: TPersonContact;
-  lQry: IQry;
+  lQry: IZLQry;
 begin
   // Instanciar Qry
   lQry := FConn.MakeQry;
@@ -169,7 +169,7 @@ end;
 function TPersonRepositorySQL.Update(APerson: TPerson; AId: Int64; AManageTransaction: Boolean): Boolean;
 var
   lPersonContact: TPersonContact;
-  lQry: IQry;
+  lQry: IZLQry;
 begin
   // Instanciar Qry
   lQry := FConn.MakeQry;

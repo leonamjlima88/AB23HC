@@ -117,55 +117,58 @@ end;
 
 procedure TAclUserController.Show;
 var
-  lAclUserShowDTO: Shared<TAclUserShowDTO>;
+  lResult: Shared<TAclUserShowDTO>;
   lPK: Int64;
 begin
   // Localizar registro
   lPK := THlp.StrInt(FReq.Params['id']);
-  lAclUserShowDTO := TAclUserShowUseCase
+  lResult := TAclUserShowUseCase
     .Make    (FRepository)
     .Execute (lPk);
 
   // Retorno
-  TRes.Success(FRes, lAclUserShowDTO.Value);
+  case Assigned(lResult.Value) of
+    True:  TRes.Success(FRes, lResult.Value);
+    False: TRes.Success(FRes, Nil, HTTP_NOT_FOUND);
+  end;
 end;
 
 procedure TAclUserController.Store;
 var
-  lAclUserToStoreDTO: Shared<TAclUserDTO>;
-  lAclUserShowDTO: Shared<TAclUserShowDTO>;
+  lInput: Shared<TAclUserDTO>;
+  lResult: Shared<TAclUserShowDTO>;
 begin
   // Validar DTO
-  lAclUserToStoreDTO := TAclUserDTO.FromJSON(FReq.Body);
-  SwaggerValidator.Validate(lAclUserToStoreDTO);
+  lInput := TAclUserDTO.FromJSON(FReq.Body);
+  SwaggerValidator.Validate(lInput);
 
   // Inserir e retornar registro inserido
-  lAclUserShowDTO := TAclUserStoreAndShowUseCase
+  lResult := TAclUserStoreAndShowUseCase
     .Make    (FRepository)
-    .Execute (lAclUserToStoreDTO.Value);
+    .Execute (lInput.Value);
 
   // Retorno
-  TRes.Success(FRes, lAclUserShowDTO.Value, HTTP_CREATED);
+  TRes.Success(FRes, lResult.Value, HTTP_CREATED);
 end;
 
 procedure TAclUserController.Update;
 var
-  lAclUserToUpdateDTO: Shared<TAclUserDTO>;
-  lAclUserShowDTO: Shared<TAclUserShowDTO>;
+  lInput: Shared<TAclUserDTO>;
+  lResult: Shared<TAclUserShowDTO>;
   lPK: Int64;
 begin
   // Validar DTO
-  lAclUserToUpdateDTO := TAclUserDTO.FromJSON(FReq.Body);
-  SwaggerValidator.Validate(lAclUserToUpdateDTO);
+  lInput := TAclUserDTO.FromJSON(FReq.Body);
+  SwaggerValidator.Validate(lInput);
 
   // Atualizar e retornar registro atualizado
   lPK := THlp.StrInt(FReq.Params['id']);
-  lAclUserShowDTO := TAclUserUpdateAndShowUseCase
+  lResult := TAclUserUpdateAndShowUseCase
     .Make    (FRepository)
-    .Execute (lAclUserToUpdateDTO.Value, lPk);
+    .Execute (lInput.Value, lPk);
 
   // Retorno
-  TRes.Success(FRes, lAclUserShowDTO.Value);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 end.

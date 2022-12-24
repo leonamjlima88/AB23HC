@@ -48,7 +48,7 @@ begin
   lCFOPToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
-  lPK := FRepository.Store(lCFOPToStore);
+  lPK         := FRepository.Store(lCFOPToStore);
   lCFOPStored := FRepository.Show(lPK);
 
   // Retornar DTO

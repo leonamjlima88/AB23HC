@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uCostCenter.Repository.Interfaces,
   uCostCenter.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,12 +17,12 @@ type
   TCostCenterRepositorySQL = class(TBaseRepository, ICostCenterRepository)
   private
     FCostCenterSQLBuilder: ICostCenterSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: ICostCenterSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: ICostCenterSQLBuilder);
     function DataSetToEntity(ADtsCostCenter: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: ICostCenterSQLBuilder): ICostCenterRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: ICostCenterSQLBuilder): ICostCenterRepository;
     function Show(AId, ATenantId: Int64): TCostCenter;
  end;
 
@@ -34,12 +34,12 @@ uses
 
 { TCostCenterRepositorySQL }
 
-class function TCostCenterRepositorySQL.Make(AConn: IConnection; ASQLBuilder: ICostCenterSQLBuilder): ICostCenterRepository;
+class function TCostCenterRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: ICostCenterSQLBuilder): ICostCenterRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TCostCenterRepositorySQL.Create(AConn: IConnection; ASQLBuilder: ICostCenterSQLBuilder);
+constructor TCostCenterRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: ICostCenterSQLBuilder);
 begin
   inherited Create;
   FConn            := AConn;

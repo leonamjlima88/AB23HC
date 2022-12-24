@@ -48,7 +48,7 @@ begin
   lChartOfAccountToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
-  lPK := FRepository.Store(lChartOfAccountToStore);
+  lPK                   := FRepository.Store(lChartOfAccountToStore);
   lChartOfAccountStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO

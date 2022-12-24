@@ -48,7 +48,7 @@ begin
   lPaymentTermToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
-  lPK := FRepository.Store(lPaymentTermToStore);
+  lPK                := FRepository.Store(lPaymentTermToStore);
   lPaymentTermStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO

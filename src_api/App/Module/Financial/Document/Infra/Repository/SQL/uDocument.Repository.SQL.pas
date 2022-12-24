@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uDocument.Repository.Interfaces,
   uDocument.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,12 +17,12 @@ type
   TDocumentRepositorySQL = class(TBaseRepository, IDocumentRepository)
   private
     FDocumentSQLBuilder: IDocumentSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: IDocumentSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: IDocumentSQLBuilder);
     function DataSetToEntity(ADtsDocument: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: IDocumentSQLBuilder): IDocumentRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: IDocumentSQLBuilder): IDocumentRepository;
     function Show(AId, ATenantId: Int64): TDocument;
  end;
 
@@ -34,12 +34,12 @@ uses
 
 { TDocumentRepositorySQL }
 
-class function TDocumentRepositorySQL.Make(AConn: IConnection; ASQLBuilder: IDocumentSQLBuilder): IDocumentRepository;
+class function TDocumentRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: IDocumentSQLBuilder): IDocumentRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TDocumentRepositorySQL.Create(AConn: IConnection; ASQLBuilder: IDocumentSQLBuilder);
+constructor TDocumentRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: IDocumentSQLBuilder);
 begin
   inherited Create;
   FConn            := AConn;

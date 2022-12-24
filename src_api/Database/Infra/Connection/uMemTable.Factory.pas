@@ -3,14 +3,14 @@ unit uMemTable.Factory;
 interface
 
 uses
-  uMemTable.Interfaces,
-  uConnection.Types,
+  uZLMemTable.Interfaces,
+  uZLConnection.Types,
   System.Classes;
 
 type
   TMemTableFactory = class
   public
-    class function Make(AConnType: TConnLibType = ctDefault): IMemTable;
+    class function Make(AConnType: TZLConnLibType = ctDefault): IZLMemTable;
   end;
 
 implementation
@@ -18,19 +18,19 @@ implementation
 { TMemTableFactory }
 
 uses
-  uMemTable.FireDAC,
+  uZLMemTable.FireDAC,
   uEnv;
 
-class function TMemTableFactory.Make(AConnType: TConnLibType): IMemTable;
+class function TMemTableFactory.Make(AConnType: TZLConnLibType): IZLMemTable;
 var
-  lConnType: TConnLibType;
+  lConnType: TZLConnLibType;
 begin
   lConnType := AConnType;
   if (lConnType = ctDefault) then
     lConnType := Env.DefaultConnLibType;
 
   case lConnType of
-    ctFireDAC: Result := TMemTableFireDAC.Make;
+    ctFireDAC: Result := TZLMemTableFireDAC.Make;
     // ctClientDataSet: ; // Exemplo: ...;
   end;
 end;

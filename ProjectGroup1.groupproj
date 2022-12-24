@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{96380EAE-175B-4BD1-ADAC-940EB3EBE264}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="src_api\ab23hc.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="src_vcl\vcl.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ab23hc">
+        <MSBuild Projects="src_api\ab23hc.dproj"/>
+    </Target>
+    <Target Name="ab23hc:Clean">
+        <MSBuild Projects="src_api\ab23hc.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ab23hc:Make">
+        <MSBuild Projects="src_api\ab23hc.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="vcl">
+        <MSBuild Projects="src_vcl\vcl.dproj"/>
+    </Target>
+    <Target Name="vcl:Clean">
+        <MSBuild Projects="src_vcl\vcl.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="vcl:Make">
+        <MSBuild Projects="src_vcl\vcl.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ab23hc;vcl"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ab23hc:Clean;vcl:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ab23hc:Make;vcl:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

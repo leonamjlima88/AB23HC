@@ -43,10 +43,12 @@ function TOperationTypeShowUseCase.Execute(APK, ATenantId: Int64): TOperationTyp
 var
   lOperationTypeFound: Shared<TOperationType>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lOperationTypeFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lOperationTypeFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TOperationTypeMapper.EntityToOperationTypeShowDto(lOperationTypeFound);

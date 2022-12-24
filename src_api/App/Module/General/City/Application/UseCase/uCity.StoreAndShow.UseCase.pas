@@ -48,7 +48,7 @@ begin
   lCityToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
-  lPK := FRepository.Store(lCityToStore);
+  lPK         := FRepository.Store(lCityToStore);
   lCityStored := FRepository.Show(lPK);
 
   // Retornar DTO

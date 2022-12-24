@@ -48,7 +48,7 @@ begin
   lOperationTypeToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
-  lPK := FRepository.Store(lOperationTypeToStore);
+  lPK                  := FRepository.Store(lOperationTypeToStore);
   lOperationTypeStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO

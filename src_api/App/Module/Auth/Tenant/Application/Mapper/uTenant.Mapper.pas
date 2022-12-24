@@ -18,7 +18,8 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  uLegalEntityNumber.VO;
 
 { TTenantMapper }
 
@@ -30,7 +31,7 @@ begin
   lTenantShowDTO := TTenantShowDTO.FromJSON(ATenant.AsJSON);
 
   // Tratar campos específicos
-  lTenantShowDTO.legal_entity_number      := ATenant.legal_entity_number;
+  lTenantShowDTO.legal_entity_number      := ATenant.legal_entity_number.Value;
   lTenantShowDTO.city_name                := ATenant.city.name;
   lTenantShowDTO.city_state               := ATenant.city.state;
   lTenantShowDTO.city_ibge_code           := ATenant.city.ibge_code;
@@ -48,7 +49,7 @@ begin
   lTenant := TTenant.FromJSON(ATenantDTO.AsJSON);
 
   // Tratar campos específicos
-  // ...
+  lTenant.legal_entity_number := TLegalEntityNumberVO.Make(ATenantDTO.legal_entity_number);
 
   Result := lTenant;
 end;

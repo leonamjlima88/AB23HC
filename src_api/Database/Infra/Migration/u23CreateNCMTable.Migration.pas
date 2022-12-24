@@ -5,15 +5,15 @@ interface
 uses
   uMigration.Base,
   uMigration.Interfaces,
-  uConnection.Interfaces;
+  uZLConnection.Interfaces;
 
 type
   T23CreateNCMTable = class(TMigrationBase, IMigration)
   private
     function RunMigrate: IMigration;
-    constructor Create(AConn: IConnection);
+    constructor Create(AConn: IZLConnection);
   public
-    class function Make(AConn: IConnection): IMigration;
+    class function Make(AConn: IZLConnection): IMigration;
     function Execute: IMigration;
   end;
 
@@ -62,7 +62,7 @@ begin
   FInformation.Executed(True).Duration(lDuration);
 end;
 
-constructor T23CreateNCMTable.Create(AConn: IConnection);
+constructor T23CreateNCMTable.Create(AConn: IZLConnection);
 begin
   inherited Create(AConn);
 
@@ -89,7 +89,7 @@ begin
   RunMigrate;
 end;
 
-class function T23CreateNCMTable.Make(AConn: IConnection): IMigration;
+class function T23CreateNCMTable.Make(AConn: IZLConnection): IMigration;
 begin
   Result := Self.Create(AConn);
 end;

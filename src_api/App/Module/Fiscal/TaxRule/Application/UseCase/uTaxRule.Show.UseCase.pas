@@ -43,10 +43,12 @@ function TTaxRuleShowUseCase.Execute(APK, ATenantId: Int64): TTaxRuleShowDTO;
 var
   lTaxRuleFound: Shared<TTaxRule>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lTaxRuleFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lTaxRuleFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TTaxRuleMapper.EntityToTaxRuleShowDto(lTaxRuleFound);

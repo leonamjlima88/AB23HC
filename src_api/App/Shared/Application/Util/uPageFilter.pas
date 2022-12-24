@@ -199,9 +199,10 @@ end;
 
 function TPageFilter.FromJsonString(AJsonString: String): IPageFilter;
 begin
-  Result := nil;
-  if not THlp.BodyIsEmpty(AJsonString) then
-    Result := TPageFilter.Make.FromSuperObject(SO(AJsonString));
+  case THlp.BodyIsEmpty(AJsonString) of
+    True:  Result := TPageFilter.Make;
+    False: Result := TPageFilter.Make.FromSuperObject(SO(AJsonString));
+  end;
 end;
 
 function TPageFilter.FromSuperObject(ASObj: ISuperObject): IPageFilter;

@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uUnit.Repository.Interfaces,
   uUnit.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,12 +17,12 @@ type
   TUnitRepositorySQL = class(TBaseRepository, IUnitRepository)
   private
     FUnitSQLBuilder: IUnitSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: IUnitSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: IUnitSQLBuilder);
     function DataSetToEntity(ADtsUnit: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: IUnitSQLBuilder): IUnitRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: IUnitSQLBuilder): IUnitRepository;
     function Show(AId: Int64): TUnit;
  end;
 
@@ -34,12 +34,12 @@ uses
 
 { TUnitRepositorySQL }
 
-class function TUnitRepositorySQL.Make(AConn: IConnection; ASQLBuilder: IUnitSQLBuilder): IUnitRepository;
+class function TUnitRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: IUnitSQLBuilder): IUnitRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TUnitRepositorySQL.Create(AConn: IConnection; ASQLBuilder: IUnitSQLBuilder);
+constructor TUnitRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: IUnitSQLBuilder);
 begin
   inherited Create;
   FConn            := AConn;

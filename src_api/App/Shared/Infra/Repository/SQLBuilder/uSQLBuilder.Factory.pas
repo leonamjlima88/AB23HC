@@ -26,7 +26,7 @@ uses
   uBrand.SQLBuilder.Interfaces,
   uCostCenter.SQLBuilder.Interfaces,
   uCategory.SQLBuilder.Interfaces,
-  uConnection.Types;
+  uZLConnection.Types;
 
 type
   ISQLBuilderFactory = interface
@@ -59,10 +59,10 @@ type
 
   TSQLBuilderFactory = class(TInterfacedObject, ISQLBuilderFactory)
   private
-    FDriverDB: TDriverDB;
-    constructor Create(ADriverDB: TDriverDB);
+    FDriverDB: TZLDriverDB;
+    constructor Create(ADriverDB: TZLDriverDB);
   public
-    class function Make(ADriverDB: TDriverDB = ddDefault): ISQLBuilderFactory;
+    class function Make(ADriverDB: TZLDriverDB = ddDefault): ISQLBuilderFactory;
 
     function Tenant: ITenantSQLBuilder;
     function TaxRuleState: ITaxRuleStateSQLBuilder;
@@ -196,7 +196,7 @@ begin
   end;
 end;
 
-constructor TSQLBuilderFactory.Create(ADriverDB: TDriverDB);
+constructor TSQLBuilderFactory.Create(ADriverDB: TZLDriverDB);
 begin
   inherited Create;
 
@@ -212,7 +212,7 @@ begin
   end;
 end;
 
-class function TSQLBuilderFactory.Make(ADriverDB: TDriverDB): ISQLBuilderFactory;
+class function TSQLBuilderFactory.Make(ADriverDB: TZLDriverDB): ISQLBuilderFactory;
 begin
   Result := Self.Create(ADriverDB);
 end;

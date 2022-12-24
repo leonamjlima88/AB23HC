@@ -4,7 +4,7 @@ interface
 
 uses
   uBase.Repository.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   uPageFilter,
   uIndexResult,
   uBase.Entity,
@@ -15,12 +15,12 @@ uses
 type
   TBaseRepository = class abstract (TInterfacedObject, IBaseRepository)
   protected
-    FConn: IConnection;
+    FConn: IZLConnection;
     FSQLBuilder: IBaseSQLBuilder;
     function DataSetToEntity(ADtsBrand: TDataSet): TBaseEntity; virtual; abstract;
     procedure Validate(AEntity: TBaseEntity); virtual; abstract;
   public
-    function Conn: IConnection;
+    function Conn: IZLConnection;
     function Delete(AId: Int64; ATenantId: Int64 = 0): Boolean; virtual;
     function ShowById(AId: Int64; ATenantId: Int64 = 0): TBaseEntity; virtual;
     function Store(AEntity: TBaseEntity): Int64; virtual;
@@ -32,13 +32,13 @@ type
 implementation
 
 uses
-  uQry.Interfaces,
+  uZLQry.Interfaces,
   System.SysUtils,
   System.Math;
 
 { TBaseRepository }
 
-function TBaseRepository.Conn: IConnection;
+function TBaseRepository.Conn: IZLConnection;
 begin
   Result := FConn;
 end;
@@ -54,7 +54,7 @@ var
   lOutPut: TOutPutSelectAllFilter;
   lSQLPaginate, lSQLWithoutPaginate: String;
   lAllPagesRecordCount, lCurrentPageRecordCount, lLastPageNumber: Integer;
-  lQry: IQry;
+  lQry: IZLQry;
 begin
   Result := TIndexResult.Make;
   lQry   := FConn.MakeQry;

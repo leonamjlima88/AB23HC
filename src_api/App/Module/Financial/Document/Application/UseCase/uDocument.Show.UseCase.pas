@@ -43,10 +43,12 @@ function TDocumentShowUseCase.Execute(APK, ATenantId: Int64): TDocumentShowDTO;
 var
   lDocumentFound: Shared<TDocument>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lDocumentFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lDocumentFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TDocumentMapper.EntityToDocumentShowDto(lDocumentFound);

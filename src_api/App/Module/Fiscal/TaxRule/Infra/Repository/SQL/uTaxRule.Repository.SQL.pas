@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uTaxRule.Repository.Interfaces,
   uTaxRule.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -19,13 +19,13 @@ type
   private
     FTaxRuleSQLBuilder: ITaxRuleSQLBuilder;
     FTaxRuleStateSQLBuilder: ITaxRuleStateSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: ITaxRuleSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: ITaxRuleSQLBuilder);
     function DataSetToEntity(ADtsTaxRule: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     function LoadTaxRuleStatesToShow(ATaxRule: TTaxRule): ITaxRuleRepository;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: ITaxRuleSQLBuilder): ITaxRuleRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: ITaxRuleSQLBuilder): ITaxRuleRepository;
     function Show(AId, ATenantId: Int64): TTaxRule;
     function Store(ATaxRule: TTaxRule; AManageTransaction: Boolean): Int64; overload;
     function Update(ATaxRule: TTaxRule; AId: Int64; AManageTransaction: Boolean): Boolean; overload;
@@ -37,7 +37,7 @@ uses
   XSuperObject,
   DataSet.Serialize,
   uTaxRuleState,
-  uQry.Interfaces,
+  uZLQry.Interfaces,
   System.SysUtils,
   uQtdStr,
   uHlp,
@@ -46,12 +46,12 @@ uses
 
 { TTaxRuleRepositorySQL }
 
-class function TTaxRuleRepositorySQL.Make(AConn: IConnection; ASQLBuilder: ITaxRuleSQLBuilder): ITaxRuleRepository;
+class function TTaxRuleRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: ITaxRuleSQLBuilder): ITaxRuleRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TTaxRuleRepositorySQL.Create(AConn: IConnection; ASQLBuilder: ITaxRuleSQLBuilder);
+constructor TTaxRuleRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: ITaxRuleSQLBuilder);
 begin
   inherited Create;
   FConn                   := AConn;
@@ -124,7 +124,7 @@ function TTaxRuleRepositorySQL.Store(ATaxRule: TTaxRule; AManageTransaction: Boo
 var
   lPk: Int64;
   lTaxRuleState: TTaxRuleState;
-  lQry: IQry;
+  lQry: IZLQry;
 begin
   // Instanciar Qry
   lQry := FConn.MakeQry;
@@ -159,7 +159,7 @@ end;
 function TTaxRuleRepositorySQL.Update(ATaxRule: TTaxRule; AId: Int64; AManageTransaction: Boolean): Boolean;
 var
   lTaxRuleState: TTaxRuleState;
-  lQry: IQry;
+  lQry: IZLQry;
 begin
   // Instanciar Qry
   lQry := FConn.MakeQry;

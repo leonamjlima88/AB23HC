@@ -40,7 +40,7 @@ uses
   cqlbr.serialize.mysql,
   System.Classes,
   System.SysUtils,
-  uConnection.Types,
+  uZLConnection.Types,
   uApplication.Types,
   uHlp;
 
@@ -107,7 +107,7 @@ begin
   ACQL
     .&Set('name',                   ATenant.name)
     .&Set('alias_name',             ATenant.alias_name)
-    .&Set('legal_entity_number',    ATenant.legal_entity_number)
+    .&Set('legal_entity_number',    ATenant.legal_entity_number.Value)
     .&Set('icms_taxpayer',          ATenant.icms_taxpayer)
     .&Set('state_registration',     ATenant.state_registration)
     .&Set('municipal_registration', ATenant.municipal_registration)

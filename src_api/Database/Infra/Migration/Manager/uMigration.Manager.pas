@@ -5,15 +5,15 @@ interface
 uses
   uMigration.Interfaces,
   System.Generics.Collections,
-  uConnection.Interfaces,
-  uQry.Interfaces;
+  uZLConnection.Interfaces,
+  uZLQry.Interfaces;
 
 type
   TMigrationManager = class(TInterfacedObject, IMigrationManager)
   private
-    FConn: IConnection;
-    FQry: IQry;
-    FQryMigrationsPerformed: IQry;
+    FConn: IZLConnection;
+    FQry: IZLQry;
+    FQryMigrationsPerformed: IZLQry;
     FMigrations: TList<IMigration>;
 
     function SetUp: IMigrationManager;
@@ -22,9 +22,9 @@ type
     function CreateMigrationIfNotExists: IMigrationManager;
     function CreateUUID: string;
   public
-    constructor Create(AConn: IConnection);
+    constructor Create(AConn: IZLConnection);
     destructor Destroy; override;
-    class function Make(AConn: IConnection): IMigrationManager;
+    class function Make(AConn: IZLConnection): IMigrationManager;
 
     function Execute: IMigrationManager;
     function Migrations: TList<IMigration>;
@@ -42,6 +42,7 @@ uses
   uEnv,
   uMigration.Helper,
   u00CreateCityTable.Migration,
+  u00CitySeed.Migration,
   u01CreateTenantTable.Migration,
   u01TenantSeed.Migration,
   u02CreateAclRoleTable.Migration,
@@ -53,18 +54,22 @@ uses
   u08CreateCostCenterTable.Migration,
   u09CreateSizeTable.Migration,
   u10CreateUnitTable.Migration,
+  u10UnitSeed.Migration,
   u11CreateStorageLocationTable.Migration,
   u13CreatePersonTable.Migration,
   u14CreatePersonContactTable.Migration,
   u15CreateProductTable.Migration,
   u16CreateBankTable.Migration,
+  u16BankSeed.Migration,
   u17CreateBankAccountTable.Migration,
   u18CreateDocumentTable.Migration,
   u19CreatePaymentTermTable.Migration,
   u20CreateOperationTypeTable.Migration,
   u21CreateCFOPTable.Migration,
+  u21CFOPSeed.Migration,
   u22CreateChartOfAccountTable.Migration,
   u23CreateNCMTable.Migration,
+  u23NCMSeed.Migration,
   u24CreateTaxRuleTable.Migration,
   u25CreateTaxRuleStateTable.Migration;
 
@@ -85,6 +90,7 @@ begin
   // Migrações
   FMigrations.Clear;
   FMigrations.Add(T00CreateCityTable.Make(FConn));
+  FMigrations.Add(T00CitySeed.Make(FConn));
   FMigrations.Add(T01CreateTenantTable.Make(FConn));
   FMigrations.Add(T01TenantSeed.Make(FConn));
   FMigrations.Add(T02CreateAclRoleTable.Make(FConn));
@@ -96,23 +102,27 @@ begin
   FMigrations.Add(T08CreateCostCenterTable.Make(FConn));
   FMigrations.Add(T09CreateSizeTable.Make(FConn));
   FMigrations.Add(T10CreateUnitTable.Make(FConn));
+  FMigrations.Add(T10UnitSeed.Make(FConn));
   FMigrations.Add(T11CreateStorageLocationTable.Make(FConn));
   FMigrations.Add(T13CreatePersonTable.Make(FConn));
   FMigrations.Add(T14CreatePersonContactTable.Make(FConn));
   FMigrations.Add(T15CreateProductTable.Make(FConn));
   FMigrations.Add(T16CreateBankTable.Make(FConn));
+  FMigrations.Add(T16BankSeed.Make(FConn));
   FMigrations.Add(T17CreateBankAccountTable.Make(FConn));
   FMigrations.Add(T18CreateDocumentTable.Make(FConn));
   FMigrations.Add(T19CreatePaymentTermTable.Make(FConn));
   FMigrations.Add(T20CreateOperationTypeTable.Make(FConn));
   FMigrations.Add(T21CreateCFOPTable.Make(FConn));
+  FMigrations.Add(T21CFOPSeed.Make(FConn));
   FMigrations.Add(T22CreateChartOfAccountTable.Make(FConn));
   FMigrations.Add(T23CreateNCMTable.Make(FConn));
+  FMigrations.Add(T23NCMSeed.Make(FConn));
   FMigrations.Add(T24CreateTaxRuleTable.Make(FConn));
   FMigrations.Add(T25CreateTaxRuleStateTable.Make(FConn));
 end;
 
-constructor TMigrationManager.Create(AConn: IConnection);
+constructor TMigrationManager.Create(AConn: IZLConnection);
 begin
   FConn                   := AConn;
   FQry                    := AConn.MakeQry;
@@ -168,7 +178,7 @@ begin
   RunPendingMigrations;
 end;
 
-class function TMigrationManager.Make(AConn: IConnection): IMigrationManager;
+class function TMigrationManager.Make(AConn: IZLConnection): IMigrationManager;
 begin
   Result := Self.Create(AConn);
 end;

@@ -9,7 +9,6 @@ type
   TAclUserBaseDTO = class
   private
     Fname: string;
-    Flogin_password: string;
     Flogin: string;
     Facl_role_id: Int64;
     Fis_superuser: SmallInt;
@@ -21,10 +20,6 @@ type
     [SwagString(100)]
     [SwagProp('login', 'Login', true)]
     property login: string read Flogin write Flogin;
-
-    [SwagString(100)]
-    [SwagProp('login_password', 'Senha', true)]
-    property login_password: string read Flogin_password write Flogin_password;
 
     [SwagNumber]
     [SwagProp('acl_role_id', 'Perfil ID', true)]

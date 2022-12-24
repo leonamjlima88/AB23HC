@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uTenant.Repository.Interfaces,
   uTenant.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,13 +17,13 @@ type
   TTenantRepositorySQL = class(TBaseRepository, ITenantRepository)
   private
     FTenantSQLBuilder: ITenantSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: ITenantSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: ITenantSQLBuilder);
     function DataSetToEntity(ADtsTenant: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     function LegalEntityNumberExists(ALegalEntityNumber: String; AId: Int64): Boolean;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: ITenantSQLBuilder): ITenantRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: ITenantSQLBuilder): ITenantRepository;
     function Show(AId: Int64): TTenant;
     function Store(ATenant: TTenant; AManageTransaction: Boolean): Int64; overload;
     function Update(ATenant: TTenant; AId: Int64; AManageTransaction: Boolean): Boolean; overload;
@@ -34,21 +34,22 @@ implementation
 uses
   XSuperObject,
   DataSet.Serialize,
-  uQry.Interfaces,
+  uZLQry.Interfaces,
   System.SysUtils,
   uQtdStr,
   uHlp,
   uApplication.Types,
-  uSQLBuilder.Factory;
+  uSQLBuilder.Factory,
+  uLegalEntityNumber.VO;
 
 { TTenantRepositorySQL }
 
-class function TTenantRepositorySQL.Make(AConn: IConnection; ASQLBuilder: ITenantSQLBuilder): ITenantRepository;
+class function TTenantRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: ITenantSQLBuilder): ITenantRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TTenantRepositorySQL.Create(AConn: IConnection; ASQLBuilder: ITenantSQLBuilder);
+constructor TTenantRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: ITenantSQLBuilder);
 begin
   inherited Create;
   FConn                    := AConn;
@@ -63,7 +64,7 @@ begin
   lTenant := TTenant.FromJSON(ADtsTenant.ToJSONObjectString);
 
   // Tenant - Virtuais
-  lTenant.legal_entity_number      := ADtsTenant.FieldByName('legal_entity_number').AsString;
+  lTenant.legal_entity_number      := TLegalEntityNumberVO.Make(ADtsTenant.FieldByName('legal_entity_number').AsString);
   lTenant.city.id                  := ADtsTenant.FieldByName('city_id').AsLargeInt;
   lTenant.city.name                := ADtsTenant.FieldByName('city_name').AsString;
   lTenant.city.state               := ADtsTenant.FieldByName('city_state').AsString;
@@ -105,7 +106,7 @@ end;
 function TTenantRepositorySQL.Store(ATenant: TTenant; AManageTransaction: Boolean): Int64;
 var
   lPk: Int64;
-  lQry: IQry;
+  lQry: IZLQry;
 begin
   // Validar antes de persistir
 //  Validate(ATenant);
@@ -135,7 +136,7 @@ end;
 
 function TTenantRepositorySQL.Update(ATenant: TTenant; AId: Int64; AManageTransaction: Boolean): Boolean;
 var
-  lQry: IQry;
+  lQry: IZLQry;
 begin
   // Validar antes de persistir
 //  Validate(ATenant);
@@ -170,9 +171,9 @@ begin
   lTenant := AEntity as TTenant;
 
   // Verificar se CPF/CNPJ já existe
-  if not lTenant.legal_entity_number.Trim.IsEmpty then
+  if not lTenant.legal_entity_number.Value.Trim.IsEmpty then
   begin
-    if LegalEntityNumberExists(lTenant.legal_entity_number, lTenant.id) then
+    if LegalEntityNumberExists(lTenant.legal_entity_number.Value, lTenant.id) then
       raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['tenant.legal_entity_number', lTenant.legal_entity_number]));
   end;
 end;

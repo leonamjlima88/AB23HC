@@ -3,14 +3,14 @@ unit uMigration.Helper;
 interface
 
 uses
-  uConnection.Types;
+  uZLConnection.Types;
 
 type
   TMigrationHelper = class
   private
   public
-    class function SQLCreateMigrationTable(ADriverDB: TDriverDB): String;
-    class function SQLLocateMigrationTable(ADriverDB: TDriverDB; ADatabase, ATableName: String): String;
+    class function SQLCreateMigrationTable(ADriverDB: TZLDriverDB): String;
+    class function SQLLocateMigrationTable(ADriverDB: TZLDriverDB; ADatabase, ATableName: String): String;
   end;
 
 implementation
@@ -20,7 +20,7 @@ implementation
 uses
   System.SysUtils;
 
-class function TMigrationHelper.SQLCreateMigrationTable(ADriverDB: TDriverDB): String;
+class function TMigrationHelper.SQLCreateMigrationTable(ADriverDB: TZLDriverDB): String;
 begin
   case ADriverDB of
     ddMySql: Begin
@@ -37,14 +37,11 @@ begin
         '   KEY `migration_idx_batch` (`batch`)              '+
         ' )                                                  ';
     end;
-    ddFirebird: Result := 'another sql from fb';
-    ddPG:       Result := 'another sql from pg';
-    ddMsql: ;   // Exemplo...
     ddOthers: ; // Exemplo...
   end;
 end;
 
-class function TMigrationHelper.SQLLocateMigrationTable(ADriverDB: TDriverDB; ADatabase, ATableName: String): String;
+class function TMigrationHelper.SQLLocateMigrationTable(ADriverDB: TZLDriverDB; ADatabase, ATableName: String): String;
 begin
   case ADriverDB of
     ddMySql: Begin
@@ -58,9 +55,6 @@ begin
         ' AND                                        '+
         '   TABLE_NAME = ' + QuotedStr(ATableName)
     End;
-    ddFirebird: Result := 'another sql from fb';
-    ddPG:       Result := 'another sql from pg';
-    ddMsql: ;   // Exemplo...
     ddOthers: ; // Exemplo...
   end;
 end;

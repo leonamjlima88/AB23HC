@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uBankAccount.Repository.Interfaces,
   uBankAccount.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,12 +17,12 @@ type
   TBankAccountRepositorySQL = class(TBaseRepository, IBankAccountRepository)
   private
     FBankAccountSQLBuilder: IBankAccountSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: IBankAccountSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: IBankAccountSQLBuilder);
     function DataSetToEntity(ADtsBankAccount: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: IBankAccountSQLBuilder): IBankAccountRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: IBankAccountSQLBuilder): IBankAccountRepository;
     function Show(AId, ATenantId: Int64): TBankAccount;
  end;
 
@@ -34,12 +34,12 @@ uses
 
 { TBankAccountRepositorySQL }
 
-class function TBankAccountRepositorySQL.Make(AConn: IConnection; ASQLBuilder: IBankAccountSQLBuilder): IBankAccountRepository;
+class function TBankAccountRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: IBankAccountSQLBuilder): IBankAccountRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TBankAccountRepositorySQL.Create(AConn: IConnection; ASQLBuilder: IBankAccountSQLBuilder);
+constructor TBankAccountRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: IBankAccountSQLBuilder);
 begin
   inherited Create;
   FConn            := AConn;

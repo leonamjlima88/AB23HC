@@ -33,7 +33,7 @@ uses
   criteria.query.language,
   System.SysUtils,
   uApplication.Types,
-  uConnection.Types;
+  uZLConnection.Types;
 
 { TTaxRuleStateSQLBuilder }
 constructor TTaxRuleStateSQLBuilder.Create;

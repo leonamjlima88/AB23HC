@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uCategory.Repository.Interfaces,
   uCategory.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,12 +17,12 @@ type
   TCategoryRepositorySQL = class(TBaseRepository, ICategoryRepository)
   private
     FCategorySQLBuilder: ICategorySQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: ICategorySQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: ICategorySQLBuilder);
     function DataSetToEntity(ADtsCategory: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: ICategorySQLBuilder): ICategoryRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: ICategorySQLBuilder): ICategoryRepository;
     function Show(AId, ATenantId: Int64): TCategory;
  end;
 
@@ -34,12 +34,12 @@ uses
 
 { TCategoryRepositorySQL }
 
-class function TCategoryRepositorySQL.Make(AConn: IConnection; ASQLBuilder: ICategorySQLBuilder): ICategoryRepository;
+class function TCategoryRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: ICategorySQLBuilder): ICategoryRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TCategoryRepositorySQL.Create(AConn: IConnection; ASQLBuilder: ICategorySQLBuilder);
+constructor TCategoryRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: ICategorySQLBuilder);
 begin
   inherited Create;
   FConn            := AConn;

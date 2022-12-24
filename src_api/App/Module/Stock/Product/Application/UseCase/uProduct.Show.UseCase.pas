@@ -44,10 +44,12 @@ function TProductShowUseCase.Execute(APK, ATenantId: Int64): TProductShowDTO;
 var
   lProductFound: Shared<TProduct>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lProductFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lProductFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TProductMapper.EntityToProductShowDto(lProductFound);

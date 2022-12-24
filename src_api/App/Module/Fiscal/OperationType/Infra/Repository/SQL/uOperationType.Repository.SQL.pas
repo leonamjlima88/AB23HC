@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uOperationType.Repository.Interfaces,
   uOperationType.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,12 +17,12 @@ type
   TOperationTypeRepositorySQL = class(TBaseRepository, IOperationTypeRepository)
   private
     FOperationTypeSQLBuilder: IOperationTypeSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: IOperationTypeSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: IOperationTypeSQLBuilder);
     function DataSetToEntity(ADtsOperationType: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: IOperationTypeSQLBuilder): IOperationTypeRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: IOperationTypeSQLBuilder): IOperationTypeRepository;
     function Show(AId, ATenantId: Int64): TOperationType;
  end;
 
@@ -34,12 +34,12 @@ uses
 
 { TOperationTypeRepositorySQL }
 
-class function TOperationTypeRepositorySQL.Make(AConn: IConnection; ASQLBuilder: IOperationTypeSQLBuilder): IOperationTypeRepository;
+class function TOperationTypeRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: IOperationTypeSQLBuilder): IOperationTypeRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TOperationTypeRepositorySQL.Create(AConn: IConnection; ASQLBuilder: IOperationTypeSQLBuilder);
+constructor TOperationTypeRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: IOperationTypeSQLBuilder);
 begin
   inherited Create;
   FConn            := AConn;

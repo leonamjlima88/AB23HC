@@ -9,7 +9,8 @@ uses
   Data.DB,
   uCity,
   System.Generics.Collections,
-  XSuperObject;
+  XSuperObject,
+  uLegalEntityNumber.VO;
 
 type
   TTenant = class(TBaseEntity)
@@ -28,7 +29,7 @@ type
     Fzipcode: String;
     Fnote: String;
     Fcomplement: String;
-    Flegal_entity_number: String;
+    Flegal_entity_number: ILegalEntityNumberVO;
     Faddress: String;
     Fbank_note: String;
     Fphone_2: String;
@@ -48,7 +49,6 @@ type
     Fcreated_by_acl_user: TAclUser;
 
     procedure Initialize;
-    function Getlegal_entity_number: String;
   public
     constructor Create; overload;
     destructor Destroy; override;
@@ -56,7 +56,7 @@ type
     property id: Int64 read Fid write Fid;
     property name: string read Fname write Fname;
     property alias_name: String read Falias_name write Falias_name;
-    property legal_entity_number: String read Getlegal_entity_number write Flegal_entity_number;
+    property legal_entity_number: ILegalEntityNumberVO read Flegal_entity_number write Flegal_entity_number;
     property icms_taxpayer: SmallInt read Ficms_taxpayer write Ficms_taxpayer;
     property state_registration: String read Fstate_registration write Fstate_registration;
     property municipal_registration: String read Fmunicipal_registration write Fmunicipal_registration;
@@ -112,13 +112,9 @@ begin
   inherited;
 end;
 
-function TTenant.Getlegal_entity_number: String;
-begin
-  Result := Thlp.OnlyNumbers(Flegal_entity_number);
-end;
-
 procedure TTenant.Initialize;
 begin
+  Flegal_entity_number := TLegalEntityNumberVO.Make(EmptyStr);
   Fcreated_at          := now;
   Fcreated_by_acl_user := TAclUser.Create;
   Fupdated_by_acl_user := TAclUser.Create;
@@ -128,15 +124,7 @@ end;
 procedure TTenant.Validate;
 var
   lIsInserting: Boolean;
-  lHasAtLeastOneFilled: Boolean;
 begin
-  // Validar CPF/CNPJ se preenchido
-  if not Flegal_entity_number.Trim.IsEmpty then
-  begin
-    if not THlp.CpfOrCnpjIsValid(Flegal_entity_number) then
-      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_INVALID, ['legal_entity_number', Flegal_entity_number]));
-  end;
-
   lIsInserting := Fid = 0;
   case lIsInserting of
     True: Begin

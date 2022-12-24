@@ -48,7 +48,7 @@ begin
   lBankAccountToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
-  lPK := FRepository.Store(lBankAccountToStore);
+  lPK                := FRepository.Store(lBankAccountToStore);
   lBankAccountStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO

@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uProduct.Repository.Interfaces,
   uProduct.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,13 +17,13 @@ type
   TProductRepositorySQL = class(TBaseRepository, IProductRepository)
   private
     FProductSQLBuilder: IProductSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: IProductSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: IProductSQLBuilder);
     function DataSetToEntity(ADtsProduct: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     function FieldExists(AColumName, AColumnValue: String; AId, ATenantId: Int64): Boolean;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: IProductSQLBuilder): IProductRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: IProductSQLBuilder): IProductRepository;
     function Show(AId, ATenantId: Int64): TProduct;
  end;
 
@@ -37,12 +37,12 @@ uses
 
 { TProductRepositorySQL }
 
-class function TProductRepositorySQL.Make(AConn: IConnection; ASQLBuilder: IProductSQLBuilder): IProductRepository;
+class function TProductRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: IProductSQLBuilder): IProductRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TProductRepositorySQL.Create(AConn: IConnection; ASQLBuilder: IProductSQLBuilder);
+constructor TProductRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: IProductSQLBuilder);
 begin
   inherited Create;
   FConn              := AConn;

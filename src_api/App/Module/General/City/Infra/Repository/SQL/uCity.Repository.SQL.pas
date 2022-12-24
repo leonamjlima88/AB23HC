@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uCity.Repository.Interfaces,
   uCity.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,12 +17,12 @@ type
   TCityRepositorySQL = class(TBaseRepository, ICityRepository)
   private
     FCitySQLBuilder: ICitySQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: ICitySQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: ICitySQLBuilder);
     function DataSetToEntity(ADtsCity: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: ICitySQLBuilder): ICityRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: ICitySQLBuilder): ICityRepository;
     function Show(AId: Int64): TCity;
  end;
 
@@ -34,12 +34,12 @@ uses
 
 { TCityRepositorySQL }
 
-class function TCityRepositorySQL.Make(AConn: IConnection; ASQLBuilder: ICitySQLBuilder): ICityRepository;
+class function TCityRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: ICitySQLBuilder): ICityRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TCityRepositorySQL.Create(AConn: IConnection; ASQLBuilder: ICitySQLBuilder);
+constructor TCityRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: ICitySQLBuilder);
 begin
   inherited Create;
   FConn            := AConn;

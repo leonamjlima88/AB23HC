@@ -4,27 +4,29 @@ interface
 
 uses
   GBSwagger.Model.Attributes,
-  uResponse.DTO;
+  uResponse.DTO,
+  uAclUser.Base.DTO,
+  uApplication.Types;
 
 type
-  TAclUserAuthMeDTO = class
+  TAclUserAuthMeDTO = class(TAclUserBaseDTO)
   private
-    Fname: string;
-    Ftoken: string;
-    Flogin: string;
     Ftenant_id: Int64;
+    Fid: Int64;
+    Flast_token: string;
+    Flast_expiration: TDateTime;
   public
-    [SwagString(100)]
-    [SwagProp('name', 'name', true)]
-    property name: string read Fname write Fname;
+    [SwagNumber]
+    [SwagProp('id', 'ID', true)]
+    property id: Int64 read Fid write Fid;
 
     [SwagString(100)]
-    [SwagProp('login', 'login', true)]
-    property login: string read Flogin write Flogin;
+    [SwagProp('last_token', 'last_token', true)]
+    property last_token: string read Flast_token write Flast_token;
 
-    [SwagString(100)]
-    [SwagProp('token', 'token', true)]
-    property token: string read Ftoken write Ftoken;
+    [SwagDate(DATETIME_DISPLAY_FORMAT)]
+    [SwagProp('last_expiration', CREATED_AT_DISPLAY, true)]
+    property last_expiration: TDateTime read Flast_expiration write Flast_expiration;
 
     [SwagNumber]
     [SwagProp('tenant_id', 'tenant_id', true)]

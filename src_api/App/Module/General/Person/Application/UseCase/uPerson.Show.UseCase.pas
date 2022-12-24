@@ -44,10 +44,12 @@ function TPersonShowUseCase.Execute(APK, ATenantId: Int64): TPersonShowDTO;
 var
   lPersonFound: Shared<TPerson>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lPersonFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lPersonFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TPersonMapper.EntityToPersonShowDto(lPersonFound.Value);

@@ -59,9 +59,9 @@ begin
   Result := TCQL.New(dbnMySQL)
     .Insert
     .Into('acl_user')
-    .&Set('name',           'adm')
-    .&Set('login',          'adm')
-    .&Set('login_password', THlp.encrypt(ENCRYPTATION_KEY, '13'))
+    .&Set('name',           'lead')
+    .&Set('login',          'lead')
+    .&Set('login_password', THlp.encrypt(ENCRYPTATION_KEY, 'lead321'))
     .&Set('acl_role_id',    1)
     .&Set('is_superuser',   1)
   .AsString;

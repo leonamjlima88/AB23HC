@@ -48,7 +48,7 @@ begin
   lCostCenterToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
-  lPK := FRepository.Store(lCostCenterToStore);
+  lPK               := FRepository.Store(lCostCenterToStore);
   lCostCenterStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO

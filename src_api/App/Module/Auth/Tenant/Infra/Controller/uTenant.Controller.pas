@@ -121,7 +121,10 @@ begin
     .Execute (lPk);
 
   // Retorno
-  TRes.Success(FRes, lResult.Value);
+  case Assigned(lResult.Value) of
+    True:  TRes.Success(FRes, lResult.Value);
+    False: TRes.Success(FRes, Nil, HTTP_NOT_FOUND);
+  end;
 end;
 
 procedure TTenantController.Store;

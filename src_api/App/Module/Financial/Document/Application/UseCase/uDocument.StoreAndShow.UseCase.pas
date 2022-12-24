@@ -48,7 +48,7 @@ begin
   lDocumentToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
-  lPK := FRepository.Store(lDocumentToStore);
+  lPK             := FRepository.Store(lDocumentToStore);
   lDocumentStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO

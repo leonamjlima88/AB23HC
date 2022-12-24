@@ -43,10 +43,12 @@ function TBankShowUseCase.Execute(APK: Int64): TBankShowDTO;
 var
   lBankFound: Shared<TBank>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lBankFound := FRepository.Show(APK);
   if not Assigned(lBankFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TBankMapper.EntityToBankShowDto(lBankFound);

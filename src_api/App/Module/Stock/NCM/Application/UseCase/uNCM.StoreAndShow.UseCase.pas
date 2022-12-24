@@ -48,7 +48,7 @@ begin
   lNCMToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
-  lPK := FRepository.Store(lNCMToStore);
+  lPK        := FRepository.Store(lNCMToStore);
   lNCMStored := FRepository.Show(lPK);
 
   // Retornar DTO

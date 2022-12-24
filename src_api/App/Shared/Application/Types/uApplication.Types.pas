@@ -9,8 +9,9 @@ const
   // Nunca alterar essas chaves a menos que seja muito necessário.
   // Se for alterar, precisa gerar novamente todos os campos que são criptografados no banco de dados com a nova chave.
   {TODO -oOwner -cGeneral :Mover essas chaves para arquivo privado.}
-  ENCRYPTATION_KEY = '{A676CF7D-4755-400D-8E83-0753D4CEA08F}';
-  JWT_KEY          = '{D2011AB9-7D15-4068-B7CB-014954657F9E}';
+  ENCRYPTATION_KEY       = '{A676CF7D-4755-400D-8E83-0753D4CEA08F}';
+  LOGIN_PASSWORD_DEFAULT = '123Mudar@';
+  JWT_KEY                = '{D2011AB9-7D15-4068-B7CB-014954657F9E}';
 
   HTTP_OK = 200; // Sucesso e retorna conteudo
   HTTP_CREATED = 201; // Incluiu Novo Registro

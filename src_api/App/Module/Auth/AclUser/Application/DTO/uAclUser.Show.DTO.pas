@@ -10,6 +10,12 @@ uses
 
 type
   TAclUserShowDTO = class(TAclUserBaseDTO)
+  private
+    Fid: Int64;
+  public
+    [SwagNumber]
+    [SwagProp('id', 'ID', true)]
+    property id: Int64 read Fid write Fid;
   end;
 
   {$REGION 'Swagger DOC'}

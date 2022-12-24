@@ -43,10 +43,12 @@ function TCFOPShowUseCase.Execute(APK: Int64): TCFOPShowDTO;
 var
   lCFOPFound: Shared<TCFOP>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lCFOPFound := FRepository.Show(APK);
   if not Assigned(lCFOPFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TCFOPMapper.EntityToCFOPShowDto(lCFOPFound);

@@ -43,10 +43,12 @@ function TTenantShowUseCase.Execute(APK: Int64): TTenantShowDTO;
 var
   lTenantFound: Shared<TTenant>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lTenantFound := FRepository.Show(APK);
   if not Assigned(lTenantFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TTenantMapper.EntityToTenantShowDto(lTenantFound);

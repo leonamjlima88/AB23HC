@@ -43,10 +43,12 @@ function TSizeShowUseCase.Execute(APK, ATenantId: Int64): TSizeShowDTO;
 var
   lSizeFound: Shared<TSize>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lSizeFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lSizeFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TSizeMapper.EntityToSizeShowDto(lSizeFound);

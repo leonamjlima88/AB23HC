@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uPaymentTerm.Repository.Interfaces,
   uPaymentTerm.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,12 +17,12 @@ type
   TPaymentTermRepositorySQL = class(TBaseRepository, IPaymentTermRepository)
   private
     FPaymentTermSQLBuilder: IPaymentTermSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: IPaymentTermSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: IPaymentTermSQLBuilder);
     function DataSetToEntity(ADtsPaymentTerm: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: IPaymentTermSQLBuilder): IPaymentTermRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: IPaymentTermSQLBuilder): IPaymentTermRepository;
     function Show(AId, ATenantId: Int64): TPaymentTerm;
  end;
 
@@ -34,12 +34,12 @@ uses
 
 { TPaymentTermRepositorySQL }
 
-class function TPaymentTermRepositorySQL.Make(AConn: IConnection; ASQLBuilder: IPaymentTermSQLBuilder): IPaymentTermRepository;
+class function TPaymentTermRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: IPaymentTermSQLBuilder): IPaymentTermRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TPaymentTermRepositorySQL.Create(AConn: IConnection; ASQLBuilder: IPaymentTermSQLBuilder);
+constructor TPaymentTermRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: IPaymentTermSQLBuilder);
 begin
   inherited Create;
   FConn                  := AConn;

@@ -5,7 +5,7 @@ interface
 uses
   SysUtils,
   IniFiles,
-  uConnection.Types;
+  uZLConnection.Types;
 
 type
   TEnv = class(TIniFile)
@@ -24,10 +24,10 @@ type
     function GetVendorLib: String;
     procedure SetDriver(const Value: String);
     function GetDriver: String;
-    function GetDefaultConnLibType: TConnLibType;
-    procedure SetDefaultConnLibType(const Value: TConnLibType);
-    function GetDefaultRepoType: TRepositoryType;
-    procedure SetDefaultRepoType(const Value: TRepositoryType);
+    function GetDefaultConnLibType: TZLConnLibType;
+    procedure SetDefaultConnLibType(const Value: TZLConnLibType);
+    function GetDefaultRepoType: TZLRepositoryType;
+    procedure SetDefaultRepoType(const Value: TZLRepositoryType);
   public
     property Database: String read GetDatabase write SetDatabase;
     property UserName: String read GetUserName write SetUserName;
@@ -36,9 +36,9 @@ type
     property Port: String read GetPort write SetPort;
     property VendorLib: String read GetVendorLib write SetVendorLib;
     property Driver: String read GetDriver write SetDriver;
-    property DefaultConnLibType: TConnLibType read GetDefaultConnLibType write SetDefaultConnLibType;
-    property DefaultRepoType: TRepositoryType read GetDefaultRepoType write SetDefaultRepoType;
-    function DriverDB: TDriverDB;
+    property DefaultConnLibType: TZLConnLibType read GetDefaultConnLibType write SetDefaultConnLibType;
+    property DefaultRepoType: TZLRepositoryType read GetDefaultRepoType write SetDefaultRepoType;
+    function DriverDB: TZLDriverDB;
   end;
 
 var
@@ -48,13 +48,13 @@ implementation
 
 { TEnv }
 
-function TEnv.DriverDB: TDriverDB;
+function TEnv.DriverDB: TZLDriverDB;
 var
   lDriverStr: String;
 begin
   lDriverStr := GetDriver.Trim.ToUpper;
   if (lDriverStr = 'MYSQL') then
-    Result := TDriverDB.ddMySql;
+    Result := TZLDriverDB.ddMySql;
 end;
 
 function TEnv.GetDatabase: String;
@@ -62,22 +62,22 @@ begin
   Result := ReadString('CONNECTION','DATABASE','');
 end;
 
-function TEnv.GetDefaultConnLibType: TConnLibType;
+function TEnv.GetDefaultConnLibType: TZLConnLibType;
 var
   lLibType: String;
 begin
   lLibType := ReadString('CONNECTION','LIBTYPE','FIREDAC').Trim.ToUpper;
   if (lLibType = 'FIREDAC') then
-    Result := TConnLibType.ctFireDAC;
+    Result := TZLConnLibType.ctFireDAC;
 end;
 
-function TEnv.GetDefaultRepoType: TRepositoryType;
+function TEnv.GetDefaultRepoType: TZLRepositoryType;
 var
   lRepoTypeStr: String;
 begin
   lRepoTypeStr := ReadString('CONNECTION','REPOTYPE','SQL').Trim.ToUpper;
   if (lRepoTypeStr = 'SQL') then
-    Result := TRepositoryType.rtSQL;
+    Result := TZLRepositoryType.rtSQL;
 end;
 
 function TEnv.GetDriver: String;
@@ -115,14 +115,14 @@ begin
   WriteString('CONNECTION','DATABASE',Value);
 end;
 
-procedure TEnv.SetDefaultConnLibType(const Value: TConnLibType);
+procedure TEnv.SetDefaultConnLibType(const Value: TZLConnLibType);
 begin
   case Value of
     ctFireDAC: WriteString('CONNECTION','LIBTYPE','FIREDAC');
   end;
 end;
 
-procedure TEnv.SetDefaultRepoType(const Value: TRepositoryType);
+procedure TEnv.SetDefaultRepoType(const Value: TZLRepositoryType);
 begin
 
 end;

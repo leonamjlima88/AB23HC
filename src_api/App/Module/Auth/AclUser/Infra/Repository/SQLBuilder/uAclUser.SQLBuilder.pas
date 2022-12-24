@@ -37,7 +37,7 @@ uses
   cqlbr.serialize.mysql,
   System.Classes,
   System.SysUtils,
-  uConnection.Types,
+  uZLConnection.Types,
   uApplication.Types;
 
 { TAclUserSQLBuilder }
@@ -115,12 +115,12 @@ function TAclUserSQLBuilder.Update(AEntity: TBaseEntity; AId: Int64): String;
 var
   lAclUser: TAclUser;
 begin
+  // Não atualizar login_password
   lAclUser := AEntity as TAclUser;
   Result := TCQL.New(dbnMySQL)
     .Update('acl_user')
     .&Set('name',             lAclUser.name)
     .&Set('login',            lAclUser.login)
-    .&Set('login_password',   lAclUser.login_password)
     .&Set('acl_role_id',      lAclUser.acl_role_id)
     .&Set('is_superuser',     lAclUser.is_superuser)
     .&Set('last_token',       lAclUser.last_token)

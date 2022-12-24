@@ -31,7 +31,7 @@ uses
   System.SysUtils,
   uPersonContact,
   uApplication.Types,
-  uConnection.Types;
+  uZLConnection.Types;
 
 { TPersonContactSQLBuilder }
 constructor TPersonContactSQLBuilder.Create;

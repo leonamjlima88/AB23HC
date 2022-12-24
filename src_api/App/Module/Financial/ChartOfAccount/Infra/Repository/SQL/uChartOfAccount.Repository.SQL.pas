@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uChartOfAccount.Repository.Interfaces,
   uChartOfAccount.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,13 +17,13 @@ type
   TChartOfAccountRepositorySQL = class(TBaseRepository, IChartOfAccountRepository)
   private
     FChartOfAccountSQLBuilder: IChartOfAccountSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: IChartOfAccountSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: IChartOfAccountSQLBuilder);
     function DataSetToEntity(ADtsChartOfAccount: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     function FieldExists(AColumName, AColumnValue: String; AId, ATenantId: Int64): Boolean;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: IChartOfAccountSQLBuilder): IChartOfAccountRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: IChartOfAccountSQLBuilder): IChartOfAccountRepository;
     function Show(AId, ATenantId: Int64): TChartOfAccount;
  end;
 
@@ -37,12 +37,12 @@ uses
 
 { TChartOfAccountRepositorySQL }
 
-class function TChartOfAccountRepositorySQL.Make(AConn: IConnection; ASQLBuilder: IChartOfAccountSQLBuilder): IChartOfAccountRepository;
+class function TChartOfAccountRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: IChartOfAccountSQLBuilder): IChartOfAccountRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TChartOfAccountRepositorySQL.Create(AConn: IConnection; ASQLBuilder: IChartOfAccountSQLBuilder);
+constructor TChartOfAccountRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: IChartOfAccountSQLBuilder);
 begin
   inherited Create;
   FConn                     := AConn;

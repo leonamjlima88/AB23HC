@@ -5,7 +5,9 @@ interface
 uses
   uAclUser.Auth.Login.DTO,
   uAclUser.Auth.ChangePassword.DTO,
-  uAclUser.Auth.Me.DTO, uAclUser.Repository.Interfaces;
+  uAclUser.Auth.Me.DTO,
+  uAclUser.Repository.Interfaces,
+  uAclUser;
 
 type
   IAclUserAuthUseCase = Interface
@@ -19,6 +21,7 @@ type
   private
     FRepository: IAclUserRepository;
     constructor Create(ARepository: IAclUserRepository);
+    function EntityToAclUserAuthMeDTO(AAclUser: TAclUser): TAclUserAuthMeDTO;
   public
     class function Make(ARepository: IAclUserRepository): IAclUserAuthUseCase;
     function Login(AInput: TAclUserAuthLoginDTO): TAclUserAuthMeDTO;
@@ -32,7 +35,6 @@ uses
   uSmartPointer,
   JOSE.Core.Builder,
   JOSE.Core.JWT,
-  uAclUser,
   uHlp,
   uApplication.Types,
   System.SysUtils,
@@ -88,11 +90,7 @@ begin
       lTokenIsExpired := (IncMinute(lAclUser.last_expiration, l10_MIN_MARGIN_OF_ERROR) < Now);
       if not lTokenIsExpired then
       begin
-        Result           := TAclUserAuthMeDTO.Create;
-        Result.name      := lAclUser.name;
-        Result.login     := lAclUser.login;
-        Result.token     := lAclUser.last_token;
-        Result.tenant_id := lAclUser.acl_role.tenant_id;
+        Result := EntityToAclUserAuthMeDTO(lAclUser);
         Exit;
       end;
     end;
@@ -115,14 +113,23 @@ begin
     FRepository.Update(lAclUser, lAclUser.id);
 
     // Retornar Token
-    Result           := TAclUserAuthMeDTO.Create;
-    Result.name      := lAclUser.name;
-    Result.login     := lAclUser.login;
-    Result.token     := lAclUser.last_token;
-    Result.tenant_id := lAclUser.acl_role.tenant_id;
+    Result := EntityToAclUserAuthMeDTO(lAclUser);
   finally
     lAclUser.Free;
   end;
+end;
+
+function TAclUserAuthUseCase.EntityToAclUserAuthMeDTO(AAclUser: TAclUser): TAclUserAuthMeDTO;
+begin
+  Result                 := TAclUserAuthMeDTO.Create;
+  Result.id              := AAclUser.id;
+  Result.name            := AAclUser.name;
+  Result.login           := AAclUser.login;
+  Result.acl_role_id     := AAclUser.acl_role_id;
+  Result.is_superuser    := AAclUser.is_superuser;
+  Result.last_token      := AAclUser.last_token;
+  Result.last_expiration := AAclUser.last_expiration;
+  Result.tenant_id       := AAclUser.acl_role.tenant_id;
 end;
 
 function TAclUserAuthUseCase.Logout(AInput: TAclUserAuthLoginDTO): Boolean;

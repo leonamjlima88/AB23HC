@@ -50,7 +50,7 @@ begin
   lPersonToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
-  lPK := FRepository.Store(lPersonToStore, true);
+  lPK           := FRepository.Store(lPersonToStore, true);
   lPersonStored := FRepository.Show(lPK, AInput.tenant_id);
 
   // Retornar DTO

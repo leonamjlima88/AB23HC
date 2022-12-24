@@ -66,16 +66,16 @@ uses
 
 procedure TAclUserAuthController.ChangePassword;
 var
-  lAclUserAuthChangePasswordDTO: Shared<TAclUserAuthChangePasswordDTO>;
+  lInput: Shared<TAclUserAuthChangePasswordDTO>;
 begin
   // Validar DTO
-  lAclUserAuthChangePasswordDTO := TAclUserAuthChangePasswordDTO.FromJSON(FReq.Body);
-  SwaggerValidator.Validate(lAclUserAuthChangePasswordDTO);
+  lInput := TAclUserAuthChangePasswordDTO.FromJSON(FReq.Body);
+  SwaggerValidator.Validate(lInput);
 
   // Mudar a Senha
   TAclUserAuthUseCase
     .Make           (FRepository)
-    .ChangePassword (lAclUserAuthChangePasswordDTO);
+    .ChangePassword (lInput);
 
   // Retorno
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);
@@ -90,34 +90,34 @@ end;
 
 procedure TAclUserAuthController.Login;
 var
-  lAclUserAuthLoginDTO: Shared<TAclUserAuthLoginDTO>;
-  lAclUserAuthMeDTO: Shared<TAclUserAuthMeDTO>;
+  lInput:  Shared<TAclUserAuthLoginDTO>;
+  lResult: Shared<TAclUserAuthMeDTO>;
 begin
   // Validar DTO
-  lAclUserAuthLoginDTO := TAclUserAuthLoginDTO.FromJSON(FReq.Body);
-  SwaggerValidator.Validate(lAclUserAuthLoginDTO);
+  lInput := TAclUserAuthLoginDTO.FromJSON(FReq.Body);
+  SwaggerValidator.Validate(lInput);
 
   // Efetuar login
-  lAclUserAuthMeDTO := TAclUserAuthUseCase
+  lResult := TAclUserAuthUseCase
     .Make  (FRepository)
-    .Login (lAclUserAuthLoginDTO);
+    .Login (lInput);
 
   // Retorno
-  TRes.Success(FRes, lAclUserAuthMeDTO.Value, HTTP_CREATED);
+  TRes.Success(FRes, lResult.Value);
 end;
 
 procedure TAclUserAuthController.Logout;
 var
-  lAclUserAuthLoginDTO: Shared<TAclUserAuthLoginDTO>;
+  lInput: Shared<TAclUserAuthLoginDTO>;
 begin
   // Validar DTO
-  lAclUserAuthLoginDTO := TAclUserAuthLoginDTO.FromJSON(FReq.Body);
-  SwaggerValidator.Validate(lAclUserAuthLoginDTO);
+  lInput := TAclUserAuthLoginDTO.FromJSON(FReq.Body);
+  SwaggerValidator.Validate(lInput);
 
   // Efetuar logout
   TAclUserAuthUseCase
     .Make   (FRepository)
-    .Logout (lAclUserAuthLoginDTO);
+    .Logout (lInput);
 
   // Retorno
   TRes.Success(FRes, Nil, HTTP_NO_CONTENT);

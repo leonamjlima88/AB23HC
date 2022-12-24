@@ -43,10 +43,12 @@ function TStorageLocationShowUseCase.Execute(APK, ATenantId: Int64): TStorageLoc
 var
   lStorageLocationFound: Shared<TStorageLocation>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lStorageLocationFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lStorageLocationFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TStorageLocationMapper.EntityToStorageLocationShowDto(lStorageLocationFound);

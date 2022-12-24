@@ -41,26 +41,15 @@ end;
 
 function TAclUserUpdateAndShowUseCase.Execute(AInput: TAclUserDTO; APK: Int64): TAclUserShowDTO;
 var
-  lAclUserFound: Shared<TAclUser>;
   lAclUserToUpdate: Shared<TAclUser>;
   lAclUserUpdated: Shared<TAclUser>;
 begin
-  lAclUserFound := FRepository.Show(APK);
-  if not Assigned(lAclUserFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
-
   // Carregar dados em Entity
   lAclUserToUpdate := TAclUserMapper.AclUserDtoToEntity(AInput);
   With lAclUserToUpdate.Value do
   begin
     id := APK;
     Validate;
-  end;
-
-  // Sempre manter senha já cadastrada na atualização
-  case Assigned(lAclUserFound.Value) of
-    True:  AInput.login_password := lAclUserFound.Value.login_password;
-    False: raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
   end;
 
   // Atualizar e Localizar registro atualizado

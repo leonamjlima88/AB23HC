@@ -49,7 +49,7 @@ begin
   lAclUserToStore := TAclUserMapper.AclUserDtoToEntity(AInput);
   With lAclUserToStore.Value do
   begin
-    login_password := THlp.Encrypt(ENCRYPTATION_KEY, login_password);
+    login_password := THlp.Encrypt(ENCRYPTATION_KEY, LOGIN_PASSWORD_DEFAULT);
     Validate;
   end;
 

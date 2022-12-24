@@ -9,7 +9,7 @@ uses
 
 type
   IBankStoreAndShowUseCase = Interface
-['{CF6CAB2A-4638-48BC-BE54-94197E4445DE}']
+    ['{CF6CAB2A-4638-48BC-BE54-94197E4445DE}']
     function Execute(AInput: TBankDTO): TBankShowDTO;
   end;
 
@@ -48,7 +48,7 @@ begin
   lBankToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
-  lPK := FRepository.Store(lBankToStore);
+  lPK         := FRepository.Store(lBankToStore);
   lBankStored := FRepository.Show(lPK);
 
   // Retornar DTO

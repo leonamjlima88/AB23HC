@@ -43,10 +43,12 @@ function TNCMShowUseCase.Execute(APK: Int64): TNCMShowDTO;
 var
   lNCMFound: Shared<TNCM>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lNCMFound := FRepository.Show(APK);
   if not Assigned(lNCMFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TNCMMapper.EntityToNCMShowDto(lNCMFound);

@@ -303,29 +303,20 @@
         <DCCReference Include="App\Module\Auth\AclRole\Infra\Repository\SQLBuilder\uAclRole.SQLBuilder.pas"/>
         <DCCReference Include="App\Module\Stock\Brand\Domain\Repository\uBrand.SQLBuilder.Interfaces.pas"/>
         <DCCReference Include="App\Shared\Domain\Repository\uBase.SQLBuilder.Interfaces.pas"/>
-        <DCCReference Include="Database\Application\uConnection.Types.pas"/>
         <DCCReference Include="App\TaskScheduler\Infra\Task\uAutomaticPingInConsole.Task.pas"/>
         <DCCReference Include="App\TaskScheduler\Infra\uTaskScheduler.pas"/>
         <DCCReference Include="App\Shared\Application\Util\uSelectWithFilter.pas"/>
         <DCCReference Include="Database\Infra\Migration\Manager\uMigration.Helper.pas"/>
-        <DCCReference Include="Database\Infra\Connection\FireDAC\uConnection.FireDAC.pas"/>
         <DCCReference Include="App\Shared\Application\Util\uQtdStr.pas"/>
-        <DCCReference Include="Database\Infra\Connection\FireDAC\uQry.FireDAC.pas"/>
-        <DCCReference Include="Database\Domain\Connection\uConnection.Interfaces.pas"/>
         <DCCReference Include="App\Shared\Application\Util\uIndexResult.pas"/>
         <DCCReference Include="Database\Infra\Connection\uConnection.Factory.pas"/>
         <DCCReference Include="Database\Infra\Connection\uScript.Factory.pas"/>
         <DCCReference Include="Database\Infra\Connection\uQry.Factory.pas"/>
         <DCCReference Include="Database\Infra\Connection\uMemTable.Factory.pas"/>
-        <DCCReference Include="Database\Domain\Connection\uMemTable.Interfaces.pas"/>
-        <DCCReference Include="Database\Infra\Connection\FireDAC\uMemTable.FireDAC.pas"/>
         <DCCReference Include="App\Shared\Application\Util\uEither.pas"/>
         <DCCReference Include="Database\Infra\Migration\Manager\uMigration.Base.pas"/>
         <DCCReference Include="Database\Infra\Migration\Manager\uMigration.Info.pas"/>
         <DCCReference Include="Database\Domain\Migration\uMigration.Interfaces.pas"/>
-        <DCCReference Include="Database\Domain\Connection\uQry.Interfaces.pas"/>
-        <DCCReference Include="Database\Infra\Connection\FireDAC\uScript.FireDAC.pas"/>
-        <DCCReference Include="Database\Domain\Connection\uScript.Interfaces.pas"/>
         <DCCReference Include="App\Module\Financial\Bank\Infra\Controller\uBank.Controller.pas"/>
         <DCCReference Include="App\Module\Financial\Bank\Infra\Repository\SQLBuilder\uBank.SQLBuilder.pas"/>
         <DCCReference Include="App\Module\Financial\Bank\Infra\Repository\SQLBuilder\MySQL\uBank.SQLBuilder.MySQL.pas"/>
@@ -517,6 +508,11 @@
         <DCCReference Include="App\Module\Fiscal\TaxRule\Application\Mapper\uTaxRule.Mapper.pas"/>
         <DCCReference Include="App\Module\Auth\AclRole\Application\Mapper\uAclRole.Mapper.pas"/>
         <DCCReference Include="App\Module\Auth\AclUser\Application\Mapper\uAclUser.Mapper.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u00CitySeed.Migration.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u16BankSeed.Migration.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u21CFOPSeed.Migration.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u23NCMSeed.Migration.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u10UnitSeed.Migration.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

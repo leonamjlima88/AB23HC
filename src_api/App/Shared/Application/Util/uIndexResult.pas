@@ -3,14 +3,14 @@ unit uIndexResult;
 interface
 
 uses
-  uMemTable.Interfaces,
+  uZLMemTable.Interfaces,
   XSuperObject;
 
 type
   IIndexResult = interface
     ['{8A8BEA81-BBC2-4812-8941-F71A983C117D}']
 
-    function Data: IMemTable;
+    function Data: IZLMemTable;
 
     function CurrentPage: Integer; overload;
     function CurrentPage(AValue: Integer): IIndexResult; overload;
@@ -44,7 +44,7 @@ type
 
   TIndexResult = class(TInterfacedObject, IIndexResult)
   private
-    FData: IMemTable;
+    FData: IZLMemTable;
 
     FCurrentPage: Integer;
     FCurrentPageRecordCount: Integer;
@@ -61,7 +61,7 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    function Data: IMemTable;
+    function Data: IZLMemTable;
 
     function CurrentPage: Integer; overload;
     function CurrentPage(AValue: Integer): IIndexResult; overload;
@@ -145,7 +145,7 @@ begin
   inherited;
 end;
 
-function TIndexResult.Data: IMemTable;
+function TIndexResult.Data: IZLMemTable;
 begin
   Result := FData;
 end;

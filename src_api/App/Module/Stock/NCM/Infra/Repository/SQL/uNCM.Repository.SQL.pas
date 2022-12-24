@@ -6,7 +6,7 @@ uses
   uBase.Repository,
   uNCM.Repository.Interfaces,
   uNCM.SQLBuilder.Interfaces,
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   Data.DB,
   uBase.Entity,
   uPageFilter,
@@ -17,13 +17,13 @@ type
   TNCMRepositorySQL = class(TBaseRepository, INCMRepository)
   private
     FNCMSQLBuilder: INCMSQLBuilder;
-    constructor Create(AConn: IConnection; ASQLBuilder: INCMSQLBuilder);
+    constructor Create(AConn: IZLConnection; ASQLBuilder: INCMSQLBuilder);
     function DataSetToEntity(ADtsNCM: TDataSet): TBaseEntity; override;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter; override;
     function FieldExists(AColumName, AColumnValue: String; AId: Int64): Boolean;
     procedure Validate(AEntity: TBaseEntity); override;
   public
-    class function Make(AConn: IConnection; ASQLBuilder: INCMSQLBuilder): INCMRepository;
+    class function Make(AConn: IZLConnection; ASQLBuilder: INCMSQLBuilder): INCMRepository;
     function Show(AId: Int64): TNCM;
  end;
 
@@ -37,12 +37,12 @@ uses
 
 { TNCMRepositorySQL }
 
-class function TNCMRepositorySQL.Make(AConn: IConnection; ASQLBuilder: INCMSQLBuilder): INCMRepository;
+class function TNCMRepositorySQL.Make(AConn: IZLConnection; ASQLBuilder: INCMSQLBuilder): INCMRepository;
 begin
   Result := Self.Create(AConn, ASQLBuilder);
 end;
 
-constructor TNCMRepositorySQL.Create(AConn: IConnection; ASQLBuilder: INCMSQLBuilder);
+constructor TNCMRepositorySQL.Create(AConn: IZLConnection; ASQLBuilder: INCMSQLBuilder);
 begin
   inherited Create;
   FConn            := AConn;

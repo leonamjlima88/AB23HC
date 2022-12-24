@@ -43,10 +43,12 @@ function TAclRoleShowUseCase.Execute(APK, ATenantId: Int64): TAclRoleShowDTO;
 var
   lAclRoleFound: Shared<TAclRole>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lAclRoleFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lAclRoleFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TAclRoleMapper.EntityToAclRoleShowDto(lAclRoleFound);

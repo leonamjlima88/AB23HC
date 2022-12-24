@@ -43,10 +43,12 @@ function TCategoryShowUseCase.Execute(APK, ATenantId: Int64): TCategoryShowDTO;
 var
   lCategoryFound: Shared<TCategory>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lCategoryFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lCategoryFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TCategoryMapper.EntityToCategoryShowDto(lCategoryFound);

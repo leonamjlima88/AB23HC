@@ -4,19 +4,19 @@ interface
 
 uses
   uMigration.Interfaces,
-  uConnection.Interfaces,
-  uQry.Interfaces,
-  uScript.Interfaces;
+  uZLConnection.Interfaces,
+  uZLQry.Interfaces,
+  uZLScript.Interfaces;
 
 type
   TMigrationBase = class(TInterfacedObject, IMigration)
   protected
-    FConn: IConnection;
-    FQry: IQry;
-    FScript: IScript;
+    FConn: IZLConnection;
+    FQry: IZLQry;
+    FScript: IZLScript;
     FInformation: IMigrationInfo;
   public
-    constructor Create(AConn: IConnection);
+    constructor Create(AConn: IZLConnection);
     destructor Destroy; override;
 
     function Execute: IMigration; virtual; abstract;
@@ -31,7 +31,7 @@ uses
 
 { T01CreateGroupTable }
 
-constructor TMigrationBase.Create(AConn: IConnection);
+constructor TMigrationBase.Create(AConn: IZLConnection);
 begin
   FConn        := AConn;
   FQry         := AConn.MakeQry;

@@ -46,7 +46,7 @@ begin
   // Localizar Registro
   lUnitFound := FRepository.Show(APK);
   if not Assigned(lUnitFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TUnitMapper.EntityToUnitShowDto(lUnitFound);

@@ -24,8 +24,8 @@ uses
   uBrand.Repository.Interfaces,
   uCostCenter.Repository.Interfaces,
   uCategory.Repository.Interfaces,
-  uConnection.Interfaces,
-  uConnection.Types;
+  uZLConnection.Interfaces,
+  uZLConnection.Types;
 
 type
   IRepositoryFactory = Interface
@@ -56,12 +56,12 @@ type
 
   TRepositoryFactory = class(TInterfacedObject, IRepositoryFactory)
   private
-    FConn: IConnection;
-    FRepoType: TRepositoryType;
-    FDriverDB: TDriverDB;
-    constructor Create(AConn: IConnection; ARepoType: TRepositoryType; ADriverDB: TDriverDB);
+    FConn: IZLConnection;
+    FRepoType: TZLRepositoryType;
+    FDriverDB: TZLDriverDB;
+    constructor Create(AConn: IZLConnection; ARepoType: TZLRepositoryType; ADriverDB: TZLDriverDB);
   public
-    class function Make(AConn: IConnection = nil; ARepoType: TRepositoryType = rtDefault; ADriverDB: TDriverDB = ddDefault): IRepositoryFactory;
+    class function Make(AConn: IZLConnection = nil; ARepoType: TZLRepositoryType = rtDefault; ADriverDB: TZLDriverDB = ddDefault): IRepositoryFactory;
 
     function Tenant: ITenantRepository;
     function TaxRule: ITaxRuleRepository;
@@ -193,7 +193,7 @@ begin
   end;
 end;
 
-constructor TRepositoryFactory.Create(AConn: IConnection; ARepoType: TRepositoryType; ADriverDB: TDriverDB);
+constructor TRepositoryFactory.Create(AConn: IZLConnection; ARepoType: TZLRepositoryType; ADriverDB: TZLDriverDB);
 begin
   inherited Create;
 
@@ -221,7 +221,7 @@ begin
   end;
 end;
 
-class function TRepositoryFactory.Make(AConn: IConnection; ARepoType: TRepositoryType; ADriverDB: TDriverDB): IRepositoryFactory;
+class function TRepositoryFactory.Make(AConn: IZLConnection; ARepoType: TZLRepositoryType; ADriverDB: TZLDriverDB): IRepositoryFactory;
 begin
   Result := Self.Create(AConn, ARepoType, ADriverDB);
 end;

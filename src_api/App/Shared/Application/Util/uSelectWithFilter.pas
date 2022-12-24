@@ -4,7 +4,7 @@ interface
 
 uses
   uPageFilter,
-  uConnection.Types;
+  uZLConnection.Types;
 
 type
   TOutPutSelectAllFilter = record
@@ -15,7 +15,7 @@ type
   TSelectWithFilter = class
   private
   public
-    class function SelectAllWithFilter(APageFilter: IPageFilter; ASelectAll: String; APK: String; ADriverDB: TDriverDB = ddMySql): TOutPutSelectAllFilter;
+    class function SelectAllWithFilter(APageFilter: IPageFilter; ASelectAll: String; APK: String; ADriverDB: TZLDriverDB = ddMySql): TOutPutSelectAllFilter;
     class function FormatCondOperatorAndFieldValue(AcondOperator: TcondOperator; AfieldValue: String): string;
   end;
 
@@ -27,7 +27,7 @@ uses
 
 { TSelectWithFilter }
 
-class function TSelectWithFilter.SelectAllWithFilter(APageFilter: IPageFilter; ASelectAll: String; APK: String; ADriverDB: TDriverDB): TOutPutSelectAllFilter;
+class function TSelectWithFilter.SelectAllWithFilter(APageFilter: IPageFilter; ASelectAll: String; APK: String; ADriverDB: TZLDriverDB): TOutPutSelectAllFilter;
 var
   lSQL: String;
   lColumns, lLimitPerPage, lSkipRecords: String;

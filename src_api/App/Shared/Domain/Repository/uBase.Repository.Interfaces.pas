@@ -3,7 +3,7 @@ unit uBase.Repository.Interfaces;
 interface
 
 uses
-  uConnection.Interfaces,
+  uZLConnection.Interfaces,
   uBase.Entity,
   Data.DB,
   uPageFilter,
@@ -14,7 +14,7 @@ type
   IBaseRepository = Interface
     ['{5C559435-CF16-4128-8F11-E403508CDB35}']
 
-    function Conn: IConnection;
+    function Conn: IZLConnection;
     function Delete(AId: Int64; ATenantId: Int64 = 0): Boolean;
     function Index(APageFilter: IPageFilter): IIndexResult;
     function ShowById(AId: Int64; ATenantId: Int64 = 0): TBaseEntity;

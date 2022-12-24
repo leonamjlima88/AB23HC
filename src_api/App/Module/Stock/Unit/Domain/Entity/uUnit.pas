@@ -19,6 +19,7 @@ type
     Fcreated_by_acl_user_id: Int64;
     Fupdated_by_acl_user: TAclUser;
     Fcreated_by_acl_user: TAclUser;
+    Fdescription: string;
     procedure Initialize;
   public
     constructor Create; overload;
@@ -26,6 +27,7 @@ type
 
     property id: Int64 read Fid write Fid;
     property name: string read Fname write Fname;
+    property description: string read Fdescription write Fdescription;
     property created_at: TDateTime read Fcreated_at write Fcreated_at;
     property updated_at: TDateTime read Fupdated_at write Fupdated_at;
     property created_by_acl_user_id: Int64 read Fcreated_by_acl_user_id write Fcreated_by_acl_user_id;

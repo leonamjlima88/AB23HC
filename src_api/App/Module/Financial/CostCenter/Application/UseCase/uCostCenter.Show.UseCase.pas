@@ -43,10 +43,12 @@ function TCostCenterShowUseCase.Execute(APK, ATenantId: Int64): TCostCenterShowD
 var
   lCostCenterFound: Shared<TCostCenter>;
 begin
+  Result := Nil;
+
   // Localizar Registro
   lCostCenterFound := FRepository.Show(APK, ATenantId);
   if not Assigned(lCostCenterFound.Value) then
-    raise Exception.Create(Format(RECORD_NOT_FOUND_WITH_ID, [APK]));
+    Exit;
 
   // Retornar DTO
   Result := TCostCenterMapper.EntityToCostCenterShowDto(lCostCenterFound);

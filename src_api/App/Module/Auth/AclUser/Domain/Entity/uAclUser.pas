@@ -65,9 +65,6 @@ begin
   if Flogin.Trim.IsEmpty then
     raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['login']));
 
-  if Flogin_password.Trim.IsEmpty then
-    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['login_password']));
-
   if (Facl_role_id <= 0) then
     raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['acl_role_id']));
 end;

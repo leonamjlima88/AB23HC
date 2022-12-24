@@ -12,7 +12,7 @@ type
     Fcode: string;
     Foperation_type: SmallInt;
   public
-    [SwagString(100)]
+    [SwagString(255)]
     [SwagProp('name', 'Nome', true)]
     property name: string read Fname write Fname;
 

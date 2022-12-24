@@ -9,7 +9,7 @@ uses
 
 type
   IUnitStoreAndShowUseCase = Interface
-['{CB94C184-08EB-460D-A4E3-B69FB400687A}']
+    ['{CB94C184-08EB-460D-A4E3-B69FB400687A}']
     function Execute(AInput: TUnitDTO): TUnitShowDTO;
   end;
 
@@ -48,7 +48,7 @@ begin
   lUnitToStore.Value.Validate;
 
   // Incluir e Localizar registro incluso
-  lPK := FRepository.Store(lUnitToStore);
+  lPK         := FRepository.Store(lUnitToStore);
   lUnitStored := FRepository.Show(lPK);
 
   // Retornar DTO
