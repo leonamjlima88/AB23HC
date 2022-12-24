@@ -30,7 +30,7 @@ implementation
 
 uses
   XSuperObject,
-  DataSet.Serialize;
+  DataSet.Serialize, System.SysUtils;
 
 { TBrandRepositorySQL }
 

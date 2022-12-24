@@ -39,7 +39,7 @@ uses
   Horse.Etag,
   Horse.GBSwagger,
   GBSwagger.Model.Types,
-  uResponse.DTO;
+  uResponse.DTO, System.DateUtils;
 
 var
   LLogFileConfig: Shared<THorseLoggerConsoleConfig>;
@@ -124,7 +124,9 @@ end;
 
 class procedure TMain.SetMiddlewares;
 begin
-  TDataSetSerializeConfig.GetInstance.CaseNameDefinition := TCaseNameDefinition.cndLower;
+  TDataSetSerializeConfig.GetInstance.CaseNameDefinition    := TCaseNameDefinition.cndLower;
+  TDataSetSerializeConfig.GetInstance.DateTimeIsISO8601     := False;
+  TDataSetSerializeConfig.GetInstance.Export.FormatDateTime := 'yyyy-mm-dd"T"hh":"mm":"ss.000';
   LLogFileConfig := THorseLoggerConsoleConfig.New.SetLogFormat('${request_clientip} [${time}] ${response_status}');
   THorseLoggerManager.RegisterProvider(THorseLoggerProviderConsole.New());
 

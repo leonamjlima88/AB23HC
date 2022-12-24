@@ -50,16 +50,18 @@ implementation
 uses
   uSmartPointer,
   uBrand,
-  uEither, uObserver;
+  uEither,
+  uObserver;
 
 {$R *.dfm}
 
 procedure TTestView.Button1Click(Sender: TObject);
 var
-  lBrandToStore, lBrandStored: Shared<TBrand>;
+  lBrandToStore: Shared<TBrand>;
+  lBrandStored: Shared<TBrand>;
   lStoreResult: Either<String, TBrand>;
 begin
-  lBrandToStore            := TBrand.Create;
+  lBrandToStore := TBrand.Create;
   lBrandToStore.Value.name := edtStoreName.Text;
 
   lStoreResult := FService.Store(lBrandToStore);
@@ -83,7 +85,11 @@ var
 begin
   lBrandFound := FService.Show(StrToIntDef(edtShowId.Text,0));
   if not Assigned(lBrandFound.Value) then
-    raise Exception.Create('Registro não encontrado.');
+  begin
+    Memo1.Clear;
+    Memo1.Lines.Add('Registro não encontrado.');
+    Exit;
+  end;
 
   Memo1.Clear;
   Memo1.Lines.Add('id: '                     + lBrandFound.Value.id.ToString);
@@ -96,15 +102,15 @@ end;
 
 procedure TTestView.Button3Click(Sender: TObject);
 var
-  lBrand: Shared<TBrand>;
+  lBrandToUpdate: Shared<TBrand>;
   lBrandUpdated: Shared<TBrand>;
   lUpdateResult: Either<String, TBrand>;
 begin
-  lBrand := TBrand.Create;
-  lBrand.Value.name := edtUpdateName.Text;
+  lBrandToUpdate := TBrand.Create;
+  lBrandToUpdate.Value.name := edtUpdateName.Text;
 
   // Atualizar
-  lUpdateResult := FService.Update(lBrand, StrToIntDef(edtUpdateId.Text,0));
+  lUpdateResult := FService.Update(lBrandToUpdate, StrToIntDef(edtUpdateId.Text,0));
   if not lUpdateResult.Match then
   begin
     Memo1.Clear;
