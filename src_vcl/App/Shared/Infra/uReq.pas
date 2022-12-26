@@ -10,7 +10,6 @@ uses
 
 
 type
-  {$REGION 'Response and Interfaces'}
   TReqType = (rtGet, rtPost, rtPut, rtDelete, rtPatch);
 
   IRes = interface
@@ -48,8 +47,8 @@ type
   IReq = Interface
     ['{50C68531-0FE0-4960-8A31-B6C4C00A9C0A}']
     function Execute(AReqType: TReqType): IRes;
+    function AddHeader(AName, AValue: string): IReq;
   end;
-  {$ENDREGION}
 
   TReq = class(TInterfacedObject, IReq)
   private
@@ -58,6 +57,7 @@ type
   public
     class function Make(AEndPoint: String; ABody: String = ''): IReq;
     function Execute(AReqType: TReqType): IRes;
+    function AddHeader(AName, AValue: string): IReq;
   end;
 
 implementation
@@ -69,6 +69,12 @@ uses
   uAclUser;
 
 { TReq }
+
+function TReq.AddHeader(AName, AValue: string): IReq;
+begin
+  Result := Self;
+  FRequest.AddHeader(AName, AValue);
+end;
 
 constructor TReq.Create(AEndPoint, ABody: String);
 var

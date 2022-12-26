@@ -5,19 +5,18 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
-  Vcl.Imaging.pngimage, Vcl.Buttons;
+  Vcl.Imaging.pngimage, Vcl.Buttons, Skia, Skia.Vcl;
 
 type
   TTypeNotificationEnum = (tneSuccess, tneError, tneInfo, tneWarning);
   TNotificationView = class(TForm)
     pnlBorder: TPanel;
     pnlBackground: TPanel;
-    pnlTitle: TPanel;
     memMsg: TMemo;
     Timer1: TTimer;
     btnFocus: TButton;
-    Image1: TImage;
-    Label1: TLabel;
+    pnlBorder2: TPanel;
+    SkAnimatedImage1: TSkAnimatedImage;
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
@@ -49,30 +48,24 @@ implementation
 
 procedure TNotificationView.Execute(const AMsg: String; ATypeNotification: TTypeNotificationEnum);
 begin
+  SkAnimatedImage1.Animation.Enabled := False;
+  SkAnimatedImage1.Animation.Enabled := True;
   case ATypeNotification of
     tneSuccess: Begin
       pnlBorder.Color     := SUCCESS_DARK_COLOR;
-      pnlTitle.Color      := SUCCESS_DARK_COLOR;
-      pnlBackground.Color := SUCCESS_BRIGHT_COLOR;
-      memMsg.Color        := SUCCESS_BRIGHT_COLOR;
+      pnlBorder2.Color    := SUCCESS_DARK_COLOR;
     End;
     tneError: Begin
       pnlBorder.Color     := ERROR_DARK_COLOR;
-      pnlTitle.Color      := ERROR_DARK_COLOR;
-      pnlBackground.Color := ERROR_BRIGHT_COLOR;
-      memMsg.Color        := ERROR_BRIGHT_COLOR;
+      pnlBorder2.Color    := ERROR_DARK_COLOR;
     End;
     tneInfo: Begin
       pnlBorder.Color     := INFO_DARK_COLOR;
-      pnlTitle.Color      := INFO_DARK_COLOR;
-      pnlBackground.Color := INFO_BRIGHT_COLOR;
-      memMsg.Color        := INFO_BRIGHT_COLOR;
+      pnlBorder2.Color    := INFO_DARK_COLOR;
     End;
     tneWarning: Begin
       pnlBorder.Color     := WARNING_DARK_COLOR;
-      pnlTitle.Color      := WARNING_DARK_COLOR;
-      pnlBackground.Color := WARNING_BRIGHT_COLOR;
-      memMsg.Color        := WARNING_BRIGHT_COLOR;
+      pnlBorder2.Color    := WARNING_DARK_COLOR;
     End;
   end;
 

@@ -1,5 +1,6 @@
 inherited BrandIndexView: TBrandIndexView
   Caption = ''
+  OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlBackground: TPanel
@@ -21,82 +22,101 @@ inherited BrandIndexView: TBrandIndexView
             inherited pnlDbgrid: TPanel
               Height = 447
               ExplicitHeight = 447
-              inherited DBGrid1: TJvDBGrid
-                Height = 447
-                Columns = <
-                  item
-                    Alignment = taCenter
-                    Expanded = False
-                    FieldName = 'action_edit'
-                    Title.Alignment = taCenter
-                    Title.Caption = ' '
-                    Width = 25
-                    Visible = True
-                  end
-                  item
-                    Alignment = taCenter
-                    Expanded = False
-                    FieldName = 'action_delete'
-                    Title.Alignment = taCenter
-                    Title.Caption = ' '
-                    Width = 25
-                    Visible = True
-                  end
-                  item
-                    Alignment = taCenter
-                    Expanded = False
-                    FieldName = 'action_view'
-                    Title.Alignment = taCenter
-                    Title.Caption = ' '
-                    Width = 25
-                    Visible = True
-                  end
-                  item
-                    Expanded = False
-                    FieldName = 'id'
-                    Title.Caption = 'ID'
-                    Width = 70
-                    Visible = True
-                  end
-                  item
-                    Expanded = False
-                    FieldName = 'name'
-                    Title.Caption = 'Nome'
-                    Width = 620
-                    Visible = True
-                  end
-                  item
-                    Expanded = False
-                    FieldName = 'created_at'
-                    Title.Caption = 'Criado em'
-                    Width = 150
-                    Visible = True
-                  end
-                  item
-                    Expanded = False
-                    FieldName = 'created_by_acl_user_name'
-                    Title.Caption = 'Criado por'
-                    Width = 110
-                    Visible = True
-                  end
-                  item
-                    Expanded = False
-                    FieldName = 'updated_at'
-                    Title.Caption = 'Atualizado em'
-                    Width = 150
-                    Visible = True
-                  end
-                  item
-                    Expanded = False
-                    FieldName = 'updated_by_acl_user_name'
-                    Title.Caption = 'Atualizado por'
-                    Width = 110
-                    Visible = True
-                  end
-                  item
-                    Expanded = False
-                    Visible = True
-                  end>
+              inherited imgNoSearch: TSkAnimatedImage
+                Height = 267
+                ExplicitLeft = 30
+                ExplicitTop = 30
+                ExplicitWidth = 588
+                ExplicitHeight = 267
+              end
+            end
+            inherited DBGrid1: TJvDBGrid
+              Height = 447
+              OnCellClick = DBGrid1CellClick
+              OnDrawColumnCell = DBGrid1DrawColumnCell
+              OnDblClick = DBGrid1DblClick
+              OnKeyDown = DBGrid1KeyDown
+              OnTitleClick = DBGrid1TitleClick
+              Columns = <
+                item
+                  Alignment = taCenter
+                  Expanded = False
+                  FieldName = 'action_edit'
+                  Title.Alignment = taCenter
+                  Title.Caption = ' '
+                  Width = 25
+                  Visible = True
+                end
+                item
+                  Alignment = taCenter
+                  Expanded = False
+                  FieldName = 'action_delete'
+                  Title.Alignment = taCenter
+                  Title.Caption = ' '
+                  Width = 25
+                  Visible = True
+                end
+                item
+                  Alignment = taCenter
+                  Expanded = False
+                  FieldName = 'action_view'
+                  Title.Alignment = taCenter
+                  Title.Caption = ' '
+                  Width = 25
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'id'
+                  Title.Caption = 'ID'
+                  Width = 70
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'name'
+                  Title.Caption = 'Nome'
+                  Width = 620
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'created_at'
+                  Title.Caption = 'Criado em'
+                  Width = 150
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'created_by_acl_user_name'
+                  Title.Caption = 'Criado por'
+                  Width = 110
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'updated_at'
+                  Title.Caption = 'Atualizado em'
+                  Width = 150
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'updated_by_acl_user_name'
+                  Title.Caption = 'Atualizado por'
+                  Width = 110
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  Visible = True
+                end>
+            end
+            inherited pnlSearch: TPanel
+              inherited pnlSearch2: TPanel
+                inherited lblSearch: TLabel
+                  Height = 15
+                end
               end
             end
           end
@@ -104,6 +124,100 @@ inherited BrandIndexView: TBrandIndexView
         inherited pnlNavigator: TPanel
           Top = 507
           ExplicitTop = 507
+          inherited pnlNavFirst3: TPanel
+            inherited pnlNavFirst2: TPanel
+              inherited btnNavFirst: TSpeedButton
+                OnClick = btnNavigationClick
+              end
+            end
+          end
+          inherited pnlNavLast3: TPanel
+            inherited pnlNavLast2: TPanel
+              inherited btnNavLast: TSpeedButton
+                OnClick = btnNavigationClick
+                ExplicitLeft = 0
+                ExplicitTop = -2
+                ExplicitWidth = 20
+                ExplicitHeight = 23
+              end
+            end
+          end
+          inherited pnlNavPrior4: TPanel
+            inherited pnlNavPrior2: TPanel
+              inherited pnlNavPrior: TPanel
+                inherited btnNavPrior: TSpeedButton
+                  OnClick = btnNavigationClick
+                end
+              end
+            end
+          end
+          inherited pnlNavNext4: TPanel
+            inherited pnlNavNext2: TPanel
+              inherited pnlNavNext: TPanel
+                inherited btnNavNext: TSpeedButton
+                  OnClick = btnNavigationClick
+                end
+              end
+            end
+          end
+          inherited Panel1: TPanel
+            inherited Panel2: TPanel
+              inherited Label1: TLabel
+                Height = 16
+              end
+            end
+          end
+        end
+        inherited pnlButtonsTop: TPanel
+          inherited pnlOptions: TPanel
+            inherited pnlOptions2: TPanel
+              inherited pnlOptions3: TPanel
+                inherited imgOptions: TImage
+                  OnClick = imgOptionsClick
+                end
+              end
+            end
+          end
+          inherited pnlAppend: TPanel
+            inherited pnlAppend2: TPanel
+              inherited btnAppend: TSpeedButton
+                OnClick = btnAppendClick
+              end
+              inherited pnlAppend3: TPanel
+                OnClick = btnAppendClick
+                inherited imgAppend: TImage
+                  OnClick = btnAppendClick
+                end
+              end
+            end
+          end
+          inherited pnlSearch3: TPanel
+            inherited Panel4: TPanel
+              inherited imgSearchClear: TImage
+                OnClick = imgSearchClearClick
+              end
+              inherited pnlSearch5: TPanel
+                inherited lblSearchTitle: TLabel
+                  Width = 334
+                end
+                inherited edtSearchValue: TEdit
+                  OnChange = edtSearchValueChange
+                  OnDblClick = imgSearchClearClick
+                  OnKeyPress = edtSearchValueKeyPress
+                end
+              end
+              inherited pnlImgDoSearch: TPanel
+                OnClick = imgDoSearchClick
+                inherited imgDoSearch: TImage
+                  OnClick = imgDoSearchClick
+                end
+                inherited IndicatorLoadButtonDoSearch: TActivityIndicator
+                  ExplicitWidth = 24
+                  ExplicitHeight = 24
+                end
+              end
+            end
+          end
         end
         object pnlLocate: TPanel
           AlignWithMargins = True
@@ -144,6 +258,7 @@ inherited BrandIndexView: TBrandIndexView
               2CCFC0277A7150CB36457F5601565081A71EF659712AA804B01D003AD03DD129
               B0433D40EA45ED4716D810F02E6E03CD88CE817DA20F74872E51CD9D956E3F9A
               9B9804204234240000000049454E44AE426082}
+            OnClick = btnAppendClick
           end
           object imgLocateEdit: TImage
             Left = 0
@@ -170,6 +285,7 @@ inherited BrandIndexView: TBrandIndexView
               3DEF179B03A1326D4F93BC109F9D5F3A25FDB0C98E13E2081298AE00FE437D9C
               645FB43448F19D6B02041DEAE3A2D686ACE2F2F117304597173277603F8464B8
               E181BEBC6AE705557AFB03C8D0A8C23CF54E3C0000000049454E44AE426082}
+            OnClick = btnEditClick
           end
           object lblLocateAppend: TLabel
             Left = 26
@@ -184,6 +300,7 @@ inherited BrandIndexView: TBrandIndexView
             Font.Name = 'Tahoma'
             Font.Style = []
             ParentFont = False
+            OnClick = btnAppendClick
           end
           object lblLocateEdit: TLabel
             Left = 26
@@ -198,6 +315,7 @@ inherited BrandIndexView: TBrandIndexView
             Font.Name = 'Tahoma'
             Font.Style = []
             ParentFont = False
+            OnClick = btnEditClick
           end
           object pnlSave: TPanel
             AlignWithMargins = True
@@ -242,6 +360,7 @@ inherited BrandIndexView: TBrandIndexView
                 Font.Name = 'Tahoma'
                 Font.Style = [fsBold]
                 ParentFont = False
+                OnClick = btnLocateConfirmClick
                 ExplicitTop = 2
                 ExplicitHeight = 38
               end
@@ -255,6 +374,7 @@ inherited BrandIndexView: TBrandIndexView
                 Color = 4552994
                 ParentBackground = False
                 TabOrder = 0
+                OnClick = btnLocateConfirmClick
                 object imgSave: TImage
                   AlignWithMargins = True
                   Left = 5
@@ -295,6 +415,7 @@ inherited BrandIndexView: TBrandIndexView
                     79ED45DADF8678F16FBCBE438B405BD22B135C4EAE17FA6FC5644BBDF8765D1E
                     92A2BF454FE0029C0D96764E1247A6EFFF7C7B02F1035EC3B3B0C2EEF11BEE87
                     567A9D684E950000000049454E44AE426082}
+                  OnClick = btnLocateConfirmClick
                   ExplicitLeft = 13
                   ExplicitTop = 10
                   ExplicitHeight = 28
@@ -345,6 +466,7 @@ inherited BrandIndexView: TBrandIndexView
                 Font.Name = 'Tahoma'
                 Font.Style = [fsBold]
                 ParentFont = False
+                OnClick = btnLocateCloseClick
                 ExplicitLeft = 54
                 ExplicitTop = 2
                 ExplicitHeight = 38
@@ -359,6 +481,7 @@ inherited BrandIndexView: TBrandIndexView
                 Color = 12893085
                 ParentBackground = False
                 TabOrder = 0
+                OnClick = btnLocateCloseClick
                 object imgCancel4: TImage
                   AlignWithMargins = True
                   Left = 5
@@ -392,6 +515,7 @@ inherited BrandIndexView: TBrandIndexView
                     3E62B6D34FEA8CCBF1A8100091A3CFEBF8D278284DF073155958197D236E27A5
                     30A14F047A59A14AD02CD1BC19D70319550120E95DF85FA232F20397BB1C8499
                     AADF3F0000000049454E44AE426082}
+                  OnClick = btnLocateCloseClick
                   ExplicitTop = 4
                   ExplicitHeight = 28
                 end
@@ -460,6 +584,7 @@ inherited BrandIndexView: TBrandIndexView
             Font.Style = []
             ParentFont = False
             TabOrder = 0
+            OnSelect = cbxFilterIndexSelect
           end
           object cbxFilterSearchType: TComboBox
             Tag = 2
@@ -490,8 +615,8 @@ inherited BrandIndexView: TBrandIndexView
   object tmrDoSearch: TTimer
     Enabled = False
     Interval = 600
-    Left = 944
-    Top = 184
+    OnTimer = tmrDoSearchTimer
+    Left = 888
   end
   object ppmOptions: TJvPopupMenu
     Style = msXP
@@ -502,8 +627,7 @@ inherited BrandIndexView: TBrandIndexView
     ImageMargin.Bottom = 0
     ImageSize.Height = 0
     ImageSize.Width = 0
-    Left = 946
-    Top = 248
+    Left = 818
     object mniRegistros1: TMenuItem
       Caption = '    * Registros *    '
       Enabled = False
@@ -511,17 +635,21 @@ inherited BrandIndexView: TBrandIndexView
     object mniAppend: TMenuItem
       Caption = '        Incluir'
       ShortCut = 45
+      OnClick = btnAppendClick
     end
     object mniEdit: TMenuItem
       Caption = '        Editar'
       ShortCut = 112
+      OnClick = btnEditClick
     end
     object mniDelete: TMenuItem
       Caption = '        Deletar'
+      OnClick = btnDeleteClick
     end
     object mniView: TMenuItem
       Caption = '        Visualizar'
       ShortCut = 119
+      OnClick = btnViewClick
     end
     object N1: TMenuItem
       Caption = '-'
@@ -532,9 +660,11 @@ inherited BrandIndexView: TBrandIndexView
     end
     object mniSaveGridConfig: TMenuItem
       Caption = '        Salvar ordem dos campos'
+      OnClick = mniSaveGridConfigClick
     end
     object mniDeleteGridConfig: TMenuItem
       Caption = '        Restaurar ordem dos campos'
+      OnClick = mniDeleteGridConfigClick
     end
   end
 end

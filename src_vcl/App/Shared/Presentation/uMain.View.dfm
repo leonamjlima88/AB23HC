@@ -14,6 +14,7 @@ object MainView: TMainView
   Position = poMainFormCenter
   Scaled = False
   WindowState = wsMaximized
+  OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -304,7 +305,6 @@ object MainView: TMainView
           DC2B9333F633200CE621E609CAB77F3C0D6186304398214C10C6D88FF06D7338
           6550AE4BFD18BADEAB7F54982CE6A31970D2F75ACBA7AD13D2507ED653838489
           EDC77F6080A70D104C7F01F7111E10C2F2F74F0000000049454E44AE426082}
-        OnClick = imgDadosEmpLogoClick
       end
       object lblCompanyEin: TLabel
         Left = 372
@@ -1291,6 +1291,10 @@ object MainView: TMainView
         OnMouseMove = pgcActiveFormsMouseMove
         object TabSheet1: TTabSheet
           Caption = '     Home     '
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object pnlDashboard: TPanel
             Left = 0
             Top = 0

@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.ComCtrls, Vcl.Buttons, Vcl.Imaging.pngimage, Vcl.WinXCtrls;
+  Vcl.ComCtrls, Vcl.Buttons, Vcl.Imaging.pngimage, Vcl.WinXCtrls, Skia, Skia.Vcl;
 
 type
   TBaseCreateUpdateView = class(TForm)
@@ -32,9 +32,9 @@ type
     imgCloseTitle: TImage;
     imgMinimizeTitle: TImage;
     IndicatorLoadButtonSave: TActivityIndicator;
-    IndicatorLoadForm: TActivityIndicator;
     IndicatorLoadFormLabel: TLabel;
-    imgNoSearch2: TImage;
+    imgNoSearch: TSkAnimatedImage;
+    IndicatorLoadForm: TActivityIndicator;
     procedure imgMinimizeTitleClick(Sender: TObject); virtual;
     procedure FormCreate(Sender: TObject); virtual;
     procedure EdtFieldEnter(Sender: TObject); virtual;
@@ -64,7 +64,7 @@ uses
   uHlp,
   Vcl.DBCtrls,
   uNotificationView,
-  JvValidateEdit;
+  JvValidateEdit, uApplication.Types;
 
 Const
   COLOR_ON_ENTER: TColor = $00F3ECE4;
@@ -160,7 +160,7 @@ end;
 procedure TBaseCreateUpdateView.imgMinimizeTitleClick(Sender: TObject);
 begin
   Application.Minimize;
-  NotificationView.Execute('Sua aplicação foi minimizada!', tneInfo);
+  NotificationView.Execute(YOUR_APP_HAS_BEEN_MINIMIZED, tneInfo);
 end;
 
 procedure TBaseCreateUpdateView.pnlTitleMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -181,14 +181,18 @@ begin
   case FLoadingForm of
     True: Begin
       // Ativar Loading
-      IndicatorLoadForm.Visible      := True;
-      IndicatorLoadFormLabel.Visible := True;
-      IndicatorLoadForm.Animate      := True;
+      IndicatorLoadForm.Visible           := True;
+      IndicatorLoadForm.Animate           := True;
+      IndicatorLoadFormLabel.Visible      := True;
+      imgNoSearch.Animation.Enabled       := True;
+      imgNoSearch.Visible                 := True;
     end;
     False: Begin
-      IndicatorLoadForm.Visible      := False;
-      IndicatorLoadFormLabel.Visible := False;
-      IndicatorLoadForm.Animate      := False;
+      IndicatorLoadForm.Visible           := False;
+      IndicatorLoadForm.Animate           := False;
+      IndicatorLoadFormLabel.Visible      := False;
+      imgNoSearch.Visible                 := False;
+      imgNoSearch.Animation.Enabled       := False;
     end;
   end;
 end;

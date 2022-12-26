@@ -9,7 +9,8 @@ uses
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.StorageBin,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.StdCtrls, JvExStdCtrls, JvEdit,
   JvValidateEdit, Vcl.WinXCtrls, Vcl.ExtCtrls, Vcl.Buttons, Vcl.Grids,
-  Vcl.DBGrids, Vcl.Imaging.pngimage, JvExDBGrids, JvDBGrid, JvExControls, JvGradient;
+  Vcl.DBGrids, Vcl.Imaging.pngimage, JvExDBGrids, JvDBGrid, JvExControls, JvGradient,
+  Skia, Skia.Vcl;
 
 type
   TBaseIndexView = class(TForm)
@@ -86,7 +87,6 @@ type
     Panel3: TPanel;
     pnlDbgrid: TPanel;
     DBGrid1: TJvDBGrid;
-    imgNoSearch: TImage;
     pnlFilter: TPanel;
     pnlFilter2: TPanel;
     imgFilter: TImage;
@@ -98,10 +98,11 @@ type
     lblSearchTitle: TLabel;
     edtSearchValue: TEdit;
     pnlImgDoSearch: TPanel;
-    imgDoSearch: TImage;
-    IndicatorLoadButtonDoSearch: TActivityIndicator;
     lblNoSearch: TLabel;
     imgNoSearch2: TImage;
+    imgNoSearch: TSkAnimatedImage;
+    imgDoSearch: TImage;
+    IndicatorLoadButtonDoSearch: TActivityIndicator;
     procedure FormCreate(Sender: TObject); virtual;
     procedure FormShow(Sender: TObject); virtual;
     procedure btnFilterClick(Sender: TObject); virtual;
@@ -198,15 +199,13 @@ procedure TBaseIndexView.FormCreate(Sender: TObject);
 begin
   IndicatorLoadButtonDoSearch.Animate := False;
   IndicatorLoadButtonDoSearch.Visible := False;
-  DBGrid1.Visible   := False;
+  DBGrid1.SendToBack;
   SplitView1.Width  := 320;
   SplitView1.Opened := False;
 end;
 
 procedure TBaseIndexView.FormShow(Sender: TObject);
 begin
-  imgNoSearch.Top             := Trunc((pnlDbgrid.Height/2) - (imgNoSearch.Height/2));
-  imgNoSearch.Left            := Trunc((pnlGrid2.Width/2) - (imgNoSearch.Width/2));
   DBGrid1.AutoSizeColumnIndex := Pred(DBGrid1.Columns.Count);
   DBGrid1.AutoSizeColumns     := true;
   if edtSearchValue.CanFocus then
@@ -240,11 +239,17 @@ begin
       IndicatorLoadButtonDoSearch.Visible := True;
       IndicatorLoadButtonDoSearch.Animate := True;
       imgDoSearch.Visible                 := False;
+      imgNoSearch.Enabled                 := True;
+      DBGrid1.SendToBack;
+      DBGrid1.Visible := False;
     end;
     False: Begin
       IndicatorLoadButtonDoSearch.Visible := False;
       IndicatorLoadButtonDoSearch.Animate := False;
       imgDoSearch.Visible                 := True;
+      DBGrid1.Visible                     := True;
+      DBGrid1.BringToFront;
+      imgNoSearch.Enabled                 := False;
     End;
   end;
 end;

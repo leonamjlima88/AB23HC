@@ -4,10 +4,11 @@ interface
 
 uses
   System.SysUtils,
-  System.Classes;
+  System.Classes, System.ImageList, Vcl.ImgList, Vcl.Controls;
 
 type
   TSessionDTM = class(TDataModule)
+    imgListGrid: TImageList;
   public
   end;
 

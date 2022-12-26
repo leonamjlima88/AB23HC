@@ -8,7 +8,8 @@ uses
   Vcl.Imaging.jpeg, Vcl.ComCtrls, JvExControls, JvXPCore, JvXPBar,
   Vcl.WinXCtrls, Vcl.Imaging.pngimage, System.Actions, Vcl.ActnList,
 
-  uSmartPointer;
+  uSmartPointer,
+  uBrand.Index.View;
 
 type
   TMainView = class(TForm)
@@ -104,12 +105,13 @@ type
     procedure mniCloseOthersTabClick(Sender: TObject);
     procedure mniCloseAllTabsClick(Sender: TObject);
     procedure xpBarClick(Sender: TObject);
-    procedure imgDadosEmpLogoClick(Sender: TObject);
     procedure Image4Click(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     FTabSheetTag: Integer;
     FNetConnectedLog: IShared<TStringList>;
     FIsNetConnected: Boolean;
+    FBrandHandleLocateView: TBrandIndexView;
     procedure SetIsNetConnected(const Value: Boolean);
     procedure LoadUserLoggedOnMainScreen;
     function  LoadAndShowForm(const AFrmClass: TComponentClass; ACaption: String): TForm;
@@ -129,8 +131,9 @@ uses
   uLogin.View,
   uHlp,
   System.Threading,
-  Winapi.ShellApi, uUserLogged, uBrand.Index.View, uNotificationView,
-  uTest.View;
+  Winapi.ShellApi,
+  uUserLogged,
+  uNotificationView;
 
 procedure TMainView.actBrandExecute(Sender: TObject);
 begin
@@ -147,13 +150,9 @@ begin
   ShowTabCloseButtonOnHotTab;
 end;
 
-procedure TMainView.imgDadosEmpLogoClick(Sender: TObject);
-var
-  lView: TTestView;
+procedure TMainView.FormDestroy(Sender: TObject);
 begin
-  lView := TTestView.Create(nil);
-  lView.ShowModal;
-  lView.Free;
+  if Assigned(FBrandHandleLocateView) then FreeAndNil(FBrandHandleLocateView);
 end;
 
 procedure TMainView.FormShow(Sender: TObject);
@@ -182,8 +181,27 @@ begin
 end;
 
 procedure TMainView.Image4Click(Sender: TObject);
+var
+  lTransparentBackground: TForm;
 begin
-  StrToInt('dadsa');
+  Try
+    lTransparentBackground := TForm.Create(nil);
+    THlp.createTransparentBackground(lTransparentBackground);
+
+    // Instanciar
+    if not Assigned(FBrandHandleLocateView) then
+    begin
+      FBrandHandleLocateView := TBrandIndexView.Create(nil);
+      FBrandHandleLocateView.SetLayoutLocate(False);
+    End;
+
+    // Localizar Produto
+    if not (FBrandHandleLocateView.ShowModal = mrOK) then Exit;
+    ShowMessage(FBrandHandleLocateView.LocateResult.ToString);
+  finally
+    lTransparentBackground.Hide;
+    if Assigned(lTransparentBackground) then FreeAndNil(lTransparentBackground);
+  end;
 end;
 
 procedure TMainView.imgNetDisconnectedClick(Sender: TObject);

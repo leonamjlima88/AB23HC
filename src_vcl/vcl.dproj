@@ -104,53 +104,59 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="App\Module\AclUser\Domain\Entity\uAclUser.pas"/>
-        <DCCReference Include="App\Module\AclRole\Domain\Entity\uAclRole.pas"/>
+        <DCCReference Include="App\Shared\Presentation\uNotificationView.pas">
+            <Form>NotificationView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Shared\Presentation\uYesOrNo.View.pas">
+            <Form>YesOrNoView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Shared\Presentation\uAlert.View.pas">
+            <Form>AlertView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Brand\Presentation\uBrand.CreateUpdate.View.pas"/>
+        <DCCReference Include="App\Module\Brand\Presentation\uBrand.Index.View.pas"/>
+        <DCCReference Include="App\Shared\Presentation\uMain.View.pas">
+            <Form>MainView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Shared\Presentation\uBase.CreateUpdate.View.pas">
+            <Form>BaseCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Shared\Presentation\uBase.Index.View.pas">
+            <Form>BaseIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Brand\Domain\Service\uBrand.Service.pas"/>
+        <DCCReference Include="App\Module\Brand\Domain\Entity\uBrand.pas"/>
+        <DCCReference Include="App\Shared\Infra\uApplication.Types.pas"/>
+        <DCCReference Include="App\Module\AclUser\Presentation\uLogin.View.pas">
+            <Form>LoginView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <DCCReference Include="App\Shared\Domain\Entity\uBase.Entity.pas"/>
+        <DCCReference Include="App\Shared\Infra\uIndexResult.pas"/>
+        <DCCReference Include="App\Shared\Infra\uHandle.Exception.pas"/>
         <DCCReference Include="Config\Infra\uSession.DTM.pas">
             <Form>SessionDTM</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="uMain.View.pas">
-            <Form>MainView</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="App\Module\AclUser\Presentation\uLogin.View.pas">
-            <Form>LoginView</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uUserLogged.pas"/>
-        <DCCReference Include="uEnv.pas"/>
-        <DCCReference Include="uHlp.pas"/>
-        <DCCReference Include="uBase.CreateUpdate.View.pas">
-            <Form>BaseCreateUpdateView</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uBase.Index.View.pas">
-            <Form>BaseIndexView</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uNotificationView.pas">
-            <Form>NotificationView</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uBrand.Index.View.pas">
-            <Form>BrandIndexView</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uMemTable.Factory.pas"/>
-        <DCCReference Include="uTest.View.pas">
-            <Form>TestView</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uBrand.pas"/>
-        <DCCReference Include="uHandle.Exception.pas"/>
-        <DCCReference Include="uBrand.Service.pas"/>
-        <DCCReference Include="uReq.pas"/>
-        <DCCReference Include="uEither.pas"/>
-        <DCCReference Include="uObservable.pas"/>
-        <DCCReference Include="uObserver.pas"/>
+        <DCCReference Include="App\Shared\Infra\uPageFilter.pas"/>
+        <DCCReference Include="App\Shared\Infra\uReq.pas"/>
+        <DCCReference Include="App\Shared\Infra\uHlp.pas"/>
+        <DCCReference Include="App\Shared\Domain\Entity\uObservable.pas"/>
+        <DCCReference Include="App\Shared\Domain\Entity\uObserver.pas"/>
+        <DCCReference Include="App\Shared\Infra\uMemTable.Factory.pas"/>
+        <DCCReference Include="App\Shared\Infra\uEnv.pas"/>
+        <DCCReference Include="App\Module\AclUser\Domain\Entity\uUserLogged.pas"/>
+        <DCCReference Include="App\Module\AclUser\Domain\Entity\uAclUser.pas"/>
+        <DCCReference Include="App\Module\AclRole\Domain\Entity\uAclRole.pas"/>
+        <DCCReference Include="App\Shared\Infra\uEither.pas"/>
+        <DCCReference Include="App\Shared\Infra\uSearchColumns.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

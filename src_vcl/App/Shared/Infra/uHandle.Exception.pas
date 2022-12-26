@@ -35,6 +35,7 @@ uses
 
 CONST
   SERVER_HAS_GONE_AWAY = 'server has gone away';
+  CONNECTION_TO_SERVER_FAILED = 'uma conexão com o servidor não pôde ser estabelecida';
   UNKNOWN_MYSQL_SERVER_HOST = 'unknown mysql server host';
   ERROR_IN_SQL_SYNTAX = 'you have an error in your sql syntax';
   ERROR_IN_SQL_FK_FAILS = 'cannot delete or update a parent row: a foreign key constraint fails';
@@ -91,8 +92,14 @@ begin
   Result := EmptyStr;
   ATechnicalMessage := ATechnicalMessage.ToLower.Trim;
 
+  if (Pos(CONNECTION_TO_SERVER_FAILED, ATechnicalMessage) > 0) then
+    Result := 'A conexão com o servidor falhou.' + #13 +
+              'Verifique suas configurações de rede e internet.' + #13 +
+              'Verifique se o servidor está ligado, conectado, em rede.' + #13 +
+              'Se necessário, reinicie seu modem de internet, servidor e terminal.';
+
   if (Pos(SERVER_HAS_GONE_AWAY, ATechnicalMessage) > 0) or (Pos(UNKNOWN_MYSQL_SERVER_HOST, ATechnicalMessage) > 0) then
-    Result := 'A conexão de rede falhou. Verifique as configurações de rede e internet.';
+    Result := 'A conexão de rede falhou. Verifique suas configurações de rede e internet.';
 
   if (Pos(ERROR_IN_SQL_SYNTAX, ATechnicalMessage) > 0) Then
     Result := 'Erro de sintaxe SQL.';

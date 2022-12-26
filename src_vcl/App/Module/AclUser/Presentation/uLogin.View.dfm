@@ -15,6 +15,7 @@ object LoginView: TLoginView
   OldCreateOrder = False
   Position = poDesktopCenter
   Scaled = False
+  OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
@@ -289,6 +290,13 @@ object LoginView: TLoginView
                 5CC0FFDA3779F32588ACDAD4B00000000049454E44AE426082}
               ExplicitLeft = 13
               ExplicitTop = 10
+            end
+            object ActivityIndicator1: TActivityIndicator
+              Left = 6
+              Top = 5
+              IndicatorColor = aicWhite
+              IndicatorSize = aisSmall
+              IndicatorType = aitSectorRing
             end
           end
         end
