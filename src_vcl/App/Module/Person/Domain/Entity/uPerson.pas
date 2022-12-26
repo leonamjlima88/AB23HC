@@ -1,4 +1,4 @@
-unit uBrand;
+unit uPerson;
 
 interface
 
@@ -7,10 +7,12 @@ uses
   uAclUser;
 
 type
-  TBrand = class(TBaseEntity)
+  TPerson = class(TBaseEntity)
   private
     Fid: Int64;
     Fname: string;
+    Falias_name: string;
+    Fis_customer: SmallInt;
     Fupdated_at: TDateTime;
     Fcreated_at: TDateTime;
     Fupdated_by_acl_user_id: Int64;
@@ -25,6 +27,8 @@ type
 
     property id: Int64 read Fid write Fid;
     property name: string read Fname write Fname;
+    property is_customer: SmallInt read Fis_customer write Fis_customer;
+    property alias_name: string read Falias_name write Falias_name;
     property created_at: TDateTime read Fcreated_at write Fcreated_at;
     property updated_at: TDateTime read Fupdated_at write Fupdated_at;
     property created_by_acl_user_id: Int64 read Fcreated_by_acl_user_id write Fcreated_by_acl_user_id;
@@ -44,22 +48,22 @@ uses
   System.SysUtils,
   uUserLogged;
 
-{ TBrand }
+{ TPerson }
 
-constructor TBrand.Create;
+constructor TPerson.Create;
 begin
   inherited Create;
   Initialize;
 end;
 
-destructor TBrand.Destroy;
+destructor TPerson.Destroy;
 begin
   if Assigned(Fcreated_by_acl_user) then Fcreated_by_acl_user.Free;
   if Assigned(Fupdated_by_acl_user) then Fupdated_by_acl_user.Free;
   inherited;
 end;
 
-procedure TBrand.Initialize;
+procedure TPerson.Initialize;
 begin
   Fcreated_at               := now;
   Fcreated_by_acl_user      := TAclUser.Create;
@@ -67,9 +71,10 @@ begin
   Fcreated_by_acl_user_id   := UserLogged.Current.id;
   Fcreated_by_acl_user.id   := UserLogged.Current.id;
   Fcreated_by_acl_user.name := UserLogged.Current.name;
+  Fis_customer              := 1;
 end;
 
-function TBrand.Validate: String;
+function TPerson.Validate: String;
 var
   lIsInserting: Boolean;
   lErrors: String;
@@ -77,7 +82,10 @@ begin
   lIsInserting := id = 0;
 
   if Fname.Trim.IsEmpty then
-    lErrors := lErrors + 'O campo [Nome] é obrigatório' + #13;
+    lErrors := lErrors + 'O campo [Razão/Nome] é obrigatório' + #13;
+
+  if Falias_name.Trim.IsEmpty then
+    lErrors := lErrors + 'O campo [Fantasia/Apelido] é obrigatório' + #13;
 
   Result := lErrors;
 end;

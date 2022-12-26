@@ -1,9 +1,9 @@
-unit uBrand.Service;
+unit uPerson.Service;
 
 interface
 
 uses
-  uBrand,
+  uPerson,
   uZLMemTable.Interfaces,
   uReq,
   uEither,
@@ -11,25 +11,25 @@ uses
   uIndexResult;
 
 type
-  IBrandService = Interface
+  IPersonService = Interface
     ['{87DB5C73-D62B-4C23-B730-1CCDEB79D11E}']
     function Delete(AId: Int64): Boolean;
     function Index(APageFilter: IPageFilter): IIndexResult;
-    function Show(AId: Int64): TBrand;
-    function Store(ABrand: TBrand): Either<String, TBrand>;
-    function Update(ABrand: TBrand; AId: Int64): Either<String, TBrand>;
+    function Show(AId: Int64): TPerson;
+    function Store(APerson: TPerson): Either<String, TPerson>;
+    function Update(APerson: TPerson; AId: Int64): Either<String, TPerson>;
   end;
 
-  TBrandService = class(TInterfacedObject, IBrandService)
+  TPersonService = class(TInterfacedObject, IPersonService)
   private
     FRes: IRes;
   public
-    class function Make: IBrandService;
+    class function Make: IPersonService;
     function Delete(AId: Int64): Boolean;
     function Index(APageFilter: IPageFilter): IIndexResult;
-    function Show(AId: Int64): TBrand;
-    function Store(ABrand: TBrand): Either<String, TBrand>;
-    function Update(ABrand: TBrand; AId: Int64): Either<String, TBrand>;
+    function Show(AId: Int64): TPerson;
+    function Store(APerson: TPerson): Either<String, TPerson>;
+    function Update(APerson: TPerson; AId: Int64): Either<String, TPerson>;
     function CreateMemTableStructureForIndex: IZLMemTable;
   end;
 
@@ -45,33 +45,34 @@ uses
   uApplication.Types;
 
 const
-  RESOURCE = '/brands/';
+  RESOURCE = '/persons/';
 
-{ TBrandService }
+{ TPersonService }
 
-function TBrandService.CreateMemTableStructureForIndex: IZLMemTable;
+function TPersonService.CreateMemTableStructureForIndex: IZLMemTable;
 begin
   Result := TMemTableFactory.Make
-    .AddField('id',                     ftLargeint)
-    .AddField('name',                   ftString, 100)
-    .AddField('created_at',             ftDateTime)
-    .AddField('updated_at',             ftDateTime)
-    .AddField('created_by_acl_user_id', ftLargeint)
-    .AddField('updated_by_acl_user_id', ftLargeint)
+    .AddField('id',                       ftLargeint)
+    .AddField('name',                     ftString, 100)
+    .AddField('alias_name',               ftString, 100)
+    .AddField('created_at',               ftDateTime)
+    .AddField('updated_at',               ftDateTime)
+    .AddField('created_by_acl_user_id',   ftLargeint)
+    .AddField('updated_by_acl_user_id',   ftLargeint)
     .AddField('created_by_acl_user_name', ftString, 100)
     .AddField('updated_by_acl_user_name', ftString, 100)
     .CreateDataSet
     .Active(True);
 end;
 
-function TBrandService.Delete(AId: Int64): Boolean;
+function TPersonService.Delete(AId: Int64): Boolean;
 begin
   // Efetuar requisição
   TReq.Make(RESOURCE+AId.ToString).Execute(rtDelete);
   Result := True;
 end;
 
-function TBrandService.Index(APageFilter: IPageFilter): IIndexResult;
+function TPersonService.Index(APageFilter: IPageFilter): IIndexResult;
 var
   lIndexResult: IIndexResult;
   lSObj: ISuperObject;
@@ -109,12 +110,12 @@ begin
     .ETag                   (THlp.ExtractFromHeader('etag', FRes.Headers))
 end;
 
-class function TBrandService.Make: IBrandService;
+class function TPersonService.Make: IPersonService;
 begin
   Result := Self.Create;
 end;
 
-function TBrandService.Show(AId: Int64): TBrand;
+function TPersonService.Show(AId: Int64): TPerson;
 var
   lSObj: ISuperObject;
 begin
@@ -132,7 +133,7 @@ begin
 
   // Retornar registro localizado
   lSObj  := SO(FRes.Content);
-  Result := TBrand.FromJSON(lSObj.O['data']);
+  Result := TPerson.FromJSON(lSObj.O['data']);
 
   // Tratar campos diferenciados
   Result.created_by_acl_user.id   := lSObj.O['data'].I['created_by_acl_user_id'];
@@ -141,12 +142,12 @@ begin
   Result.updated_by_acl_user.name := lSObj.O['data'].S['updated_by_acl_user_name'];
 end;
 
-function TBrandService.Store(ABrand: TBrand): Either<String, TBrand>;
+function TPersonService.Store(APerson: TPerson): Either<String, TPerson>;
 var
   lErrors: String;
 begin
   // Validar antes de Incluir
-  lErrors := ABrand.Validate;
+  lErrors := APerson.Validate;
   if not lErrors.Trim.IsEmpty then
   begin
     Result := lErrors;
@@ -154,7 +155,7 @@ begin
   end;
 
   // Efetuar requisição
-  FRes := TReq.Make(RESOURCE, ABrand.AsJSON).Execute(rtPost);
+  FRes := TReq.Make(RESOURCE, APerson.AsJSON).Execute(rtPost);
 
   // Falha na requisição
   if not (FRes.StatusCode = HTTP_CREATED) then
@@ -164,16 +165,16 @@ begin
   end;
 
   // Retornar registro incluso
-  Result := TBrand.FromJSON(SO(FRes.Content).O['data']);
+  Result := TPerson.FromJSON(SO(FRes.Content).O['data']);
 end;
 
-function TBrandService.Update(ABrand: TBrand; AId: Int64): Either<String, TBrand>;
+function TPersonService.Update(APerson: TPerson; AId: Int64): Either<String, TPerson>;
 var
   lErrors: String;
 begin
   // Validar antes de Atualizar
-  ABrand.id := AId;
-  lErrors   := ABrand.Validate;
+  APerson.id := AId;
+  lErrors   := APerson.Validate;
   if not lErrors.Trim.IsEmpty then
   begin
     Result := lErrors;
@@ -181,7 +182,7 @@ begin
   end;
 
   // Efetuar requisição
-  FRes := TReq.Make(RESOURCE+AId.ToString, ABrand.AsJSON).Execute(rtPut);
+  FRes := TReq.Make(RESOURCE+AId.ToString, APerson.AsJSON).Execute(rtPut);
 
   // Falha na requisição
   if not (FRes.StatusCode = HTTP_OK) then
@@ -191,7 +192,7 @@ begin
   end;
 
   // Retornar registro atualizado
-  Result := TBrand.FromJSON(SO(FRes.Content).O['data']);
+  Result := TPerson.FromJSON(SO(FRes.Content).O['data']);
 end;
 
 end.

@@ -157,6 +157,16 @@
         <DCCReference Include="App\Module\AclRole\Domain\Entity\uAclRole.pas"/>
         <DCCReference Include="App\Shared\Infra\uEither.pas"/>
         <DCCReference Include="App\Shared\Infra\uSearchColumns.pas"/>
+        <DCCReference Include="App\Module\Person\Presentation\uPerson.Index.View.pas">
+            <Form>PersonIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Person\Presentation\uPerson.CreateUpdate.View.pas">
+            <Form>PersonCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Person\Domain\Service\uPerson.Service.pas"/>
+        <DCCReference Include="App\Module\Person\Domain\Entity\uPerson.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

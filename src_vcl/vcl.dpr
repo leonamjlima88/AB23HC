@@ -30,7 +30,11 @@ uses
   uAclUser in 'App\Module\AclUser\Domain\Entity\uAclUser.pas',
   uAclRole in 'App\Module\AclRole\Domain\Entity\uAclRole.pas',
   uEither in 'App\Shared\Infra\uEither.pas',
-  uSearchColumns in 'App\Shared\Infra\uSearchColumns.pas';
+  uSearchColumns in 'App\Shared\Infra\uSearchColumns.pas',
+  uPerson.Index.View in 'App\Module\Person\Presentation\uPerson.Index.View.pas' {PersonIndexView},
+  uPerson.CreateUpdate.View in 'App\Module\Person\Presentation\uPerson.CreateUpdate.View.pas' {PersonCreateUpdateView},
+  uPerson.Service in 'App\Module\Person\Domain\Service\uPerson.Service.pas',
+  uPerson in 'App\Module\Person\Domain\Entity\uPerson.pas';
 
 {$R *.res}
 

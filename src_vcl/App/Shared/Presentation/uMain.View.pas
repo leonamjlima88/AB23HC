@@ -107,6 +107,7 @@ type
     procedure xpBarClick(Sender: TObject);
     procedure Image4Click(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure actPersonExecute(Sender: TObject);
   private
     FTabSheetTag: Integer;
     FNetConnectedLog: IShared<TStringList>;
@@ -133,7 +134,8 @@ uses
   System.Threading,
   Winapi.ShellApi,
   uUserLogged,
-  uNotificationView;
+  uNotificationView,
+  uPerson.Index.View;
 
 procedure TMainView.actBrandExecute(Sender: TObject);
 begin
@@ -148,6 +150,11 @@ begin
   pgcActiveForms.Pages[btnCloseTabSheet.Tag].Free;
   pgcActiveForms.ActivePageIndex := Pred(btnCloseTabSheet.Tag);
   ShowTabCloseButtonOnHotTab;
+end;
+
+procedure TMainView.actPersonExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TPersonIndexView, 'Pessoa');
 end;
 
 procedure TMainView.FormDestroy(Sender: TObject);

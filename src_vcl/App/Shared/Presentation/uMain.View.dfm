@@ -1291,10 +1291,6 @@ object MainView: TMainView
         OnMouseMove = pgcActiveFormsMouseMove
         object TabSheet1: TTabSheet
           Caption = '     Home     '
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object pnlDashboard: TPanel
             Left = 0
             Top = 0
@@ -14202,6 +14198,7 @@ object MainView: TMainView
     object actPerson: TAction
       Category = 'Registration'
       Caption = 'Pessoa'
+      OnExecute = actPersonExecute
     end
     object actCity: TAction
       Category = 'Registration'

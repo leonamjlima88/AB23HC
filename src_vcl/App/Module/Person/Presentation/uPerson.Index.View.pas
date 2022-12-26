@@ -1,4 +1,4 @@
-unit uBrand.Index.View;
+unit uPerson.Index.View;
 
 interface
 
@@ -14,11 +14,11 @@ uses
   uIndexResult,
   Skia,
   Skia.Vcl,
-  uBrand,
+  uPerson,
   uApplication.Types;
 
 type
-  TBrandIndexView = class(TBaseIndexView)
+  TPersonIndexView = class(TBaseIndexView)
     tmrDoSearch: TTimer;
     pnlLocate: TPanel;
     imgLocateAppend: TImage;
@@ -82,7 +82,7 @@ type
     FLocateResult: Integer;
     procedure CleanFilter;
     procedure DoSearch(ACurrentPage: Integer = 1; ATryLocateId: Int64 = 0);
-    procedure RefreshIndexWithoutRequestAPI(AEntity: TBrand; AEntityState: TEntityState);
+    procedure RefreshIndexWithoutRequestAPI(AEntity: TPerson; AEntityState: TEntityState);
     procedure SetLocateResult(const Value: Integer);
   public
     class function HandleLocate: Int64;
@@ -91,7 +91,7 @@ type
   end;
 
 var
-  BrandIndexView: TBrandIndexView;
+  PersonIndexView: TPersonIndexView;
 
 implementation
 
@@ -100,12 +100,12 @@ implementation
 uses
   uHlp,
   Quick.Threads,
-  uBrand.Service,
+  uPerson.Service,
   uPageFilter,
   uSession.DTM,
   System.StrUtils,
   uHandle.Exception,
-  uBrand.CreateUpdate.View,
+  uPerson.CreateUpdate.View,
   uSmartPointer,
   uNotificationView,
   uYesOrNo.View,
@@ -114,7 +114,7 @@ uses
   XSuperObject,
   uUserLogged;
 
-procedure TBrandIndexView.RefreshIndexWithoutRequestAPI(AEntity: TBrand; AEntityState: TEntityState);
+procedure TPersonIndexView.RefreshIndexWithoutRequestAPI(AEntity: TPerson; AEntityState: TEntityState);
 var
   lKeepGoing: Boolean;
 begin
@@ -149,7 +149,7 @@ begin
   end;
 end;
 
-procedure TBrandIndexView.SetLayoutLocate(ABackgroundTransparent: Boolean);
+procedure TPersonIndexView.SetLayoutLocate(ABackgroundTransparent: Boolean);
 const
   L_ACTIONS: TArray<String> = ['action_edit','action_delete','action_view','action_option'];
 var
@@ -162,7 +162,7 @@ begin
   pnlLocate.Align    := alBottom;
   pnlNavigator.Align := alBottom;
 
-  lblTitle.Caption           := 'Pesquisando... Marcas';
+  lblTitle.Caption           := 'Pesquisando... Pessoas';
   pnlAppend.Width            := 0;
   Self.BorderStyle           := bsNone;
   pnlBackground.BorderWidth  := 1;
@@ -178,14 +178,14 @@ begin
   end;
 end;
 
-procedure TBrandIndexView.SetLocateResult(const Value: Integer);
+procedure TPersonIndexView.SetLocateResult(const Value: Integer);
 begin
   FLocateResult := Value;
 end;
 
-procedure TBrandIndexView.btnAppendClick(Sender: TObject);
+procedure TPersonIndexView.btnAppendClick(Sender: TObject);
 var
-  lStored: Shared<TBrand>;
+  lStored: Shared<TPerson>;
 begin
   inherited;
 
@@ -195,7 +195,7 @@ begin
     DBGrid1.Enabled   := False;
 
     // Incluir Novo Registro
-    lStored := TBrandCreateUpdateView.Handle(TEntityState.esStore);
+    lStored := TPersonCreateUpdateView.Handle(TEntityState.esStore);
     if not Assigned(lStored.Value) then
       Exit;
 
@@ -209,7 +209,7 @@ begin
   End;
 end;
 
-procedure TBrandIndexView.btnDeleteClick(Sender: TObject);
+procedure TPersonIndexView.btnDeleteClick(Sender: TObject);
 var
   lKeepGoing: Boolean;
 begin
@@ -224,7 +224,7 @@ begin
 
   Try
     pnlBackground.Enabled := False;
-    if not TBrandService.Make.Delete(dtsIndex.DataSet.Fields[0].AsLargeInt) then
+    if not TPersonService.Make.Delete(dtsIndex.DataSet.Fields[0].AsLargeInt) then
     begin
       TAlertView.Handle(RECORD_DELETION_FAILED);
       Exit;
@@ -238,10 +238,10 @@ begin
   End;
 end;
 
-procedure TBrandIndexView.btnEditClick(Sender: TObject);
+procedure TPersonIndexView.btnEditClick(Sender: TObject);
 var
   lKeepGoing: Boolean;
-  lUpdated: Shared<TBrand>;
+  lUpdated: Shared<TPerson>;
 begin
   // Evitar erros
   lKeepGoing := Assigned(dtsIndex.DataSet) and dtsIndex.DataSet.Active and (dtsIndex.DataSet.RecordCount > 0) and (dtsIndex.DataSet.Fields[0].AsLargeInt > 0) and (LoadingSearch = False);
@@ -252,7 +252,7 @@ begin
     pnlBackground.Enabled := False;
 
     // Editar Registro
-    lUpdated := TBrandCreateUpdateView.Handle(TEntityState.esUpdate, dtsIndex.DataSet.Fields[0].AsLargeInt);
+    lUpdated := TPersonCreateUpdateView.Handle(TEntityState.esUpdate, dtsIndex.DataSet.Fields[0].AsLargeInt);
     if not Assigned(lUpdated.Value) then
       Exit;
 
@@ -265,14 +265,14 @@ begin
   End;
 end;
 
-procedure TBrandIndexView.btnLocateCloseClick(Sender: TObject);
+procedure TPersonIndexView.btnLocateCloseClick(Sender: TObject);
 begin
   inherited;
   FLocateResult := -1;
   ModalResult   := MrCancel;
 end;
 
-procedure TBrandIndexView.btnLocateConfirmClick(Sender: TObject);
+procedure TPersonIndexView.btnLocateConfirmClick(Sender: TObject);
 var
   lKeepGoing: Boolean;
 begin
@@ -285,7 +285,7 @@ begin
   ModalResult   := mrOK;
 end;
 
-procedure TBrandIndexView.btnNavigationClick(Sender: TObject);
+procedure TPersonIndexView.btnNavigationClick(Sender: TObject);
 begin
   inherited;
 
@@ -318,7 +318,7 @@ begin
   end;
 end;
 
-procedure TBrandIndexView.btnSplitViewApplyClick(Sender: TObject);
+procedure TPersonIndexView.btnSplitViewApplyClick(Sender: TObject);
 begin
   inherited;
   SplitView1.Opened := False;
@@ -327,7 +327,7 @@ begin
     edtSearchValue.SetFocus;
 end;
 
-procedure TBrandIndexView.btnViewClick(Sender: TObject);
+procedure TPersonIndexView.btnViewClick(Sender: TObject);
 var
   lKeepGoing: Boolean;
 begin
@@ -337,16 +337,16 @@ begin
     Exit;
 
   // Visualizar Registro
-  TBrandCreateUpdateView.Handle(TEntityState.esView, dtsIndex.DataSet.Fields[0].AsLargeInt);
+  TPersonCreateUpdateView.Handle(TEntityState.esView, dtsIndex.DataSet.Fields[0].AsLargeInt);
 end;
 
-procedure TBrandIndexView.cbxFilterIndexSelect(Sender: TObject);
+procedure TPersonIndexView.cbxFilterIndexSelect(Sender: TObject);
 begin
   inherited;
   lblSearchTitle.Caption := 'F5 - Pesquise por: "' + cbxFilterIndex.Text + '"';
 end;
 
-procedure TBrandIndexView.CleanFilter;
+procedure TPersonIndexView.CleanFilter;
 begin
   // Modo de Pesquisa
   cbxFilterSearchType.ItemIndex := 1; //THlp.StrInt(SessionDTM.AppParamConfig.GetParam(APC_GERAL_FILTER_SEARCH_TYPE),1);
@@ -358,7 +358,7 @@ begin
   cbxFilterIndexSelect(cbxFilterIndex);
 
   // Ordenar por
-  FFilterOrderBy := 'brand.name';
+  FFilterOrderBy := 'person.name';
 
   // Limite de Registros p/ Página
   edtNavLimitPerPage.Text := '50'; //THlp.StrInt(SessionDTM.AppParamConfig.GetParam(APC_GERAL_LIMIT_PER_PAGE),50).ToString;
@@ -369,7 +369,7 @@ begin
   edtSearchValue.OnChange := edtSearchValueChange;
 end;
 
-procedure TBrandIndexView.DBGrid1CellClick(Column: TColumn);
+procedure TPersonIndexView.DBGrid1CellClick(Column: TColumn);
 var
   lKeepGoing: Boolean;
 begin
@@ -391,7 +391,7 @@ begin
     btnViewClick(DBGrid1);
 end;
 
-procedure TBrandIndexView.DBGrid1DblClick(Sender: TObject);
+procedure TPersonIndexView.DBGrid1DblClick(Sender: TObject);
 begin
   inherited;
   case FLayoutLocate of
@@ -400,7 +400,7 @@ begin
   end;
 end;
 
-procedure TBrandIndexView.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+procedure TPersonIndexView.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
 Var
   lI: Integer;
   lKeepGoing: Boolean;
@@ -432,7 +432,7 @@ begin
   end;
 end;
 
-procedure TBrandIndexView.DBGrid1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPersonIndexView.DBGrid1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   inherited;
 
@@ -459,7 +459,7 @@ begin
   End;
 end;
 
-procedure TBrandIndexView.DBGrid1TitleClick(Column: TColumn);
+procedure TPersonIndexView.DBGrid1TitleClick(Column: TColumn);
 const
   L_ACTIONS: TArray<String> = ['action_edit','action_delete','action_view','action_option'];
   L_DESC = ':D';
@@ -498,7 +498,7 @@ begin
 
 
     // OrderBy e Indexador
-    FFilterOrderBy := 'brand.'+lSelectedColumn;
+    FFilterOrderBy := 'person.'+lSelectedColumn;
 
     // OrderBy e Indexador (Virtual)
     if (lSelectedColumn = 'created_by_acl_user_name') then FFilterOrderBy := 'created_by_acl_user.name';
@@ -522,7 +522,7 @@ begin
   end;
 end;
 
-procedure TBrandIndexView.DoSearch(ACurrentPage: Integer; ATryLocateId: Int64);
+procedure TPersonIndexView.DoSearch(ACurrentPage: Integer; ATryLocateId: Int64);
 var
   lCondOperator: TcondOperator;
   lPageFilter: IPageFilter;
@@ -581,7 +581,7 @@ begin
     begin
       // Adicionar ultima pesquisa como referência e pesquisar
       lPageFilter.LastIndexResult(FIndexResult);
-      FIndexResult := TBrandService.Make.Index(lPageFilter);
+      FIndexResult := TPersonService.Make.Index(lPageFilter);
       Sleep(500);
     end)
   .OnException_Sync(
@@ -627,7 +627,7 @@ begin
   .Run;
 end;
 
-procedure TBrandIndexView.edtSearchValueChange(Sender: TObject);
+procedure TPersonIndexView.edtSearchValueChange(Sender: TObject);
 begin
   inherited;
   if tmrDoSearch.Enabled then
@@ -636,7 +636,7 @@ begin
   tmrDoSearch.Enabled := True;
 end;
 
-procedure TBrandIndexView.edtSearchValueKeyPress(Sender: TObject; var Key: Char);
+procedure TPersonIndexView.edtSearchValueKeyPress(Sender: TObject; var Key: Char);
 begin
   inherited;
 
@@ -653,16 +653,16 @@ begin
   End;
 end;
 
-procedure TBrandIndexView.FormCreate(Sender: TObject);
+procedure TPersonIndexView.FormCreate(Sender: TObject);
 begin
   inherited;
 
   // Colunas de Pesquisa da Tabela
   FSearchColumns := TSearchColumns.Make
-    .AddColumn   ('brand.id', 'ID', True)
-    .AddColumn   ('brand.name', 'Nome', True)
-    .AddColumn   ('brand.created_at', 'Criado em (Data)', False)
-    .AddColumn   ('brand.updated_at', 'Atualizado em (Data)', False)
+    .AddColumn   ('person.id', 'ID', True)
+    .AddColumn   ('person.name', 'Nome', True)
+    .AddColumn   ('person.created_at', 'Criado em (Data)', False)
+    .AddColumn   ('person.updated_at', 'Atualizado em (Data)', False)
     .AddColumn   ('created_by_acl_user.name', 'Criado por (Nome)', False)
     .AddColumn   ('updated_by_acl_user.name', 'Atualizado por (Nome)', False)
     .LabelForCustomSearch ('ID ou Nome');
@@ -678,7 +678,7 @@ begin
   DoSearch;
 end;
 
-procedure TBrandIndexView.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPersonIndexView.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   inherited;
 
@@ -705,12 +705,12 @@ begin
   end;
 end;
 
-class function TBrandIndexView.HandleLocate: Int64;
+class function TPersonIndexView.HandleLocate: Int64;
 var
-  lView: TBrandIndexView;
+  lView: TPersonIndexView;
 begin
   Try
-    lView := TBrandIndexView.Create(nil);
+    lView := TPersonIndexView.Create(nil);
     lView.SetLayoutLocate;
     case (lView.ShowModal = mrOK) of
       True:  Result := lView.LocateResult;
@@ -722,32 +722,32 @@ begin
   End;
 end;
 
-procedure TBrandIndexView.imgDoSearchClick(Sender: TObject);
+procedure TPersonIndexView.imgDoSearchClick(Sender: TObject);
 begin
   inherited;
   DoSearch;
 end;
 
-procedure TBrandIndexView.imgFilterCleanClick(Sender: TObject);
+procedure TPersonIndexView.imgFilterCleanClick(Sender: TObject);
 begin
   inherited;
   CleanFilter;
 end;
 
-procedure TBrandIndexView.imgOptionsClick(Sender: TObject);
+procedure TPersonIndexView.imgOptionsClick(Sender: TObject);
 begin
   inherited;
   ppmOptions.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
 end;
 
-procedure TBrandIndexView.imgSearchClearClick(Sender: TObject);
+procedure TPersonIndexView.imgSearchClearClick(Sender: TObject);
 begin
   inherited;
   CleanFilter;
   DoSearch;
 end;
 
-procedure TBrandIndexView.mniDeleteGridConfigClick(Sender: TObject);
+procedure TPersonIndexView.mniDeleteGridConfigClick(Sender: TObject);
 begin
   inherited;
   // Excluir Grid
@@ -755,7 +755,7 @@ begin
   NotificationView.Execute('Feche e abra a janela para carregar a nova configuração.');
 end;
 
-procedure TBrandIndexView.mniSaveGridConfigClick(Sender: TObject);
+procedure TPersonIndexView.mniSaveGridConfigClick(Sender: TObject);
 begin
   inherited;
   // Salvar Config do Grid
@@ -763,7 +763,7 @@ begin
   NotificationView.Execute('Grade Salva');
 end;
 
-procedure TBrandIndexView.tmrDoSearchTimer(Sender: TObject);
+procedure TPersonIndexView.tmrDoSearchTimer(Sender: TObject);
 begin
   inherited;
   tmrDoSearch.Enabled := False;
