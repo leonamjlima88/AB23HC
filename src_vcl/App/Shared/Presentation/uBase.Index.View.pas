@@ -19,7 +19,6 @@ type
     pnlContent: TPanel;
     pnlTitle: TPanel;
     lblTitle: TLabel;
-    imgTitle: TImage;
     pnlTitleBottomBar: TPanel;
     scbContent: TScrollBox;
     pnlGrid: TPanel;
@@ -103,6 +102,7 @@ type
     imgNoSearch: TSkAnimatedImage;
     imgDoSearch: TImage;
     IndicatorLoadButtonDoSearch: TActivityIndicator;
+    imgTitle: TImage;
     procedure FormCreate(Sender: TObject); virtual;
     procedure FormShow(Sender: TObject); virtual;
     procedure btnFilterClick(Sender: TObject); virtual;

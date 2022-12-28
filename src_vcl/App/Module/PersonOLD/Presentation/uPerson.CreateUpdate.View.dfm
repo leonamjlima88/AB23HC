@@ -1,6 +1,7 @@
 inherited PersonCreateUpdateView: TPersonCreateUpdateView
   ClientHeight = 600
   ClientWidth = 600
+  OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   ExplicitWidth = 600
@@ -34,6 +35,7 @@ inherited PersonCreateUpdateView: TPersonCreateUpdateView
           inherited pnlSave2: TPanel
             inherited btnSave: TSpeedButton
               OnClick = btnSaveClick
+              ExplicitLeft = 62
             end
             inherited pnlSave3: TPanel
               OnClick = btnSaveClick
@@ -112,9 +114,9 @@ inherited PersonCreateUpdateView: TPersonCreateUpdateView
             object Label3: TLabel
               Left = 20
               Top = 80
-              Width = 68
+              Width = 76
               Height = 14
-              Caption = 'Raz'#227'o/Nome'
+              Caption = 'Raz'#227'o / Nome'
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -12
@@ -138,9 +140,9 @@ inherited PersonCreateUpdateView: TPersonCreateUpdateView
             object Label1: TLabel
               Left = 20
               Top = 126
-              Width = 88
+              Width = 96
               Height = 14
-              Caption = 'Fantasia/Apelido'
+              Caption = 'Fantasia / Apelido'
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -12
@@ -171,15 +173,13 @@ inherited PersonCreateUpdateView: TPersonCreateUpdateView
               ParentBackground = False
               TabOrder = 2
             end
-            object edtId: TDBEdit
+            object edtId: TEdit
               Left = 10
               Top = 49
               Width = 50
               Height = 26
               TabStop = False
               Color = 16053492
-              DataField = 'id'
-              DataSource = dtsPerson
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clGray
               Font.Height = -15
@@ -191,13 +191,11 @@ inherited PersonCreateUpdateView: TPersonCreateUpdateView
               OnClick = EdtFieldClick
               OnKeyDown = EdtFieldKeyDown
             end
-            object edtname: TDBEdit
+            object edtname: TEdit
               Left = 10
               Top = 95
               Width = 550
               Height = 26
-              DataField = 'name'
-              DataSource = dtsPerson
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -15
@@ -209,13 +207,11 @@ inherited PersonCreateUpdateView: TPersonCreateUpdateView
               OnExit = EdtFieldExit
               OnKeyDown = EdtFieldKeyDown
             end
-            object DBEdit1: TDBEdit
+            object edtalias_name: TEdit
               Left = 10
               Top = 141
               Width = 550
               Height = 26
-              DataField = 'alias_name'
-              DataSource = dtsPerson
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -15
@@ -226,110 +222,6 @@ inherited PersonCreateUpdateView: TPersonCreateUpdateView
               OnEnter = EdtFieldEnter
               OnExit = EdtFieldExit
               OnKeyDown = EdtFieldKeyDown
-            end
-            object DBCheckBox1: TDBCheckBox
-              Left = 11
-              Top = 184
-              Width = 97
-              Height = 17
-              Caption = 'Cliente?'
-              DataField = 'is_customer'
-              DataSource = dtsPerson
-              TabOrder = 4
-              ValueChecked = '1'
-              ValueUnchecked = '0'
-            end
-            object dbgPersonContactList: TJvDBGrid
-              Left = 10
-              Top = 240
-              Width = 550
-              Height = 201
-              Cursor = crHandPoint
-              Color = 16579576
-              DrawingStyle = gdsGradient
-              FixedColor = 16381936
-              GradientEndColor = 16381936
-              GradientStartColor = 15920607
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -15
-              Font.Name = 'Tahoma'
-              Font.Style = []
-              Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgTitleClick, dgTitleHotTrack]
-              ParentFont = False
-              TabOrder = 5
-              TitleFont.Charset = DEFAULT_CHARSET
-              TitleFont.Color = 8747344
-              TitleFont.Height = -13
-              TitleFont.Name = 'Tahoma'
-              TitleFont.Style = [fsBold]
-              OnCellClick = dbgPersonContactListCellClick
-              OnDrawColumnCell = dbgPersonContactListDrawColumnCell
-              OnDblClick = btnPersonContactListEditClick
-              AlternateRowColor = 16381936
-              ScrollBars = ssVertical
-              SelectColumnsDialogStrings.Caption = 'Select columns'
-              SelectColumnsDialogStrings.OK = '&OK'
-              SelectColumnsDialogStrings.NoSelectionWarning = 'At least one column must be visible!'
-              EditControls = <>
-              RowsHeight = 22
-              TitleRowHeight = 20
-              Columns = <
-                item
-                  Alignment = taCenter
-                  Expanded = False
-                  FieldName = 'action_edit'
-                  Title.Alignment = taCenter
-                  Title.Caption = ' '
-                  Width = 25
-                  Visible = True
-                end
-                item
-                  Alignment = taCenter
-                  Expanded = False
-                  FieldName = 'action_delete'
-                  Title.Alignment = taCenter
-                  Title.Caption = ' '
-                  Width = 25
-                  Visible = True
-                end
-                item
-                  Expanded = False
-                  FieldName = 'name'
-                  Title.Caption = 'Nome'
-                  Width = 157
-                  Visible = True
-                end
-                item
-                  Expanded = False
-                  FieldName = 'type'
-                  Title.Caption = 'Tipo'
-                  Width = 100
-                  Visible = True
-                end
-                item
-                  Expanded = False
-                  FieldName = 'note'
-                  Title.Caption = 'Observa'#231#227'o'
-                  Width = 100
-                  Visible = True
-                end
-                item
-                  Expanded = False
-                  FieldName = 'email'
-                  Title.Caption = 'E-mail'
-                  Width = 100
-                  Visible = True
-                end>
-            end
-            object btnPersonContactListAdd: TButton
-              Left = 11
-              Top = 209
-              Width = 75
-              Height = 25
-              Caption = 'Incluir'
-              TabOrder = 6
-              OnClick = btnPersonContactListAddClick
             end
           end
         end
@@ -380,13 +272,5 @@ inherited PersonCreateUpdateView: TPersonCreateUpdateView
         ExplicitLeft = 528
       end
     end
-  end
-  object dtsPerson: TDataSource
-    Left = 440
-    Top = 1
-  end
-  object dtsPersonContactList: TDataSource
-    Left = 360
-    Top = 1
   end
 end

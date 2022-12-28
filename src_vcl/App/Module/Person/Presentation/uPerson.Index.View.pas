@@ -9,12 +9,11 @@ uses
   Vcl.Buttons, Vcl.Grids, Vcl.DBGrids, JvExDBGrids, JvDBGrid, JvExControls,
   JvGradient, Vcl.Imaging.pngimage, Vcl.ExtCtrls, Vcl.Menus, JvMenus,
 
-  uZLMemTable.Interfaces,
-  uSearchColumns,
-  uIndexResult,
   Skia,
   Skia.Vcl,
-  uPerson,
+  uIndexResult,
+  uSearchColumns,
+  uPerson.MemTable,
   uApplication.Types;
 
 type
@@ -82,7 +81,7 @@ type
     FLocateResult: Integer;
     procedure CleanFilter;
     procedure DoSearch(ACurrentPage: Integer = 1; ATryLocateId: Int64 = 0);
-    procedure RefreshIndexWithoutRequestAPI(AEntity: TPerson; AEntityState: TEntityState);
+    procedure RefreshIndexWithoutRequestAPI(AMemTable: IPersonMemTable; AEntityState: TEntityState);
     procedure SetLocateResult(const Value: Integer);
   public
     class function HandleLocate: Int64;
@@ -95,26 +94,23 @@ var
 
 implementation
 
-{$R *.dfm}
-
 uses
   uHlp,
-  Quick.Threads,
-  uPerson.Service,
-  uPageFilter,
-  uSession.DTM,
   System.StrUtils,
-  uHandle.Exception,
   uPerson.CreateUpdate.View,
-  uSmartPointer,
   uNotificationView,
+  uSession.DTM,
   uYesOrNo.View,
+  uPerson.Service,
   uAlert.View,
-  DataSet.Serialize,
-  XSuperObject,
-  uUserLogged;
+  uPageFilter,
+  Quick.Threads,
+  uHandle.Exception,
+  DataSet.Serialize;
 
-procedure TPersonIndexView.RefreshIndexWithoutRequestAPI(AEntity: TPerson; AEntityState: TEntityState);
+{$R *.dfm}
+
+procedure TPersonIndexView.RefreshIndexWithoutRequestAPI(AMemTable: IPersonMemTable; AEntityState: TEntityState);
 var
   lKeepGoing: Boolean;
 begin
@@ -129,23 +125,13 @@ begin
       begin
         Append;
         Post;
-        MergeFromJSONObject(AEntity.AsJSON);
+        MergeFromJSONObject(AMemTable.ToJsonString);
         Edit;
-        FieldByName('created_by_acl_user_name').AsString := UserLogged.Current.name;
         FieldByName('updated_at').Clear;
         Post;
       end;
     end;
-    esUpdate: Begin
-      With dtsIndex.DataSet do
-      begin
-        MergeFromJSONObject(AEntity.AsJSON);
-        Edit;
-        FieldByName('created_by_acl_user_name').AsString := AEntity.created_by_acl_user.name;
-        FieldByName('updated_by_acl_user_name').AsString := UserLogged.Current.name;
-        Post;
-      end;
-    end;
+    esUpdate: dtsIndex.DataSet.MergeFromJSONObject(AMemTable.ToJsonString);
   end;
 end;
 
@@ -185,7 +171,7 @@ end;
 
 procedure TPersonIndexView.btnAppendClick(Sender: TObject);
 var
-  lStored: Shared<TPerson>;
+  lStored: IPersonMemTable;
 begin
   inherited;
 
@@ -196,11 +182,11 @@ begin
 
     // Incluir Novo Registro
     lStored := TPersonCreateUpdateView.Handle(TEntityState.esStore);
-    if not Assigned(lStored.Value) then
+    if not Assigned(lStored) then
       Exit;
 
     // Atualizar Listagem
-    RefreshIndexWithoutRequestAPI(lStored.Value, esStore);
+    RefreshIndexWithoutRequestAPI(lStored, esStore);
   Finally
     pnlAppend.Enabled := true;
     DBGrid1.Enabled := True;
@@ -231,7 +217,7 @@ begin
     end;
 
     dtsIndex.DataSet.Delete;
-    NotificationView.Execute(DELETED_RECORD, tneError);
+    NotificationView.Execute(RECORD_DELETED, tneError);
   Finally
     pnlBackground.Enabled := True;
     if edtSearchValue.CanFocus then edtSearchValue.SetFocus;
@@ -241,7 +227,7 @@ end;
 procedure TPersonIndexView.btnEditClick(Sender: TObject);
 var
   lKeepGoing: Boolean;
-  lUpdated: Shared<TPerson>;
+  lUpdated: IPersonMemTable;
 begin
   // Evitar erros
   lKeepGoing := Assigned(dtsIndex.DataSet) and dtsIndex.DataSet.Active and (dtsIndex.DataSet.RecordCount > 0) and (dtsIndex.DataSet.Fields[0].AsLargeInt > 0) and (LoadingSearch = False);
@@ -253,11 +239,11 @@ begin
 
     // Editar Registro
     lUpdated := TPersonCreateUpdateView.Handle(TEntityState.esUpdate, dtsIndex.DataSet.Fields[0].AsLargeInt);
-    if not Assigned(lUpdated.Value) then
+    if not Assigned(lUpdated) then
       Exit;
 
     // Atualizar Listagem
-    RefreshIndexWithoutRequestAPI(lUpdated.Value, esUpdate);
+    RefreshIndexWithoutRequestAPI(lUpdated, esUpdate);
   Finally
     pnlBackground.Enabled := True;
     if edtSearchValue.CanFocus then
@@ -659,13 +645,14 @@ begin
 
   // Colunas de Pesquisa da Tabela
   FSearchColumns := TSearchColumns.Make
-    .AddColumn   ('person.id', 'ID', True)
-    .AddColumn   ('person.name', 'Nome', True)
-    .AddColumn   ('person.created_at', 'Criado em (Data)', False)
-    .AddColumn   ('person.updated_at', 'Atualizado em (Data)', False)
-    .AddColumn   ('created_by_acl_user.name', 'Criado por (Nome)', False)
-    .AddColumn   ('updated_by_acl_user.name', 'Atualizado por (Nome)', False)
-    .LabelForCustomSearch ('ID ou Nome');
+    .AddColumn ('person.id',                 'ID', True)
+    .AddColumn ('person.name',               'Razão/Nome', True)
+    .AddColumn ('person.alias_name',         'Fantasia/Apelido', True)
+    .AddColumn ('person.created_at',         'Criado em (Data)', False)
+    .AddColumn ('person.updated_at',         'Atualizado em (Data)', False)
+    .AddColumn ('created_by_acl_user.name', 'Criado por (Nome)', False)
+    .AddColumn ('updated_by_acl_user.name', 'Atualizado por (Nome)', False)
+    .LabelForCustomSearch ('ID, Razão, Nome, Fantasia, ou Apelido');
 
   // Colunas de Pesquisa da Tabela
   FSearchColumns.LoadStringsWithDisplayName(cbxFilterIndex.Items, True);

@@ -3,8 +3,8 @@ unit uSession.DTM;
 interface
 
 uses
-  System.SysUtils,
-  System.Classes, System.ImageList, Vcl.ImgList, Vcl.Controls;
+  System.SysUtils, System.Classes, System.ImageList, Vcl.ImgList, Vcl.Controls,
+  FireDAC.UI.Intf, FireDAC.VCLUI.Wait, FireDAC.Stan.Intf, FireDAC.Comp.UI;
 
 type
   TSessionDTM = class(TDataModule)

@@ -3,21 +3,21 @@ unit uPerson.Service;
 interface
 
 uses
-  uPerson,
   uZLMemTable.Interfaces,
   uReq,
   uEither,
   uPageFilter,
-  uIndexResult;
+  uIndexResult,
+  uPerson.MemTable;
 
 type
   IPersonService = Interface
-    ['{87DB5C73-D62B-4C23-B730-1CCDEB79D11E}']
+    ['{0172D343-3AA2-4885-A989-FA1656BA5B36}']
     function Delete(AId: Int64): Boolean;
     function Index(APageFilter: IPageFilter): IIndexResult;
-    function Show(AId: Int64): TPerson;
-    function Store(APerson: TPerson): Either<String, TPerson>;
-    function Update(APerson: TPerson; AId: Int64): Either<String, TPerson>;
+    function Show(AId: Int64): IPersonMemTable;
+    function Store(APerson: IPersonMemTable): Either<String, IPersonMemTable>;
+    function Update(APerson: IPersonMemTable; AId: Int64): Either<String, IPersonMemTable>;
   end;
 
   TPersonService = class(TInterfacedObject, IPersonService)
@@ -27,9 +27,9 @@ type
     class function Make: IPersonService;
     function Delete(AId: Int64): Boolean;
     function Index(APageFilter: IPageFilter): IIndexResult;
-    function Show(AId: Int64): TPerson;
-    function Store(APerson: TPerson): Either<String, TPerson>;
-    function Update(APerson: TPerson; AId: Int64): Either<String, TPerson>;
+    function Show(AId: Int64): IPersonMemTable;
+    function Store(APerson: IPersonMemTable): Either<String, IPersonMemTable>;
+    function Update(APerson: IPersonMemTable; AId: Int64): Either<String, IPersonMemTable>;
     function CreateMemTableStructureForIndex: IZLMemTable;
   end;
 
@@ -52,13 +52,14 @@ const
 function TPersonService.CreateMemTableStructureForIndex: IZLMemTable;
 begin
   Result := TMemTableFactory.Make
-    .AddField('id',                       ftLargeint)
-    .AddField('name',                     ftString, 100)
-    .AddField('alias_name',               ftString, 100)
-    .AddField('created_at',               ftDateTime)
-    .AddField('updated_at',               ftDateTime)
-    .AddField('created_by_acl_user_id',   ftLargeint)
-    .AddField('updated_by_acl_user_id',   ftLargeint)
+    .AddField('id',                     ftLargeint)
+    .AddField('name',                   ftString, 100)
+    .AddField('alias_name',             ftString, 100)
+    .AddField('is_customer',            ftSmallint)
+    .AddField('created_at',             ftDateTime)
+    .AddField('updated_at',             ftDateTime)
+    .AddField('created_by_acl_user_id', ftLargeint)
+    .AddField('updated_by_acl_user_id', ftLargeint)
     .AddField('created_by_acl_user_name', ftString, 100)
     .AddField('updated_by_acl_user_name', ftString, 100)
     .CreateDataSet
@@ -115,7 +116,7 @@ begin
   Result := Self.Create;
 end;
 
-function TPersonService.Show(AId: Int64): TPerson;
+function TPersonService.Show(AId: Int64): IPersonMemTable;
 var
   lSObj: ISuperObject;
 begin
@@ -133,18 +134,13 @@ begin
 
   // Retornar registro localizado
   lSObj  := SO(FRes.Content);
-  Result := TPerson.FromJSON(lSObj.O['data']);
-
-  // Tratar campos diferenciados
-  Result.created_by_acl_user.id   := lSObj.O['data'].I['created_by_acl_user_id'];
-  Result.created_by_acl_user.name := lSObj.O['data'].S['created_by_acl_user_name'];
-  Result.updated_by_acl_user.id   := lSObj.O['data'].I['updated_by_acl_user_id'];
-  Result.updated_by_acl_user.name := lSObj.O['data'].S['updated_by_acl_user_name'];
+  Result := TPersonMemTable.Make.FromJsonString(lSObj.O['data'].AsJSON);
 end;
 
-function TPersonService.Store(APerson: TPerson): Either<String, TPerson>;
+function TPersonService.Store(APerson: IPersonMemTable): Either<String, IPersonMemTable>;
 var
   lErrors: String;
+  lSObj: ISuperObject;
 begin
   // Validar antes de Incluir
   lErrors := APerson.Validate;
@@ -155,7 +151,7 @@ begin
   end;
 
   // Efetuar requisição
-  FRes := TReq.Make(RESOURCE, APerson.AsJSON).Execute(rtPost);
+  FRes := TReq.Make(RESOURCE, APerson.ToJsonString).Execute(rtPost);
 
   // Falha na requisição
   if not (FRes.StatusCode = HTTP_CREATED) then
@@ -165,16 +161,17 @@ begin
   end;
 
   // Retornar registro incluso
-  Result := TPerson.FromJSON(SO(FRes.Content).O['data']);
+  lSObj  := SO(FRes.Content);
+  Result := TPersonMemTable.Make.FromJsonString(lSObj.O['data'].AsJSON);
 end;
 
-function TPersonService.Update(APerson: TPerson; AId: Int64): Either<String, TPerson>;
+function TPersonService.Update(APerson: IPersonMemTable; AId: Int64): Either<String, IPersonMemTable>;
 var
   lErrors: String;
+  lSObj: ISuperObject;
 begin
   // Validar antes de Atualizar
-  APerson.id := AId;
-  lErrors   := APerson.Validate;
+  lErrors := APerson.Validate;
   if not lErrors.Trim.IsEmpty then
   begin
     Result := lErrors;
@@ -182,7 +179,7 @@ begin
   end;
 
   // Efetuar requisição
-  FRes := TReq.Make(RESOURCE+AId.ToString, APerson.AsJSON).Execute(rtPut);
+  FRes := TReq.Make(RESOURCE+AId.ToString, APerson.ToJsonString).Execute(rtPut);
 
   // Falha na requisição
   if not (FRes.StatusCode = HTTP_OK) then
@@ -192,7 +189,8 @@ begin
   end;
 
   // Retornar registro atualizado
-  Result := TPerson.FromJSON(SO(FRes.Content).O['data']);
+  lSObj  := SO(FRes.Content);
+  Result := TPersonMemTable.Make.FromJsonString(lSObj.O['data'].AsJSON);
 end;
 
 end.

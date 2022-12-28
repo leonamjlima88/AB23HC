@@ -131,7 +131,6 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="App\Module\Brand\Domain\Service\uBrand.Service.pas"/>
-        <DCCReference Include="App\Module\Brand\Domain\Entity\uBrand.pas"/>
         <DCCReference Include="App\Shared\Infra\uApplication.Types.pas"/>
         <DCCReference Include="App\Module\AclUser\Presentation\uLogin.View.pas">
             <Form>LoginView</Form>
@@ -157,16 +156,22 @@
         <DCCReference Include="App\Module\AclRole\Domain\Entity\uAclRole.pas"/>
         <DCCReference Include="App\Shared\Infra\uEither.pas"/>
         <DCCReference Include="App\Shared\Infra\uSearchColumns.pas"/>
+        <DCCReference Include="App\Module\Brand\Domain\Entity\uBrand.DataSet.pas"/>
         <DCCReference Include="App\Module\Person\Presentation\uPerson.Index.View.pas">
             <Form>PersonIndexView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="App\Module\Person\Domain\Service\uPerson.Service.pas"/>
         <DCCReference Include="App\Module\Person\Presentation\uPerson.CreateUpdate.View.pas">
             <Form>PersonCreateUpdateView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="App\Module\Person\Domain\Service\uPerson.Service.pas"/>
-        <DCCReference Include="App\Module\Person\Domain\Entity\uPerson.pas"/>
+        <DCCReference Include="App\Module\Person\Domain\Entity\uPerson.MemTable.pas"/>
+        <DCCReference Include="App\Module\Person\Presentation\uPersonContact.CreateUpdate.View.pas">
+            <Form>PersonContactCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Shared\Domain\Entity\uEntity.MemTable.Interfaces.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

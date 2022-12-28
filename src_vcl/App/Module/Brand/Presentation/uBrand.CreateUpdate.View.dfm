@@ -1,7 +1,6 @@
 inherited BrandCreateUpdateView: TBrandCreateUpdateView
   ClientHeight = 600
   ClientWidth = 600
-  OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   ExplicitWidth = 600
@@ -35,7 +34,6 @@ inherited BrandCreateUpdateView: TBrandCreateUpdateView
           inherited pnlSave2: TPanel
             inherited btnSave: TSpeedButton
               OnClick = btnSaveClick
-              ExplicitLeft = 62
             end
             inherited pnlSave3: TPanel
               OnClick = btnSaveClick
@@ -67,8 +65,8 @@ inherited BrandCreateUpdateView: TBrandCreateUpdateView
       inherited pgc: TPageControl
         Width = 578
         Height = 483
-        ExplicitLeft = 10
-        ExplicitTop = 10
+        ExplicitLeft = 284
+        ExplicitTop = 106
         ExplicitWidth = 578
         ExplicitHeight = 483
         inherited tabMain: TTabSheet
@@ -141,13 +139,15 @@ inherited BrandCreateUpdateView: TBrandCreateUpdateView
               ParentBackground = False
               TabOrder = 2
             end
-            object edtId: TEdit
+            object edtId: TDBEdit
               Left = 10
               Top = 49
               Width = 50
               Height = 26
               TabStop = False
               Color = 16053492
+              DataField = 'id'
+              DataSource = dtsBrand
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clGray
               Font.Height = -15
@@ -159,11 +159,13 @@ inherited BrandCreateUpdateView: TBrandCreateUpdateView
               OnClick = EdtFieldClick
               OnKeyDown = EdtFieldKeyDown
             end
-            object edtname: TEdit
+            object edtname: TDBEdit
               Left = 10
               Top = 95
               Width = 550
               Height = 26
+              DataField = 'name'
+              DataSource = dtsBrand
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -15
@@ -224,5 +226,9 @@ inherited BrandCreateUpdateView: TBrandCreateUpdateView
         ExplicitLeft = 528
       end
     end
+  end
+  object dtsBrand: TDataSource
+    Left = 440
+    Top = 2
   end
 end

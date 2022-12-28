@@ -14,7 +14,12 @@ type
     Fnote: string;
     Flegal_entity_number: string;
     Ftype: string;
+    Fid: Int64;
   public
+    [SwagNumber]
+    [SwagProp('id', 'ID', false)]
+    property id: Int64 read Fid write Fid;
+
     [SwagString(100)]
     [SwagProp('name', 'Nome do contato', true)]
     property name: string read Fname write Fname;

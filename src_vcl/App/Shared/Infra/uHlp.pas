@@ -13,6 +13,7 @@ uses
 type
   THlp = class
   public
+    class function  StrZero(Conteudo: String; Tamanho: Integer): String;
     class function  ExtractFromHeader(ATag: String; AHeader: TStrings): String;
     class function  InternetIsConnected: Boolean;
     class function  DayOfWeekStr(Data:TDateTime): string;
@@ -224,6 +225,13 @@ end;
 class function THlp.StrInt(AValue: String; ADefaultValue: Integer): Integer;
 begin
   Result := StrToIntDef(AValue, ADefaultValue);
+end;
+
+class function THlp.StrZero(Conteudo: String; Tamanho: Integer): String;
+begin
+  while Length(Conteudo) < Tamanho do
+    Insert('0', COnteudo,1);
+  Result := Conteudo;
 end;
 
 end.

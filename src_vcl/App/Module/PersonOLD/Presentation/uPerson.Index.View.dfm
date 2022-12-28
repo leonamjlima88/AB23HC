@@ -76,14 +76,14 @@ inherited PersonIndexView: TPersonIndexView
                   Expanded = False
                   FieldName = 'name'
                   Title.Caption = 'Raz'#227'o / Nome'
-                  Width = 350
+                  Width = 400
                   Visible = True
                 end
                 item
                   Expanded = False
                   FieldName = 'alias_name'
                   Title.Caption = 'Fantasia / Apelido'
-                  Width = 350
+                  Width = 400
                   Visible = True
                 end
                 item

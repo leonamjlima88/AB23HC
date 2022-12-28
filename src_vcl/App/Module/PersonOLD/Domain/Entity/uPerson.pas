@@ -4,7 +4,9 @@ interface
 
 uses
   uBase.Entity,
-  uAclUser;
+  uAclUser,
+  uPersonContact,
+  System.Generics.Collections;
 
 type
   TPerson = class(TBaseEntity)
@@ -21,6 +23,9 @@ type
     // OneToOne
     Fupdated_by_acl_user: TAclUser;
     Fcreated_by_acl_user: TAclUser;
+
+    // OneToMany
+    Fperson_contact_list: TObjectList<TPersonContact>;
   public
     constructor Create; overload;
     destructor Destroy; override;
@@ -38,8 +43,12 @@ type
     property created_by_acl_user: TAclUser read Fcreated_by_acl_user write Fcreated_by_acl_user;
     property updated_by_acl_user: TAclUser read Fupdated_by_acl_user write Fupdated_by_acl_user;
 
+    // OneToMany
+    property person_contact_list: TObjectList<TPersonContact> read Fperson_contact_list write Fperson_contact_list;
+
     function  Validate: String; override;
     procedure Initialize; override;
+    function AddPersonContact(APersonContact: TPersonContact): TPerson;
   end;
 
 implementation
@@ -49,6 +58,13 @@ uses
   uUserLogged;
 
 { TPerson }
+
+function TPerson.AddPersonContact(APersonContact: TPersonContact): TPerson;
+begin
+  Result := Self;
+  Fperson_contact_list.Add(APersonContact);
+  Notify('AddPersonContact', EmptyStr, APersonContact);
+end;
 
 constructor TPerson.Create;
 begin
@@ -60,6 +76,7 @@ destructor TPerson.Destroy;
 begin
   if Assigned(Fcreated_by_acl_user) then Fcreated_by_acl_user.Free;
   if Assigned(Fupdated_by_acl_user) then Fupdated_by_acl_user.Free;
+  if Assigned(Fperson_contact_list) then Fperson_contact_list.Free;
   inherited;
 end;
 
@@ -72,6 +89,7 @@ begin
   Fcreated_by_acl_user.id   := UserLogged.Current.id;
   Fcreated_by_acl_user.name := UserLogged.Current.name;
   Fis_customer              := 1;
+  Fperson_contact_list      := TObjectList<TPersonContact>.Create;
 end;
 
 function TPerson.Validate: String;

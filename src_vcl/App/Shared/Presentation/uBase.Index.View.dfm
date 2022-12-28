@@ -99,6 +99,8 @@ object BaseIndexView: TBaseIndexView
             D2529847FB5E329B745150760C92C7BAFE65F42402B6990651C20A147700687D
             AE3A56DF788197A0D3E9FAB0DB6C6DF7C71AA281EE6883FEFD1E14D2A77C0206
             1BF81A99CF42BF0000000049454E44AE426082}
+          ExplicitLeft = 8
+          ExplicitTop = 1
         end
         object pnlTitleBottomBar: TPanel
           Left = 0
@@ -214,10 +216,6 @@ object BaseIndexView: TBaseIndexView
                 Margins.Right = 30
                 Margins.Bottom = 150
                 Align = alClient
-                ExplicitLeft = 50
-                ExplicitTop = 50
-                ExplicitWidth = 548
-                ExplicitHeight = 413
                 Data = {
                   7B2276223A22352E352E37222C226D657461223A7B2267223A224C6F74746965
                   46696C657320414520302E312E3231222C2261223A22222C226B223A22222C22
