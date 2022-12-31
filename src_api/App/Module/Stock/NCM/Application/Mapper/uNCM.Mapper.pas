@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TNCMMapper }
 
@@ -26,6 +28,9 @@ class function TNCMMapper.EntityToNCMShowDto(ANCM: TNCM): TNCMShowDTO;
 var
   lNCMShowDTO: TNCMShowDTO;
 begin
+  if not Assigned(ANCM) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lNCMShowDTO := TNCMShowDTO.FromJSON(ANCM.AsJSON);
 

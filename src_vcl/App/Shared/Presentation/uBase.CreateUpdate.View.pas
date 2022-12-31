@@ -34,7 +34,7 @@ type
     IndicatorLoadButtonSave: TActivityIndicator;
     IndicatorLoadFormLabel: TLabel;
     imgNoSearch: TSkAnimatedImage;
-    IndicatorLoadForm: TActivityIndicator;
+    IndicatorLoadForm: TSkAnimatedImage;
     procedure imgMinimizeTitleClick(Sender: TObject); virtual;
     procedure FormCreate(Sender: TObject); virtual;
     procedure EdtFieldEnter(Sender: TObject); virtual;
@@ -147,6 +147,7 @@ end;
 
 procedure TBaseCreateUpdateView.FormCreate(Sender: TObject);
 begin
+  pgc.ActivePageIndex := 0;
   IndicatorLoadButtonSave.Animate := False;
   IndicatorLoadButtonSave.Visible := False;
   THlp.createTransparentBackground(Self);
@@ -182,14 +183,14 @@ begin
     True: Begin
       // Ativar Loading
       IndicatorLoadForm.Visible           := True;
-      IndicatorLoadForm.Animate           := True;
+      IndicatorLoadForm.Animation.Enabled := True;
       IndicatorLoadFormLabel.Visible      := True;
       imgNoSearch.Animation.Enabled       := True;
       imgNoSearch.Visible                 := True;
     end;
     False: Begin
       IndicatorLoadForm.Visible           := False;
-      IndicatorLoadForm.Animate           := False;
+      IndicatorLoadForm.Animation.Enabled := False;
       IndicatorLoadFormLabel.Visible      := False;
       imgNoSearch.Visible                 := False;
       imgNoSearch.Animation.Enabled       := False;

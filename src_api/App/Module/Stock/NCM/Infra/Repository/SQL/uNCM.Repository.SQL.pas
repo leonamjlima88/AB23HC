@@ -92,7 +92,7 @@ begin
   if not lNCM.ncm.Trim.IsEmpty then
   begin
     if FieldExists('ncm.ncm', lNCM.ncm, lNCM.id) then
-      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['ncm.ncm', lNCM.ncm]));
+      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['NCM', lNCM.ncm]));
   end;
 end;
 

@@ -20,7 +20,9 @@ implementation
 uses
   uPersonContact,
   XSuperObject,
-  uLegalEntityNumber.VO;
+  uLegalEntityNumber.VO,
+  System.SysUtils,
+  uApplication.Types;
 
 { TPersonMapper }
 
@@ -29,6 +31,9 @@ var
   lPersonShowDTO: TPersonShowDTO;
   lI: Integer;
 begin
+  if not Assigned(APerson) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lPersonShowDTO := TPersonShowDTO.FromJSON(APerson.AsJSON);
 

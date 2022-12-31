@@ -47,8 +47,7 @@ begin
   lCategoryToUpdate := TCategoryMapper.CategoryDtoToEntity(AInput);
   With lCategoryToUpdate.Value do
   begin
-    id         := APK;
-    updated_at := now;
+    id := APK;
     Validate;
   end;
 

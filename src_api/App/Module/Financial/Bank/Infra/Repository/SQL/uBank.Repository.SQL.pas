@@ -90,7 +90,7 @@ begin
   if not lBank.code.Trim.IsEmpty then
   begin
     if FieldExists('bank.code', lBank.code, lBank.id) then
-      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['bank.code', lBank.code]));
+      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['Código do Banco', lBank.code]));
   end;
 end;
 

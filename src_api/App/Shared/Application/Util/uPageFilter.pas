@@ -9,7 +9,7 @@ uses
 type
   TcondOperator = (
     coNone, coEqual, coGreater, coLess, coGreaterOrEqual, coLessOrEqual, coDifferent,
-    coLikeInitial, coLikeFinal, coLikeAnywhere, coLikeEqual
+    coLikeInitial, coLikeFinal, coLikeAnywhere, coLikeEqual, coIsNull
   );
   TcondOperatorHelper = record Helper for TcondOperator
     function GetTypeByName(AName: String): TcondOperator;

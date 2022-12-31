@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TBrandMapper }
 
@@ -26,6 +28,9 @@ class function TBrandMapper.EntityToBrandShowDto(ABrand: TBrand): TBrandShowDTO;
 var
   lBrandShowDTO: TBrandShowDTO;
 begin
+  if not Assigned(ABrand) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lBrandShowDTO := TBrandShowDTO.FromJSON(ABrand.AsJSON);
 

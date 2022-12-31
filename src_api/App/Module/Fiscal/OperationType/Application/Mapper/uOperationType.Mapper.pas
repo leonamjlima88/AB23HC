@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TOperationTypeMapper }
 
@@ -26,6 +28,9 @@ class function TOperationTypeMapper.EntityToOperationTypeShowDto(AOperationType:
 var
   lOperationTypeShowDTO: TOperationTypeShowDTO;
 begin
+  if not Assigned(AOperationType) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lOperationTypeShowDTO := TOperationTypeShowDTO.FromJSON(AOperationType.AsJSON);
 

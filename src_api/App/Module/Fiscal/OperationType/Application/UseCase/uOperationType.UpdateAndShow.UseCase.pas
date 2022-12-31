@@ -47,8 +47,7 @@ begin
   lOperationTypeToUpdate := TOperationTypeMapper.OperationTypeDtoToEntity(AInput);
   With lOperationTypeToUpdate.Value do
   begin
-    id         := APK;
-    updated_at := now;
+    id := APK;
     Validate;
   end;
 

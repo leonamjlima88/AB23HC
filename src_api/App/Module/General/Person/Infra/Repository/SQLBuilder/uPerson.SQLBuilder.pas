@@ -92,7 +92,7 @@ begin
   lCQL := TCQL.New(FDBName)
     .Insert
     .Into('person')
-    .&Set('created_at',             lPerson.created_at)
+    .&Set('created_at',             now)
     .&Set('created_by_acl_user_id', lPerson.created_by_acl_user_id)
     .&Set('tenant_id',              lPerson.tenant_id);
 
@@ -141,10 +141,8 @@ begin
     .&Set('is_technician',          APerson.is_technician)
     .&Set('is_employee',            APerson.is_employee)
     .&Set('is_other',               APerson.is_other)
-    .&Set('is_final_customer',      APerson.is_final_customer);
-
-  // Tratar chaves estrangeiras
-  if (APerson.city_id > 0) then ACQL.&Set('city_id', APerson.city_id);
+    .&Set('is_final_customer',      APerson.is_final_customer)
+    .&Set('city_id',                THlp.If0RetNull(APerson.city_id));
 end;
 
 function TPersonSQLBuilder.SelectAll: String;
@@ -189,7 +187,7 @@ begin
   lPerson := AEntity as TPerson;
   lCQL := TCQL.New(FDBName)
     .Update('person')
-    .&Set('updated_at',             lPerson.updated_at)
+    .&Set('updated_at',             now)
     .&Set('updated_by_acl_user_id', lPerson.updated_by_acl_user_id);
 
   // Carregar Campos Default

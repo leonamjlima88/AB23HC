@@ -12,7 +12,8 @@ uses
   uAclUser.Auth.Login.DTO,
   uApplication.Types,
   uAclUser.Auth.ChangePassword.DTO,
-  uAclUser.Auth.Me.DTO;
+  uAclUser.Auth.Me.DTO,
+  uAppParam.Repository.Interfaces;
 
 Type
   [SwagPath('auth', 'Autenticação')]
@@ -21,6 +22,7 @@ Type
     FReq: THorseRequest;
     FRes: THorseResponse;
     FRepository: IAclUserRepository;
+    FAppParamRepository: IAppParamRepository;
   public
     constructor Create(Req: THorseRequest; Res: THorseResponse);
 
@@ -74,7 +76,7 @@ begin
 
   // Mudar a Senha
   TAclUserAuthUseCase
-    .Make           (FRepository)
+    .Make           (FRepository, FAppParamRepository)
     .ChangePassword (lInput);
 
   // Retorno
@@ -83,9 +85,10 @@ end;
 
 constructor TAclUserAuthController.Create(Req: THorseRequest; Res: THorseResponse);
 begin
-  FReq        := Req;
-  FRes        := Res;
-  FRepository := TRepositoryFactory.Make.AclUser;
+  FReq                := Req;
+  FRes                := Res;
+  FRepository         := TRepositoryFactory.Make.AclUser;
+  FAppParamRepository := TRepositoryFactory.Make(FRepository.Conn).AppParam;
 end;
 
 procedure TAclUserAuthController.Login;
@@ -99,7 +102,7 @@ begin
 
   // Efetuar login
   lResult := TAclUserAuthUseCase
-    .Make  (FRepository)
+    .Make  (FRepository, FAppParamRepository)
     .Login (lInput);
 
   // Retorno
@@ -116,7 +119,7 @@ begin
 
   // Efetuar logout
   TAclUserAuthUseCase
-    .Make   (FRepository)
+    .Make   (FRepository, FAppParamRepository)
     .Logout (lInput);
 
   // Retorno

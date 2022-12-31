@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TCostCenterMapper }
 
@@ -26,6 +28,9 @@ class function TCostCenterMapper.EntityToCostCenterShowDto(ACostCenter: TCostCen
 var
   lCostCenterShowDTO: TCostCenterShowDTO;
 begin
+  if not Assigned(ACostCenter) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lCostCenterShowDTO := TCostCenterShowDTO.FromJSON(ACostCenter.AsJSON);
 

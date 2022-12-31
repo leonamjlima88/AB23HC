@@ -29,7 +29,8 @@ uses
   uPerson,
   XSuperObject,
   System.SysUtils,
-  uPerson.Mapper;
+  uPerson.Mapper,
+  uApplication.Types;
 
 { TPersonUpdateAndShowUseCase }
 
@@ -48,9 +49,8 @@ begin
   lPersonToUpdate := TPersonMapper.PersonDtoToEntity(AInput);
   With lPersonToUpdate.Value do
   begin
-    id         := APK;
-    updated_at := now;
-    Validate;
+    id := APK;
+    BeforeSaveAndValidate(esUpdate);
   end;
 
   // Atualizar e Localizar registro atualizado

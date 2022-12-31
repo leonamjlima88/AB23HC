@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TChartOfAccountMapper }
 
@@ -26,6 +28,9 @@ class function TChartOfAccountMapper.EntityToChartOfAccountShowDto(AChartOfAccou
 var
   lChartOfAccountShowDTO: TChartOfAccountShowDTO;
 begin
+  if not Assigned(AChartOfAccount) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lChartOfAccountShowDTO := TChartOfAccountShowDTO.FromJSON(AChartOfAccount.AsJSON);
 

@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TAclUserMapper }
 
@@ -26,6 +28,9 @@ class function TAclUserMapper.EntityToAclUserShowDto(AAclUser: TAclUser): TAclUs
 var
   lAclUserShowDTO: TAclUserShowDTO;
 begin
+  if not Assigned(AAclUser) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lAclUserShowDTO := TAclUserShowDTO.FromJSON(AAclUser.AsJSON);
 

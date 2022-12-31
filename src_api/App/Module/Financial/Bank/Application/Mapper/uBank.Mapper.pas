@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TBankMapper }
 
@@ -26,6 +28,9 @@ class function TBankMapper.EntityToBankShowDto(ABank: TBank): TBankShowDTO;
 var
   lBankShowDTO: TBankShowDTO;
 begin
+  if not Assigned(ABank) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lBankShowDTO := TBankShowDTO.FromJSON(ABank.AsJSON);
 

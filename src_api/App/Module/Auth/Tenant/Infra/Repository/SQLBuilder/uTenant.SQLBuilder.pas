@@ -125,10 +125,8 @@ begin
     .&Set('internet_page',          ATenant.internet_page)
     .&Set('note',                   ATenant.note)
     .&Set('bank_note',              ATenant.bank_note)
-    .&Set('commercial_note',        ATenant.commercial_note);
-
-  // Tratar chaves estrangeiras
-  if (ATenant.city_id > 0) then ACQL.&Set('city_id', ATenant.city_id);
+    .&Set('commercial_note',        ATenant.commercial_note)
+    .&Set('city_id',                THlp.If0RetNull(ATenant.city_id));
 end;
 
 function TTenantSQLBuilder.SelectAll: String;

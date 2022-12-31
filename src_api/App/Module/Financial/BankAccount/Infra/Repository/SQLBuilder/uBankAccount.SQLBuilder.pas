@@ -39,7 +39,7 @@ uses
   System.Classes,
   System.SysUtils,
   uZLConnection.Types,
-  uApplication.Types;
+  uApplication.Types, uHlp;
 
 { TBankAccountSQLBuilder }
 constructor TBankAccountSQLBuilder.Create;
@@ -93,11 +93,9 @@ end;
 procedure TBankAccountSQLBuilder.LoadDefaultFieldsToInsertOrUpdate(const ACQL: ICQL; const ABankAccount: TBankAccount);
 begin
   ACQL
-    .&Set('name', ABankAccount.name)
-    .&Set('note', ABankAccount.note);
-
-  // Tratar chaves estrangeiras
-  if (ABankAccount.bank_id > 0) then ACQL.&Set('bank_id', ABankAccount.bank_id);
+    .&Set('name',    ABankAccount.name)
+    .&Set('note',    ABankAccount.note)
+    .&Set('bank_id', THlp.If0RetNull(ABankAccount.bank_id));
 end;
 
 function TBankAccountSQLBuilder.SelectAll: String;

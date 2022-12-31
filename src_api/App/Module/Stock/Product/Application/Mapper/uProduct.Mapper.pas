@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TProductMapper }
 
@@ -26,6 +28,9 @@ class function TProductMapper.EntityToProductShowDto(AProduct: TProduct): TProdu
 var
   lProductShowDTO: TProductShowDTO;
 begin
+  if not Assigned(AProduct) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lProductShowDTO := TProductShowDTO.FromJSON(AProduct.AsJSON);
 

@@ -47,8 +47,7 @@ begin
   lCostCenterToUpdate := TCostCenterMapper.CostCenterDtoToEntity(AInput);
   With lCostCenterToUpdate.Value do
   begin
-    id         := APK;
-    updated_at := now;
+    id := APK;
     Validate;
   end;
 

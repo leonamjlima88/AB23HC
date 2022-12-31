@@ -147,6 +147,7 @@ begin
     coLikeFinal:      Result := ' like ' + QuotedStr('%'+AfieldValue);
     coLikeAnywhere:   Result := ' like ' + QuotedStr('%'+AfieldValue+'%');
     coLikeEqual:      Result := ' = '    + QuotedStr(AfieldValue);
+    coIsNull:         Result := ' is null ';
   end;
 end;
 

@@ -88,15 +88,22 @@ begin
 end;
 
 function TChartOfAccountSQLBuilder.RegisteredFields(AColumName, AColumnValue: String; AId, ATenantId: Int64): String;
+var
+  lSQL: String;
 begin
-  Result := TCQL.New(FDBName)
+  lSQL := TCQL.New(FDBName)
     .Select
     .Column(AColumName)
     .From('chart_of_account')
-    .Where(AColumName).Equal(AColumnValue)
+    .Where('%s = %s')
     .&And('chart_of_account.id').NotEqual(AId)
     .&And('chart_of_account.tenant_id').Equal(ATenantId)
   .AsString;
+
+  Result := Format(lSQL, [
+    AColumName,
+    QuotedStr(AColumnValue)
+  ]);
 end;
 
 function TChartOfAccountSQLBuilder.SelectAll: String;

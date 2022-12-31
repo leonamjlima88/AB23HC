@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TPaymentTermMapper }
 
@@ -26,6 +28,9 @@ class function TPaymentTermMapper.EntityToPaymentTermShowDto(APaymentTerm: TPaym
 var
   lPaymentTermShowDTO: TPaymentTermShowDTO;
 begin
+  if not Assigned(APaymentTerm) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lPaymentTermShowDTO := TPaymentTermShowDTO.FromJSON(APaymentTerm.AsJSON);
 

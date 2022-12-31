@@ -47,8 +47,7 @@ begin
   lTenantToUpdate := TTenantMapper.TenantDtoToEntity(AInput);
   With lTenantToUpdate.Value do
   begin
-    id         := APK;
-    updated_at := now;
+    id := APK;
     Validate;
   end;
 

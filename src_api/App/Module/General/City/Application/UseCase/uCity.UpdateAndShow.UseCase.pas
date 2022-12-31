@@ -47,8 +47,7 @@ begin
   lCityToUpdate := TCityMapper.CityDtoToEntity(AInput);
   With lCityToUpdate.Value do
   begin
-    id         := APK;
-    updated_at := now;
+    id := APK;
     Validate;
   end;
 

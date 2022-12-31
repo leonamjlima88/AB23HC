@@ -40,7 +40,7 @@ uses
   System.Classes,
   System.SysUtils,
   uZLConnection.Types,
-  uApplication.Types;
+  uApplication.Types, uHlp;
 
 { TProductSQLBuilder }
 constructor TProductSQLBuilder.Create;
@@ -117,14 +117,12 @@ begin
     .&Set('internal_note',          AProduct.internal_note)
     .&Set('complement_note',        AProduct.complement_note)
     .&Set('is_discontinued',        AProduct.is_discontinued)
-    .&Set('genre',                  Ord(AProduct.genre));
-
-  // Tratar chaves estrangeiras
-  if (AProduct.unit_id > 0)             then ACQL.&Set('unit_id',             AProduct.unit_id);
-  if (AProduct.category_id > 0)         then ACQL.&Set('category_id',         AProduct.category_id);
-  if (AProduct.brand_id > 0)            then ACQL.&Set('brand_id',            AProduct.brand_id);
-  if (AProduct.size_id > 0)             then ACQL.&Set('size_id',             AProduct.size_id);
-  if (AProduct.storage_location_id > 0) then ACQL.&Set('storage_location_id', AProduct.storage_location_id);
+    .&Set('genre',                  Ord(AProduct.genre))
+    .&Set('unit_id',                THlp.If0RetNull(AProduct.unit_id))
+    .&Set('category_id',            THlp.If0RetNull(AProduct.category_id))
+    .&Set('brand_id',               THlp.If0RetNull(AProduct.brand_id))
+    .&Set('size_id',                THlp.If0RetNull(AProduct.size_id))
+    .&Set('storage_location_id',    THlp.If0RetNull(AProduct.storage_location_id));
 end;
 
 function TProductSQLBuilder.RegisteredFields(AColumName, AColumnValue: String; AId, ATenantId: Int64): String;

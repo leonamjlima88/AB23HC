@@ -97,7 +97,7 @@ begin
       lChartOfAccount.id,
       lChartOfAccount.tenant_id
     ) then
-      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['chart_of_account.hierarchy_code', lChartOfAccount.hierarchy_code]));
+      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['Hierarquia', lChartOfAccount.hierarchy_code]));
   end;
 end;
 

@@ -104,6 +104,34 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="App\Module\Brand\View\uBrand.CreateUpdate.View.pas"/>
+        <DCCReference Include="App\Module\Brand\MemTable\uBrand.MTB.pas"/>
+        <DCCReference Include="App\Module\Brand\Service\uBrand.Service.pas"/>
+        <DCCReference Include="App\Module\Brand\View\uBrand.Index.View.pas"/>
+        <DCCReference Include="App\Module\Person\MemTable\uPerson.MTB.pas"/>
+        <DCCReference Include="App\Shared\Infra\uHlp.pas"/>
+        <DCCReference Include="App\Module\Person\View\uPerson.CreateUpdate.View.pas"/>
+        <DCCReference Include="App\Shared\Presentation\uBase.Index.View.pas">
+            <Form>BaseIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Shared\Domain\Entity\uEntity.MemTable.Interfaces.pas"/>
+        <DCCReference Include="App\Module\Person\View\uPersonContact.CreateUpdate.View.pas"/>
+        <DCCReference Include="Config\Infra\uSession.DTM.pas">
+            <Form>SessionDTM</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="App\Module\Person\Service\uPerson.Service.pas"/>
+        <DCCReference Include="App\Module\Person\View\uPerson.Index.View.pas">
+            <Form>PersonIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Shared\Presentation\uMain.View.pas">
+            <Form>MainView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Shared\Infra\uApplication.Types.pas"/>
         <DCCReference Include="App\Shared\Presentation\uNotificationView.pas">
             <Form>NotificationView</Form>
             <FormType>dfm</FormType>
@@ -116,62 +144,153 @@
             <Form>AlertView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="App\Module\Brand\Presentation\uBrand.CreateUpdate.View.pas"/>
-        <DCCReference Include="App\Module\Brand\Presentation\uBrand.Index.View.pas"/>
-        <DCCReference Include="App\Shared\Presentation\uMain.View.pas">
-            <Form>MainView</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="App\Shared\Presentation\uBase.CreateUpdate.View.pas">
             <Form>BaseCreateUpdateView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="App\Shared\Presentation\uBase.Index.View.pas">
-            <Form>BaseIndexView</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="App\Module\Brand\Domain\Service\uBrand.Service.pas"/>
-        <DCCReference Include="App\Shared\Infra\uApplication.Types.pas"/>
-        <DCCReference Include="App\Module\AclUser\Presentation\uLogin.View.pas">
+        <DCCReference Include="App\Module\AclUser\View\uLogin.View.pas">
             <Form>LoginView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="App\Shared\Domain\Entity\uBase.Entity.pas"/>
         <DCCReference Include="App\Shared\Infra\uIndexResult.pas"/>
         <DCCReference Include="App\Shared\Infra\uHandle.Exception.pas"/>
-        <DCCReference Include="Config\Infra\uSession.DTM.pas">
-            <Form>SessionDTM</Form>
-            <FormType>dfm</FormType>
-            <DesignClass>TDataModule</DesignClass>
-        </DCCReference>
         <DCCReference Include="App\Shared\Infra\uPageFilter.pas"/>
         <DCCReference Include="App\Shared\Infra\uReq.pas"/>
-        <DCCReference Include="App\Shared\Infra\uHlp.pas"/>
         <DCCReference Include="App\Shared\Domain\Entity\uObservable.pas"/>
         <DCCReference Include="App\Shared\Domain\Entity\uObserver.pas"/>
         <DCCReference Include="App\Shared\Infra\uMemTable.Factory.pas"/>
         <DCCReference Include="App\Shared\Infra\uEnv.pas"/>
-        <DCCReference Include="App\Module\AclUser\Domain\Entity\uUserLogged.pas"/>
-        <DCCReference Include="App\Module\AclUser\Domain\Entity\uAclUser.pas"/>
-        <DCCReference Include="App\Module\AclRole\Domain\Entity\uAclRole.pas"/>
+        <DCCReference Include="App\Module\AclUser\Entity\uUserLogged.pas"/>
+        <DCCReference Include="App\Module\AclUser\Entity\uAclUser.pas"/>
+        <DCCReference Include="App\Module\AclRole\Entity\uAclRole.pas"/>
         <DCCReference Include="App\Shared\Infra\uEither.pas"/>
         <DCCReference Include="App\Shared\Infra\uSearchColumns.pas"/>
-        <DCCReference Include="App\Module\Brand\Domain\Entity\uBrand.DataSet.pas"/>
-        <DCCReference Include="App\Module\Person\Presentation\uPerson.Index.View.pas">
-            <Form>PersonIndexView</Form>
+        <DCCReference Include="App\Module\City\View\uCity.Index.View.pas">
+            <Form>CityIndexView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="App\Module\Person\Domain\Service\uPerson.Service.pas"/>
-        <DCCReference Include="App\Module\Person\Presentation\uPerson.CreateUpdate.View.pas">
-            <Form>PersonCreateUpdateView</Form>
+        <DCCReference Include="App\Module\City\View\uCity.CreateUpdate.View.pas">
+            <Form>CityCreateUpdateView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="App\Module\Person\Domain\Entity\uPerson.MemTable.pas"/>
-        <DCCReference Include="App\Module\Person\Presentation\uPersonContact.CreateUpdate.View.pas">
-            <Form>PersonContactCreateUpdateView</Form>
+        <DCCReference Include="App\Module\City\Service\uCity.Service.pas"/>
+        <DCCReference Include="App\Module\City\MemTable\uCity.MTB.pas"/>
+        <DCCReference Include="App\Shared\Lib\uSearchLegalEntityNumber.Lib.pas"/>
+        <DCCReference Include="App\Shared\Lib\uSearchZipCode.Lib.pas"/>
+        <DCCReference Include="App\Module\AppParam\Service\uAppParam.Service.pas"/>
+        <DCCReference Include="App\Module\AppParam\MemTable\uAppParam.MTB.pas"/>
+        <DCCReference Include="App\Module\AppParam\Entity\uAppParam.pas"/>
+        <DCCReference Include="App\Module\Category\View\uCategory.Index.View.pas">
+            <Form>CategoryIndexView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="App\Shared\Domain\Entity\uEntity.MemTable.Interfaces.pas"/>
+        <DCCReference Include="App\Module\Category\View\uCategory.CreateUpdate.View.pas">
+            <Form>CategoryCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Category\Service\uCategory.Service.pas"/>
+        <DCCReference Include="App\Module\Category\MemTable\uCategory.MTB.pas"/>
+        <DCCReference Include="App\Module\Size\View\uSize.Index.View.pas">
+            <Form>SizeIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Size\View\uSize.CreateUpdate.View.pas">
+            <Form>SizeCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Size\Service\uSize.Service.pas"/>
+        <DCCReference Include="App\Module\Size\MemTable\uSize.MTB.pas"/>
+        <DCCReference Include="App\Module\Unit\View\uUnit.Index.View.pas">
+            <Form>UnitIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Unit\View\uUnit.CreateUpdate.View.pas">
+            <Form>UnitCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Unit\Service\uUnit.Service.pas"/>
+        <DCCReference Include="App\Module\Unit\MemTable\uUnit.MTB.pas"/>
+        <DCCReference Include="App\Module\StorageLocation\View\uStorageLocation.Index.View.pas">
+            <Form>StorageLocationIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\StorageLocation\View\uStorageLocation.CreateUpdate.View.pas">
+            <Form>StorageLocationCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\StorageLocation\Service\uStorageLocation.Service.pas"/>
+        <DCCReference Include="App\Module\StorageLocation\MemTable\uStorageLocation.MTB.pas"/>
+        <DCCReference Include="App\Module\NCM\View\uNCM.Index.View.pas">
+            <Form>NCMIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\NCM\View\uNCM.CreateUpdate.View.pas">
+            <Form>NCMCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\NCM\Service\uNCM.Service.pas"/>
+        <DCCReference Include="App\Module\NCM\MemTable\uNCM.MTB.pas"/>
+        <DCCReference Include="App\Module\CostCenter\View\uCostCenter.Index.View.pas">
+            <Form>CostCenterIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\CostCenter\View\uCostCenter.CreateUpdate.View.pas">
+            <Form>CostCenterCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\CostCenter\Service\uCostCenter.Service.pas"/>
+        <DCCReference Include="App\Module\CostCenter\MemTable\uCostCenter.MTB.pas"/>
+        <DCCReference Include="App\Module\Bank\View\uBank.Index.View.pas">
+            <Form>BankIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Bank\View\uBank.CreateUpdate.View.pas">
+            <Form>BankCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Bank\Service\uBank.Service.pas"/>
+        <DCCReference Include="App\Module\Bank\MemTable\uBank.MTB.pas"/>
+        <DCCReference Include="App\Module\BankAccount\View\uBankAccount.Index.View.pas">
+            <Form>BankAccountIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\BankAccount\View\uBankAccount.CreateUpdate.View.pas">
+            <Form>BankAccountCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\BankAccount\Service\uBankAccount.Service.pas"/>
+        <DCCReference Include="App\Module\BankAccount\MemTable\uBankAccount.MTB.pas"/>
+        <DCCReference Include="App\Module\Document\View\uDocument.Index.View.pas">
+            <Form>DocumentIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Document\View\uDocument.CreateUpdate.View.pas">
+            <Form>DocumentCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Document\Service\uDocument.Service.pas"/>
+        <DCCReference Include="App\Module\Document\MemTable\uDocument.MTB.pas"/>
+        <DCCReference Include="App\Module\PaymentTerm\View\uPaymentTerm.Index.View.pas">
+            <Form>PaymentTermIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\PaymentTerm\View\uPaymentTerm.CreateUpdate.View.pas">
+            <Form>PaymentTermCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\PaymentTerm\Service\uPaymentTerm.Service.pas"/>
+        <DCCReference Include="App\Module\PaymentTerm\MemTable\uPaymentTerm.MTB.pas"/>
+        <DCCReference Include="App\Module\ChartOfAccount\View\uChartOfAccount.Index.View.pas">
+            <Form>ChartOfAccountIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\ChartOfAccount\View\uChartOfAccount.CreateUpdate.View.pas">
+            <Form>ChartOfAccountCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\ChartOfAccount\Service\uChartOfAccount.Service.pas"/>
+        <DCCReference Include="App\Module\ChartOfAccount\MemTable\uChartOfAccount.MTB.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

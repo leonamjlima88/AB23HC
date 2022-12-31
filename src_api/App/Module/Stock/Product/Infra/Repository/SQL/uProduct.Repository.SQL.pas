@@ -102,21 +102,21 @@ begin
   if not lProduct.sku_code.Trim.IsEmpty then
   begin
     if FieldExists('product.sku_code', lProduct.sku_code, lProduct.id, lProduct.tenant_id) then
-      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['product.sku_code', lProduct.sku_code]));
+      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['Cód. de Referência', lProduct.sku_code]));
   end;
 
   // Verificar se ean_code já existe
   if not lProduct.ean_code.Trim.IsEmpty then
   begin
     if FieldExists('product.ean_code', lProduct.ean_code, lProduct.id, lProduct.tenant_id) then
-      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['product.ean_code', lProduct.ean_code]));
+      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['Cód. de Barras', lProduct.ean_code]));
   end;
 
   // Verificar se manufacturing_code já existe
   if not lProduct.manufacturing_code.Trim.IsEmpty then
   begin
     if FieldExists('product.manufacturing_code', lProduct.manufacturing_code, lProduct.id, lProduct.tenant_id) then
-      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['product.manufacturing_code', lProduct.manufacturing_code]));
+      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['Cód. de Fábrica', lProduct.manufacturing_code]));
   end;
 end;
 

@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TCityMapper }
 
@@ -26,6 +28,9 @@ class function TCityMapper.EntityToCityShowDto(ACity: TCity): TCityShowDTO;
 var
   lCityShowDTO: TCityShowDTO;
 begin
+  if not Assigned(ACity) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lCityShowDTO := TCityShowDTO.FromJSON(ACity.AsJSON);
 

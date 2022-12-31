@@ -29,7 +29,8 @@ uses
   uPerson,
   XSuperObject,
   uLegalEntityNumber.VO,
-  uPerson.Mapper;
+  uPerson.Mapper,
+  uApplication.Types;
 
 { TPersonStoreAndShowUseCase }
 
@@ -47,7 +48,7 @@ var
 begin
   // Carregar dados em Entity
   lPersonToStore := TPersonMapper.PersonDtoToEntity(AInput);
-  lPersonToStore.Value.Validate;
+  lPersonToStore.Value.BeforeSaveAndValidate(esStore);
 
   // Incluir e Localizar registro incluso
   lPK           := FRepository.Store(lPersonToStore, true);

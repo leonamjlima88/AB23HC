@@ -88,7 +88,7 @@ begin
       if (Pos(ERROR_IN_SQL_UNIQUE_FAILS, lEMessage.ToLower) > 0) Then
         lEMessage := 'Entrada duplicada. Valor não pode repetir na tabela do banco de dados. Mensagem Técnica: ' + lEMessage + '.';
 
-      TRes.Error(Res, Format('%s %s[%s]', [lEMessage, E.ClassName, UNCATEGORIZED_EXCEPTION]), EmptyStr, HTTP_INTERNAL_SERVER_ERROR);
+      TRes.Error(Res, Format('%s', [lEMessage]), EmptyStr, HTTP_INTERNAL_SERVER_ERROR);
     end;
   end;
 end;

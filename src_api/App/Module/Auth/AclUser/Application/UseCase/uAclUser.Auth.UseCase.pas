@@ -7,7 +7,8 @@ uses
   uAclUser.Auth.ChangePassword.DTO,
   uAclUser.Auth.Me.DTO,
   uAclUser.Repository.Interfaces,
-  uAclUser;
+  uAclUser,
+  uAppParam.Repository.Interfaces;
 
 type
   IAclUserAuthUseCase = Interface
@@ -20,10 +21,11 @@ type
   TAclUserAuthUseCase = class(TInterfacedObject, IAclUserAuthUseCase)
   private
     FRepository: IAclUserRepository;
-    constructor Create(ARepository: IAclUserRepository);
+    FAppParamRepository: IAppParamRepository;
+    constructor Create(ARepository: IAclUserRepository; AAppParamRepository: IAppParamRepository);
     function EntityToAclUserAuthMeDTO(AAclUser: TAclUser): TAclUserAuthMeDTO;
   public
-    class function Make(ARepository: IAclUserRepository): IAclUserAuthUseCase;
+    class function Make(ARepository: IAclUserRepository; AAppParamRepository: IAppParamRepository): IAclUserAuthUseCase;
     function Login(AInput: TAclUserAuthLoginDTO): TAclUserAuthMeDTO;
     function Logout(AInput: TAclUserAuthLoginDTO): Boolean;
     function ChangePassword(AInput: TAclUserAuthChangePasswordDTO): Boolean;
@@ -39,7 +41,12 @@ uses
   uApplication.Types,
   System.SysUtils,
   uMyClaims,
-  System.DateUtils;
+  System.DateUtils,
+  uPageFilter,
+  uIndexResult,
+  DataSet.Serialize,
+  XSuperObject,
+  uAppParam.DTO;
 
 { TAclUserAuthUseCase }
 
@@ -62,10 +69,11 @@ begin
   Result := True;
 end;
 
-constructor TAclUserAuthUseCase.Create(ARepository: IAclUserRepository);
+constructor TAclUserAuthUseCase.Create(ARepository: IAclUserRepository; AAppParamRepository: IAppParamRepository);
 begin
   inherited Create;
-  FRepository := ARepository;
+  FRepository         := ARepository;
+  FAppParamRepository := AAppParamRepository;
 end;
 
 function TAclUserAuthUseCase.Login(AInput: TAclUserAuthLoginDTO): TAclUserAuthMeDTO;
@@ -120,6 +128,10 @@ begin
 end;
 
 function TAclUserAuthUseCase.EntityToAclUserAuthMeDTO(AAclUser: TAclUser): TAclUserAuthMeDTO;
+var
+  lIndexResult: IIndexResult;
+  lAppParamDTO: TAppParamDTO;
+  lAux: String;
 begin
   Result                 := TAclUserAuthMeDTO.Create;
   Result.id              := AAclUser.id;
@@ -130,6 +142,21 @@ begin
   Result.last_token      := AAclUser.last_token;
   Result.last_expiration := AAclUser.last_expiration;
   Result.tenant_id       := AAclUser.acl_role.tenant_id;
+
+  // Parâmetros
+  lIndexResult := FAppParamRepository.Index(TPageFilter.Make
+    .AddOrWhere('app_param.acl_role_id', coIsNull, '')
+    .AddOrWhere('app_param.acl_role_id', coEqual, AAclUser.acl_role_id.ToString)
+  );
+  With lIndexResult.Data do
+  begin
+    while not DataSet.Eof do
+    begin
+      lAppParamDTO := TAppParamDTO.FromJSON(DataSet.ToJSONObjectString);
+      Result.app_param_list.Add(lAppParamDTO);
+      DataSet.Next;
+    end;
+  end;
 end;
 
 function TAclUserAuthUseCase.Logout(AInput: TAclUserAuthLoginDTO): Boolean;
@@ -149,9 +176,9 @@ begin
   Result := True;
 end;
 
-class function TAclUserAuthUseCase.Make(ARepository: IAclUserRepository): IAclUserAuthUseCase;
+class function TAclUserAuthUseCase.Make(ARepository: IAclUserRepository; AAppParamRepository: IAppParamRepository): IAclUserAuthUseCase;
 begin
-  Result := Self.Create(ARepository);
+  Result := Self.Create(ARepository, AAppParamRepository);
 end;
 
 end.

@@ -423,7 +423,27 @@ uses
   u16BankSeed.Migration in 'Database\Infra\Migration\u16BankSeed.Migration.pas',
   u21CFOPSeed.Migration in 'Database\Infra\Migration\u21CFOPSeed.Migration.pas',
   u23NCMSeed.Migration in 'Database\Infra\Migration\u23NCMSeed.Migration.pas',
-  u10UnitSeed.Migration in 'Database\Infra\Migration\u10UnitSeed.Migration.pas';
+  u10UnitSeed.Migration in 'Database\Infra\Migration\u10UnitSeed.Migration.pas',
+  uPerson.BeforeSave in 'App\Module\General\Person\Domain\Services\uPerson.BeforeSave.pas',
+  uAppParam.SQLBuilder in 'App\Module\General\AppParam\Infra\Repository\SQLBuilder\uAppParam.SQLBuilder.pas',
+  uAppParam.SQLBuilder.MySQL in 'App\Module\General\AppParam\Infra\Repository\SQLBuilder\MySQL\uAppParam.SQLBuilder.MySQL.pas',
+  uAppParam.Controller in 'App\Module\General\AppParam\Infra\Controller\uAppParam.Controller.pas',
+  uAppParam.Repository.SQL in 'App\Module\General\AppParam\Infra\Repository\SQL\uAppParam.Repository.SQL.pas',
+  uAppParam.SQLBuilder.Interfaces in 'App\Module\General\AppParam\Domain\Repository\uAppParam.SQLBuilder.Interfaces.pas',
+  uAppParam.Repository.Interfaces in 'App\Module\General\AppParam\Domain\Repository\uAppParam.Repository.Interfaces.pas',
+  uAppParam in 'App\Module\General\AppParam\Domain\Entity\uAppParam.pas',
+  uAppParam.UpdateAndShow.UseCase in 'App\Module\General\AppParam\Application\UseCase\uAppParam.UpdateAndShow.UseCase.pas',
+  uAppParam.StoreAndShow.UseCase in 'App\Module\General\AppParam\Application\UseCase\uAppParam.StoreAndShow.UseCase.pas',
+  uAppParam.Show.UseCase in 'App\Module\General\AppParam\Application\UseCase\uAppParam.Show.UseCase.pas',
+  uAppParam.Index.UseCase in 'App\Module\General\AppParam\Application\UseCase\uAppParam.Index.UseCase.pas',
+  uAppParam.Delete.UseCase in 'App\Module\General\AppParam\Application\UseCase\uAppParam.Delete.UseCase.pas',
+  uAppParam.Mapper in 'App\Module\General\AppParam\Application\Mapper\uAppParam.Mapper.pas',
+  uAppParam.Base.DTO in 'App\Module\General\AppParam\Application\DTO\uAppParam.Base.DTO.pas',
+  uAppParam.Show.DTO in 'App\Module\General\AppParam\Application\DTO\uAppParam.Show.DTO.pas',
+  uAppParam.DTO in 'App\Module\General\AppParam\Application\DTO\uAppParam.DTO.pas',
+  u26CreateAppParamTable.Migration in 'Database\Infra\Migration\u26CreateAppParamTable.Migration.pas',
+  uAppParamMany.DTO in 'App\Module\General\AppParam\Application\DTO\uAppParamMany.DTO.pas',
+  uAppParam.SaveManyByGroupAndIndex.UseCase in 'App\Module\General\AppParam\Application\UseCase\uAppParam.SaveManyByGroupAndIndex.UseCase.pas';
 
 begin
   TMain.Start;

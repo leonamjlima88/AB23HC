@@ -54,7 +54,7 @@ type
     property name: string read Fname write Fname;
 
     [SwagString(100)]
-    [SwagProp('alias_name', 'Apelido / Fantasia', true)]
+    [SwagProp('alias_name', 'Apelido / Fantasia', false)]
     property alias_name: String read Falias_name write Falias_name;
 
     [SwagString(20)]
@@ -101,15 +101,15 @@ type
     [SwagProp('reference_point', 'Ponto de Referência', false)]
     property reference_point: String read Freference_point write Freference_point;
 
-    [SwagString(14)]
+    [SwagString(20)]
     [SwagProp('phone_1', 'Telefone 1', false)]
     property phone_1: String read Fphone_1 write Fphone_1;
 
-    [SwagString(14)]
+    [SwagString(20)]
     [SwagProp('phone_2', 'Telefone 2', false)]
     property phone_2: String read Fphone_2 write Fphone_2;
 
-    [SwagString(14)]
+    [SwagString(20)]
     [SwagProp('phone_3', 'Telefone 3', false)]
     property phone_3: String read Fphone_3 write Fphone_3;
 

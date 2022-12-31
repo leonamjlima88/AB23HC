@@ -47,8 +47,7 @@ begin
   lBankAccountToUpdate := TBankAccountMapper.BankAccountDtoToEntity(AInput);
   With lBankAccountToUpdate.Value do
   begin
-    id         := APK;
-    updated_at := now;
+    id := APK;
     Validate;
   end;
 

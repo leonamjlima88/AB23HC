@@ -47,8 +47,7 @@ begin
   lSizeToUpdate := TSizeMapper.SizeDtoToEntity(AInput);
   With lSizeToUpdate.Value do
   begin
-    id         := APK;
-    updated_at := now;
+    id := APK;
     Validate;
   end;
 

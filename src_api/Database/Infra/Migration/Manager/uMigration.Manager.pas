@@ -71,7 +71,8 @@ uses
   u23CreateNCMTable.Migration,
   u23NCMSeed.Migration,
   u24CreateTaxRuleTable.Migration,
-  u25CreateTaxRuleStateTable.Migration;
+  u25CreateTaxRuleStateTable.Migration,
+  u26CreateAppParamTable.Migration;
 
 const
   MIGRATION_ORDER_BY_DESCRIPTION = 'select * from migration order by description';
@@ -120,6 +121,7 @@ begin
   FMigrations.Add(T23NCMSeed.Make(FConn));
   FMigrations.Add(T24CreateTaxRuleTable.Make(FConn));
   FMigrations.Add(T25CreateTaxRuleStateTable.Make(FConn));
+  FMigrations.Add(T26CreateAppParamTable.Make(FConn));
 end;
 
 constructor TMigrationManager.Create(AConn: IZLConnection);

@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TUnitMapper }
 
@@ -26,6 +28,9 @@ class function TUnitMapper.EntityToUnitShowDto(AUnit: TUnit): TUnitShowDTO;
 var
   lUnitShowDTO: TUnitShowDTO;
 begin
+  if not Assigned(AUnit) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lUnitShowDTO := TUnitShowDTO.FromJSON(AUnit.AsJSON);
 

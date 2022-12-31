@@ -14,6 +14,7 @@ type
 implementation
 
 uses
+  uAppParam.Controller,
   uTenant.Controller,
   uTaxRule.Controller,
   uNCM.Controller,
@@ -54,6 +55,7 @@ begin
       end
     );
 
+  THorseGBSwaggerRegister.RegisterPath(TAppParamController);
   THorseGBSwaggerRegister.RegisterPath(TTenantController);
   THorseGBSwaggerRegister.RegisterPath(TTaxRuleController);
   THorseGBSwaggerRegister.RegisterPath(TNCMController);

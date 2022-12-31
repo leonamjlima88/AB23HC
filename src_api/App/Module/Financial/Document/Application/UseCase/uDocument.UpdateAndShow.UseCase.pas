@@ -47,8 +47,7 @@ begin
   lDocumentToUpdate := TDocumentMapper.DocumentDtoToEntity(AInput);
   With lDocumentToUpdate.Value do
   begin
-    id         := APK;
-    updated_at := now;
+    id := APK;
     Validate;
   end;
 

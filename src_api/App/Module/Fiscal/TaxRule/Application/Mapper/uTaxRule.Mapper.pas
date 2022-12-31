@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TTaxRuleMapper }
 
@@ -27,6 +29,9 @@ var
   lTaxRuleShowDTO: TTaxRuleShowDTO;
   lI: Integer;
 begin
+  if not Assigned(ATaxRule) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lTaxRuleShowDTO := TTaxRuleShowDTO.FromJSON(ATaxRule.AsJSON);
 

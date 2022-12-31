@@ -47,8 +47,7 @@ begin
   lNCMToUpdate := TNCMMapper.NCMDtoToEntity(AInput);
   With lNCMToUpdate.Value do
   begin
-    id         := APK;
-    updated_at := now;
+    id := APK;
     Validate;
   end;
 

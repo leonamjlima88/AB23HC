@@ -16,6 +16,7 @@ type
     Timer1: TTimer;
     btnFocus: TButton;
     pnlBorder2: TPanel;
+    Panel1: TPanel;
     SkAnimatedImage1: TSkAnimatedImage;
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);

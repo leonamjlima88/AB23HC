@@ -92,7 +92,7 @@ begin
   if not lCFOP.code.Trim.IsEmpty then
   begin
     if FieldExists('cfop.code', lCFOP.code, lCFOP.id) then
-      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['cfop.code', lCFOP.code]));
+      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['Código CFOP', lCFOP.code]));
   end;
 end;
 

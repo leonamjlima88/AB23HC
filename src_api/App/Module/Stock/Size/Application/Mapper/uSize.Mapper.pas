@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TSizeMapper }
 
@@ -26,6 +28,9 @@ class function TSizeMapper.EntityToSizeShowDto(ASize: TSize): TSizeShowDTO;
 var
   lSizeShowDTO: TSizeShowDTO;
 begin
+  if not Assigned(ASize) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lSizeShowDTO := TSizeShowDTO.FromJSON(ASize.AsJSON);
 

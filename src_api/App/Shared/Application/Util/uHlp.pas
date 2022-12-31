@@ -11,13 +11,11 @@ type
 
   THlp = class
   public
+    class function  If0RetNull(AValue: Int64): String;
     class function  StateList: TArray<String>; // Lista de Estados
     class function  CpfOrCnpjIsValid(AValue: string): boolean;
     class function  CpfIsValid(AValue: string): boolean;
     class function  CnpjIsValid(AValue: string): boolean;
-    class function  if0retNull(AValue: Int64): variant; overload; // Retornar null se for <= 0
-    class function  if0retNull(AValue: Integer): variant; overload; // Retornar null se for <= 0
-    class function  if0retNull(AValue: TDateTime): variant; overload; // Retornar null se for <= 0
     class function  BodyIsEmpty(ABody: String): Boolean;
     class function  Space(N: integer): string; // Prencher espaços
     class function  SpaceStr(AContent: String; ALength: integer; ASide: TSide): string; // Prencher espaços
@@ -320,27 +318,11 @@ begin
   Result := FormatMaskText('00\.000\-000;0;', Result);
 end;
 
-class function THlp.if0retNull(AValue: Int64): variant;
+class function THlp.If0RetNull(AValue: Int64): String;
 begin
   case (AValue <= 0) of
-    True:  Result := null;
-    False: Result := AValue;
-  end;
-end;
-
-class function THlp.if0retNull(AValue: TDateTime): variant;
-begin
-  case (AValue <= 0) of
-    True:  Result := null;
-    False: Result := AValue;
-  end;
-end;
-
-class function THlp.if0retNull(AValue: Integer): variant;
-begin
-  case (AValue <= 0) of
-    True:  Result := null;
-    False: Result := AValue;
+    True:  Result := 'NULL';
+    False: Result := AValue.ToString;
   end;
 end;
 

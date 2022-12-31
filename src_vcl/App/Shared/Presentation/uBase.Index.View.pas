@@ -103,6 +103,7 @@ type
     imgDoSearch: TImage;
     IndicatorLoadButtonDoSearch: TActivityIndicator;
     imgTitle: TImage;
+    SkAnimatedImage1: TSkAnimatedImage;
     procedure FormCreate(Sender: TObject); virtual;
     procedure FormShow(Sender: TObject); virtual;
     procedure btnFilterClick(Sender: TObject); virtual;

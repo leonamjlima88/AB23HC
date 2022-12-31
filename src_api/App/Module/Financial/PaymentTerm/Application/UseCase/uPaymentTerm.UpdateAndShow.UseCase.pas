@@ -47,8 +47,7 @@ begin
   lPaymentTermToUpdate := TPaymentTermMapper.PaymentTermDtoToEntity(AInput);
   With lPaymentTermToUpdate.Value do
   begin
-    id         := APK;
-    updated_at := now;
+    id := APK;
     Validate;
   end;
 

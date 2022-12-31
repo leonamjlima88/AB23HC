@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TDocumentMapper }
 
@@ -26,6 +28,9 @@ class function TDocumentMapper.EntityToDocumentShowDto(ADocument: TDocument): TD
 var
   lDocumentShowDTO: TDocumentShowDTO;
 begin
+  if not Assigned(ADocument) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lDocumentShowDTO := TDocumentShowDTO.FromJSON(ADocument.AsJSON);
 

@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TCategoryMapper }
 
@@ -26,6 +28,9 @@ class function TCategoryMapper.EntityToCategoryShowDto(ACategory: TCategory): TC
 var
   lCategoryShowDTO: TCategoryShowDTO;
 begin
+  if not Assigned(ACategory) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lCategoryShowDTO := TCategoryShowDTO.FromJSON(ACategory.AsJSON);
 

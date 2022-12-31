@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TStorageLocationMapper }
 
@@ -26,6 +28,9 @@ class function TStorageLocationMapper.EntityToStorageLocationShowDto(AStorageLoc
 var
   lStorageLocationShowDTO: TStorageLocationShowDTO;
 begin
+  if not Assigned(AStorageLocation) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lStorageLocationShowDTO := TStorageLocationShowDTO.FromJSON(AStorageLocation.AsJSON);
 

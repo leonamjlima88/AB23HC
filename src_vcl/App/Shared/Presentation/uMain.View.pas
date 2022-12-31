@@ -108,6 +108,18 @@ type
     procedure Image4Click(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure actPersonExecute(Sender: TObject);
+    procedure actCityExecute(Sender: TObject);
+    procedure actCategoryExecute(Sender: TObject);
+    procedure actSizeExecute(Sender: TObject);
+    procedure actUnidExecute(Sender: TObject);
+    procedure actStorageLocationExecute(Sender: TObject);
+    procedure actNCMExecute(Sender: TObject);
+    procedure actCostCenterExecute(Sender: TObject);
+    procedure actBankExecute(Sender: TObject);
+    procedure actBankAccountExecute(Sender: TObject);
+    procedure actDocumentExecute(Sender: TObject);
+    procedure actPaymentTermExecute(Sender: TObject);
+    procedure actChartOfAccountExecute(Sender: TObject);
   private
     FTabSheetTag: Integer;
     FNetConnectedLog: IShared<TStringList>;
@@ -135,7 +147,29 @@ uses
   Winapi.ShellApi,
   uUserLogged,
   uNotificationView,
-  uPerson.Index.View;
+  uPerson.Index.View,
+  uCity.Index.View,
+  uCategory.Index.View,
+  uSize.Index.View,
+  uUnit.Index.View,
+  uStorageLocation.Index.View,
+  uNCM.Index.View,
+  uCostCenter.Index.View,
+  uBank.Index.View,
+  uBankAccount.Index.View,
+  uDocument.Index.View,
+  uPaymentTerm.Index.View,
+  uChartOfAccount.Index.View;
+
+procedure TMainView.actBankAccountExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TBankAccountIndexView, 'Conta Bancária');
+end;
+
+procedure TMainView.actBankExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TBankIndexView, 'Banco');
+end;
 
 procedure TMainView.actBrandExecute(Sender: TObject);
 begin
@@ -152,9 +186,59 @@ begin
   ShowTabCloseButtonOnHotTab;
 end;
 
+procedure TMainView.actCategoryExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TCategoryIndexView, 'Category');
+end;
+
+procedure TMainView.actChartOfAccountExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TChartOfAccountIndexView, 'Planos de Conta');
+end;
+
+procedure TMainView.actCityExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TCityIndexView, 'Cidade');
+end;
+
+procedure TMainView.actCostCenterExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TCostCenterIndexView, 'Centro de Custo');
+end;
+
+procedure TMainView.actDocumentExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TDocumentIndexView, 'Documento');
+end;
+
+procedure TMainView.actNCMExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TNCMIndexView, 'NCM');
+end;
+
+procedure TMainView.actPaymentTermExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TPaymentTermIndexView, 'Condição de Pagamento');
+end;
+
 procedure TMainView.actPersonExecute(Sender: TObject);
 begin
   LoadAndShowForm(TPersonIndexView, 'Pessoa');
+end;
+
+procedure TMainView.actSizeExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TSizeIndexView, 'Tamanho');
+end;
+
+procedure TMainView.actStorageLocationExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TStorageLocationIndexView, 'Local de Armazenamento');
+end;
+
+procedure TMainView.actUnidExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TUnitIndexView, 'Unidade de Medida');
 end;
 
 procedure TMainView.FormDestroy(Sender: TObject);

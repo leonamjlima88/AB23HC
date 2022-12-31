@@ -47,8 +47,7 @@ begin
   lStorageLocationToUpdate := TStorageLocationMapper.StorageLocationDtoToEntity(AInput);
   With lStorageLocationToUpdate.Value do
   begin
-    id         := APK;
-    updated_at := now;
+    id := APK;
     Validate;
   end;
 

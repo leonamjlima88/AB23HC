@@ -25,6 +25,9 @@ const
   DO_YOU_WANT_TO_DELETE_SELECTED_RECORD = 'Deseja apagar registro selecionado?';
   EXCLUSION = 'Exclusão';
 
+  GERAL_FILTER_SEARCH_TYPE = 'geral_filter_search_type';
+  GERAL_LIMIT_PER_PAGE = 'geral_limit_per_page';
+
 implementation
 
 end.

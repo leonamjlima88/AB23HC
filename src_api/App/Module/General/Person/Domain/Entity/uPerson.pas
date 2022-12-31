@@ -112,15 +112,23 @@ type
     property person_contact_list: TObjectList<TPersonContact> read Fperson_contact_list write Fperson_contact_list;
 
     procedure Validate; override;
+    procedure BeforeSave(AState: TEntityState);
+    procedure BeforeSaveAndValidate(AState: TEntityState);
   end;
 
 implementation
 
 uses
   System.SysUtils,
-  uHlp;
+  uHlp,
+  uPerson.BeforeSave;
 
 { TPerson }
+
+procedure TPerson.BeforeSave(AState: TEntityState);
+begin
+  TPersonBeforeSave.Make(Self, AState).Execute;
+end;
 
 constructor TPerson.Create;
 begin
@@ -141,7 +149,6 @@ end;
 procedure TPerson.Initialize;
 begin
   Flegal_entity_number := TLegalEntityNumberVO.Make(EmptyStr);
-  Fcreated_at          := now;
   Fcreated_by_acl_user := TAclUser.Create;
   Fupdated_by_acl_user := TAclUser.Create;
   Fcity                := TCity.Create;
@@ -168,18 +175,24 @@ begin
   lIsInserting := Fid = 0;
   case lIsInserting of
     True: Begin
-      if (Fcreated_at <= 0)             then raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['created_at']));
-      if (Fcreated_by_acl_user_id <= 0) then raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['created_by_acl_user_id']));
+      if (Fcreated_by_acl_user_id <= 0) then
+        raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['created_by_acl_user_id']));
     end;
     False: Begin
-      if (Fupdated_at <= 0)             then raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['updated_at']));
-      if (Fupdated_by_acl_user_id <= 0) then raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['updated_by_acl_user_id']));
+      if (Fupdated_by_acl_user_id <= 0) then
+        raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['updated_by_acl_user_id']));
     end;
   end;
 
   // Validar Contatos
   for lPersonContact in Fperson_contact_list do
     lPersonContact.Validate;
+end;
+
+procedure TPerson.BeforeSaveAndValidate(AState: TEntityState);
+begin
+  BeforeSave(AState);
+  Validate;
 end;
 
 end.

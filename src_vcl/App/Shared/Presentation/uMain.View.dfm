@@ -14203,6 +14203,7 @@ object MainView: TMainView
     object actCity: TAction
       Category = 'Registration'
       Caption = 'Cidade'
+      OnExecute = actCityExecute
     end
     object actBrand: TAction
       Category = 'Stock'
@@ -14212,18 +14213,22 @@ object MainView: TMainView
     object actCategory: TAction
       Category = 'Stock'
       Caption = 'Categoria'
+      OnExecute = actCategoryExecute
     end
     object actSize: TAction
       Category = 'Stock'
       Caption = 'Tamanho'
+      OnExecute = actSizeExecute
     end
     object actStorageLocation: TAction
       Category = 'Stock'
       Caption = 'Local de Armazenamento'
+      OnExecute = actStorageLocationExecute
     end
     object actUnid: TAction
       Category = 'Stock'
       Caption = 'Unidade de Medida'
+      OnExecute = actUnidExecute
     end
     object actProduct: TAction
       Category = 'Stock'
@@ -14232,26 +14237,32 @@ object MainView: TMainView
     object actBank: TAction
       Category = 'Financial'
       Caption = 'Banco'
+      OnExecute = actBankExecute
     end
     object actCostCenter: TAction
       Category = 'Financial'
       Caption = 'Centro de Custo'
+      OnExecute = actCostCenterExecute
     end
     object actBankAccount: TAction
       Category = 'Financial'
       Caption = 'Conta Banc'#225'ria'
+      OnExecute = actBankAccountExecute
     end
     object actChartOfAccount: TAction
       Category = 'Financial'
       Caption = 'Plano de Contas'
+      OnExecute = actChartOfAccountExecute
     end
     object actDocument: TAction
       Category = 'Financial'
-      Caption = 'Documentos'
+      Caption = 'Documento'
+      OnExecute = actDocumentExecute
     end
     object actPaymentTerm: TAction
       Category = 'Financial'
       Caption = 'Condi'#231#227'o de Pagamento'
+      OnExecute = actPaymentTermExecute
     end
     object actBillPayReceive: TAction
       Category = 'Financial'
@@ -14260,6 +14271,7 @@ object MainView: TMainView
     object actNCM: TAction
       Category = 'Fiscal'
       Caption = 'NCM'
+      OnExecute = actNCMExecute
     end
     object actBusinessProposal: TAction
       Category = 'Business'

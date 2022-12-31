@@ -47,8 +47,7 @@ begin
   lCFOPToUpdate := TCFOPMapper.CFOPDtoToEntity(AInput);
   With lCFOPToUpdate.Value do
   begin
-    id         := APK;
-    updated_at := now;
+    id := APK;
     Validate;
   end;
 

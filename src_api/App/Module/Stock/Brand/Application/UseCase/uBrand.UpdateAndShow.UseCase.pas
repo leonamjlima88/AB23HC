@@ -48,8 +48,7 @@ begin
   lBrandToUpdate := TBrandMapper.BrandDtoToEntity(AInput);
   With lBrandToUpdate.Value do
   begin
-    id         := APK;
-    updated_at := now;
+    id := APK;
     Validate;
   end;
 

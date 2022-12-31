@@ -47,8 +47,7 @@ begin
   lTaxRuleToUpdate := TTaxRuleMapper.TaxRuleDtoToEntity(AInput);
   With lTaxRuleToUpdate.Value do
   begin
-    id         := APK;
-    updated_at := now;
+    id := APK;
     Validate;
   end;
 

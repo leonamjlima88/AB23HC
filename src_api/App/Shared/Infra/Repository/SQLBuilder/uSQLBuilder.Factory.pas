@@ -3,6 +3,7 @@ unit uSQLBuilder.Factory;
 interface
 
 uses
+  uAppParam.SQLBuilder.Interfaces,
   uTenant.SQLBuilder.Interfaces,
   uTaxRuleState.SQLBuilder.Interfaces,
   uTaxRule.SQLBuilder.Interfaces,
@@ -32,6 +33,7 @@ type
   ISQLBuilderFactory = interface
     ['{865EBE81-EE3C-4E9B-A2CE-0DC3EAB7749F}']
 
+    function AppParam: IAppParamSQLBuilder;
     function Tenant: ITenantSQLBuilder;
     function TaxRuleState: ITaxRuleStateSQLBuilder;
     function TaxRule: ITaxRuleSQLBuilder;
@@ -64,6 +66,7 @@ type
   public
     class function Make(ADriverDB: TZLDriverDB = ddDefault): ISQLBuilderFactory;
 
+    function AppParam: IAppParamSQLBuilder;
     function Tenant: ITenantSQLBuilder;
     function TaxRuleState: ITaxRuleStateSQLBuilder;
     function TaxRule: ITaxRuleSQLBuilder;
@@ -92,6 +95,7 @@ type
 implementation
 
 uses
+  uAppParam.SQLBuilder.MySQL,
   uTenant.SQLBuilder.MySQL,
   uTaxRuleState.SQLBuilder.MySQL,
   uTaxRule.SQLBuilder.MySQL,
@@ -137,6 +141,13 @@ function TSQLBuilderFactory.AclUser: IAclUserSQLBuilder;
 begin
   case FDriverDB of
     ddMySql: Result := TAclUserSQLBuilderMySQL.Make;
+  end;
+end;
+
+function TSQLBuilderFactory.AppParam: IAppParamSQLBuilder;
+begin
+  case FDriverDB of
+    ddMySql: Result := TAppParamSQLBuilderMySQL.Make;
   end;
 end;
 

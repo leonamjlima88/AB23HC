@@ -212,7 +212,7 @@ begin
   if not lPerson.legal_entity_number.Value.Trim.IsEmpty then
   begin
     if LegalEntityNumberExists(lPerson.legal_entity_number.Value, lPerson.id, lPerson.tenant_id) then
-      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['person.legal_entity_number', lPerson.legal_entity_number.Value]));
+      raise Exception.Create(Format(FIELD_WITH_VALUE_IS_IN_USE, ['CPF/CNPJ', lPerson.legal_entity_number.Value]));
   end;
 end;
 

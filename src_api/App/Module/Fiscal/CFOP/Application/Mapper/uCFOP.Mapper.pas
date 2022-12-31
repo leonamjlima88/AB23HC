@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TCFOPMapper }
 
@@ -26,6 +28,9 @@ class function TCFOPMapper.EntityToCFOPShowDto(ACFOP: TCFOP): TCFOPShowDTO;
 var
   lCFOPShowDTO: TCFOPShowDTO;
 begin
+  if not Assigned(ACFOP) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lCFOPShowDTO := TCFOPShowDTO.FromJSON(ACFOP.AsJSON);
 

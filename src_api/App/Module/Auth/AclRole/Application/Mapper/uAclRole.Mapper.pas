@@ -18,7 +18,9 @@ type
 implementation
 
 uses
-  XSuperObject;
+  XSuperObject,
+  System.SysUtils,
+  uApplication.Types;
 
 { TAclRoleMapper }
 
@@ -26,6 +28,9 @@ class function TAclRoleMapper.EntityToAclRoleShowDto(AAclRole: TAclRole): TAclRo
 var
   lAclRoleShowDTO: TAclRoleShowDTO;
 begin
+  if not Assigned(AAclRole) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lAclRoleShowDTO := TAclRoleShowDTO.FromJSON(AAclRole.AsJSON);
 

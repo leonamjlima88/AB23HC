@@ -513,6 +513,26 @@
         <DCCReference Include="Database\Infra\Migration\u21CFOPSeed.Migration.pas"/>
         <DCCReference Include="Database\Infra\Migration\u23NCMSeed.Migration.pas"/>
         <DCCReference Include="Database\Infra\Migration\u10UnitSeed.Migration.pas"/>
+        <DCCReference Include="App\Module\General\Person\Domain\Services\uPerson.BeforeSave.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Infra\Repository\SQLBuilder\uAppParam.SQLBuilder.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Infra\Repository\SQLBuilder\MySQL\uAppParam.SQLBuilder.MySQL.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Infra\Controller\uAppParam.Controller.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Infra\Repository\SQL\uAppParam.Repository.SQL.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Domain\Repository\uAppParam.SQLBuilder.Interfaces.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Domain\Repository\uAppParam.Repository.Interfaces.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Domain\Entity\uAppParam.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Application\UseCase\uAppParam.UpdateAndShow.UseCase.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Application\UseCase\uAppParam.StoreAndShow.UseCase.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Application\UseCase\uAppParam.Show.UseCase.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Application\UseCase\uAppParam.Index.UseCase.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Application\UseCase\uAppParam.Delete.UseCase.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Application\Mapper\uAppParam.Mapper.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Application\DTO\uAppParam.Base.DTO.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Application\DTO\uAppParam.Show.DTO.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Application\DTO\uAppParam.DTO.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u26CreateAppParamTable.Migration.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Application\DTO\uAppParamMany.DTO.pas"/>
+        <DCCReference Include="App\Module\General\AppParam\Application\UseCase\uAppParam.SaveManyByGroupAndIndex.UseCase.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

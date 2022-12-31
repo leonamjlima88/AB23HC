@@ -19,7 +19,9 @@ implementation
 
 uses
   XSuperObject,
-  uLegalEntityNumber.VO;
+  uLegalEntityNumber.VO,
+  System.SysUtils,
+  uApplication.Types;
 
 { TTenantMapper }
 
@@ -27,6 +29,9 @@ class function TTenantMapper.EntityToTenantShowDto(ATenant: TTenant): TTenantSho
 var
   lTenantShowDTO: TTenantShowDTO;
 begin
+  if not Assigned(ATenant) then
+    raise Exception.Create(RECORD_NOT_FOUND);
+
   // Mapear campos por JSON
   lTenantShowDTO := TTenantShowDTO.FromJSON(ATenant.AsJSON);
 

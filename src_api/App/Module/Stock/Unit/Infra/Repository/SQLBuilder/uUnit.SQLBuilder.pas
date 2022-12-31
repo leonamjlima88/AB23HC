@@ -64,6 +64,7 @@ begin
     .Insert
     .Into('unit')
     .&Set('name',                   lUnit.name)
+    .&Set('description',            lUnit.description)
     .&Set('created_at',             lUnit.created_at)
     .&Set('created_by_acl_user_id', lUnit.created_by_acl_user_id)
   .AsString;
@@ -111,6 +112,7 @@ begin
   Result := TCQL.New(FDBName)
     .Update('unit')
     .&Set('name',                   lUnit.name)
+    .&Set('description',            lUnit.description)
     .&Set('updated_at',             lUnit.updated_at)
     .&Set('updated_by_acl_user_id', lUnit.updated_by_acl_user_id)
     .Where('unit.id = ' + AId.ToString)

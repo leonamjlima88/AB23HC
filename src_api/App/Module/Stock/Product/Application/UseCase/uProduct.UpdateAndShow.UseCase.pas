@@ -48,8 +48,7 @@ begin
   lProductToUpdate := TProductMapper.ProductDtoToEntity(AInput);
   With lProductToUpdate.Value do
   begin
-    id         := APK;
-    updated_at := now;
+    id := APK;
     Validate;
   end;
 
