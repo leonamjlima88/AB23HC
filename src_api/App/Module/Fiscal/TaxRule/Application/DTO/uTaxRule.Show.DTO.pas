@@ -19,10 +19,15 @@ type
     Fid: Int64;
     Fupdated_by_acl_user_id: Int64;
     Fcreated_by_acl_user_id: Int64;
+    Foperation_type_name: string;
   public
     [SwagNumber]
     [SwagProp('id', 'ID', true)]
     property id: Int64 read Fid write Fid;
+
+    [SwagString(100)] {virtual}
+    [SwagProp('operation_type_name', 'Tipo de Operação', true)]
+    property operation_type_name: string read Foperation_type_name write Foperation_type_name;
 
     [SwagDate(DATETIME_DISPLAY_FORMAT)]
     [SwagProp('created_at', CREATED_AT_DISPLAY, true)]

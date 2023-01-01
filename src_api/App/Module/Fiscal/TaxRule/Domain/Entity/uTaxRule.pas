@@ -9,7 +9,8 @@ uses
   Data.DB,
   uTaxRuleState,
   System.Generics.Collections,
-  XSuperObject;
+  XSuperObject,
+  uOperationType;
 
 type
   TTaxRule = class(TBaseEntity)
@@ -25,6 +26,7 @@ type
     Ftenant_id: Int64;
 
     // OneToOne
+    Foperation_type: TOperationType;
     Fupdated_by_acl_user: TAclUser;
     Fcreated_by_acl_user: TAclUser;
 
@@ -47,6 +49,7 @@ type
     property tenant_id: Int64 read Ftenant_id write Ftenant_id;
 
     // OneToOne
+    property operation_type: TOperationType read Foperation_type write Foperation_type;
     property created_by_acl_user: TAclUser read Fcreated_by_acl_user write Fcreated_by_acl_user;
     property updated_by_acl_user: TAclUser read Fupdated_by_acl_user write Fupdated_by_acl_user;
 
@@ -72,6 +75,7 @@ end;
 
 destructor TTaxRule.Destroy;
 begin
+  if Assigned(Foperation_type)      then Foperation_type.Free;
   if Assigned(Ftax_rule_state_list) then Ftax_rule_state_list.Free;
   if Assigned(Fcreated_by_acl_user) then Fcreated_by_acl_user.Free;
   if Assigned(Fupdated_by_acl_user) then Fupdated_by_acl_user.Free;
@@ -82,6 +86,7 @@ end;
 procedure TTaxRule.Initialize;
 begin
   Fcreated_at          := now;
+  Foperation_type      := TOperationType.Create;
   Fcreated_by_acl_user := TAclUser.Create;
   Fupdated_by_acl_user := TAclUser.Create;
   Ftax_rule_state_list := TObjectList<TTaxRuleState>.Create;

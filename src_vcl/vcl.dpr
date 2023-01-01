@@ -89,7 +89,20 @@ uses
   uChartOfAccount.Index.View in 'App\Module\ChartOfAccount\View\uChartOfAccount.Index.View.pas' {ChartOfAccountIndexView},
   uChartOfAccount.CreateUpdate.View in 'App\Module\ChartOfAccount\View\uChartOfAccount.CreateUpdate.View.pas' {ChartOfAccountCreateUpdateView},
   uChartOfAccount.Service in 'App\Module\ChartOfAccount\Service\uChartOfAccount.Service.pas',
-  uChartOfAccount.MTB in 'App\Module\ChartOfAccount\MemTable\uChartOfAccount.MTB.pas';
+  uChartOfAccount.MTB in 'App\Module\ChartOfAccount\MemTable\uChartOfAccount.MTB.pas',
+  uOperationType.Index.View in 'App\Module\OperationType\View\uOperationType.Index.View.pas' {OperationTypeIndexView},
+  uOperationType.CreateUpdate.View in 'App\Module\OperationType\View\uOperationType.CreateUpdate.View.pas' {OperationTypeCreateUpdateView},
+  uOperationType.Service in 'App\Module\OperationType\Service\uOperationType.Service.pas',
+  uOperationType.MTB in 'App\Module\OperationType\MemTable\uOperationType.MTB.pas',
+  uCFOP.Index.View in 'App\Module\CFOP\View\uCFOP.Index.View.pas' {CFOPIndexView},
+  uCFOP.CreateUpdate.View in 'App\Module\CFOP\View\uCFOP.CreateUpdate.View.pas' {CFOPCreateUpdateView},
+  uCFOP.Service in 'App\Module\CFOP\Service\uCFOP.Service.pas',
+  uCFOP.MTB in 'App\Module\CFOP\MemTable\uCFOP.MTB.pas',
+  uTaxRuleState.CreateUpdate.View in 'App\Module\TaxRule\View\uTaxRuleState.CreateUpdate.View.pas' {TaxRuleStateCreateUpdateView},
+  uTaxRule.CreateUpdate.View in 'App\Module\TaxRule\View\uTaxRule.CreateUpdate.View.pas' {TaxRuleCreateUpdateView},
+  uTaxRule.MTB in 'App\Module\TaxRule\MemTable\uTaxRule.MTB.pas',
+  uTaxRule.Index.View in 'App\Module\TaxRule\View\uTaxRule.Index.View.pas' {TaxRuleIndexView},
+  uTaxRule.Service in 'App\Module\TaxRule\Service\uTaxRule.Service.pas';
 
 {$R *.res}
 

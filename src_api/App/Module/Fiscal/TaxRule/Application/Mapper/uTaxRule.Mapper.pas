@@ -36,12 +36,13 @@ begin
   lTaxRuleShowDTO := TTaxRuleShowDTO.FromJSON(ATaxRule.AsJSON);
 
   // Tratar campos específicos
+  lTaxRuleShowDTO.operation_type_name      := ATaxRule.operation_type.name;
   lTaxRuleShowDTO.created_by_acl_user_name := ATaxRule.created_by_acl_user.name;
   lTaxRuleShowDTO.updated_by_acl_user_name := ATaxRule.updated_by_acl_user.name;
-  for lI := 0 to Pred(Result.tax_rule_state_list.Count) do
+  for lI := 0 to Pred(lTaxRuleShowDTO.tax_rule_state_list.Count) do
   begin
-    Result.tax_rule_state_list.Items[lI].cfop_code := ATaxRule.tax_rule_state_list.Items[lI].cfop.code;
-    Result.tax_rule_state_list.Items[lI].cfop_name := ATaxRule.tax_rule_state_list.Items[lI].cfop.name;
+    lTaxRuleShowDTO.tax_rule_state_list.Items[lI].cfop_code := ATaxRule.tax_rule_state_list.Items[lI].cfop.code;
+    lTaxRuleShowDTO.tax_rule_state_list.Items[lI].cfop_name := ATaxRule.tax_rule_state_list.Items[lI].cfop.name;
   end;
 
   Result := lTaxRuleShowDTO;

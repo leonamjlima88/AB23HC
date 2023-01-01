@@ -67,6 +67,8 @@ begin
   lTaxRule := TTaxRule.FromJSON(ADtsTaxRule.ToJSONObjectString);
 
   // TaxRule - Virtuais
+  lTaxRule.operation_type.id        := ADtsTaxRule.FieldByName('operation_type_id').AsLargeInt;
+  lTaxRule.operation_type.name      := ADtsTaxRule.FieldByName('operation_type_name').AsString;
   lTaxRule.created_by_acl_user.id   := ADtsTaxRule.FieldByName('created_by_acl_user_id').AsLargeInt;
   lTaxRule.created_by_acl_user.name := ADtsTaxRule.FieldByName('created_by_acl_user_name').AsString;
   lTaxRule.updated_by_acl_user.id   := ADtsTaxRule.FieldByName('updated_by_acl_user_id').AsLargeInt;

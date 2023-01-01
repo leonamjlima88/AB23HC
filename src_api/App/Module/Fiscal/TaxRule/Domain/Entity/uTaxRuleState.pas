@@ -128,8 +128,13 @@ begin
 end;
 
 procedure TTaxRuleState.Validate;
+const
+  L_OTHERS: TArray<String> = ['UF DO EMITENTE', 'OUTROS UFS'];
+var
+  lFound: Boolean;
 begin
-  if not MatchStr(Ftarget_state.Trim.ToUpper, THlp.StateList) then
+  lFound := MatchStr(Ftarget_state.Trim.ToUpper, THlp.StateList) or MatchStr(Ftarget_state.Trim.ToUpper, L_OTHERS);
+  if not lFound then
     raise Exception.Create(Format(FIELD_WITH_VALUE_IS_INVALID, ['tax_rule_state.target_state', Ftarget_state.Trim.ToUpper]));
 end;
 

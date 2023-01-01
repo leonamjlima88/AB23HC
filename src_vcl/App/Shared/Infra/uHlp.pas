@@ -13,6 +13,7 @@ uses
 type
   THlp = class
   public
+    class function  StateList: TArray<String>; // Lista de Estados
     class function  BollInt(AValue: Boolean): Integer;
     class function  IntBool(AValue: Integer): Boolean;
     class procedure RemoveEventsFromDataSet(ADataSet: TDataSet; ARemoveSet: Boolean = true; ARemoveGet: Boolean = True);
@@ -332,6 +333,40 @@ begin
     if ARemoveSet then lField.OnSetText := nil;
     if ARemoveGet then lField.OnGetText := nil;
   end;
+end;
+
+class function THlp.StateList: TArray<String>;
+begin
+  Result := TArray<String>.Create(
+    'AC',
+    'AL',
+    'AP',
+    'AM',
+    'BA',
+    'CE',
+    'DF',
+    'ES',
+    'GO',
+    'MA',
+    'MT',
+    'MS',
+    'MG',
+    'PA',
+    'PB',
+    'PR',
+    'PE',
+    'PI',
+    'RJ',
+    'RN',
+    'RS',
+    'RO',
+    'RR',
+    'SC',
+    'SP',
+    'SE',
+    'TO',
+    'EX'
+  );
 end;
 
 class function THlp.StrFloat(AValue: String; ADefaultValue: Double): Double;

@@ -46,7 +46,7 @@ type
     Fcfop_name: String;
     Fcfop_code: String;
   public
-    [SwagString(2)]
+    [SwagString(20)]
     [SwagProp('target_state', 'UF', true)]
     property target_state: string read Ftarget_state write Ftarget_state;
 

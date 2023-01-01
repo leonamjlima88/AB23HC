@@ -120,6 +120,9 @@ type
     procedure actDocumentExecute(Sender: TObject);
     procedure actPaymentTermExecute(Sender: TObject);
     procedure actChartOfAccountExecute(Sender: TObject);
+    procedure actOperationTypeExecute(Sender: TObject);
+    procedure actCFOPExecute(Sender: TObject);
+    procedure actTaxRuleExecute(Sender: TObject);
   private
     FTabSheetTag: Integer;
     FNetConnectedLog: IShared<TStringList>;
@@ -159,7 +162,9 @@ uses
   uBankAccount.Index.View,
   uDocument.Index.View,
   uPaymentTerm.Index.View,
-  uChartOfAccount.Index.View;
+  uChartOfAccount.Index.View,
+  uOperationType.Index.View,
+  uCFOP.Index.View, uTaxRule.Index.View;
 
 procedure TMainView.actBankAccountExecute(Sender: TObject);
 begin
@@ -191,6 +196,11 @@ begin
   LoadAndShowForm(TCategoryIndexView, 'Category');
 end;
 
+procedure TMainView.actCFOPExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TCFOPIndexView, 'CFOP');
+end;
+
 procedure TMainView.actChartOfAccountExecute(Sender: TObject);
 begin
   LoadAndShowForm(TChartOfAccountIndexView, 'Planos de Conta');
@@ -216,6 +226,11 @@ begin
   LoadAndShowForm(TNCMIndexView, 'NCM');
 end;
 
+procedure TMainView.actOperationTypeExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TOperationTypeIndexView, 'Tipo de Operação');
+end;
+
 procedure TMainView.actPaymentTermExecute(Sender: TObject);
 begin
   LoadAndShowForm(TPaymentTermIndexView, 'Condição de Pagamento');
@@ -234,6 +249,11 @@ end;
 procedure TMainView.actStorageLocationExecute(Sender: TObject);
 begin
   LoadAndShowForm(TStorageLocationIndexView, 'Local de Armazenamento');
+end;
+
+procedure TMainView.actTaxRuleExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TTaxRuleIndexView, 'Regra Fiscal');
 end;
 
 procedure TMainView.actUnidExecute(Sender: TObject);

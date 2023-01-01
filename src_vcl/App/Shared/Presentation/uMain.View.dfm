@@ -14300,14 +14300,17 @@ object MainView: TMainView
     object actOperationType: TAction
       Category = 'Fiscal'
       Caption = 'Tipo de Opera'#231#227'o'
+      OnExecute = actOperationTypeExecute
     end
     object actCFOP: TAction
       Category = 'Fiscal'
       Caption = 'CFOP'
+      OnExecute = actCFOPExecute
     end
     object actTaxRule: TAction
       Category = 'Fiscal'
       Caption = 'Regra Fiscal'
+      OnExecute = actTaxRuleExecute
     end
   end
   object PopupMenu1: TPopupMenu

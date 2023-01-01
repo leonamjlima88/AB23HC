@@ -37,7 +37,7 @@ begin
   Result := ' CREATE TABLE `tax_rule_state` ( '+
             '   `id` bigint NOT NULL AUTO_INCREMENT, '+
             '   `tax_rule_id` bigint NOT NULL, '+
-            '   `target_state` char(2) NOT NULL, '+
+            '   `target_state` varchar(20) NOT NULL, '+
             '   `cfop_id` bigint NOT NULL, '+
             '   `icms_regime` tinyint NOT NULL COMMENT ''Regime tributário [0=SimplesNacional, 1=SimplesExcessoReceita, 2=RegimeNormal]'', '+
             '   `icms_situation` tinyint NOT NULL COMMENT ''[0=cst00, 1=cst10, 2=cst20, 3=cst30, 4=cst40, 5=cst41, 6=cst45, 7=cst50, '+

@@ -291,6 +291,40 @@
         </DCCReference>
         <DCCReference Include="App\Module\ChartOfAccount\Service\uChartOfAccount.Service.pas"/>
         <DCCReference Include="App\Module\ChartOfAccount\MemTable\uChartOfAccount.MTB.pas"/>
+        <DCCReference Include="App\Module\OperationType\View\uOperationType.Index.View.pas">
+            <Form>OperationTypeIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\OperationType\View\uOperationType.CreateUpdate.View.pas">
+            <Form>OperationTypeCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\OperationType\Service\uOperationType.Service.pas"/>
+        <DCCReference Include="App\Module\OperationType\MemTable\uOperationType.MTB.pas"/>
+        <DCCReference Include="App\Module\CFOP\View\uCFOP.Index.View.pas">
+            <Form>CFOPIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\CFOP\View\uCFOP.CreateUpdate.View.pas">
+            <Form>CFOPCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\CFOP\Service\uCFOP.Service.pas"/>
+        <DCCReference Include="App\Module\CFOP\MemTable\uCFOP.MTB.pas"/>
+        <DCCReference Include="App\Module\TaxRule\View\uTaxRuleState.CreateUpdate.View.pas">
+            <Form>TaxRuleStateCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\TaxRule\View\uTaxRule.CreateUpdate.View.pas">
+            <Form>TaxRuleCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\TaxRule\MemTable\uTaxRule.MTB.pas"/>
+        <DCCReference Include="App\Module\TaxRule\View\uTaxRule.Index.View.pas">
+            <Form>TaxRuleIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\TaxRule\Service\uTaxRule.Service.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
