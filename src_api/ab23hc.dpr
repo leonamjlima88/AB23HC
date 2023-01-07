@@ -355,7 +355,7 @@ uses
   uNCM.Show.DTO in 'App\Module\Stock\NCM\Application\DTO\uNCM.Show.DTO.pas',
   uNCM.DTO in 'App\Module\Stock\NCM\Application\DTO\uNCM.DTO.pas',
   uNCM.Base.DTO in 'App\Module\Stock\NCM\Application\DTO\uNCM.Base.DTO.pas',
-  u23CreateNCMTable.Migration in 'Database\Infra\Migration\u23CreateNCMTable.Migration.pas',
+  u14CreateNCMTable.Migration in 'Database\Infra\Migration\u14CreateNCMTable.Migration.pas',
   uTaxRuleState.SQLBuilder in 'App\Module\Fiscal\TaxRule\Infra\Repository\SQLBuilder\uTaxRuleState.SQLBuilder.pas',
   uTaxRule.SQLBuilder in 'App\Module\Fiscal\TaxRule\Infra\Repository\SQLBuilder\uTaxRule.SQLBuilder.pas',
   uTaxRuleState.SQLBuilder.MySQL in 'App\Module\Fiscal\TaxRule\Infra\Repository\SQLBuilder\MySQL\uTaxRuleState.SQLBuilder.MySQL.pas',
@@ -422,7 +422,7 @@ uses
   u00CitySeed.Migration in 'Database\Infra\Migration\u00CitySeed.Migration.pas',
   u16BankSeed.Migration in 'Database\Infra\Migration\u16BankSeed.Migration.pas',
   u21CFOPSeed.Migration in 'Database\Infra\Migration\u21CFOPSeed.Migration.pas',
-  u23NCMSeed.Migration in 'Database\Infra\Migration\u23NCMSeed.Migration.pas',
+  u14NCMSeed.Migration in 'Database\Infra\Migration\u14NCMSeed.Migration.pas',
   u10UnitSeed.Migration in 'Database\Infra\Migration\u10UnitSeed.Migration.pas',
   uPerson.BeforeSave in 'App\Module\General\Person\Domain\Services\uPerson.BeforeSave.pas',
   uAppParam.SQLBuilder in 'App\Module\General\AppParam\Infra\Repository\SQLBuilder\uAppParam.SQLBuilder.pas',
@@ -443,7 +443,8 @@ uses
   uAppParam.DTO in 'App\Module\General\AppParam\Application\DTO\uAppParam.DTO.pas',
   u26CreateAppParamTable.Migration in 'Database\Infra\Migration\u26CreateAppParamTable.Migration.pas',
   uAppParamMany.DTO in 'App\Module\General\AppParam\Application\DTO\uAppParamMany.DTO.pas',
-  uAppParam.SaveManyByGroupAndIndex.UseCase in 'App\Module\General\AppParam\Application\UseCase\uAppParam.SaveManyByGroupAndIndex.UseCase.pas';
+  uAppParam.SaveManyByGroupAndIndex.UseCase in 'App\Module\General\AppParam\Application\UseCase\uAppParam.SaveManyByGroupAndIndex.UseCase.pas',
+  uProduct.BeforeSave in 'App\Module\Stock\Product\Domain\Services\uProduct.BeforeSave.pas';
 
 begin
   TMain.Start;

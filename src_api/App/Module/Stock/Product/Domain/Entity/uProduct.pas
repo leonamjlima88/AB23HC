@@ -8,6 +8,7 @@ uses
   uBase.Entity,
   Data.DB,
   uUnit,
+  uNCM,
   uStorageLocation,
   uCategory,
   uSize,
@@ -23,6 +24,7 @@ type
     Fcost: Double;
     Fgenre: TProductGenre;
     Funit_id: Int64;
+    Fncm_id: Int64;
     Fpacking_weight: Double;
     Fprice: Double;
     Fcurrent_quantity: Double;
@@ -53,6 +55,7 @@ type
 
     // OneToOne
     Funit: TUnit;
+    Fncm: TNCM;
     Fstorage_location: TStorageLocation;
     Fcategory: TCategory;
     Fsize: TSize;
@@ -87,6 +90,7 @@ type
     property complement_note: String read Fcomplement_note write Fcomplement_note;
     property is_discontinued: SmallInt read Fis_discontinued write Fis_discontinued;
     property unit_id: Int64 read Funit_id write Funit_id;
+    property ncm_id: Int64 read Fncm_id write Fncm_id;
     property category_id: Int64 read Fcategory_id write Fcategory_id;
     property brand_id: Int64 read Fbrand_id write Fbrand_id;
     property size_id: Int64 read Fsize_id write Fsize_id;
@@ -100,6 +104,7 @@ type
 
     // OneToOne
     property &unit: TUnit read Funit write Funit;
+    property ncm: TNCM read Fncm write Fncm;
     property category: TCategory read Fcategory write Fcategory;
     property brand: TBrand read Fbrand write Fbrand;
     property size: TSize read Fsize write Fsize;
@@ -108,14 +113,28 @@ type
     property updated_by_acl_user: TAclUser read Fupdated_by_acl_user write Fupdated_by_acl_user;
 
     procedure Validate; override;
+    procedure BeforeSave(AState: TEntityState);
+    procedure BeforeSaveAndValidate(AState: TEntityState);
   end;
 
 implementation
 
 uses
-  System.SysUtils;
+  System.SysUtils,
+  uProduct.BeforeSave;
 
 { TProduct }
+
+procedure TProduct.BeforeSave(AState: TEntityState);
+begin
+  TProductBeforeSave.Make(Self, AState).Execute;
+end;
+
+procedure TProduct.BeforeSaveAndValidate(AState: TEntityState);
+begin
+  BeforeSave(AState);
+  Validate;
+end;
 
 constructor TProduct.Create;
 begin
@@ -126,6 +145,7 @@ end;
 destructor TProduct.Destroy;
 begin
   if Assigned(Funit)                then Funit.Free;
+  if Assigned(Fncm)                 then Fncm.Free;
   if Assigned(Fcategory)            then Fcategory.Free;
   if Assigned(Fbrand)               then Fbrand.Free;
   if Assigned(Fsize)                then Fsize.Free;
@@ -139,6 +159,7 @@ procedure TProduct.Initialize;
 begin
   Fcreated_at          := now;
   Funit                := TUnit.Create;
+  Fncm                 := TNCM.Create;
   Fcategory            := TCategory.Create;
   Fbrand               := TBrand.Create;
   Fsize                := TSize.Create;
@@ -152,16 +173,19 @@ var
   lIsInserting: Boolean;
 begin
   if Fname.Trim.IsEmpty then
-    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['name']));
+    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['Nome']));
 
   if (Ftenant_id <= 0) then
     raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['tenant_id']));
 
   if Fsimplified_name.Trim.IsEmpty then
-    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['simplified_name']));
+    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['Nome Simplificado']));
 
   if (Funit_id <= 0) then
-    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['unit_id']));
+    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['Unidade de Medida']));
+
+  if (Fncm_id <= 0) then
+    raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['NCM']));
 
   lIsInserting := Fid = 0;
   case lIsInserting of

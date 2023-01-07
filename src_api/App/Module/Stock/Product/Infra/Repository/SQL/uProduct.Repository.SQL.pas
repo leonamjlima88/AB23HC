@@ -59,6 +59,9 @@ begin
   // Product - Virtuais
   lProduct.&unit.id                 := ADtsProduct.FieldByName('unit_id').AsLargeInt;
   lProduct.&unit.name               := ADtsProduct.FieldByName('unit_name').AsString;
+  lProduct.ncm.id                   := ADtsProduct.FieldByName('ncm_id').AsLargeInt;
+  lProduct.ncm.name                 := ADtsProduct.FieldByName('ncm_name').AsString;
+  lProduct.ncm.ncm                  := ADtsProduct.FieldByName('ncm_ncm').AsString;
   lProduct.category.id              := ADtsProduct.FieldByName('category_id').AsLargeInt;
   lProduct.category.name            := ADtsProduct.FieldByName('category_name').AsString;
   lProduct.brand.id                 := ADtsProduct.FieldByName('brand_id').AsLargeInt;

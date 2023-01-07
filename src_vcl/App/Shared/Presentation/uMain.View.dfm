@@ -14233,6 +14233,7 @@ object MainView: TMainView
     object actProduct: TAction
       Category = 'Stock'
       Caption = 'Produto / Servi'#231'o'
+      OnExecute = actProductExecute
     end
     object actBank: TAction
       Category = 'Financial'

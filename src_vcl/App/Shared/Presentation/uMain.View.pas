@@ -123,6 +123,7 @@ type
     procedure actOperationTypeExecute(Sender: TObject);
     procedure actCFOPExecute(Sender: TObject);
     procedure actTaxRuleExecute(Sender: TObject);
+    procedure actProductExecute(Sender: TObject);
   private
     FTabSheetTag: Integer;
     FNetConnectedLog: IShared<TStringList>;
@@ -164,7 +165,9 @@ uses
   uPaymentTerm.Index.View,
   uChartOfAccount.Index.View,
   uOperationType.Index.View,
-  uCFOP.Index.View, uTaxRule.Index.View;
+  uCFOP.Index.View,
+  uTaxRule.Index.View,
+  uProduct.Index.View;
 
 procedure TMainView.actBankAccountExecute(Sender: TObject);
 begin
@@ -239,6 +242,11 @@ end;
 procedure TMainView.actPersonExecute(Sender: TObject);
 begin
   LoadAndShowForm(TPersonIndexView, 'Pessoa');
+end;
+
+procedure TMainView.actProductExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TProductIndexView, 'Produto');
 end;
 
 procedure TMainView.actSizeExecute(Sender: TObject);

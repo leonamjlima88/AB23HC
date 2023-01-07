@@ -28,7 +28,8 @@ uses
   uSmartPointer,
   uProduct,
   XSuperObject,
-  uProduct.Mapper;
+  uProduct.Mapper,
+  uApplication.Types;
 
 { TProductStoreAndShowUseCase }
 
@@ -47,7 +48,7 @@ begin
   // Carregar dados em Entity
   lProductToStore := TProductMapper.ProductDtoToEntity(AInput);
   lProductToStore := TProduct.FromJSON(AInput.AsJSON);
-  lProductToStore.Value.Validate;
+  lProductToStore.Value.BeforeSaveAndValidate(esStore);
 
   // Incluir e Localizar registro incluso
   lPK            := FRepository.Store(lProductToStore);

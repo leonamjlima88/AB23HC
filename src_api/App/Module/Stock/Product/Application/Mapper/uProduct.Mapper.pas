@@ -36,6 +36,8 @@ begin
 
   // Tratar campos específicos
   lProductShowDTO.unit_name                := AProduct.&unit.name;
+  lProductShowDTO.ncm_name                 := AProduct.ncm.name;
+  lProductShowDTO.ncm_ncm                  := AProduct.ncm.ncm;
   lProductShowDTO.category_name            := AProduct.category.name;
   lProductShowDTO.brand_name               := AProduct.brand.name;
   lProductShowDTO.size_name                := AProduct.size.name;

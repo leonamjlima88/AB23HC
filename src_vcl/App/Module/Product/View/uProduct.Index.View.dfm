@@ -1,4 +1,4 @@
-inherited StorageLocationIndexView: TStorageLocationIndexView
+inherited ProductIndexView: TProductIndexView
   Caption = ''
   OnKeyDown = FormKeyDown
   PixelsPerInch = 96
@@ -7,9 +7,9 @@ inherited StorageLocationIndexView: TStorageLocationIndexView
     inherited pnlContent: TPanel
       inherited pnlTitle: TPanel
         inherited lblTitle: TLabel
-          Width = 281
-          Caption = 'Local de Armazenamento'
-          ExplicitWidth = 281
+          Width = 87
+          Caption = 'Produto'
+          ExplicitWidth = 87
         end
       end
       inherited scbContent: TScrollBox
@@ -71,9 +71,41 @@ inherited StorageLocationIndexView: TStorageLocationIndexView
                 end
                 item
                   Expanded = False
+                  FieldName = 'sku_code'
+                  Title.Caption = 'Refer'#234'ncia'
+                  Width = 110
+                  Visible = True
+                end
+                item
+                  Expanded = False
                   FieldName = 'name'
                   Title.Caption = 'Nome'
-                  Width = 350
+                  Width = 620
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'unit_name'
+                  Title.Caption = 'Unid.'
+                  Width = 70
+                  Visible = True
+                end
+                item
+                  Alignment = taRightJustify
+                  Expanded = False
+                  FieldName = 'price'
+                  Title.Alignment = taRightJustify
+                  Title.Caption = 'Pre'#231'o'
+                  Width = 110
+                  Visible = True
+                end
+                item
+                  Alignment = taRightJustify
+                  Expanded = False
+                  FieldName = 'current_quantity'
+                  Title.Alignment = taRightJustify
+                  Title.Caption = 'Em Estoque'
+                  Width = 110
                   Visible = True
                 end
                 item

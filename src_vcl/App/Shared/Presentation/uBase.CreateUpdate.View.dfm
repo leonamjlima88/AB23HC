@@ -705,6 +705,10 @@ object BaseCreateUpdateView: TBaseCreateUpdateView
         TabOrder = 1
         object tabMain: TTabSheet
           Caption = '     Dados     '
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object pnlMain: TPanel
             Left = 0
             Top = 0
@@ -752,7 +756,7 @@ object BaseCreateUpdateView: TBaseCreateUpdateView
         Left = 46
         Top = 5
         Width = 61
-        Height = 40
+        Height = 32
         Margins.Left = 0
         Margins.Top = 5
         Margins.Right = 0
@@ -765,7 +769,6 @@ object BaseCreateUpdateView: TBaseCreateUpdateView
         Font.Name = 'Segoe UI Light'
         Font.Style = [fsBold]
         ParentFont = False
-        ExplicitHeight = 32
       end
       object imgCloseTitle: TImage
         AlignWithMargins = True

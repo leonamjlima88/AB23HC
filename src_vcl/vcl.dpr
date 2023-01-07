@@ -102,7 +102,11 @@ uses
   uTaxRule.CreateUpdate.View in 'App\Module\TaxRule\View\uTaxRule.CreateUpdate.View.pas' {TaxRuleCreateUpdateView},
   uTaxRule.MTB in 'App\Module\TaxRule\MemTable\uTaxRule.MTB.pas',
   uTaxRule.Index.View in 'App\Module\TaxRule\View\uTaxRule.Index.View.pas' {TaxRuleIndexView},
-  uTaxRule.Service in 'App\Module\TaxRule\Service\uTaxRule.Service.pas';
+  uTaxRule.Service in 'App\Module\TaxRule\Service\uTaxRule.Service.pas',
+  uProduct.Index.View in 'App\Module\Product\View\uProduct.Index.View.pas' {ProductIndexView},
+  uProduct.CreateUpdate.View in 'App\Module\Product\View\uProduct.CreateUpdate.View.pas' {ProductCreateUpdateView},
+  uProduct.Service in 'App\Module\Product\Service\uProduct.Service.pas',
+  uProduct.MTB in 'App\Module\Product\MemTable\uProduct.MTB.pas';
 
 {$R *.res}
 

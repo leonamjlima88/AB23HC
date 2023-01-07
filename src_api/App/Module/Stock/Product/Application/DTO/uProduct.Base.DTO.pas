@@ -13,6 +13,7 @@ type
     Fcost: Double;
     Fgenre: SmallInt;
     Funit_id: Int64;
+    Fncm_id: Int64;
     Fpacking_weight: Double;
     Fprice: Double;
     Fcurrent_quantity: Double;
@@ -41,7 +42,7 @@ type
     property name: string read Fname write Fname;
 
     [SwagString(30)]
-    [SwagProp('simplified_name', 'Nome simplificado', true)]
+    [SwagProp('simplified_name', 'Nome simplificado', false)]
     property simplified_name: String read Fsimplified_name write Fsimplified_name;
 
     [SwagNumber]
@@ -67,6 +68,10 @@ type
     [SwagNumber]
     [SwagProp('cost', 'Preço de custo')]
     property cost: Double read Fcost write Fcost;
+
+    [SwagNumber]
+    [SwagProp('marketup', 'Margem de lucro')]
+    property marketup: Double read Fmarketup write Fmarketup;
 
     [SwagNumber]
     [SwagProp('price', 'Preço de venda')]
@@ -119,6 +124,10 @@ type
     [SwagNumber]
     [SwagProp('unit_id', 'ID da Unidade', true)]
     property unit_id: Int64 read Funit_id write Funit_id;
+
+    [SwagNumber]
+    [SwagProp('ncm_id', 'ID do NCM', true)]
+    property ncm_id: Int64 read Fncm_id write Fncm_id;
 
     [SwagNumber]
     [SwagProp('category_id', 'ID da Categoria')]

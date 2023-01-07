@@ -58,6 +58,8 @@ uses
   u11CreateStorageLocationTable.Migration,
   u13CreatePersonTable.Migration,
   u14CreatePersonContactTable.Migration,
+  u14CreateNCMTable.Migration,
+  u14NCMSeed.Migration,
   u15CreateProductTable.Migration,
   u16CreateBankTable.Migration,
   u16BankSeed.Migration,
@@ -68,8 +70,6 @@ uses
   u21CreateCFOPTable.Migration,
   u21CFOPSeed.Migration,
   u22CreateChartOfAccountTable.Migration,
-  u23CreateNCMTable.Migration,
-  u23NCMSeed.Migration,
   u24CreateTaxRuleTable.Migration,
   u25CreateTaxRuleStateTable.Migration,
   u26CreateAppParamTable.Migration;
@@ -107,6 +107,8 @@ begin
   FMigrations.Add(T11CreateStorageLocationTable.Make(FConn));
   FMigrations.Add(T13CreatePersonTable.Make(FConn));
   FMigrations.Add(T14CreatePersonContactTable.Make(FConn));
+  FMigrations.Add(T14CreateNCMTable.Make(FConn));
+  FMigrations.Add(T14NCMSeed.Make(FConn));
   FMigrations.Add(T15CreateProductTable.Make(FConn));
   FMigrations.Add(T16CreateBankTable.Make(FConn));
   FMigrations.Add(T16BankSeed.Make(FConn));
@@ -117,8 +119,6 @@ begin
   FMigrations.Add(T21CreateCFOPTable.Make(FConn));
   FMigrations.Add(T21CFOPSeed.Make(FConn));
   FMigrations.Add(T22CreateChartOfAccountTable.Make(FConn));
-  FMigrations.Add(T23CreateNCMTable.Make(FConn));
-  FMigrations.Add(T23NCMSeed.Make(FConn));
   FMigrations.Add(T24CreateTaxRuleTable.Make(FConn));
   FMigrations.Add(T25CreateTaxRuleStateTable.Make(FConn));
   FMigrations.Add(T26CreateAppParamTable.Make(FConn));

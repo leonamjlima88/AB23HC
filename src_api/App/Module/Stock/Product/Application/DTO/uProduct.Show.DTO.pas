@@ -18,6 +18,8 @@ type
     Fsize_name: String;
     Fbrand_name: String;
     Funit_name: String;
+    Fncm_name: String;
+    Fncm_ncm: String;
     Fstorage_location_name: String;
     Fcreated_at: TDateTime;
     Fcreated_by_acl_user_id: Int64;
@@ -37,6 +39,14 @@ type
     [SwagString(100)] {virtual}
     [SwagProp('unit_name', 'Unidade', true)]
     property unit_name: String read Funit_name write Funit_name;
+
+    [SwagString(255)] {virtual}
+    [SwagProp('ncm_name', 'NCM (Nome)', true)]
+    property ncm_name: String read Fncm_name write Fncm_name;
+
+    [SwagString] {virtual}
+    [SwagProp('ncm_ncm', 'NCM (Código)', true)]
+    property ncm_ncm: String read Fncm_ncm write Fncm_ncm;
 
     [SwagString(100)] {virtual}
     [SwagProp('category_name', 'Categoria', false)]

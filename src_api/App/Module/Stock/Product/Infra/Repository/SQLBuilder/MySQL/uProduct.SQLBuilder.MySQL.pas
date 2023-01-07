@@ -59,6 +59,7 @@ begin
             '   `complement_note` text, '+
             '   `is_discontinued` tinyint(4) DEFAULT NULL, '+
             '   `unit_id` bigint(20) NOT NULL, '+
+            '   `ncm_id` bigint(20) NOT NULL, '+
             '   `category_id` bigint(20) DEFAULT NULL, '+
             '   `brand_id` bigint(20) DEFAULT NULL, '+
             '   `size_id` bigint(20) DEFAULT NULL, '+
@@ -71,6 +72,7 @@ begin
             '   `tenant_id` bigint NOT NULL, '+
             '   PRIMARY KEY (`id`), '+
             '   KEY `product_fk_unit_id` (`unit_id`), '+
+            '   KEY `product_fk_ncm_id` (`ncm_id`), '+
             '   KEY `product_fk_category_id` (`category_id`), '+
             '   KEY `product_fk_brand_id` (`brand_id`), '+
             '   KEY `product_fk_size_id` (`size_id`), '+
@@ -85,6 +87,7 @@ begin
             '   CONSTRAINT `product_fk_size_id` FOREIGN KEY (`size_id`) REFERENCES `size` (`id`) , '+
             '   CONSTRAINT `product_fk_storage_location_id` FOREIGN KEY (`storage_location_id`) REFERENCES `storage_location` (`id`) , '+
             '   CONSTRAINT `product_fk_unit_id` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`id`) , '+
+            '   CONSTRAINT `product_fk_ncm_id` FOREIGN KEY (`ncm_id`) REFERENCES `ncm` (`id`) , '+
             '   CONSTRAINT `product_fk_updated_by_acl_user_id` FOREIGN KEY (`updated_by_acl_user_id`) REFERENCES `acl_user` (`id`),  '+
             '   CONSTRAINT `product_fk_tenant_id` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`id`) '+
             ' )  ';

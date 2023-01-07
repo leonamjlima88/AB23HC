@@ -1,4 +1,4 @@
-unit uStorageLocation.Index.View;
+unit uProduct.Index.View;
 
 interface
 
@@ -13,11 +13,11 @@ uses
   Skia.Vcl,
   uIndexResult,
   uSearchColumns,
-  uStorageLocation.MTB,
+  uProduct.MTB,
   uApplication.Types;
 
 type
-  TStorageLocationIndexView = class(TBaseIndexView)
+  TProductIndexView = class(TBaseIndexView)
     tmrDoSearch: TTimer;
     pnlLocate: TPanel;
     imgLocateAppend: TImage;
@@ -81,7 +81,7 @@ type
     FLocateResult: Integer;
     procedure CleanFilter;
     procedure DoSearch(ACurrentPage: Integer = 1; ATryLocateId: Int64 = 0);
-    procedure RefreshIndexWithoutRequestAPI(AMemTable: IStorageLocationMTB; AEntityState: TEntityState);
+    procedure RefreshIndexWithoutRequestAPI(AMemTable: IProductMTB; AEntityState: TEntityState);
     procedure SetLocateResult(const Value: Integer);
   public
     class function HandleLocate: Int64;
@@ -90,18 +90,18 @@ type
   end;
 
 var
-  StorageLocationIndexView: TStorageLocationIndexView;
+  ProductIndexView: TProductIndexView;
 
 implementation
 
 uses
   uHlp,
   System.StrUtils,
-  uStorageLocation.CreateUpdate.View,
+  uProduct.CreateUpdate.View,
   uNotificationView,
   uSession.DTM,
   uYesOrNo.View,
-  uStorageLocation.Service,
+  uProduct.Service,
   uAlert.View,
   uPageFilter,
   Quick.Threads,
@@ -111,7 +111,7 @@ uses
 
 {$R *.dfm}
 
-procedure TStorageLocationIndexView.RefreshIndexWithoutRequestAPI(AMemTable: IStorageLocationMTB; AEntityState: TEntityState);
+procedure TProductIndexView.RefreshIndexWithoutRequestAPI(AMemTable: IProductMTB; AEntityState: TEntityState);
 var
   lKeepGoing: Boolean;
 begin
@@ -136,7 +136,7 @@ begin
   end;
 end;
 
-procedure TStorageLocationIndexView.SetLayoutLocate(ABackgroundTransparent: Boolean);
+procedure TProductIndexView.SetLayoutLocate(ABackgroundTransparent: Boolean);
 const
   L_ACTIONS: TArray<String> = ['action_edit','action_delete','action_view','action_option'];
 var
@@ -149,7 +149,7 @@ begin
   pnlLocate.Align    := alBottom;
   pnlNavigator.Align := alBottom;
 
-  lblTitle.Caption           := 'Pesquisando... Local de Armazenamento';
+  lblTitle.Caption           := 'Pesquisando... Produtos';
   pnlAppend.Width            := 0;
   Self.BorderStyle           := bsNone;
   pnlBackground.BorderWidth  := 1;
@@ -165,14 +165,14 @@ begin
   end;
 end;
 
-procedure TStorageLocationIndexView.SetLocateResult(const Value: Integer);
+procedure TProductIndexView.SetLocateResult(const Value: Integer);
 begin
   FLocateResult := Value;
 end;
 
-procedure TStorageLocationIndexView.btnAppendClick(Sender: TObject);
+procedure TProductIndexView.btnAppendClick(Sender: TObject);
 var
-  lStored: IStorageLocationMTB;
+  lStored: IProductMTB;
 begin
   inherited;
 
@@ -182,7 +182,7 @@ begin
     DBGrid1.Enabled   := False;
 
     // Incluir Novo Registro
-    lStored := TStorageLocationCreateUpdateView.Handle(TEntityState.esStore);
+    lStored := TProductCreateUpdateView.Handle(TEntityState.esStore);
     if not Assigned(lStored) then
       Exit;
 
@@ -196,7 +196,7 @@ begin
   End;
 end;
 
-procedure TStorageLocationIndexView.btnDeleteClick(Sender: TObject);
+procedure TProductIndexView.btnDeleteClick(Sender: TObject);
 var
   lKeepGoing: Boolean;
 begin
@@ -211,7 +211,7 @@ begin
 
   Try
     pnlBackground.Enabled := False;
-    if not TStorageLocationService.Make.Delete(dtsIndex.DataSet.Fields[0].AsLargeInt) then
+    if not TProductService.Make.Delete(dtsIndex.DataSet.Fields[0].AsLargeInt) then
     begin
       TAlertView.Handle(RECORD_DELETION_FAILED);
       Exit;
@@ -225,10 +225,10 @@ begin
   End;
 end;
 
-procedure TStorageLocationIndexView.btnEditClick(Sender: TObject);
+procedure TProductIndexView.btnEditClick(Sender: TObject);
 var
   lKeepGoing: Boolean;
-  lUpdated: IStorageLocationMTB;
+  lUpdated: IProductMTB;
 begin
   // Evitar erros
   lKeepGoing := Assigned(dtsIndex.DataSet) and dtsIndex.DataSet.Active and (dtsIndex.DataSet.RecordCount > 0) and (dtsIndex.DataSet.Fields[0].AsLargeInt > 0) and (LoadingSearch = False);
@@ -239,7 +239,7 @@ begin
     pnlBackground.Enabled := False;
 
     // Editar Registro
-    lUpdated := TStorageLocationCreateUpdateView.Handle(TEntityState.esUpdate, dtsIndex.DataSet.Fields[0].AsLargeInt);
+    lUpdated := TProductCreateUpdateView.Handle(TEntityState.esUpdate, dtsIndex.DataSet.Fields[0].AsLargeInt);
     if not Assigned(lUpdated) then
       Exit;
 
@@ -252,14 +252,14 @@ begin
   End;
 end;
 
-procedure TStorageLocationIndexView.btnLocateCloseClick(Sender: TObject);
+procedure TProductIndexView.btnLocateCloseClick(Sender: TObject);
 begin
   inherited;
   FLocateResult := -1;
   ModalResult   := MrCancel;
 end;
 
-procedure TStorageLocationIndexView.btnLocateConfirmClick(Sender: TObject);
+procedure TProductIndexView.btnLocateConfirmClick(Sender: TObject);
 var
   lKeepGoing: Boolean;
 begin
@@ -272,7 +272,7 @@ begin
   ModalResult   := mrOK;
 end;
 
-procedure TStorageLocationIndexView.btnNavigationClick(Sender: TObject);
+procedure TProductIndexView.btnNavigationClick(Sender: TObject);
 begin
   inherited;
 
@@ -305,7 +305,7 @@ begin
   end;
 end;
 
-procedure TStorageLocationIndexView.btnSplitViewApplyClick(Sender: TObject);
+procedure TProductIndexView.btnSplitViewApplyClick(Sender: TObject);
 begin
   inherited;
   SplitView1.Opened := False;
@@ -314,7 +314,7 @@ begin
     edtSearchValue.SetFocus;
 end;
 
-procedure TStorageLocationIndexView.btnViewClick(Sender: TObject);
+procedure TProductIndexView.btnViewClick(Sender: TObject);
 var
   lKeepGoing: Boolean;
 begin
@@ -324,16 +324,16 @@ begin
     Exit;
 
   // Visualizar Registro
-  TStorageLocationCreateUpdateView.Handle(TEntityState.esView, dtsIndex.DataSet.Fields[0].AsLargeInt);
+  TProductCreateUpdateView.Handle(TEntityState.esView, dtsIndex.DataSet.Fields[0].AsLargeInt);
 end;
 
-procedure TStorageLocationIndexView.cbxFilterIndexSelect(Sender: TObject);
+procedure TProductIndexView.cbxFilterIndexSelect(Sender: TObject);
 begin
   inherited;
   lblSearchTitle.Caption := 'F5 - Pesquise por: "' + cbxFilterIndex.Text + '"';
 end;
 
-procedure TStorageLocationIndexView.CleanFilter;
+procedure TProductIndexView.CleanFilter;
 begin
   // Modo de Pesquisa
   cbxFilterSearchType.ItemIndex := THlp.StrInt(UserLogged.GetParam(GERAL_FILTER_SEARCH_TYPE), 1);
@@ -345,7 +345,7 @@ begin
   cbxFilterIndexSelect(cbxFilterIndex);
 
   // Ordenar por
-  FFilterOrderBy := 'storage_location.name';
+  FFilterOrderBy := 'product.name';
 
   // Limite de Registros p/ Página
   edtNavLimitPerPage.Text := THlp.StrInt(UserLogged.GetParam(GERAL_LIMIT_PER_PAGE), 50).ToString;
@@ -356,7 +356,7 @@ begin
   edtSearchValue.OnChange := edtSearchValueChange;
 end;
 
-procedure TStorageLocationIndexView.DBGrid1CellClick(Column: TColumn);
+procedure TProductIndexView.DBGrid1CellClick(Column: TColumn);
 var
   lKeepGoing: Boolean;
 begin
@@ -378,7 +378,7 @@ begin
     btnViewClick(DBGrid1);
 end;
 
-procedure TStorageLocationIndexView.DBGrid1DblClick(Sender: TObject);
+procedure TProductIndexView.DBGrid1DblClick(Sender: TObject);
 begin
   inherited;
   case FLayoutLocate of
@@ -387,7 +387,7 @@ begin
   end;
 end;
 
-procedure TStorageLocationIndexView.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+procedure TProductIndexView.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
 Var
   lI: Integer;
   lKeepGoing: Boolean;
@@ -419,7 +419,7 @@ begin
   end;
 end;
 
-procedure TStorageLocationIndexView.DBGrid1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TProductIndexView.DBGrid1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   inherited;
 
@@ -446,7 +446,7 @@ begin
   End;
 end;
 
-procedure TStorageLocationIndexView.DBGrid1TitleClick(Column: TColumn);
+procedure TProductIndexView.DBGrid1TitleClick(Column: TColumn);
 const
   L_ACTIONS: TArray<String> = ['action_edit','action_delete','action_view','action_option'];
   L_DESC = ':D';
@@ -485,7 +485,7 @@ begin
 
 
     // OrderBy e Indexador
-    FFilterOrderBy := 'storage_location.'+lSelectedColumn;
+    FFilterOrderBy := 'product.'+lSelectedColumn;
 
     // OrderBy e Indexador (Virtual)
     if (lSelectedColumn = 'created_by_acl_user_name') then FFilterOrderBy := 'created_by_acl_user.name';
@@ -509,7 +509,7 @@ begin
   end;
 end;
 
-procedure TStorageLocationIndexView.DoSearch(ACurrentPage: Integer; ATryLocateId: Int64);
+procedure TProductIndexView.DoSearch(ACurrentPage: Integer; ATryLocateId: Int64);
 var
   lCondOperator: TcondOperator;
   lPageFilter: IPageFilter;
@@ -568,7 +568,7 @@ begin
     begin
       // Adicionar ultima pesquisa como referência e pesquisar
       lPageFilter.LastIndexResult(FIndexResult);
-      FIndexResult := TStorageLocationService.Make.Index(lPageFilter);
+      FIndexResult := TProductService.Make.Index(lPageFilter);
     end)
   .OnException_Sync(
     procedure(ATask : ITask; AException : Exception)
@@ -613,7 +613,7 @@ begin
   .Run;
 end;
 
-procedure TStorageLocationIndexView.edtSearchValueChange(Sender: TObject);
+procedure TProductIndexView.edtSearchValueChange(Sender: TObject);
 begin
   inherited;
   if tmrDoSearch.Enabled then
@@ -622,7 +622,7 @@ begin
   tmrDoSearch.Enabled := True;
 end;
 
-procedure TStorageLocationIndexView.edtSearchValueKeyPress(Sender: TObject; var Key: Char);
+procedure TProductIndexView.edtSearchValueKeyPress(Sender: TObject; var Key: Char);
 begin
   inherited;
 
@@ -639,18 +639,18 @@ begin
   End;
 end;
 
-procedure TStorageLocationIndexView.FormCreate(Sender: TObject);
+procedure TProductIndexView.FormCreate(Sender: TObject);
 begin
   inherited;
 
   // Colunas de Pesquisa da Tabela
   FSearchColumns := TSearchColumns.Make
-    .AddColumn ('storage_location.id',                 'ID', True)
-    .AddColumn ('storage_location.name',               'Nome', True)
-    .AddColumn ('storage_location.created_at',         'Criado em (Data)', False)
-    .AddColumn ('storage_location.updated_at',         'Atualizado em (Data)', False)
-    .AddColumn ('created_by_acl_user.name', 'Criado por (Nome)', False)
-    .AddColumn ('updated_by_acl_user.name', 'Atualizado por (Nome)', False)
+    .AddColumn ('product.id',                 'ID', True)
+    .AddColumn ('product.name',               'Nome', True)
+    .AddColumn ('product.created_at',         'Criado em (Data)', False)
+    .AddColumn ('product.updated_at',         'Atualizado em (Data)', False)
+    .AddColumn ('created_by_acl_user.name',   'Criado por (Nome)', False)
+    .AddColumn ('updated_by_acl_user.name',   'Atualizado por (Nome)', False)
     .LabelForCustomSearch ('ID ou Nome');
 
   // Colunas de Pesquisa da Tabela
@@ -664,7 +664,7 @@ begin
   DoSearch;
 end;
 
-procedure TStorageLocationIndexView.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TProductIndexView.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   inherited;
 
@@ -691,12 +691,12 @@ begin
   end;
 end;
 
-class function TStorageLocationIndexView.HandleLocate: Int64;
+class function TProductIndexView.HandleLocate: Int64;
 var
-  lView: TStorageLocationIndexView;
+  lView: TProductIndexView;
 begin
   Try
-    lView := TStorageLocationIndexView.Create(nil);
+    lView := TProductIndexView.Create(nil);
     lView.SetLayoutLocate;
     case (lView.ShowModal = mrOK) of
       True:  Result := lView.LocateResult;
@@ -708,32 +708,32 @@ begin
   End;
 end;
 
-procedure TStorageLocationIndexView.imgDoSearchClick(Sender: TObject);
+procedure TProductIndexView.imgDoSearchClick(Sender: TObject);
 begin
   inherited;
   DoSearch;
 end;
 
-procedure TStorageLocationIndexView.imgFilterCleanClick(Sender: TObject);
+procedure TProductIndexView.imgFilterCleanClick(Sender: TObject);
 begin
   inherited;
   CleanFilter;
 end;
 
-procedure TStorageLocationIndexView.imgOptionsClick(Sender: TObject);
+procedure TProductIndexView.imgOptionsClick(Sender: TObject);
 begin
   inherited;
   ppmOptions.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
 end;
 
-procedure TStorageLocationIndexView.imgSearchClearClick(Sender: TObject);
+procedure TProductIndexView.imgSearchClearClick(Sender: TObject);
 begin
   inherited;
   CleanFilter;
   DoSearch;
 end;
 
-procedure TStorageLocationIndexView.mniDeleteGridConfigClick(Sender: TObject);
+procedure TProductIndexView.mniDeleteGridConfigClick(Sender: TObject);
 begin
   inherited;
   // Excluir Grid
@@ -741,7 +741,7 @@ begin
   NotificationView.Execute('Feche e abra a janela para carregar a nova configuração.');
 end;
 
-procedure TStorageLocationIndexView.mniSaveGridConfigClick(Sender: TObject);
+procedure TProductIndexView.mniSaveGridConfigClick(Sender: TObject);
 begin
   inherited;
   // Salvar Config do Grid
@@ -749,7 +749,7 @@ begin
   NotificationView.Execute('Grade Salva');
 end;
 
-procedure TStorageLocationIndexView.tmrDoSearchTimer(Sender: TObject);
+procedure TProductIndexView.tmrDoSearchTimer(Sender: TObject);
 begin
   inherited;
   tmrDoSearch.Enabled := False;

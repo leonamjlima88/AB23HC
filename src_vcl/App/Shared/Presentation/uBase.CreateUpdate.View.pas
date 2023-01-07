@@ -64,7 +64,8 @@ uses
   uHlp,
   Vcl.DBCtrls,
   uNotificationView,
-  JvValidateEdit, uApplication.Types;
+  JvValidateEdit,
+  uApplication.Types;
 
 Const
   COLOR_ON_ENTER: TColor = $00F3ECE4;

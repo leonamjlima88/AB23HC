@@ -1,4 +1,4 @@
-unit u23NCMSeed.Migration;
+unit u14NCMSeed.Migration;
 
 interface
 
@@ -8,7 +8,7 @@ uses
   uZLConnection.Interfaces;
 
 type
-  T23NCMSeed = class(TMigrationBase, IMigration)
+  T14NCMSeed = class(TMigrationBase, IMigration)
   private
     function RunMigrate: IMigration;
     constructor Create(AConn: IZLConnection);
@@ -27,9 +27,9 @@ uses
   uNCM.SQLBuilder.Interfaces,
   uSQLBuilder.Factory;
 
-{ T23NCMSeed }
+{ T14NCMSeed }
 
-function T23NCMSeed.RunMigrate: IMigration;
+function T14NCMSeed.RunMigrate: IMigration;
 var
   lStartTime: Cardinal;
   lDuration: Double;
@@ -62,7 +62,7 @@ begin
   FInformation.Executed(True).Duration(lDuration);
 end;
 
-constructor T23NCMSeed.Create(AConn: IZLConnection);
+constructor T14NCMSeed.Create(AConn: IZLConnection);
 begin
   inherited Create(AConn);
 
@@ -70,13 +70,13 @@ begin
   FInformation.CreatedAtByDev(StrToDateTime('23/12/2022 00:26:00'));
 end;
 
-function T23NCMSeed.Execute: IMigration;
+function T14NCMSeed.Execute: IMigration;
 begin
   Result := Self;
   RunMigrate;
 end;
 
-class function T23NCMSeed.Make(AConn: IZLConnection): IMigration;
+class function T14NCMSeed.Make(AConn: IZLConnection): IMigration;
 begin
   Result := Self.Create(AConn);
 end;
