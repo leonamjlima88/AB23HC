@@ -74,7 +74,10 @@ uses
   u25CreateTaxRuleStateTable.Migration,
   u26CreateAppParamTable.Migration,
   u27CreateBusinessProposalTable.Migration,
-  u28CreateBusinessProposalItemTable.Migration;
+  u28CreateBusinessProposalItemTable.Migration,
+  u29CreateSaleTable.Migration,
+  u30CreateSaleItemTable.Migration,
+  u31CreateSalePaymentTable.Migration;
 
 const
   MIGRATION_ORDER_BY_DESCRIPTION = 'select * from migration order by description';
@@ -126,6 +129,9 @@ begin
   FMigrations.Add(T26CreateAppParamTable.Make(FConn));
   FMigrations.Add(T27CreateBusinessProposalTable.Make(FConn));
   FMigrations.Add(T28CreateBusinessProposalItemTable.Make(FConn));
+  FMigrations.Add(T29CreateSaleTable.Make(FConn));
+  FMigrations.Add(T30CreateSaleItemTable.Make(FConn));
+  FMigrations.Add(T31CreateSalePaymentTable.Make(FConn));
 end;
 
 constructor TMigrationManager.Create(AConn: IZLConnection);

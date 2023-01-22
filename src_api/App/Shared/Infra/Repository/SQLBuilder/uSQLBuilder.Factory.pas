@@ -3,6 +3,9 @@ unit uSQLBuilder.Factory;
 interface
 
 uses
+  uSalePayment.SQLBuilder.Interfaces,
+  uSaleItem.SQLBuilder.Interfaces,
+  uSale.SQLBuilder.Interfaces,
   uBusinessProposalItem.SQLBuilder.Interfaces,
   uBusinessProposal.SQLBuilder.Interfaces,
   uAppParam.SQLBuilder.Interfaces,
@@ -35,6 +38,9 @@ type
   ISQLBuilderFactory = interface
     ['{865EBE81-EE3C-4E9B-A2CE-0DC3EAB7749F}']
 
+    function SalePayment: ISalePaymentSQLBuilder;
+    function SaleItem: ISaleItemSQLBuilder;
+    function Sale: ISaleSQLBuilder;
     function BusinessProposalItem: IBusinessProposalItemSQLBuilder;
     function BusinessProposal: IBusinessProposalSQLBuilder;
     function AppParam: IAppParamSQLBuilder;
@@ -70,6 +76,9 @@ type
   public
     class function Make(ADriverDB: TZLDriverDB = ddDefault): ISQLBuilderFactory;
 
+    function SalePayment: ISalePaymentSQLBuilder;
+    function SaleItem: ISaleItemSQLBuilder;
+    function Sale: ISaleSQLBuilder;
     function BusinessProposalItem: IBusinessProposalItemSQLBuilder;
     function BusinessProposal: IBusinessProposalSQLBuilder;
     function AppParam: IAppParamSQLBuilder;
@@ -101,6 +110,9 @@ type
 implementation
 
 uses
+  uSalePayment.SQLBuilder.MySQL,
+  uSaleItem.SQLBuilder.MySQL,
+  uSale.SQLBuilder.MySQL,
   uBusinessProposalItem.SQLBuilder.MySQL,
   uBusinessProposal.SQLBuilder.MySQL,
   uAppParam.SQLBuilder.MySQL,
@@ -289,6 +301,27 @@ function TSQLBuilderFactory.Product: IProductSQLBuilder;
 begin
   case FDriverDB of
     ddMySql: Result := TProductSQLBuilderMySQL.Make;
+  end;
+end;
+
+function TSQLBuilderFactory.Sale: ISaleSQLBuilder;
+begin
+  case FDriverDB of
+    ddMySql: Result := TSaleSQLBuilderMySQL.Make;
+  end;
+end;
+
+function TSQLBuilderFactory.SaleItem: ISaleItemSQLBuilder;
+begin
+  case FDriverDB of
+    ddMySql: Result := TSaleItemSQLBuilderMySQL.Make;
+  end;
+end;
+
+function TSQLBuilderFactory.SalePayment: ISalePaymentSQLBuilder;
+begin
+  case FDriverDB of
+    ddMySql: Result := TSalePaymentSQLBuilderMySQL.Make;
   end;
 end;
 

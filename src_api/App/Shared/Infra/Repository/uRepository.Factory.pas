@@ -3,6 +3,7 @@ unit uRepository.Factory;
 interface
 
 uses
+  uSale.Repository.Interfaces,
   uBusinessProposal.Repository.Interfaces,
   uAppParam.Repository.Interfaces,
   uTenant.Repository.Interfaces,
@@ -33,6 +34,7 @@ type
   IRepositoryFactory = Interface
     ['{4360ECF9-C170-41B5-8E9B-74C58AE06AA2}']
 
+    function Sale: ISaleRepository;
     function BusinessProposal: IBusinessProposalRepository;
     function AppParam: IAppParamRepository;
     function Tenant: ITenantRepository;
@@ -67,6 +69,7 @@ type
   public
     class function Make(AConn: IZLConnection = nil; ARepoType: TZLRepositoryType = rtDefault; ADriverDB: TZLDriverDB = ddDefault): IRepositoryFactory;
 
+    function Sale: ISaleRepository;
     function BusinessProposal: IBusinessProposalRepository;
     function AppParam: IAppParamRepository;
     function Tenant: ITenantRepository;
@@ -95,6 +98,7 @@ type
 implementation
 
 uses
+  uSale.Repository.SQL,
   uBusinessProposal.Repository.SQL,
   uAppParam.Repository.SQL,
   uTenant.Repository.SQL,
@@ -280,6 +284,13 @@ function TRepositoryFactory.Product: IProductRepository;
 begin
   case FRepoType of
     rtSQL: Result := TProductRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).Product);
+  end;
+end;
+
+function TRepositoryFactory.Sale: ISaleRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TSaleRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).Sale);
   end;
 end;
 

@@ -571,6 +571,43 @@
         </DCCReference>
         <DCCReference Include="App\Shared\Infra\Utils\uOutPutFileStream.pas"/>
         <DCCReference Include="App\Module\Stock\Product\Application\UseCase\uProduct.ShowBySkuOrEanCode.UseCase.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Infra\Controller\uSale.Controller.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Infra\Repository\SQLBuilder\uSaleItem.SQLBuilder.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Infra\Repository\SQLBuilder\uSale.SQLBuilder.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Infra\Repository\SQLBuilder\MySQL\uSale.SQLBuilder.MySQL.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Infra\Repository\SQL\uSale.Repository.SQL.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Infra\Report\BusinessProposal\uSale.Report.pas">
+            <Form>SaleReport</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Business\Sale\Domain\Services\uSale.ReportById.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Domain\Services\uSale.BeforeSave.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Domain\Repository\uSaleItem.SQLBuilder.Interfaces.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Domain\Repository\uSale.SQLBuilder.Interfaces.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Domain\Repository\uSale.Repository.Interfaces.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Domain\Entity\uSaleStatus.Types.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Domain\Entity\uSale.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Application\UseCase\uSale.UpdateAndShow.UseCase.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Application\UseCase\uSale.StoreAndShow.UseCase.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Application\UseCase\uSale.Show.UseCase.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Application\UseCase\uSale.ReportById.UseCase.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Application\UseCase\uSale.Index.UseCase.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Application\UseCase\uSale.Delete.UseCase.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Application\Mapper\uSale.Mapper.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Application\DTO\uSale.Show.DTO.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Application\DTO\uSale.DTO.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Application\DTO\uSale.Base.DTO.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Infra\Repository\SQLBuilder\MySQL\uSaleItem.SQLBuilder.MySQL.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Domain\Entity\uSaleItem.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Application\DTO\uSaleItem.Base.DTO.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u29CreateSaleTable.Migration.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u30CreateSaleItemTable.Migration.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u31CreateSalePaymentTable.Migration.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Domain\Repository\uSalePayment.SQLBuilder.Interfaces.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Infra\Repository\SQLBuilder\MySQL\uSalePayment.SQLBuilder.MySQL.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Infra\Repository\SQLBuilder\uSalePayment.SQLBuilder.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Domain\Entity\uSalePayment.pas"/>
+        <DCCReference Include="App\Module\Business\Sale\Application\DTO\uSalePayment.Base.DTO.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
