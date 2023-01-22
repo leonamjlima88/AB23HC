@@ -124,6 +124,7 @@ type
     procedure actCFOPExecute(Sender: TObject);
     procedure actTaxRuleExecute(Sender: TObject);
     procedure actProductExecute(Sender: TObject);
+    procedure actBusinessProposalExecute(Sender: TObject);
   private
     FTabSheetTag: Integer;
     FNetConnectedLog: IShared<TStringList>;
@@ -167,7 +168,8 @@ uses
   uOperationType.Index.View,
   uCFOP.Index.View,
   uTaxRule.Index.View,
-  uProduct.Index.View;
+  uProduct.Index.View,
+  uBusinessProposal.Index.View;
 
 procedure TMainView.actBankAccountExecute(Sender: TObject);
 begin
@@ -182,6 +184,11 @@ end;
 procedure TMainView.actBrandExecute(Sender: TObject);
 begin
   LoadAndShowForm(TBrandIndexView, 'Marca');
+end;
+
+procedure TMainView.actBusinessProposalExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TBusinessProposalIndexView, 'Proposta Comercial');
 end;
 
 procedure TMainView.imgCloseTabSheetClick(Sender: TObject);

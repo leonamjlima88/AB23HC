@@ -9,6 +9,7 @@ type
   ILegalEntityNumberVO = Interface
     ['{04A84EA8-C93A-4B87-94B3-E649EC73151D}']
     function Value: String;
+    function FormatedValue: String;
   end;
 
   TLegalEntityNumberVO = class(TInterfacedObject, IValueObject, ILegalEntityNumberVO)
@@ -22,18 +23,25 @@ type
   public
     class function Make(AValue: String): ILegalEntityNumberVO;
     function Value: String;
+    function FormatedValue: String;
   end;
 
 implementation
 
 uses
-  System.SysUtils;
+  System.SysUtils,
+  uHlp;
 
 { TLegalEntityNumber }
 
 constructor TLegalEntityNumberVO.Create(AValue: String);
 begin
   FLegalEntityNumber := AValue;
+end;
+
+function TLegalEntityNumberVO.FormatedValue: String;
+begin
+  Result := THlp.ValidateCpfCnpj(FLegalEntityNumber.Trim);
 end;
 
 class function TLegalEntityNumberVO.Make(AValue: String): ILegalEntityNumberVO;

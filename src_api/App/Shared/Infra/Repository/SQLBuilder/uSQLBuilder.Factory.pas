@@ -3,6 +3,8 @@ unit uSQLBuilder.Factory;
 interface
 
 uses
+  uBusinessProposalItem.SQLBuilder.Interfaces,
+  uBusinessProposal.SQLBuilder.Interfaces,
   uAppParam.SQLBuilder.Interfaces,
   uTenant.SQLBuilder.Interfaces,
   uTaxRuleState.SQLBuilder.Interfaces,
@@ -33,6 +35,8 @@ type
   ISQLBuilderFactory = interface
     ['{865EBE81-EE3C-4E9B-A2CE-0DC3EAB7749F}']
 
+    function BusinessProposalItem: IBusinessProposalItemSQLBuilder;
+    function BusinessProposal: IBusinessProposalSQLBuilder;
     function AppParam: IAppParamSQLBuilder;
     function Tenant: ITenantSQLBuilder;
     function TaxRuleState: ITaxRuleStateSQLBuilder;
@@ -66,6 +70,8 @@ type
   public
     class function Make(ADriverDB: TZLDriverDB = ddDefault): ISQLBuilderFactory;
 
+    function BusinessProposalItem: IBusinessProposalItemSQLBuilder;
+    function BusinessProposal: IBusinessProposalSQLBuilder;
     function AppParam: IAppParamSQLBuilder;
     function Tenant: ITenantSQLBuilder;
     function TaxRuleState: ITaxRuleStateSQLBuilder;
@@ -95,6 +101,8 @@ type
 implementation
 
 uses
+  uBusinessProposalItem.SQLBuilder.MySQL,
+  uBusinessProposal.SQLBuilder.MySQL,
   uAppParam.SQLBuilder.MySQL,
   uTenant.SQLBuilder.MySQL,
   uTaxRuleState.SQLBuilder.MySQL,
@@ -169,6 +177,20 @@ function TSQLBuilderFactory.Brand: IBrandSQLBuilder;
 begin
   case FDriverDB of
     ddMySql: Result := TBrandSQLBuilderMySQL.Make;
+  end;
+end;
+
+function TSQLBuilderFactory.BusinessProposal: IBusinessProposalSQLBuilder;
+begin
+  case FDriverDB of
+    ddMySql: Result := TBusinessProposalSQLBuilderMySQL.Make;
+  end;
+end;
+
+function TSQLBuilderFactory.BusinessProposalItem: IBusinessProposalItemSQLBuilder;
+begin
+  case FDriverDB of
+    ddMySql: Result := TBusinessProposalItemSQLBuilderMySQL.Make;
   end;
 end;
 

@@ -85,8 +85,7 @@ begin
   lCQL := TCQL.New(FDBName)
     .Insert
     .Into('tenant')
-    .&Set('created_at',             lTenant.created_at)
-    .&Set('created_by_acl_user_id', lTenant.created_by_acl_user_id);
+    .&Set('created_at', lTenant.created_at);
 
   // Carregar Campos Default
   LoadDefaultFieldsToInsertOrUpdate(lCQL, lTenant);
@@ -137,15 +136,9 @@ begin
     .Column('city.name').&As('city_name')
     .Column('city.state').&As('city_state')
     .Column('city.ibge_code').&As('city_ibge_code')
-    .Column('created_by_acl_user.name').&As('created_by_acl_user_name')
-    .Column('updated_by_acl_user.name').&As('updated_by_acl_user_name')
     .From('tenant')
     .LeftJoin('city')
          .&On('city.id = tenant.city_id')
-    .LeftJoin('acl_user', 'created_by_acl_user')
-         .&On('created_by_acl_user.id = tenant.created_by_acl_user_id')
-    .LeftJoin('acl_user', 'updated_by_acl_user')
-         .&On('updated_by_acl_user.id = tenant.updated_by_acl_user_id')
   .AsString;
 end;
 
@@ -169,8 +162,7 @@ begin
   lTenant := AEntity as TTenant;
   lCQL := TCQL.New(FDBName)
     .Update('tenant')
-    .&Set('updated_at',             lTenant.updated_at)
-    .&Set('updated_by_acl_user_id', lTenant.updated_by_acl_user_id);
+    .&Set('updated_at', lTenant.updated_at);
 
   // Carregar Campos Default
   LoadDefaultFieldsToInsertOrUpdate(lCQL, lTenant);

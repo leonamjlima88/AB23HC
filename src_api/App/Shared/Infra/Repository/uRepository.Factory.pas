@@ -3,6 +3,7 @@ unit uRepository.Factory;
 interface
 
 uses
+  uBusinessProposal.Repository.Interfaces,
   uAppParam.Repository.Interfaces,
   uTenant.Repository.Interfaces,
   uTaxRule.Repository.Interfaces,
@@ -32,6 +33,7 @@ type
   IRepositoryFactory = Interface
     ['{4360ECF9-C170-41B5-8E9B-74C58AE06AA2}']
 
+    function BusinessProposal: IBusinessProposalRepository;
     function AppParam: IAppParamRepository;
     function Tenant: ITenantRepository;
     function TaxRule: ITaxRuleRepository;
@@ -65,6 +67,7 @@ type
   public
     class function Make(AConn: IZLConnection = nil; ARepoType: TZLRepositoryType = rtDefault; ADriverDB: TZLDriverDB = ddDefault): IRepositoryFactory;
 
+    function BusinessProposal: IBusinessProposalRepository;
     function AppParam: IAppParamRepository;
     function Tenant: ITenantRepository;
     function TaxRule: ITaxRuleRepository;
@@ -92,6 +95,7 @@ type
 implementation
 
 uses
+  uBusinessProposal.Repository.SQL,
   uAppParam.Repository.SQL,
   uTenant.Repository.SQL,
   uTaxRule.Repository.SQL,
@@ -166,6 +170,13 @@ function TRepositoryFactory.Brand: IBrandRepository;
 begin
   case FRepoType of
     rtSQL: Result := TBrandRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).Brand);
+  end;
+end;
+
+function TRepositoryFactory.BusinessProposal: IBusinessProposalRepository;
+begin
+  case FRepoType of
+    rtSQL: Result := TBusinessProposalRepositorySQL.Make(FConn, TSQLBuilderFactory.Make(FDriverDB).BusinessProposal);
   end;
 end;
 

@@ -40,13 +40,9 @@ type
     Fmunicipal_registration: String;
     Fcreated_at: TDateTime;
     Fupdated_at: TDateTime;
-    Fupdated_by_acl_user_id: Int64;
-    Fcreated_by_acl_user_id: Int64;
 
     // OneToOne
     Fcity: TCity;
-    Fupdated_by_acl_user: TAclUser;
-    Fcreated_by_acl_user: TAclUser;
 
     procedure Initialize;
   public
@@ -78,13 +74,9 @@ type
     property commercial_note: String read Fcommercial_note write Fcommercial_note;
     property created_at: TDateTime read Fcreated_at write Fcreated_at;
     property updated_at: TDateTime read Fupdated_at write Fupdated_at;
-    property created_by_acl_user_id: Int64 read Fcreated_by_acl_user_id write Fcreated_by_acl_user_id;
-    property updated_by_acl_user_id: Int64 read Fupdated_by_acl_user_id write Fupdated_by_acl_user_id;
 
     // OneToOne
     property city: TCity read Fcity write Fcity;
-    property created_by_acl_user: TAclUser read Fcreated_by_acl_user write Fcreated_by_acl_user;
-    property updated_by_acl_user: TAclUser read Fupdated_by_acl_user write Fupdated_by_acl_user;
 
     procedure Validate; override;
   end;
@@ -105,9 +97,7 @@ end;
 
 destructor TTenant.Destroy;
 begin
-  if Assigned(Fcity)                then Fcity.Free;
-  if Assigned(Fcreated_by_acl_user) then Fcreated_by_acl_user.Free;
-  if Assigned(Fupdated_by_acl_user) then Fupdated_by_acl_user.Free;
+  if Assigned(Fcity) then Fcity.Free;
 
   inherited;
 end;
@@ -116,24 +106,12 @@ procedure TTenant.Initialize;
 begin
   Flegal_entity_number := TLegalEntityNumberVO.Make(EmptyStr);
   Fcreated_at          := now;
-  Fcreated_by_acl_user := TAclUser.Create;
-  Fupdated_by_acl_user := TAclUser.Create;
   Fcity                := TCity.Create;
 end;
 
 procedure TTenant.Validate;
-var
-  lIsInserting: Boolean;
 begin
-  lIsInserting := Fid = 0;
-  case lIsInserting of
-    True: Begin
-      if (Fcreated_by_acl_user_id <= 0) then raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['created_by_acl_user_id']));
-    end;
-    False: Begin
-      if (Fupdated_by_acl_user_id <= 0) then raise Exception.Create(Format(FIELD_WAS_NOT_INFORMED, ['updated_by_acl_user_id']));
-    end;
-  end;
+//
 end;
 
 end.

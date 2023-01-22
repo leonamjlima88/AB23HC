@@ -17,6 +17,7 @@ type
     function SelectAll: String;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter;
     function RegisteredFields(AColumName, AColumnValue: String; AId, ATenantId: Int64): String;
+    function SelectBySkuOrEanCode(ASkuOrEanCode: String; ATenantId: Int64): String;
   end;
 
 implementation

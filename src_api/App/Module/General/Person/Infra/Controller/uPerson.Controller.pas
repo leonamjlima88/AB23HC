@@ -12,7 +12,8 @@ uses
   uApplication.Types,
   uPerson.Show.DTO,
   uPerson.DTO,
-  uResponse.DTO;
+  uResponse.DTO,
+  uPersonShowByIdAndPersonType.DTO;
 
 Type
   [SwagPath('persons', 'Pessoa')]
@@ -59,6 +60,13 @@ Type
     [SwagResponse(HTTP_BAD_REQUEST)]
     [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
     procedure Update;
+
+    [SwagPOST('/show_by_id_and_person_type', 'Localizar por ID e por Tipo de Pessoa')]
+    [SwagParamBody('body', TPersonShowByIdAndPersonTypeDTO)]
+    [SwagResponse(HTTP_CREATED, TPersonShowResponseDTO)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure ShowByIdAndPersonType;
   end;
 
 implementation
@@ -76,7 +84,8 @@ uses
   XSuperObject,
   uMyClaims,
   uPerson.StoreAndShow.UseCase,
-  uPerson.UpdateAndShow.UseCase;
+  uPerson.UpdateAndShow.UseCase,
+  uPerson.ShowByIdAndPersonType.UseCase;
 
 { TPersonController }
 
@@ -122,6 +131,29 @@ begin
   lResult   := TPersonShowUseCase
     .Make    (FRepository)
     .Execute (lPk, lTenantId);
+
+  // Retorno
+  case Assigned(lResult.Value) of
+    True:  TRes.Success(FRes, lResult.Value);
+    False: TRes.Success(FRes, Nil, HTTP_NOT_FOUND);
+  end;
+end;
+
+procedure TPersonController.ShowByIdAndPersonType;
+var
+  lInput: Shared<TPersonShowByIdAndPersonTypeDTO>;
+  lResult: Shared<TPersonShowDTO>;
+  lTenantId: Int64;
+begin
+  // Localizar registro
+  lInput := TPersonShowByIdAndPersonTypeDTO.FromJSON(FReq.Body);
+  With lInput.Value do
+  begin
+    tenant_id := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  end;
+  lResult := TPersonShowByIdAndPersonTypeUseCase
+    .Make    (FRepository)
+    .Execute (lInput.Value);
 
   // Retorno
   case Assigned(lResult.Value) of

@@ -14,7 +14,8 @@ uses
   uIndexResult,
   uSearchColumns,
   uPerson.MTB,
-  uApplication.Types;
+  uApplication.Types,
+  uPerson.TypeInput;
 
 type
   TPersonIndexView = class(TBaseIndexView)
@@ -79,12 +80,14 @@ type
     FSearchColumns: ISearchColumns;
     FLayoutLocate: Boolean;
     FLocateResult: Integer;
+    FPersonTypeInput: IPersonTypeInput;
     procedure CleanFilter;
     procedure DoSearch(ACurrentPage: Integer = 1; ATryLocateId: Int64 = 0);
     procedure RefreshIndexWithoutRequestAPI(AMemTable: IPersonMTB; AEntityState: TEntityState);
     procedure SetLocateResult(const Value: Integer);
   public
-    class function HandleLocate: Int64;
+    constructor Create(AOwner: TComponent; APersonTypeInput: IPersonTypeInput); overload;
+    class function HandleLocate(APersonTypeInput: IPersonTypeInput = nil): Int64;
     property  LocateResult: Integer read FLocateResult write SetLocateResult;
     procedure SetLayoutLocate(ABackgroundTransparent: Boolean = True);
   end;
@@ -356,6 +359,12 @@ begin
   edtSearchValue.OnChange := edtSearchValueChange;
 end;
 
+constructor TPersonIndexView.Create(AOwner: TComponent; APersonTypeInput: IPersonTypeInput);
+begin
+  inherited Create(AOwner);
+  FPersonTypeInput := APersonTypeInput;
+end;
+
 procedure TPersonIndexView.DBGrid1CellClick(Column: TColumn);
 var
   lKeepGoing: Boolean;
@@ -510,6 +519,8 @@ begin
 end;
 
 procedure TPersonIndexView.DoSearch(ACurrentPage: Integer; ATryLocateId: Int64);
+const
+  IS_TRUE = '1';
 var
   lCondOperator: TcondOperator;
   lPageFilter: IPageFilter;
@@ -555,6 +566,18 @@ begin
         lCondOperator,
         String(edtSearchValue.Text).trim
     );
+  end;
+
+  // Pesquisa setada em constructor do form
+  if Assigned(FPersonTypeInput) then
+  begin
+    if (FPersonTypeInput.is_customer)   then lPageFilter.AddWhere('person.is_customer',   coEqual, IS_TRUE);
+    if (FPersonTypeInput.is_seller)     then lPageFilter.AddWhere('person.is_seller',     coEqual, IS_TRUE);
+    if (FPersonTypeInput.is_supplier)   then lPageFilter.AddWhere('person.is_supplier',   coEqual, IS_TRUE);
+    if (FPersonTypeInput.is_carrier)    then lPageFilter.AddWhere('person.is_carrier',    coEqual, IS_TRUE);
+    if (FPersonTypeInput.is_technician) then lPageFilter.AddWhere('person.is_technician', coEqual, IS_TRUE);
+    if (FPersonTypeInput.is_employee)   then lPageFilter.AddWhere('person.is_employee',   coEqual, IS_TRUE);
+    if (FPersonTypeInput.is_other)      then lPageFilter.AddWhere('person.is_other',      coEqual, IS_TRUE);
   end;
 
   // Iniciar Loading
@@ -693,12 +716,12 @@ begin
   end;
 end;
 
-class function TPersonIndexView.HandleLocate: Int64;
+class function TPersonIndexView.HandleLocate(APersonTypeInput: IPersonTypeInput): Int64;
 var
   lView: TPersonIndexView;
 begin
   Try
-    lView := TPersonIndexView.Create(nil);
+    lView := TPersonIndexView.Create(nil, APersonTypeInput);
     lView.SetLayoutLocate;
     case (lView.ShowModal = mrOK) of
       True:  Result := lView.LocateResult;

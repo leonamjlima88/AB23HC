@@ -27,6 +27,10 @@ const
 
   GERAL_FILTER_SEARCH_TYPE = 'geral_filter_search_type';
   GERAL_LIMIT_PER_PAGE = 'geral_limit_per_page';
+  TEMP_FOLDER = 'Temp/';
+  CONTENT_TYPE = 'Content-Type';
+  ACCEPT = 'Accept';
+  APPLICATION_PDF = 'application/pdf';
 
 implementation
 

@@ -30,6 +30,7 @@ type
     function Update(AEntity: TBaseEntity; AId: Int64): String;
     function SelectAllWithFilter(APageFilter: IPageFilter): TOutPutSelectAllFilter;
     function RegisteredFields(AColumName, AColumnValue: String; AId, ATenantId: Int64): String;
+    function SelectBySkuOrEanCode(ASkuOrEanCode: String; ATenantId: Int64): String;
   end;
 
 implementation
@@ -182,6 +183,13 @@ end;
 function TProductSQLBuilder.SelectById(AId: Int64; ATenantId: Int64): String;
 begin
   Result := SelectAll + ' WHERE product.id = ' + AId.ToString;
+  if (ATenantId > 0) then
+    Result := Result + ' AND product.tenant_id = ' + ATenantId.ToString;
+end;
+
+function TProductSQLBuilder.SelectBySkuOrEanCode(ASkuOrEanCode: String; ATenantId: Int64): String;
+begin
+  Result := SelectAll + ' WHERE (product.sku_code = ' + ASkuOrEanCode.Trim + ' OR product.ean_code = ' + ASkuOrEanCode.Trim + ')';
   if (ATenantId > 0) then
     Result := Result + ' AND product.tenant_id = ' + ATenantId.ToString;
 end;

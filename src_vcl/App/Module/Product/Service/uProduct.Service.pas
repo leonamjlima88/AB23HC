@@ -16,6 +16,7 @@ type
     function Delete(AId: Int64): Boolean;
     function Index(APageFilter: IPageFilter): IIndexResult;
     function Show(AId: Int64): IProductMTB;
+    function ShowBySkuOrEanCode(ASkuOrEanCode: String): IProductMTB;
     function Store(AProduct: IProductMTB): Either<String, IProductMTB>;
     function Update(AProduct: IProductMTB; AId: Int64): Either<String, IProductMTB>;
   end;
@@ -28,6 +29,7 @@ type
     function Delete(AId: Int64): Boolean;
     function Index(APageFilter: IPageFilter): IIndexResult;
     function Show(AId: Int64): IProductMTB;
+    function ShowBySkuOrEanCode(ASkuOrEanCode: String): IProductMTB;
     function Store(AProduct: IProductMTB): Either<String, IProductMTB>;
     function Update(AProduct: IProductMTB; AId: Int64): Either<String, IProductMTB>;
   end;
@@ -106,6 +108,27 @@ begin
 
   // Efetuar requisição
   FRes := TReq.Make(RESOURCE+AId.ToString).Execute(rtGet);
+
+  // Falha na requisição
+  if (FRes.StatusCode = HTTP_NOT_FOUND) then
+    Exit;
+
+  if not (FRes.StatusCode = HTTP_OK) then
+    raise Exception.Create(SO(FRes.Content).S['message']);
+
+  // Retornar registro localizado
+  lSObj  := SO(FRes.Content);
+  Result := TProductMTB.Make.FromJsonString(lSObj.O['data'].AsJSON);
+end;
+
+function TProductService.ShowBySkuOrEanCode(ASkuOrEanCode: String): IProductMTB;
+var
+  lSObj: ISuperObject;
+begin
+  Result := nil;
+
+  // Efetuar requisição
+  FRes := TReq.Make(RESOURCE+'sku_or_ean_code/'+ASkuOrEanCode).Execute(rtGet);
 
   // Falha na requisição
   if (FRes.StatusCode = HTTP_NOT_FOUND) then

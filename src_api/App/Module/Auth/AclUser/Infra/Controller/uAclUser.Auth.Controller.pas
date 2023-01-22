@@ -13,7 +13,8 @@ uses
   uApplication.Types,
   uAclUser.Auth.ChangePassword.DTO,
   uAclUser.Auth.Me.DTO,
-  uAppParam.Repository.Interfaces;
+  uAppParam.Repository.Interfaces,
+  uTenant.Repository.Interfaces;
 
 Type
   [SwagPath('auth', 'Autenticação')]

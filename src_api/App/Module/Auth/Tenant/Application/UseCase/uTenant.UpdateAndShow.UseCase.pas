@@ -9,7 +9,7 @@ uses
 
 type
   ITenantUpdateAndShowUseCase = Interface
-['{89480FD9-7684-44D1-9AE6-F691DA1323A1}']
+    ['{89480FD9-7684-44D1-9AE6-F691DA1323A1}']
     function Execute(AInput: TTenantDTO; APK: Int64): TTenantShowDTO;
   end;
 

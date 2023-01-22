@@ -25,6 +25,7 @@ type
   public
     class function Make(AConn: IZLConnection; ASQLBuilder: IProductSQLBuilder): IProductRepository;
     function Show(AId, ATenantId: Int64): TProduct;
+    function ShowBySkuOrEanCode(ASkuOrEanCode: String; ATenantId: Int64): TProduct;
  end;
 
 implementation
@@ -86,6 +87,16 @@ end;
 function TProductRepositorySQL.Show(AId, ATenantId: Int64): TProduct;
 begin
   Result := ShowById(AId, ATenantId) as TProduct;
+end;
+
+function TProductRepositorySQL.ShowBySkuOrEanCode(ASkuOrEanCode: String; ATenantId: Int64): TProduct;
+begin
+  Result := nil;
+  With FConn.MakeQry.Open(FProductSQLBuilder.SelectBySkuOrEanCode(ASkuOrEanCode, ATenantId)) do
+  begin
+    if DataSet.IsEmpty then Exit;
+    Result := DataSetToEntity(DataSet) as TProduct;
+  end;
 end;
 
 function TProductRepositorySQL.FieldExists(AColumName, AColumnValue: String; AId, ATenantId: Int64): Boolean;

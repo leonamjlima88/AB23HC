@@ -106,7 +106,13 @@ uses
   uProduct.Index.View in 'App\Module\Product\View\uProduct.Index.View.pas' {ProductIndexView},
   uProduct.CreateUpdate.View in 'App\Module\Product\View\uProduct.CreateUpdate.View.pas' {ProductCreateUpdateView},
   uProduct.Service in 'App\Module\Product\Service\uProduct.Service.pas',
-  uProduct.MTB in 'App\Module\Product\MemTable\uProduct.MTB.pas';
+  uProduct.MTB in 'App\Module\Product\MemTable\uProduct.MTB.pas',
+  uBusinessProposal.Index.View in 'App\Module\BusinessProposal\View\uBusinessProposal.Index.View.pas' {BusinessProposalIndexView},
+  uBusinessProposal.Service in 'App\Module\BusinessProposal\Service\uBusinessProposal.Service.pas',
+  uBusinessProposalItem.CreateUpdate.View in 'App\Module\BusinessProposal\View\uBusinessProposalItem.CreateUpdate.View.pas' {BusinessProposalItemCreateUpdateView},
+  uBusinessProposal.CreateUpdate.View in 'App\Module\BusinessProposal\View\uBusinessProposal.CreateUpdate.View.pas' {BusinessProposalCreateUpdateView},
+  uBusinessProposal.MTB in 'App\Module\BusinessProposal\MemTable\uBusinessProposal.MTB.pas',
+  uPerson.TypeInput in 'App\Module\Person\Service\uPerson.TypeInput.pas';
 
 {$R *.res}
 

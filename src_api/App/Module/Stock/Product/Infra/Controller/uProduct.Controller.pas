@@ -59,6 +59,13 @@ Type
     [SwagResponse(HTTP_BAD_REQUEST)]
     [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
     procedure Update;
+
+    [SwagGET('/sku_or_ean_code/{code}', 'Localizar por Ref ou Cód de Barras')]
+    [SwagParamPath('code', 'Code')]
+    [SwagResponse(HTTP_OK, TProductShowResponseDTO)]
+    [SwagResponse(HTTP_BAD_REQUEST)]
+    [SwagResponse(HTTP_INTERNAL_SERVER_ERROR)]
+    procedure ShowBySkuOrEanCode;
   end;
 
 implementation
@@ -76,7 +83,8 @@ uses
   XSuperObject,
   uMyClaims,
   uProduct.StoreAndShow.UseCase,
-  uProduct.UpdateAndShow.UseCase;
+  uProduct.UpdateAndShow.UseCase,
+  uProduct.ShowBySkuOrEanCode.UseCase;
 
 { TProductController }
 
@@ -122,6 +130,26 @@ begin
   lResult   := TProductShowUseCase
     .Make    (FRepository)
     .Execute (lPk, lTenantId);
+
+  // Retorno
+  case Assigned(lResult.Value) of
+    True:  TRes.Success(FRes, lResult.Value);
+    False: TRes.Success(FRes, Nil, HTTP_NOT_FOUND);
+  end;
+end;
+
+procedure TProductController.ShowBySkuOrEanCode;
+var
+  lResult: Shared<TProductShowDTO>;
+  lSkuOrEanCode: String;
+  lTenantId: Int64;
+begin
+  // Localizar registro
+  lSkuOrEanCode := FReq.Params['code'];
+  lTenantId     := THlp.StrInt(FReq.Session<TMyClaims>.TenantId);
+  lResult := TProductShowBySkuOrEanCodeUseCase
+    .Make    (FRepository)
+    .Execute (lSkuOrEanCode, lTenantId);
 
   // Retorno
   case Assigned(lResult.Value) of

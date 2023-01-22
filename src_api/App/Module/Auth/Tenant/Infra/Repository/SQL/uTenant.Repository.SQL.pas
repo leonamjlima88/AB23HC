@@ -69,10 +69,6 @@ begin
   lTenant.city.name                := ADtsTenant.FieldByName('city_name').AsString;
   lTenant.city.state               := ADtsTenant.FieldByName('city_state').AsString;
   lTenant.city.ibge_code           := ADtsTenant.FieldByName('city_ibge_code').AsString;
-  lTenant.created_by_acl_user.id   := ADtsTenant.FieldByName('created_by_acl_user_id').AsLargeInt;
-  lTenant.created_by_acl_user.name := ADtsTenant.FieldByName('created_by_acl_user_name').AsString;
-  lTenant.updated_by_acl_user.id   := ADtsTenant.FieldByName('updated_by_acl_user_id').AsLargeInt;
-  lTenant.updated_by_acl_user.name := ADtsTenant.FieldByName('updated_by_acl_user_name').AsString;
 
   Result := lTenant;
 end;

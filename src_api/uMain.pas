@@ -11,6 +11,7 @@ Type
     class procedure SetMiddlewares;
     class procedure SetReportMemoryLeak;
     class procedure SetRoutes;
+    class procedure ClearTempFolder;
   end;
 
 implementation
@@ -38,8 +39,11 @@ uses
 //  Horse.Exception.Logger,
   Horse.Etag,
   Horse.GBSwagger,
+  Horse.OctetStream,
   GBSwagger.Model.Types,
-  uResponse.DTO, System.DateUtils;
+  uResponse.DTO,
+  System.DateUtils,
+  System.IOUtils;
 
 var
   LLogFileConfig: Shared<THorseLoggerConsoleConfig>;
@@ -61,7 +65,17 @@ begin
   SetMiddlewares;
   RunMigrations;
   SetRoutes;
+  ClearTempFolder;
   RunServer;
+end;
+
+class procedure TMain.ClearTempFolder;
+var
+  lTempPath: String;
+begin
+  lTempPath := ExtractFilePath(ParamStr(0)) + 'Temp\';
+  if TDirectory.Exists(lTempPath) then
+    TDirectory.Delete(lTempPath, True);
 end;
 
 class procedure TMain.InitializeSwagger;
@@ -154,7 +168,8 @@ begin
     .Use(HorseSwagger)
     .Use(eTag)
     .Use(Cors)
-    .Use(HorseSwagger);
+    .Use(HorseSwagger)
+    .Use(OctetStream);
 end;
 
 class procedure TMain.SetReportMemoryLeak;

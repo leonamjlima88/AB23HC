@@ -58,6 +58,7 @@ inherited PersonCreateUpdateView: TPersonCreateUpdateView
       end
       inherited pgc: TPageControl
         Width = 1002
+        ActivePage = TabSheet2
         ExplicitWidth = 1002
         inherited tabMain: TTabSheet
           ExplicitLeft = 4

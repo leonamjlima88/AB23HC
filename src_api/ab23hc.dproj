@@ -2,7 +2,7 @@
     <PropertyGroup>
         <ProjectGuid>{67F3F5BE-7C78-4244-8F8D-282DF514B6EB}</ProjectGuid>
         <ProjectVersion>18.4</ProjectVersion>
-        <FrameworkType>None</FrameworkType>
+        <FrameworkType>VCL</FrameworkType>
         <MainSource>ab23hc.dpr</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
@@ -48,7 +48,7 @@
         <DCC_F>false</DCC_F>
         <DCC_K>false</DCC_K>
         <DCC_UsePackage>RESTBackendComponents;CloudService;soaprtl;soapmidas;RESTComponents;emsclientfiredac;DataSnapFireDAC;FireDACIBDriver;emsclient;FireDACCommon;soapserver;FireDACCommonDriver;inet;FireDAC;FireDACSqliteDriver;$(DCC_UsePackage)</DCC_UsePackage>
-        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <SanitizedProjectName>ab23hc</SanitizedProjectName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
@@ -82,7 +82,6 @@
         <DCC_DcuOutput>..\output\api\dcu\$(Platform)\$(Config)</DCC_DcuOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>(None)</Manifest_File>
-        <DCC_Namespace>Vcl;Vcl.Imaging;$(DCC_Namespace)</DCC_Namespace>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -534,6 +533,44 @@
         <DCCReference Include="App\Module\General\AppParam\Application\DTO\uAppParamMany.DTO.pas"/>
         <DCCReference Include="App\Module\General\AppParam\Application\UseCase\uAppParam.SaveManyByGroupAndIndex.UseCase.pas"/>
         <DCCReference Include="App\Module\Stock\Product\Domain\Services\uProduct.BeforeSave.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Infra\Repository\SQLBuilder\uBusinessProposalItem.SQLBuilder.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Infra\Repository\SQLBuilder\uBusinessProposal.SQLBuilder.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Infra\Repository\SQLBuilder\MySQL\uBusinessProposalItem.SQLBuilder.MySQL.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Infra\Repository\SQLBuilder\MySQL\uBusinessProposal.SQLBuilder.MySQL.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Infra\Repository\SQL\uBusinessProposal.Repository.SQL.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Infra\Controller\uBusinessProposal.Controller.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Domain\Entity\uBusinessProposalItem.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Domain\Entity\uBusinessProposal.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Domain\Repository\uBusinessProposalItem.SQLBuilder.Interfaces.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Domain\Repository\uBusinessProposal.SQLBuilder.Interfaces.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Domain\Repository\uBusinessProposal.Repository.Interfaces.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Application\UseCase\uBusinessProposal.UpdateAndShow.UseCase.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Application\UseCase\uBusinessProposal.StoreAndShow.UseCase.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Application\UseCase\uBusinessProposal.Show.UseCase.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Application\UseCase\uBusinessProposal.Index.UseCase.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Application\UseCase\uBusinessProposal.Delete.UseCase.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Application\Mapper\uBusinessProposal.Mapper.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Application\DTO\uBusinessProposal.Show.DTO.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Application\DTO\uBusinessProposal.DTO.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Application\DTO\uBusinessProposal.Base.DTO.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Application\DTO\uBusinessProposalItem.Base.DTO.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u27CreateBusinessProposalTable.Migration.pas"/>
+        <DCCReference Include="Database\Infra\Migration\u28CreateBusinessProposalItemTable.Migration.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Domain\Entity\uBusinessProposalStatus.Types.pas"/>
+        <DCCReference Include="App\Module\General\Person\Application\DTO\uPersonShowByIdAndPersonType.DTO.pas"/>
+        <DCCReference Include="App\Module\General\Person\Application\UseCase\uPerson.ShowByIdAndPersonType.UseCase.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Application\UseCase\uBusinessProposal.ReportById.UseCase.pas"/>
+        <DCCReference Include="App\Shared\Infra\Report\uBase.Report.pas">
+            <Form>BaseReport</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Domain\Services\uBusinessProposal.ReportById.pas"/>
+        <DCCReference Include="App\Module\Business\BusinessProposal\Infra\Report\BusinessProposal\uBusinessProposal.Report.pas">
+            <Form>BusinessProposalReport</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Shared\Infra\Utils\uOutPutFileStream.pas"/>
+        <DCCReference Include="App\Module\Stock\Product\Application\UseCase\uProduct.ShowBySkuOrEanCode.UseCase.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

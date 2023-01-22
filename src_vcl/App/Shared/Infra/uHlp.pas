@@ -13,6 +13,7 @@ uses
 type
   THlp = class
   public
+    class function  createGuid: String; // Gerador de GUID
     class function  StateList: TArray<String>; // Lista de Estados
     class function  BollInt(AValue: Boolean): Integer;
     class function  IntBool(AValue: Integer): Boolean;
@@ -57,6 +58,18 @@ begin
     False: Result := 0;
   end;
 end;
+
+class function THlp.createGuid: String;
+const
+  L_CHARS_TO_REMOVE: TArray<String> = ['[',']','{','}'];
+var
+  lI: Integer;
+begin
+  Result := TGUID.NewGuid.ToString;
+  for lI := 0 to High(L_CHARS_TO_REMOVE) do
+    Result := StringReplace(Result, L_CHARS_TO_REMOVE[lI], '', [rfReplaceAll]);
+end;
+
 
 class function THlp.CreateTransparentBackground(AOwner: TForm; AlphaBlendValue: Integer): TForm;
 begin

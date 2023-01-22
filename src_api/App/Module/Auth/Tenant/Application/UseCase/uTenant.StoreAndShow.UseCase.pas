@@ -9,7 +9,7 @@ uses
 
 type
   ITenantStoreAndShowUseCase = Interface
-['{E548F8F6-6243-420E-8B20-0A466B42F54E}']
+    ['{E548F8F6-6243-420E-8B20-0A466B42F54E}']
     function Execute(AInput: TTenantDTO): TTenantShowDTO;
   end;
 

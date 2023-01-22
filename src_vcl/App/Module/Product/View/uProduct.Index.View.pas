@@ -78,14 +78,16 @@ type
     FFilterOrderBy: String;
     FSearchColumns: ISearchColumns;
     FLayoutLocate: Boolean;
-    FLocateResult: Integer;
+    FLocateResult: String;
+    FReturnSkuCode: Boolean;
     procedure CleanFilter;
     procedure DoSearch(ACurrentPage: Integer = 1; ATryLocateId: Int64 = 0);
     procedure RefreshIndexWithoutRequestAPI(AMemTable: IProductMTB; AEntityState: TEntityState);
-    procedure SetLocateResult(const Value: Integer);
+    procedure SetLocateResult(const Value: String);
   public
-    class function HandleLocate: Int64;
-    property  LocateResult: Integer read FLocateResult write SetLocateResult;
+    constructor Create(AOwner: TComponent; AReturnSkuCode: Boolean); overload;
+    class function HandleLocate(AReturnSkuCode: Boolean = False): String;
+    property  LocateResult: String read FLocateResult write SetLocateResult;
     procedure SetLayoutLocate(ABackgroundTransparent: Boolean = True);
   end;
 
@@ -165,7 +167,7 @@ begin
   end;
 end;
 
-procedure TProductIndexView.SetLocateResult(const Value: Integer);
+procedure TProductIndexView.SetLocateResult(const Value: String);
 begin
   FLocateResult := Value;
 end;
@@ -255,7 +257,7 @@ end;
 procedure TProductIndexView.btnLocateCloseClick(Sender: TObject);
 begin
   inherited;
-  FLocateResult := -1;
+  FLocateResult := EmptyStr;
   ModalResult   := MrCancel;
 end;
 
@@ -268,7 +270,11 @@ begin
   if not lKeepGoing then
     Exit;
 
-  FLocateResult := dtsIndex.DataSet.Fields[0].AsLargeInt;
+  case FReturnSkuCode of
+    True:  FLocateResult := dtsIndex.DataSet.FieldByName('sku_code').AsString;
+    False: FLocateResult := dtsIndex.DataSet.FieldByName('id').AsString;
+  end;
+
   ModalResult   := mrOK;
 end;
 
@@ -354,6 +360,12 @@ begin
   edtSearchValue.OnChange := nil;
   edtSearchValue.Clear;
   edtSearchValue.OnChange := edtSearchValueChange;
+end;
+
+constructor TProductIndexView.Create(AOwner: TComponent; AReturnSkuCode: Boolean);
+begin
+  inherited Create(AOwner);
+  FReturnSkuCode := AReturnSkuCode;
 end;
 
 procedure TProductIndexView.DBGrid1CellClick(Column: TColumn);
@@ -691,16 +703,16 @@ begin
   end;
 end;
 
-class function TProductIndexView.HandleLocate: Int64;
+class function TProductIndexView.HandleLocate(AReturnSkuCode: Boolean): String;
 var
   lView: TProductIndexView;
 begin
   Try
-    lView := TProductIndexView.Create(nil);
+    lView := TProductIndexView.Create(nil, AReturnSkuCode);
     lView.SetLayoutLocate;
     case (lView.ShowModal = mrOK) of
       True:  Result := lView.LocateResult;
-      False: Result := -1;
+      False: Result := EmptyStr;
     end;
   Finally
     if Assigned(lView) then

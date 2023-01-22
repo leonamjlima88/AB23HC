@@ -40,8 +40,6 @@ begin
   lTenantShowDTO.city_name                := ATenant.city.name;
   lTenantShowDTO.city_state               := ATenant.city.state;
   lTenantShowDTO.city_ibge_code           := ATenant.city.ibge_code;
-  lTenantShowDTO.created_by_acl_user_name := ATenant.created_by_acl_user.name;
-  lTenantShowDTO.updated_by_acl_user_name := ATenant.updated_by_acl_user.name;
 
   Result := lTenantShowDTO;
 end;

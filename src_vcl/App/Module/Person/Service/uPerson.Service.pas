@@ -8,7 +8,8 @@ uses
   uEither,
   uPageFilter,
   uIndexResult,
-  uPerson.MTB;
+  uPerson.MTB,
+  uPerson.TypeInput;
 
 type
   IPersonService = Interface
@@ -16,6 +17,7 @@ type
     function Delete(AId: Int64): Boolean;
     function Index(APageFilter: IPageFilter): IIndexResult;
     function Show(AId: Int64): IPersonMTB;
+    function ShowByIdAndPersonType(APersonTypeInput: IPersonTypeInput): IPersonMTB;
     function Store(APerson: IPersonMTB): Either<String, IPersonMTB>;
     function Update(APerson: IPersonMTB; AId: Int64): Either<String, IPersonMTB>;
   end;
@@ -28,6 +30,7 @@ type
     function Delete(AId: Int64): Boolean;
     function Index(APageFilter: IPageFilter): IIndexResult;
     function Show(AId: Int64): IPersonMTB;
+    function ShowByIdAndPersonType(APersonTypeInput: IPersonTypeInput): IPersonMTB;
     function Store(APerson: IPersonMTB): Either<String, IPersonMTB>;
     function Update(APerson: IPersonMTB; AId: Int64): Either<String, IPersonMTB>;
   end;
@@ -106,6 +109,27 @@ begin
 
   // Efetuar requisição
   FRes := TReq.Make(RESOURCE+AId.ToString).Execute(rtGet);
+
+  // Falha na requisição
+  if (FRes.StatusCode = HTTP_NOT_FOUND) then
+    Exit;
+
+  if not (FRes.StatusCode = HTTP_OK) then
+    raise Exception.Create(SO(FRes.Content).S['message']);
+
+  // Retornar registro localizado
+  lSObj  := SO(FRes.Content);
+  Result := TPersonMTB.Make.FromJsonString(lSObj.O['data'].AsJSON);
+end;
+
+function TPersonService.ShowByIdAndPersonType(APersonTypeInput: IPersonTypeInput): IPersonMTB;
+var
+  lSObj: ISuperObject;
+begin
+  Result := nil;
+
+  // Efetuar requisição
+  FRes := TReq.Make(RESOURCE+'show_by_id_and_person_type', APersonTypeInput.ToJsonString).Execute(rtPost);
 
   // Falha na requisição
   if (FRes.StatusCode = HTTP_NOT_FOUND) then

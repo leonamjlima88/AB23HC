@@ -246,7 +246,13 @@ begin
 end;
 
 procedure TPersonCreateUpdateView.btnPersonContactListEditClick(Sender: TObject);
+var
+  lKeepGoing: Boolean;
 begin
+  lKeepGoing := Assigned(dtsPersonContactList.DataSet) and dtsPersonContactList.DataSet.Active and (dtsPersonContactList.DataSet.RecordCount > 0);
+  if not lKeepGoing then
+    Exit;
+
   Try
     pnlBackground.Enabled := False;
 

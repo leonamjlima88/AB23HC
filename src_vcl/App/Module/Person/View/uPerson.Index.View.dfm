@@ -179,13 +179,6 @@ inherited PersonIndexView: TPersonIndexView
                   Visible = True
                 end>
             end
-            inherited pnlSearch: TPanel
-              inherited pnlSearch2: TPanel
-                inherited lblSearch: TLabel
-                  Height = 15
-                end
-              end
-            end
           end
         end
         inherited pnlNavigator: TPanel
@@ -227,13 +220,6 @@ inherited PersonIndexView: TPersonIndexView
               end
             end
           end
-          inherited Panel1: TPanel
-            inherited Panel2: TPanel
-              inherited Label1: TLabel
-                Height = 16
-              end
-            end
-          end
         end
         inherited pnlButtonsTop: TPanel
           inherited pnlOptions: TPanel
@@ -264,9 +250,6 @@ inherited PersonIndexView: TPersonIndexView
                 OnClick = imgSearchClearClick
               end
               inherited pnlSearch5: TPanel
-                inherited lblSearchTitle: TLabel
-                  Width = 334
-                end
                 inherited edtSearchValue: TEdit
                   OnChange = edtSearchValueChange
                   OnDblClick = imgSearchClearClick

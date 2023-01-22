@@ -14277,6 +14277,7 @@ object MainView: TMainView
     object actBusinessProposal: TAction
       Category = 'Business'
       Caption = 'Proposta Comercial'
+      OnExecute = actBusinessProposalExecute
     end
     object actSale: TAction
       Category = 'Business'

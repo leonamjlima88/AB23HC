@@ -22,6 +22,8 @@ type
     procedure SetIsSuperuser(const Value: string);
     function GetTenantId: string;
     procedure SetTenantId(const Value: string);
+    function GetTenantInfo: string;
+    procedure SetTenantInfo(const Value: string);
   public
     property Id: string read GetId write SetId;
     property Name: string read GetName write SetName;
@@ -29,6 +31,7 @@ type
     property AclRoleId: string read GetAclRoleId write SetAclRoleId;
     property IsSuperuser: string read GetIsSuperuser write SetIsSuperuser;
     property TenantId: string read GetTenantId write SetTenantId;
+    property TenantInfo: string read GetTenantInfo write SetTenantInfo;
   end;
 
 implementation
@@ -75,6 +78,11 @@ begin
   Result := TJSONUtils.GetJSONValue('tenant_id', FJSON).AsString;
 end;
 
+function TMyClaims.GetTenantInfo: string;
+begin
+  Result := TJSONUtils.GetJSONValue('tenant_info', FJSON).AsString;
+end;
+
 procedure TMyClaims.SetName(const Value: string);
 begin
   TJSONUtils.SetJSONValueFrom<string>('name', Value, FJSON);
@@ -83,6 +91,11 @@ end;
 procedure TMyClaims.SetTenantId(const Value: string);
 begin
   TJSONUtils.SetJSONValueFrom<string>('tenant_id', Value, FJSON);
+end;
+
+procedure TMyClaims.SetTenantInfo(const Value: string);
+begin
+  TJSONUtils.SetJSONValueFrom<string>('tenant_info', Value, FJSON)
 end;
 
 function TMyClaims.GetLogin: string;
