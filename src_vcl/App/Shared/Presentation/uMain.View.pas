@@ -125,6 +125,7 @@ type
     procedure actTaxRuleExecute(Sender: TObject);
     procedure actProductExecute(Sender: TObject);
     procedure actBusinessProposalExecute(Sender: TObject);
+    procedure actSaleExecute(Sender: TObject);
   private
     FTabSheetTag: Integer;
     FNetConnectedLog: IShared<TStringList>;
@@ -169,7 +170,8 @@ uses
   uCFOP.Index.View,
   uTaxRule.Index.View,
   uProduct.Index.View,
-  uBusinessProposal.Index.View;
+  uBusinessProposal.Index.View,
+  uSale.Index.View;
 
 procedure TMainView.actBankAccountExecute(Sender: TObject);
 begin
@@ -254,6 +256,11 @@ end;
 procedure TMainView.actProductExecute(Sender: TObject);
 begin
   LoadAndShowForm(TProductIndexView, 'Produto');
+end;
+
+procedure TMainView.actSaleExecute(Sender: TObject);
+begin
+  LoadAndShowForm(TSaleIndexView, 'Venda');
 end;
 
 procedure TMainView.actSizeExecute(Sender: TObject);

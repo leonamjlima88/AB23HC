@@ -12,8 +12,8 @@ inherited SaleReport: TSaleReport
       end
     end
     inherited bndFooter: TRLBand
-      Top = 600
-      ExplicitTop = 600
+      Top = 522
+      ExplicitTop = 522
     end
     object RLBand1: TRLBand
       Left = 38
@@ -206,7 +206,7 @@ inherited SaleReport: TSaleReport
       object lblReportTitle: TRLLabel
         Left = 0
         Top = 0
-        Width = 158
+        Width = 48
         Height = 20
         Align = faLeft
         Behavior = [beSiteExpander]
@@ -216,7 +216,7 @@ inherited SaleReport: TSaleReport
         Borders.DrawRight = False
         Borders.DrawBottom = False
         Borders.Color = clSilver
-        Caption = 'PROPOSTA COMERCIAL'
+        Caption = 'VENDA'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -232,13 +232,13 @@ inherited SaleReport: TSaleReport
       Left = 38
       Top = 335
       Width = 718
-      Height = 45
+      Height = 25
       BandType = btHeader
       object RLPanel4: TRLPanel
         Left = 0
         Top = 0
         Width = 718
-        Height = 45
+        Height = 25
         Align = faClient
         Borders.Sides = sdCustom
         Borders.DrawLeft = True
@@ -246,39 +246,6 @@ inherited SaleReport: TSaleReport
         Borders.DrawRight = True
         Borders.DrawBottom = True
         Borders.Color = clSilver
-        object RLLabel2: TRLLabel
-          Left = 7
-          Top = 24
-          Width = 150
-          Height = 16
-          AutoSize = False
-          Caption = 'Proposta V'#225'lida at'#233':'
-          Color = 16382457
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          ParentColor = False
-          ParentFont = False
-          Transparent = False
-        end
-        object RLLabel7: TRLLabel
-          Left = 247
-          Top = 24
-          Width = 136
-          Height = 16
-          Caption = 'Previs'#227'o de Entrega:'
-          Color = 16382457
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          ParentColor = False
-          ParentFont = False
-          Transparent = False
-        end
         object RLLabel9: TRLLabel
           Left = 7
           Top = 6
@@ -305,30 +272,11 @@ inherited SaleReport: TSaleReport
           DataSource = dtsSale
           Text = ''
         end
-        object RLDBText4: TRLDBText
-          Left = 159
-          Top = 24
-          Width = 78
-          Height = 16
-          DataField = 'expiration_date'
-          DataSource = dtsSale
-          Text = ''
-        end
-        object RLDBText5: TRLDBText
-          Left = 385
-          Top = 24
-          Width = 320
-          Height = 16
-          AutoSize = False
-          DataField = 'delivery_forecast'
-          DataSource = dtsSale
-          Text = ''
-        end
       end
     end
     object RLBand4: TRLBand
       Left = 38
-      Top = 390
+      Top = 370
       Width = 718
       Height = 22
       BandType = btColumnHeader
@@ -461,14 +409,14 @@ inherited SaleReport: TSaleReport
     end
     object RLBand5: TRLBand
       Left = 38
-      Top = 380
+      Top = 360
       Width = 718
       Height = 10
       BandType = btHeader
     end
     object RLBand6: TRLBand
       Left = 38
-      Top = 412
+      Top = 392
       Width = 718
       Height = 20
       AfterPrint = RLBand6AfterPrint
@@ -604,7 +552,7 @@ inherited SaleReport: TSaleReport
     end
     object RLBand7: TRLBand
       Left = 38
-      Top = 449
+      Top = 429
       Width = 718
       Height = 35
       BandType = btColumnFooter
@@ -660,70 +608,9 @@ inherited SaleReport: TSaleReport
         end
       end
     end
-    object RLBand8: TRLBand
-      Left = 38
-      Top = 484
-      Width = 718
-      Height = 10
-      BandType = btSummary
-    end
-    object bndPaymentTermNote: TRLBand
-      Left = 38
-      Top = 494
-      Width = 718
-      Height = 48
-      BandType = btSummary
-      object RLPanel15: TRLPanel
-        Left = 0
-        Top = 0
-        Width = 718
-        Height = 48
-        Align = faClient
-        Borders.Sides = sdCustom
-        Borders.DrawLeft = True
-        Borders.DrawTop = True
-        Borders.DrawRight = True
-        Borders.DrawBottom = True
-        Borders.Color = clSilver
-        object RLLabel8: TRLLabel
-          Left = 1
-          Top = 1
-          Width = 716
-          Height = 19
-          Align = faTop
-          AutoSize = False
-          Behavior = [beSiteExpander]
-          Borders.Sides = sdCustom
-          Borders.DrawLeft = False
-          Borders.DrawTop = False
-          Borders.DrawRight = False
-          Borders.DrawBottom = False
-          Borders.Color = clSilver
-          Caption = ' Condi'#231#245'es de Pagamento'
-          Color = 16382457
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clGray
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          ParentColor = False
-          ParentFont = False
-          Transparent = False
-        end
-        object RLDBMemo2: TRLDBMemo
-          Left = 8
-          Top = 26
-          Width = 703
-          Height = 16
-          Behavior = [beSiteExpander]
-          DataField = 'payment_term_note'
-          DataSource = dtsSale
-        end
-      end
-    end
     object bndNote: TRLBand
       Left = 38
-      Top = 552
+      Top = 474
       Width = 718
       Height = 48
       BandType = btSummary
@@ -777,14 +664,14 @@ inherited SaleReport: TSaleReport
     end
     object RLBand11: TRLBand
       Left = 38
-      Top = 542
+      Top = 464
       Width = 718
       Height = 10
       BandType = btSummary
     end
     object bndProductNote: TRLBand
       Left = 38
-      Top = 432
+      Top = 412
       Width = 718
       Height = 17
       object RLDBMemo4: TRLDBMemo

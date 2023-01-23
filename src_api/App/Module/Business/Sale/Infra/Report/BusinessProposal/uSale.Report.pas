@@ -31,8 +31,6 @@ type
     RLLabel4: TRLLabel;
     RLBand3: TRLBand;
     RLPanel4: TRLPanel;
-    RLLabel2: TRLLabel;
-    RLLabel7: TRLLabel;
     RLLabel9: TRLLabel;
     RLBand4: TRLBand;
     RLBand5: TRLBand;
@@ -47,8 +45,6 @@ type
     RLDBText1: TRLDBText;
     RLDBText2: TRLDBText;
     RLDBText3: TRLDBText;
-    RLDBText4: TRLDBText;
-    RLDBText5: TRLDBText;
     RLDBText6: TRLDBText;
     RLDBText8: TRLDBText;
     RLDBText9: TRLDBText;
@@ -59,11 +55,6 @@ type
     RLBand7: TRLBand;
     RLPanel7: TRLPanel;
     RLLabel1: TRLLabel;
-    RLBand8: TRLBand;
-    bndPaymentTermNote: TRLBand;
-    RLPanel15: TRLPanel;
-    RLLabel8: TRLLabel;
-    RLDBMemo2: TRLDBMemo;
     bndNote: TRLBand;
     RLPanel16: TRLPanel;
     RLLabel10: TRLLabel;
@@ -138,7 +129,7 @@ begin
   With dtsSale.DataSet do
   begin
     // Título do Relatório
-    lblReportTitle.Caption := 'PROPOSTA COMERCIAL Nº ' + Thlp.strZero(FieldByName('id').AsString,5);
+    lblReportTitle.Caption := 'VENDA Nº ' + Thlp.strZero(FieldByName('id').AsString,5);
 
     // Dados do Header
     lDocs := 'Nenhum documento informado.';
@@ -188,7 +179,6 @@ begin
 
     // Exibir Informações
     bndNote.Visible            := not FieldByName('note').AsString.Trim.IsEmpty;
-    bndPaymentTermNote.Visible := not FieldByName('payment_term_note').AsString.Trim.IsEmpty;
 
     // Limpar pontos se não existirem dados
     for lI := 0 to Pred(memPersonInfo.Lines.Count) do

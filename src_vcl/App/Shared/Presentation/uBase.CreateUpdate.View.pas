@@ -44,8 +44,7 @@ type
     procedure EdtFieldClick(Sender: TObject); virtual;
     procedure ToggleSwitch1Click(Sender: TObject); virtual;
     procedure ImageShowHintClick(Sender: TObject); virtual;
-    procedure pnlTitleMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
+    procedure pnlTitleMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   private
     FLoadingSave: Boolean;
     FLoadingForm: Boolean;
@@ -188,6 +187,7 @@ begin
       IndicatorLoadFormLabel.Visible      := True;
       imgNoSearch.Animation.Enabled       := True;
       imgNoSearch.Visible                 := True;
+      Screen.Cursor                       := crHourGlass;
     end;
     False: Begin
       IndicatorLoadForm.Visible           := False;
@@ -195,6 +195,7 @@ begin
       IndicatorLoadFormLabel.Visible      := False;
       imgNoSearch.Visible                 := False;
       imgNoSearch.Animation.Enabled       := False;
+      Screen.Cursor                       := crDefault;
     end;
   end;
 end;
@@ -207,12 +208,14 @@ begin
     True: Begin
       IndicatorLoadButtonSave.Visible := True;
       IndicatorLoadButtonSave.Animate := True;
-      imgSave.Visible                := False;
+      imgSave.Visible                 := False;
+      Screen.Cursor                   := crHourGlass;
     end;
     False: Begin
       IndicatorLoadButtonSave.Visible := False;
       IndicatorLoadButtonSave.Animate := False;
       imgSave.Visible                 := True;
+      Screen.Cursor                   := crDefault;
     End;
   end;
 end;

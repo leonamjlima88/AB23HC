@@ -112,7 +112,12 @@ uses
   uBusinessProposalItem.CreateUpdate.View in 'App\Module\BusinessProposal\View\uBusinessProposalItem.CreateUpdate.View.pas' {BusinessProposalItemCreateUpdateView},
   uBusinessProposal.CreateUpdate.View in 'App\Module\BusinessProposal\View\uBusinessProposal.CreateUpdate.View.pas' {BusinessProposalCreateUpdateView},
   uBusinessProposal.MTB in 'App\Module\BusinessProposal\MemTable\uBusinessProposal.MTB.pas',
-  uPerson.TypeInput in 'App\Module\Person\Service\uPerson.TypeInput.pas';
+  uPerson.TypeInput in 'App\Module\Person\Service\uPerson.TypeInput.pas',
+  uSale.Index.View in 'App\Module\Sale\View\uSale.Index.View.pas' {SaleIndexView},
+  uSale.Service in 'App\Module\Sale\Service\uSale.Service.pas',
+  uSaleItem.CreateUpdate.View in 'App\Module\Sale\View\uSaleItem.CreateUpdate.View.pas' {SaleItemCreateUpdateView},
+  uSale.CreateUpdate.View in 'App\Module\Sale\View\uSale.CreateUpdate.View.pas' {SaleCreateUpdateView},
+  uSale.MTB in 'App\Module\Sale\MemTable\uSale.MTB.pas';
 
 {$R *.res}
 

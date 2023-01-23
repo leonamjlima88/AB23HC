@@ -3,7 +3,8 @@ unit uProduct.Base.DTO;
 interface
 
 uses
-  GBSwagger.Model.Attributes;
+  GBSwagger.Model.Attributes,
+  uProduct.Types;
 
 type
   TProductBaseDTO = class
@@ -11,7 +12,7 @@ type
     Fname: string;
     Fgross_weight: Double;
     Fcost: Double;
-    Fgenre: SmallInt;
+    Fgenre: TProductGenre;
     Funit_id: Int64;
     Fncm_id: Int64;
     Fpacking_weight: Double;
@@ -25,7 +26,7 @@ type
     Fmaximum_quantity: Double;
     Fis_product_for_scales: SmallInt;
     Fean_code: String;
-    Ftype: SmallInt;
+    Ftype: TProductType;
     Fcomplement_note: String;
     Fnet_weight: Double;
     Fcategory_id: Int64;
@@ -47,7 +48,7 @@ type
 
     [SwagNumber]
     [SwagProp('type', 'Tipo [0=Produto, 1=Serviço]')]
-    property &type: SmallInt read Ftype write Ftype;
+    property &type: TProductType read Ftype write Ftype;
 
     [SwagString(45)]
     [SwagProp('sku_code', 'Código de referência')]
@@ -147,7 +148,7 @@ type
 
     [SwagNumber]
     [SwagProp('genre', 'Gênero. [0=Nenhum, 1=Masculino, 2=Feminino, 3=Unisex]')]
-    property genre: SmallInt read Fgenre write Fgenre;
+    property genre: TProductGenre read Fgenre write Fgenre;
   end;
 
 implementation

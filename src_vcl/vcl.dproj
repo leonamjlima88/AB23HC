@@ -377,6 +377,20 @@
         </DCCReference>
         <DCCReference Include="App\Module\BusinessProposal\MemTable\uBusinessProposal.MTB.pas"/>
         <DCCReference Include="App\Module\Person\Service\uPerson.TypeInput.pas"/>
+        <DCCReference Include="App\Module\Sale\View\uSale.Index.View.pas">
+            <Form>SaleIndexView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Sale\Service\uSale.Service.pas"/>
+        <DCCReference Include="App\Module\Sale\View\uSaleItem.CreateUpdate.View.pas">
+            <Form>SaleItemCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Sale\View\uSale.CreateUpdate.View.pas">
+            <Form>SaleCreateUpdateView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="App\Module\Sale\MemTable\uSale.MTB.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -14282,6 +14282,7 @@ object MainView: TMainView
     object actSale: TAction
       Category = 'Business'
       Caption = 'Vendas'
+      OnExecute = actSaleExecute
     end
     object actMyCompany: TAction
       Category = 'Configuration'

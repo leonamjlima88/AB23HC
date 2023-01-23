@@ -1,4 +1,4 @@
-inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
+inherited SaleCreateUpdateView: TSaleCreateUpdateView
   ClientWidth = 1024
   OnKeyDown = FormKeyDown
   OnShow = FormShow
@@ -80,32 +80,6 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               Font.Style = [fsBold]
               ParentFont = False
             end
-            object Label1: TLabel
-              Left = 362
-              Top = 126
-              Width = 95
-              Height = 14
-              Caption = 'Validade da Prop.'
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clBlack
-              Font.Height = -12
-              Font.Name = 'Tahoma'
-              Font.Style = []
-              ParentFont = False
-            end
-            object Label3: TLabel
-              Left = 352
-              Top = 126
-              Width = 8
-              Height = 14
-              Caption = '*'
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clRed
-              Font.Height = -12
-              Font.Name = 'Tahoma'
-              Font.Style = [fsBold]
-              ParentFont = False
-            end
             object Label37: TLabel
               Left = 10
               Top = 80
@@ -120,37 +94,11 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               ParentFont = False
             end
             object Label5: TLabel
-              Left = 352
-              Top = 172
-              Width = 118
-              Height = 14
-              Caption = 'Status da Negocia'#231#227'o'
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clBlack
-              Font.Height = -12
-              Font.Name = 'Tahoma'
-              Font.Style = []
-              ParentFont = False
-            end
-            object Label11: TLabel
-              Left = 10
-              Top = 172
-              Width = 109
-              Height = 14
-              Caption = 'Previs'#227'o de entrega'
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clBlack
-              Font.Height = -12
-              Font.Name = 'Tahoma'
-              Font.Style = []
-              ParentFont = False
-            end
-            object Label12: TLabel
               Left = 10
               Top = 126
-              Width = 56
+              Width = 35
               Height = 14
-              Caption = 'Solicitante'
+              Caption = 'Status'
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -12
@@ -205,7 +153,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               BevelOuter = bvNone
               Color = 14209468
               ParentBackground = False
-              TabOrder = 8
+              TabOrder = 5
             end
             object edtId: TDBEdit
               Left = 111
@@ -216,7 +164,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               BorderStyle = bsNone
               Color = 16579576
               DataField = 'id'
-              DataSource = dtsBusinessProposal
+              DataSource = dtsSale
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clGray
               Font.Height = -15
@@ -224,27 +172,8 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               Font.Style = [fsBold]
               ParentFont = False
               ReadOnly = True
-              TabOrder = 9
+              TabOrder = 6
               OnClick = EdtFieldClick
-              OnKeyDown = EdtFieldKeyDown
-            end
-            object JvDBDateEdit1: TJvDBDateEdit
-              Left = 352
-              Top = 141
-              Width = 130
-              Height = 26
-              DataField = 'expiration_date'
-              DataSource = dtsBusinessProposal
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clBlack
-              Font.Height = -15
-              Font.Name = 'Tahoma'
-              Font.Style = [fsBold]
-              ParentFont = False
-              ShowNullDate = False
-              TabOrder = 5
-              OnEnter = EdtFieldEnter
-              OnExit = EdtFieldExit
               OnKeyDown = EdtFieldKeyDown
             end
             object edtperson_name: TDBEdit
@@ -254,7 +183,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               Height = 26
               Color = 16053492
               DataField = 'person_name'
-              DataSource = dtsBusinessProposal
+              DataSource = dtsSale
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clGray
               Font.Height = -15
@@ -275,7 +204,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               BorderWidth = 1
               Color = 5327153
               ParentBackground = False
-              TabOrder = 10
+              TabOrder = 7
               object Panel42: TPanel
                 Left = 1
                 Top = 1
@@ -323,7 +252,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               Width = 50
               Height = 26
               DataField = 'person_id'
-              DataSource = dtsBusinessProposal
+              DataSource = dtsSale
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -15
@@ -337,12 +266,12 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               OnKeyDown = EdtFieldKeyDown
             end
             object JvDBComboBox1: TJvDBComboBox
-              Left = 352
-              Top = 187
+              Left = 10
+              Top = 141
               Width = 130
               Height = 26
               DataField = 'status'
-              DataSource = dtsBusinessProposal
+              DataSource = dtsSale
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -15
@@ -353,7 +282,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
                 'Conclu'#237'do'
                 'Cancelado')
               ParentFont = False
-              TabOrder = 7
+              TabOrder = 4
               TabStop = False
               UpdateFieldImmediatelly = True
               Values.Strings = (
@@ -369,41 +298,6 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               OnExit = EdtFieldExit
               OnKeyDown = EdtFieldKeyDown
             end
-            object DBEdit1: TDBEdit
-              Left = 10
-              Top = 187
-              Width = 332
-              Height = 26
-              DataField = 'delivery_forecast'
-              DataSource = dtsBusinessProposal
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clBlack
-              Font.Height = -15
-              Font.Name = 'Tahoma'
-              Font.Style = [fsBold]
-              ParentFont = False
-              TabOrder = 6
-              OnEnter = EdtFieldEnter
-              OnExit = EdtFieldExit
-            end
-            object DBEdit4: TDBEdit
-              Left = 10
-              Top = 141
-              Width = 332
-              Height = 26
-              DataField = 'requester'
-              DataSource = dtsBusinessProposal
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clBlack
-              Font.Height = -15
-              Font.Name = 'Tahoma'
-              Font.Style = [fsBold]
-              ParentFont = False
-              TabOrder = 4
-              OnEnter = EdtFieldEnter
-              OnExit = EdtFieldExit
-              OnKeyDown = EdtFieldKeyDown
-            end
             object edtseller_name: TDBEdit
               Left = 88
               Top = 49
@@ -411,7 +305,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               Height = 26
               Color = 16053492
               DataField = 'seller_name'
-              DataSource = dtsBusinessProposal
+              DataSource = dtsSale
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clGray
               Font.Height = -15
@@ -432,7 +326,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               BorderWidth = 1
               Color = 5327153
               ParentBackground = False
-              TabOrder = 11
+              TabOrder = 8
               object Panel1: TPanel
                 Left = 1
                 Top = 1
@@ -480,7 +374,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               Width = 50
               Height = 26
               DataField = 'seller_id'
-              DataSource = dtsBusinessProposal
+              DataSource = dtsSale
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -15
@@ -499,7 +393,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               Width = 492
               Height = 177
               ActivePage = TabSheet1
-              TabOrder = 12
+              TabOrder = 9
               TabStop = False
               object TabSheet1: TTabSheet
                 Caption = '   Observa'#231#227'o Impressa   '
@@ -523,7 +417,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
                     Align = alClient
                     BorderStyle = bsNone
                     DataField = 'note'
-                    DataSource = dtsBusinessProposal
+                    DataSource = dtsSale
                     Font.Charset = DEFAULT_CHARSET
                     Font.Color = clBlack
                     Font.Height = -15
@@ -539,10 +433,6 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               object TabSheet2: TTabSheet
                 Caption = '   Observa'#231#227'o Interna   '
                 ImageIndex = 1
-                ExplicitLeft = 0
-                ExplicitTop = 0
-                ExplicitWidth = 0
-                ExplicitHeight = 0
                 object Panel13: TPanel
                   Left = 0
                   Top = 0
@@ -563,47 +453,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
                     Align = alClient
                     BorderStyle = bsNone
                     DataField = 'internal_note'
-                    DataSource = dtsBusinessProposal
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Height = -15
-                    Font.Name = 'Tahoma'
-                    Font.Style = [fsBold]
-                    ParentFont = False
-                    TabOrder = 0
-                    OnEnter = EdtFieldEnter
-                    OnExit = EdtFieldExit
-                  end
-                end
-              end
-              object TabSheet3: TTabSheet
-                Caption = '   Condi'#231#245'es de Pagamento   '
-                ImageIndex = 2
-                ExplicitLeft = 0
-                ExplicitTop = 0
-                ExplicitWidth = 0
-                ExplicitHeight = 0
-                object Panel14: TPanel
-                  Left = 0
-                  Top = 0
-                  Width = 484
-                  Height = 148
-                  Align = alClient
-                  BevelOuter = bvNone
-                  BorderWidth = 1
-                  Color = clSilver
-                  ParentBackground = False
-                  TabOrder = 0
-                  object DBMemo3: TDBMemo
-                    Left = 1
-                    Top = 1
-                    Width = 482
-                    Height = 146
-                    TabStop = False
-                    Align = alClient
-                    BorderStyle = bsNone
-                    DataField = 'payment_term_note'
-                    DataSource = dtsBusinessProposal
+                    DataSource = dtsSale
                     Font.Charset = DEFAULT_CHARSET
                     Font.Color = clBlack
                     Font.Height = -15
@@ -625,7 +475,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               BevelOuter = bvNone
               Color = 14209468
               ParentBackground = False
-              TabOrder = 13
+              TabOrder = 10
             end
             object Panel6: TPanel
               AlignWithMargins = True
@@ -641,8 +491,8 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
               BevelOuter = bvNone
               Color = 16579576
               ParentBackground = False
-              TabOrder = 14
-              object dbgBusinessProposalItemList: TJvDBGrid
+              TabOrder = 11
+              object dbgSaleItemList: TJvDBGrid
                 Left = 0
                 Top = 51
                 Width = 974
@@ -667,9 +517,9 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
                 TitleFont.Height = -13
                 TitleFont.Name = 'Tahoma'
                 TitleFont.Style = [fsBold]
-                OnCellClick = dbgBusinessProposalItemListCellClick
-                OnDrawColumnCell = dbgBusinessProposalItemListDrawColumnCell
-                OnDblClick = btnBusinessProposalItemListEditClick
+                OnCellClick = dbgSaleItemListCellClick
+                OnDrawColumnCell = dbgSaleItemListDrawColumnCell
+                OnDblClick = btnSaleItemListEditClick
                 AlternateRowColor = 16579576
                 SelectColumnsDialogStrings.Caption = 'Select columns'
                 SelectColumnsDialogStrings.OK = '&OK'
@@ -885,7 +735,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
                   ParentFont = False
                   Transparent = True
                 end
-                object imgbusiness_proposal_item_append: TImage
+                object imgsale_item_append: TImage
                   Left = 948
                   Top = 23
                   Width = 26
@@ -913,7 +763,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
                     800C50B9C14A234BDE02710A0023AABC32C07C1C6D0000000049454E44AE4260
                     82}
                   ShowHint = False
-                  OnClick = imgbusiness_proposal_item_appendClick
+                  OnClick = imgsale_item_appendClick
                 end
                 object Label9: TLabel
                   Left = 0
@@ -951,7 +801,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
                     Color = 8747344
                     ParentBackground = False
                     TabOrder = 0
-                    object imgbusiness_proposal_item_loca_product: TImage
+                    object imgsale_item_loca_product: TImage
                       Left = 0
                       Top = 0
                       Width = 24
@@ -974,14 +824,14 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
                         436727D7B4B3C4EC72358D5585DA96BC946E26A4DFFCCF9A3A69031E15F84368
                         F793C593C91F6448E72CE8FBBF100BFA65D5A107E8700FC4829E6E8A9ADD03E1
                         BA02035FC005512468860000000049454E44AE426082}
-                      OnClick = imgbusiness_proposal_item_loca_productClick
+                      OnClick = imgsale_item_loca_productClick
                       ExplicitTop = 14
                       ExplicitWidth = 18
                       ExplicitHeight = 18
                     end
                   end
                 end
-                object edtbusiness_proposal_item_id: TJvValidateEdit
+                object edtsale_item_id: TJvValidateEdit
                   Tag = 1
                   Left = 27
                   Top = 23
@@ -1007,7 +857,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
                   OnExit = EdtFieldExit
                   OnKeyDown = EdtFieldKeyDown
                 end
-                object edtbusiness_proposal_item_name: TEdit
+                object edtsale_item_name: TEdit
                   Tag = 1
                   Left = 177
                   Top = 23
@@ -1026,7 +876,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
                   TabOrder = 1
                   OnKeyDown = EdtFieldKeyDown
                 end
-                object edtbusiness_proposal_item_price: TJvValidateEdit
+                object edtsale_item_price: TJvValidateEdit
                   Tag = 1
                   Left = 734
                   Top = 23
@@ -1052,7 +902,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
                   OnExit = EdtFieldExit
                   OnKeyDown = EdtFieldKeyDown
                 end
-                object edtbusiness_proposal_item_quantity: TJvValidateEdit
+                object edtsale_item_quantity: TJvValidateEdit
                   Tag = 1
                   Left = 651
                   Top = 23
@@ -1078,7 +928,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
                   OnExit = EdtFieldExit
                   OnKeyDown = EdtFieldKeyDown
                 end
-                object edtbusiness_proposal_item_total: TJvValidateEdit
+                object edtsale_item_total: TJvValidateEdit
                   Tag = 1
                   Left = 857
                   Top = 23
@@ -1102,7 +952,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
                   TabOrder = 4
                   OnClick = EdtFieldClick
                   OnKeyDown = EdtFieldKeyDown
-                  OnKeyPress = edtbusiness_proposal_item_totalKeyPress
+                  OnKeyPress = edtsale_item_totalKeyPress
                 end
                 object chkItemReadAndInsert: TCheckBox
                   Left = 92
@@ -1157,7 +1007,7 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
                   Transparent = True
                   ExplicitLeft = 787
                 end
-                object edtsum_business_proposal_item_total: TDBEdit
+                object edtsum_sale_item_total: TDBEdit
                   Tag = 1
                   AlignWithMargins = True
                   Left = 819
@@ -1171,8 +1021,8 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
                   Align = alRight
                   BorderStyle = bsNone
                   Color = 16579576
-                  DataField = 'sum_business_proposal_item_total'
-                  DataSource = dtsBusinessProposal
+                  DataField = 'sum_sale_item_total'
+                  DataSource = dtsSale
                   Font.Charset = ANSI_CHARSET
                   Font.Color = clGreen
                   Font.Height = -21
@@ -1219,11 +1069,11 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
       end
       inherited lblTitle: TLabel
         Left = 45
-        Width = 214
+        Width = 67
         Height = 40
-        Caption = 'Proposta Comercial'
+        Caption = 'Venda'
         ExplicitLeft = 45
-        ExplicitWidth = 214
+        ExplicitWidth = 67
       end
       inherited imgCloseTitle: TImage
         Left = 987
@@ -1236,11 +1086,11 @@ inherited BusinessProposalCreateUpdateView: TBusinessProposalCreateUpdateView
       end
     end
   end
-  object dtsBusinessProposal: TDataSource
+  object dtsSale: TDataSource
     Left = 851
     Top = 1
   end
-  object dtsBusinessProposalItemList: TDataSource
+  object dtsSaleItemList: TDataSource
     Left = 880
     Top = 1
   end

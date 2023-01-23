@@ -1117,7 +1117,7 @@ object BaseIndexView: TBaseIndexView
                   Left = 5
                   Top = 5
                   Width = 58
-                  Height = 15
+                  Height = 14
                   Margins.Left = 5
                   Margins.Top = 5
                   Margins.Right = 5
@@ -1130,7 +1130,6 @@ object BaseIndexView: TBaseIndexView
                   Font.Name = 'Tahoma'
                   Font.Style = [fsBold]
                   ParentFont = False
-                  ExplicitHeight = 14
                 end
               end
             end
@@ -1547,7 +1546,7 @@ object BaseIndexView: TBaseIndexView
                 Left = 3
                 Top = 4
                 Width = 96
-                Height = 16
+                Height = 13
                 Margins.Top = 4
                 Align = alLeft
                 Caption = 'Total de p'#225'ginas:'
@@ -1557,7 +1556,6 @@ object BaseIndexView: TBaseIndexView
                 Font.Name = 'Tahoma'
                 Font.Style = [fsBold]
                 ParentFont = False
-                ExplicitHeight = 13
               end
               object edtNavLastPageNumber: TEdit
                 AlignWithMargins = True
@@ -1959,7 +1957,7 @@ object BaseIndexView: TBaseIndexView
                   AlignWithMargins = True
                   Left = 5
                   Top = 0
-                  Width = 334
+                  Width = 75
                   Height = 13
                   Margins.Left = 5
                   Margins.Top = 0
@@ -1975,7 +1973,6 @@ object BaseIndexView: TBaseIndexView
                   Font.Style = [fsBold]
                   ParentColor = False
                   ParentFont = False
-                  ExplicitWidth = 75
                 end
                 object edtSearchValue: TEdit
                   AlignWithMargins = True

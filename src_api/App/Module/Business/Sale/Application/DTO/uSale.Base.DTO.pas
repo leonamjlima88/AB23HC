@@ -7,7 +7,8 @@ uses
   System.Generics.Collections,
   uSaleItem.Base.DTO,
   uSalePayment.Base.DTO,
-  uApplication.Types;
+  uApplication.Types,
+  uSaleStatus.Types;
 
 type
   TSaleBaseDTO = class
@@ -16,7 +17,7 @@ type
     Fseller_id: Int64;
     Fnote: string;
     Finternal_note: string;
-    Fstatus: SmallInt;
+    Fstatus: TSaleStatus;
     Fpayment_increase: SmallInt;
     Fpayment_discount: SmallInt;
 
@@ -45,7 +46,7 @@ type
 
     [SwagNumber]
     [SwagProp('status', 'Status [0-Pendente, 1-Aprovada, 2-Cancelada]')]
-    property status: SmallInt read Fstatus write Fstatus;
+    property status: TSaleStatus read Fstatus write Fstatus;
 
     [SwagNumber]
     [SwagProp('payment_discount', 'Desconto em pagamento ($)')]

@@ -3,7 +3,7 @@ unit uSaleStatus.Types;
 interface
 
 type
-  TSaleStatus = (bpsPending, bpsApproved, bpsCanceled);
+  TSaleStatus = (ssPending, ssApproved, ssCanceled);
 
 implementation
 

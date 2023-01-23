@@ -1,4 +1,4 @@
-inherited BusinessProposalIndexView: TBusinessProposalIndexView
+inherited SaleIndexView: TSaleIndexView
   Caption = ''
   OnKeyDown = FormKeyDown
   PixelsPerInch = 96
@@ -7,9 +7,9 @@ inherited BusinessProposalIndexView: TBusinessProposalIndexView
     inherited pnlContent: TPanel
       inherited pnlTitle: TPanel
         inherited lblTitle: TLabel
-          Width = 214
-          Caption = 'Proposta Comercial'
-          ExplicitWidth = 214
+          Width = 67
+          Caption = 'Venda'
+          ExplicitWidth = 67
         end
         inherited SkAnimatedImage1: TSkAnimatedImage
           ExplicitLeft = 0
@@ -101,17 +101,10 @@ inherited BusinessProposalIndexView: TBusinessProposalIndexView
                 item
                   Alignment = taRightJustify
                   Expanded = False
-                  FieldName = 'sum_business_proposal_item_total'
+                  FieldName = 'sum_sale_item_total'
                   Title.Alignment = taRightJustify
                   Title.Caption = 'Total'
                   Width = 100
-                  Visible = True
-                end
-                item
-                  Expanded = False
-                  FieldName = 'requester'
-                  Title.Caption = 'Solicitante'
-                  Width = 353
                   Visible = True
                 end
                 item
@@ -759,13 +752,13 @@ inherited BusinessProposalIndexView: TBusinessProposalIndexView
     object N1: TMenuItem
       Caption = '-'
     end
-    object mniBusinessProposalPrint: TMenuItem
+    object mniSalePrint: TMenuItem
       Caption = '    * Comprovante *'
       Enabled = False
     end
-    object mniBusinessProposalPrintA4: TMenuItem
+    object mniSalePrintA4: TMenuItem
       Caption = '        A4 (PDF)'
-      OnClick = mniBusinessProposalPrintA4Click
+      OnClick = mniSalePrintA4Click
     end
     object N2: TMenuItem
       Caption = '-'

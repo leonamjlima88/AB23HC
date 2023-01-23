@@ -6,7 +6,8 @@ uses
   GBSwagger.Model.Attributes,
   System.Generics.Collections,
   uBusinessProposalItem.Base.DTO,
-  uApplication.Types;
+  uApplication.Types,
+  uBusinessProposalStatus.Types;
 
 type
   TBusinessProposalBaseDTO = class
@@ -15,7 +16,7 @@ type
     Fdelivery_forecast: string;
     Frequester: string;
     Fpayment_term_note: string;
-    Fstatus: SmallInt;
+    Fstatus: TBusinessProposalStatus;
     Fnote: string;
     Fexpiration_date: TDate;
     Fseller_id: Int64;
@@ -61,7 +62,7 @@ type
 
     [SwagNumber]
     [SwagProp('status', 'Status [0-Pendente, 1-Aprovada, 2-Cancelada]')]
-    property status: SmallInt read Fstatus write Fstatus;
+    property status: TBusinessProposalStatus read Fstatus write Fstatus;
 
     // OneToMany
     property business_proposal_item_list: TObjectList<TBusinessProposalItemBaseDTO> read Fbusiness_proposal_item_list write Fbusiness_proposal_item_list;

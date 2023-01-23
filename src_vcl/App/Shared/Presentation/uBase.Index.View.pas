@@ -242,7 +242,8 @@ begin
       imgDoSearch.Visible                 := False;
       imgNoSearch.Enabled                 := True;
       DBGrid1.SendToBack;
-      DBGrid1.Visible := False;
+      DBGrid1.Visible                     := False;
+      Screen.Cursor                       := crHourGlass;
     end;
     False: Begin
       IndicatorLoadButtonDoSearch.Visible := False;
@@ -251,6 +252,7 @@ begin
       DBGrid1.Visible                     := True;
       DBGrid1.BringToFront;
       imgNoSearch.Enabled                 := False;
+      Screen.Cursor                       := crDefault;
     End;
   end;
 end;
